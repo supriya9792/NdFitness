@@ -1,0 +1,249 @@
+<resources>
+    <string name="app_name">NDFitness+</string>
+
+
+    <string name="hello">Hello World</string>
+    <string name="title_activity_main"> </string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Welcome Admin</string>
+    <string name="nav_header_subtitle">Fitness plus</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <!--select domain activity-->
+    <string name="select_domain">Select Domain</string>
+    <string name="enter_url">Please enter your domain url</string>
+    <string name="url_hint">http://</string>
+    <string name="url_save_hint">Save</string>s
+    <string name="server_exception">server connection failed .</string>
+    <string name="ok">OK</string>
+
+
+    <!--Side menu -->
+    <string name="menu_collections">Collection</string>
+    <string name="menu_today_enquiry">Today\'s Enquiry</string>
+    <string name="menu_followup">Follow Ups</string>
+    <string name="menu_today_adminssion">Enrollment</string>
+    <string name="menu_switch_branch">Switch Branch</string>
+    <string name="menu_cont_us">Contact Us</string>
+    <string name="menu_term_condi">Terms &amp; Conditions</string>
+    <string name="menu_logout">Logout</string>
+
+
+    <!--Main page String-->
+    <string name="todays_coll">Today\'s collection</string>
+    <string name="enquiry">Enquiry</string>
+    <string name="add_member">Add Member</string>
+    <string name="renew">Renew</string>
+    <string name="balance">Balance</string>
+    <string name="collections">Collections</string>
+    <string name="expenses">Expenses</string>
+    <string name="mem_info">Member info</string>
+    <string name="quick_sms">Quick SMS</string>
+    <string name="noti">Notifications</string>
+
+    <!--Notification String-->
+    <string name="member_bday">Member Birthdays</string>
+    <string name="staff_bday">Staff Birthdays</string>
+    <string name="member_anniversary">Anniversary</string>
+    <string name="enquiry_followup">Enquiry Followups</string>
+    <string name="enquiry_followup_details">Followups Details</string>
+    <string name="active_members">Active Members</string>
+    <string name="deactive_members">Deactive Members</string>
+    <string name="member_end_date">Today\'s Enddate</string>
+    <string name="payment_date">Payment Date</string>
+    <string name="other_followup">Other Followups</string>
+    <string name="done_followup">Done Followups</string>
+    <string name="title_activity_post_dated_cheque">Post Dated Cheque</string>
+
+    <!--Member Birthday String-->
+    <string name="nodata">No Records Found</string>
+
+    <!--Login Activity string-->
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="forgotPasswordText">Forgot Password ?</string>
+    <string name="login_btn">Login</string>
+    <string name="termsNConditions"><u><![CDATA[Terms & Conditions ]]></u></string>
+    <string name="privacy_policy"><u>Privacy Policy</u></string>
+    <string name="invalid_login">Invalid login details !</string>
+    <string name="password_error">Enter Valid Password !</string>
+    <string name="invalid_username_error">Enter Valid Username !</string>
+    <string name="internet_unavailable">No Internet Connection !</string>
+    <string name="success" translatable="false">success</string>
+    <string name="error" translatable="false">error</string>
+    <string name="one" translatable="false">1</string>
+    <string name="action" translatable="false">action</string>
+    <string name="zero" translatable="false">0</string>
+    <string name="inavlid" translatable="false">Invalid login</string>
+    <string name="user_id" translatable="false">user_id</string>
+    <string name="lead_id" translatable="false">lead_id</string>
+    <string name="client_id" translatable="false">client_id</string>
+    <string name="emp_id" translatable="false">emp_id</string>
+    <string name="passworderror">Please enter a valid password</string>
+    <string name="mobileerror">Please enter valid mobile no.</string>
+    <string name="errortry">Please try after some time</string>
+    <string name="pleasewait">Please wait..</string>
+    <string name="inavlidlogin">Check Login Details</string>
+    <string name="three" translatable="false">3</string>
+    <string name="two" translatable="false">2</string>
+    <string name="or">OR</string>
+    <string name="cont">Continue With</string>
+    <string name="for_pass">Please contact on this number 9975628849 for any query or support</string>
+
+    <!--Branch Selection Activity-->
+    <string name="monthly_collection">Monthly Collection</string>
+    <string name="daily_collection">This Month</string>
+    <string name="monthly_collect">Today</string>
+    <string name="default_value">0.00</string>
+
+    <!--Enquiry Activity-->
+    <string name="nextFollowupDate">Next Followup:</string>
+    <string name="enquiry_filter">Apply Filters</string>
+
+    <!--Admission Activity-->
+    <string name="start_date">Start Date</string>
+    <string name="followup_date">Followup Date</string>
+    <string name="reciept_number">Receipt No.</string>
+
+    <!--Add Enquiry Activity-->
+    <string name="add_enquiry">New Enquiry</string>
+
+
+    <string name="hint_name">Name</string>
+    <string name="hint_enquiry_date">Enquiry Date</string>
+    <string name="hint_gender">Gender</string>
+    <string name="hint_occupation">Occupation</string>
+    <string name="hint_mob_no">Contact</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_dob">DOB</string>
+    <string name="hint_location">Location</string>
+    <string name="hint_add">Address</string>
+    <string name="hint_enq_type">Enquiry Type</string>
+    <string name="hint_enq_source">Enquiry Source</string>
+    <string name="hint_enq_for">Enquiry for</string>
+    <string name="hint_enq_rating">Rating</string>
+    <string name="hint_enq_exe_name">Budget</string>
+    <string name="hint_foll_type">Followup Type</string>
+    <string name="hint_call_res">Call Response Type</string>
+    <string name="hint_next_foll_date">Next Followup Date</string>
+    <string name="hint_comment">Comment</string>
+    <string name="hint_close">close</string>
+    <string name="hint_register">Register</string>
+    <string name="hint_submit">Sumbit</string>
+    <string name="btn_sign_up">Sign Up</string>
+    <string name="hint_add_comment">Add a comment&#8230;</string>
+
+    <!--Error Array-->
+    <string name="err_msg_name">Enter your Full name</string>
+    <string name="err_msg_email">Enter valid email address</string>
+    <string name="err_msg_cont">Enter your valid contact number.</string>
+    <string name="err_msg_comment">Please enter Comment</string>
+    <string name="err_msg_occupation">Please Enter the Occupation</string>
+    <string name="err_msg_enq_type">Please enter enquiry type</string>
+    <string name="err_msg_enq_source">please Enter the enquiry source</string>
+    <string name="err_msg_call_res">Please enter the call response</string>
+    <string name="err_msg_next_foll_date">Please enter next followup date</string>
+    <string name="err_msg_budget">Please enter budget</string>
+    <string name="update_add">Update your address</string>
+    <string name="update_mob">Update your Mobile</string>
+
+    <!--Spinner arrays -->
+    <string name="all">All</string>
+
+    <!--Enquiry Type-->
+    <string name="prompt_enquiry_type">Select Enquiry Type</string>
+    <string name="enquiry_type">Enquiry Type</string>
+    <string-array name="enquiry_type_array">
+        <item>Select Enquiry Type </item>
+        <item>Walkin </item>
+        <item>Telephonic</item>
+        <item>SMS</item>
+        <item>Email</item>
+    </string-array>
+
+    <!--Enquiry Source-->
+    <string name="prompt_enquiry_source">Select Enquiry Src </string>
+    <string name="enquiry_source">Source Of Enquiry</string>
+    <string-array name="enquiry_source_array">
+        <item>Select Enquiry Source </item>
+        <item>Newspaper </item>
+        <item>Banner</item>
+        <item>Social media</item>
+        <item>Relatives</item>
+        <item>Television</item>
+        <item>Friends</item>
+    </string-array>
+    <!--Call Responce-->
+    <string name="prompt_call_res">Select Call Resp</string>
+    <string name="call_res">Response</string>
+    <string-array name="call_res_array">
+        <item>Select Call Response </item>
+        <item>Cut </item>
+        <item>Busy</item>
+        <item>Not reachable</item>
+        <item>Receive</item>
+        <item>Waiting</item>
+        <item>NA</item>
+    </string-array>
+    <!--rating -->
+    <string name="prompt_rating">Select Rating</string>
+    <string name="rating">Rating</string>
+    <string-array name="rating_array">
+        <item> Rating </item>
+        <item>Hot  </item>
+        <item>Cold </item>
+        <item>Warm</item>
+        <item>Expected</item>
+        <item>Not interested</item>
+    </string-array>
+    <string name="prompt_enq_for">Select Enquiry For</string>
+    <string name="enq_for">Enquiry For</string>
+    <!--gender -->
+    <string name="prompt_gender">Select Gender</string>
+    <string name="gender">Gender</string>
+    <string-array name="gender_array">
+        <item>Select Gender </item>
+        <item>Male  </item>
+        <item>Female </item>
+    </string-array>
+    <!-- Enquiry date array-->
+    <string name="prompt_enq_date">Select Date</string>
+    <string name="enq_date">Enquiry Date</string>
+    <string-array name="enq_date_array">
+        <item>Select Date </item>
+        <item>All </item>
+        <item>Enquiry Date  </item>
+        <item>Next Followup Date </item>
+    </string-array>
+    <!--Occupation-->
+    <string name="prompt_occupation">Select Occupation</string>
+    <string name="occupation">Occupation</string>
+    <string name="prompt_location">Select Location</string>
+    <string name="prompt_executive">Select Executive</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!--Expenses string-->
+    <string name="add_exepnses">Add Expenses</string>
+    <string name="ttl_of_exepnses">Title Of Expenses</string>
+    <string name="expense_date">Expense Date</string>
+    <string name="exepnses_group">Group Of Expense</string>
+    <string name="payment_details">Payment Details</string>
+    <string name="payment_amt">Payment Amount</string>
+    <string name="payment_discription">Description</string>
+    <string name="expense_grp">Expenses Group</string>
+    <string name="exe_name">Executive Name</string>
+    <string name="payment_type">Payment Type</string>
+    <string name="prompt_expense_grp">Select Expenses Group</string>
+    <string name="prompt_executive_name">Select Executive Name</string>
+    <string name="prompt_payment_type">Select Payment Type</string>
+
+    <!--Add Member-->
+    <string name="hint_id_proff">ID Proff</string>
+    <string name="hint_id_proff_img">ID Proff Image</string>
+    <string name="hint_mem_gst_no">Member GST No</string>
+    <string name="hint_enquiry_owner">Enquiry Owner</string>
+
+</resources>

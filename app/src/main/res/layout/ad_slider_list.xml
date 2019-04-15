@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/spacing_middle"
+        android:weightSum="1"
+        >
+        <ImageView
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:id="@+id/ad_img"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/logo" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="0.7"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/spacing_middle"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/ad_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Advertise title here.."
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold"
+               android:textSize="@dimen/spacing_large"/>
+            <TextView
+                android:id="@+id/ad_disc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Advertise discrecption here."
+                android:textColor="@color/black"
+               android:textSize="@dimen/spacing_middle"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
