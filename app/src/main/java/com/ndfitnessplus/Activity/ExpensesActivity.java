@@ -23,11 +23,16 @@ import android.view.Window;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ndfitnessplus.Activity.Notification.ExpenseFilterActivity;
+import com.ndfitnessplus.Activity.Notification.TodaysEnrollmentActivity;
+import com.ndfitnessplus.Adapter.CourseAdapter;
 import com.ndfitnessplus.Adapter.EnquiryAdapter;
 import com.ndfitnessplus.Adapter.ExpensesAdapter;
 import com.ndfitnessplus.Listeners.PaginationScrollListener;
+import com.ndfitnessplus.Model.CourseList;
 import com.ndfitnessplus.Model.EnquiryList;
 import com.ndfitnessplus.Model.ExpensesList;
 import com.ndfitnessplus.R;
@@ -35,11 +40,13 @@ import com.ndfitnessplus.Utility.ServerClass;
 import com.ndfitnessplus.Utility.ServiceUrls;
 import com.ndfitnessplus.Utility.SharedPrefereneceUtil;
 import com.ndfitnessplus.Utility.Utility;
+import com.ndfitnessplus.Utility.ViewDialog;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -72,7 +79,10 @@ public class ExpensesActivity extends AppCompatActivity {
     int itemCount = 0;
     int offset = 0;
     //search
+    TextView expenses;
     private EditText inputsearch;
+    //Loading gif
+    ViewDialog viewDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,7 +92,7 @@ public class ExpensesActivity extends AppCompatActivity {
     private void initToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(getResources().getString(R.string.expenses));
+        getSupportActionBar().setTitle(getResources().getString(R.string.exi_expenses));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         initComponent();
     }
@@ -94,25 +104,36 @@ public class ExpensesActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
+        viewDialog = new ViewDialog(this);
 
         nodata=findViewById(R.id.nodata);
         frame=findViewById(R.id.main_frame);
         noInternet=findViewById(R.id.no_internet);
         progress_bar = (ProgressBar) findViewById(R.id.progress_bar);
         lyt_no_connection = (LinearLayout) findViewById(R.id.lyt_no_connection);
-
+        expenses=findViewById(R.id.ttl_expense);
         progress_bar.setVisibility(View.GONE);
         lyt_no_connection.setVisibility(View.VISIBLE);
 //        adapter = new EnquiryAdapter( new ArrayList<EnquiryList>(),EnquiryActivity.this);
 //        recyclerView.setAdapter(adapter);
 
-
+        Intent intent = getIntent();
+        Bundle args = intent.getBundleExtra("BUNDLE");
+        if (args != null) {
+            ArrayList<ExpensesList> filterArrayList = (ArrayList<ExpensesList>) args.getSerializable("filter_array_list");
+            progressBar.setVisibility(View.GONE);
+            String coll=intent.getStringExtra("expense");
+            progressBar.setVisibility(View.GONE);
+            expenses.setText(coll);
+            //total_courses.setText(String.valueOf(length));
+            adapter = new ExpensesAdapter( filterArrayList,ExpensesActivity.this);
+            recyclerView.setAdapter(adapter);
+        }else {
 
             if (isOnline(ExpensesActivity.this)) {
-               expenseclass();// check login details are valid or not from server
-            }
-            else {
-                frame.setVisibility(View.GONE);
+                expenseclass();// check login details are valid or not from server
+            } else {
+                swipeRefresh.setVisibility(View.GONE);
                 noInternet.setVisibility(View.VISIBLE);
                 lyt_no_connection.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -149,7 +170,7 @@ public class ExpensesActivity extends AppCompatActivity {
 //                dialog.show();
 
             }
-
+        }
 
         addenquiry.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -168,9 +189,9 @@ public class ExpensesActivity extends AppCompatActivity {
                 // TODO Auto-generated method stub
                 if (ExpensesActivity.this.adapter == null){
                     // some print statement saying it is null
-                    Toast toast = Toast.makeText(ExpensesActivity.this,"no record found", Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.CENTER, 0, 0);
-                    toast.show();
+//                    Toast toast = Toast.makeText(ExpensesActivity.this,"no record found", Toast.LENGTH_SHORT);
+//                    toast.setGravity(Gravity.CENTER, 0, 0);
+//                    toast.show();
                 }
                 else
                 {
@@ -223,7 +244,7 @@ public class ExpensesActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.home_action_menu, menu);
+        getMenuInflater().inflate(R.menu.filter_action_menu, menu);
         return true;
     }
     @Override
@@ -232,6 +253,10 @@ public class ExpensesActivity extends AppCompatActivity {
 
         if (id == R.id.action_home) {
             Intent intent = new Intent(ExpensesActivity.this, MainActivity.class);
+            startActivity(intent);
+            return true;
+        }else if (id == R.id.action_filter) {
+            Intent intent = new Intent(ExpensesActivity.this, ExpenseFilterActivity.class);
             startActivity(intent);
             return true;
         }
@@ -270,14 +295,16 @@ public class ExpensesActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            showProgressDialog();
+          //  showProgressDialog();
+            viewDialog.showDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            dismissProgressDialog();
+           // dismissProgressDialog();
+            viewDialog.hideDialog();
             //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             ExpenseDetails(response);
 
@@ -288,10 +315,10 @@ public class ExpensesActivity extends AppCompatActivity {
             //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> ExpenseDetails = new HashMap<String, String>();
             ExpenseDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(ExpensesActivity.this));
-            ExpenseDetails.put("offset", String.valueOf(offset));
             Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(ExpensesActivity.this)));
             ExpenseDetails.put("action","show_expenses_list");
-            String loginResult = ruc.sendPostRequest(ServiceUrls.LOGIN_URL, ExpenseDetails);
+            String domainurl=SharedPrefereneceUtil.getDomainUrl(ExpensesActivity.this);
+            String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, ExpenseDetails);
             //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
@@ -311,6 +338,13 @@ public class ExpensesActivity extends AppCompatActivity {
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
+                    String col = object.getString("ttl_expense");
+                    // total_balance.setText(ttl_enq);
+                    double ttlcol=Double.parseDouble(col);
+                    DecimalFormat df = new DecimalFormat("##,##,##,##,##,##,##0.00");
+                    String rt= df.format(ttlcol);
+
+                    expenses.setText(rt);
                     progressBar.setVisibility(View.GONE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
@@ -374,7 +408,7 @@ public class ExpensesActivity extends AppCompatActivity {
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
                     nodata.setVisibility(View.VISIBLE);
-                    recyclerView.setVisibility(View.GONE);
+                    swipeRefresh.setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");

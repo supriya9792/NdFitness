@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.ndfitnessplus">
 
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS" />
-    <uses-permission android:name="android.permission.MANAGE_USERS" />
+    <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.MANAGE_USERS"
+        tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
@@ -23,32 +27,72 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/logo"
         android:label="@string/app_name"
+        android:largeHeap="true"
+        android:usesCleartextTraffic="true"
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activity.NewAddEnquiryActivity"></activity>
+        <activity android:name=".Activity.AttendenceActivity"></activity>
+        <activity android:name=".Activity.MemberMoreDetailsActivity" />
+        <activity android:name=".Activity.RenewFollowupDetailsActivity" />
+        <activity android:name=".Activity.OtherFollowupFilterActivity" />
+        <activity android:name=".Activity.Notification.StaffBirthdayFollowupActivity" />
+        <activity android:name=".Activity.EnrollmentActivity" />
+        <activity android:name=".Activity.FullImageActivity" />
+        <activity android:name=".Activity.TermsAndConditionActivity" />
+        <activity android:name=".Activity.ForgotPasswordActivity" />
+        <activity android:name=".Activity.CollectionFilterActivity" />
+        <activity android:name=".Activity.CollectionActivity" />
+        <activity android:name=".Activity.BalanceReceiptFilterActivity" />
+        <activity android:name=".Activity.BalanceReceiptDetailsActivity" />
+        <activity android:name=".Activity.CourseDetailsActivity" />
+        <activity
+            android:name=".Activity.BalanceReceiptActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity android:name=".Activity.CourseFilterActivity" />
+        <activity android:name=".Activity.MemberFilterActivity" />
+        <activity android:name=".Activity.MemberDetailsActivity" />
+        <activity android:name=".Activity.CourseActivity" />
+        <activity android:name=".Activity.MemberActivity" />
+        <activity android:name=".Activity.MoreInfoActivity" />
+        <activity
+            android:name=".Activity.RenewActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity android:name=".Activity.NewAddEnquiryActivity" />
         <activity android:name=".Activity.Notification.ExpenseFilterActivity" />
-        <activity android:name=".Activity.AddExpensesActivity" />
+        <activity
+            android:name=".Activity.AddExpensesActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:windowSoftInputMode="stateVisible" />
         <activity android:name=".Activity.ExpensesActivity" />
         <activity android:name=".Activity.EnquiryFollowupDetailsActivity" />
         <activity android:name=".Activity.FollowupsActivity" />
         <activity android:name=".Activity.EnquiryFilterActivity" />
-        <activity android:name=".Activity.AddMemberActivity" />
-        <activity android:name=".Activity.AddEnquiryActivity" />
+        <activity
+            android:name=".Activity.AddMemberActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name=".Activity.AddEnquiryActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
         <activity android:name=".Activity.EnquiryActivity" />
         <activity android:name=".Activity.Notification.DoneFollowupActivity" />
         <activity android:name=".Activity.Notification.OtherFollowupActivity" />
-        <activity android:name=".Activity.Notification.PostDateChequeActivity" />
+        <activity android:name=".Activity.Notification.RenewFollowupActivity" />
         <activity android:name=".Activity.Notification.PaymentDateActivity" />
         <activity android:name=".Activity.Notification.MembershipEndDateActivity" />
         <activity android:name=".Activity.Notification.DeactiveMemberActivity" />
         <activity android:name=".Activity.Notification.ActiveMemberActivity" />
         <activity android:name=".Activity.Notification.EnquiryFollowupActivity" />
-        <activity android:name=".Activity.Notification.TodaysAdmissionActivity" />
+        <activity android:name=".Activity.Notification.TodaysEnrollmentActivity" />
         <activity android:name=".Activity.Notification.TodaysEnquiryActivity" />
         <activity android:name=".Activity.Notification.AnniversaryActivity" />
         <activity android:name=".Activity.BranchSelectionActivity" />
@@ -57,7 +101,10 @@
         <activity android:name=".Activity.Notification.MemberBirthdayActivity" />
         <activity android:name=".Activity.NotificationActivity" />
         <activity android:name=".Main2Activity" />
-        <activity android:name=".Activity.SelectDomainActivity" />
+        <activity
+            android:name=".Activity.SelectDomainActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
         <activity
             android:name=".Activity.MainActivity"
             android:label="@string/title_activity_main"
@@ -69,6 +116,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Push Notification services-->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/logo" />
+
+        <service android:name=".Notification.MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name=".Notification.MyFirebaseInstanceIDService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

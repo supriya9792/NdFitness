@@ -39,7 +39,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Mr.Admin name"
+                android:text="Admin name"
                 android:textColor="@color/white"
                 android:textSize="@dimen/spacing_large"
                 android:textStyle="bold" />
@@ -269,7 +269,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginLeft="@dimen/spacing_small"
-                            android:text="@string/renew"
+                            android:text="@string/course"
                             android:textAlignment="center"
                             android:textColor="@color/white"
                             android:textSize="11sp" />
@@ -329,7 +329,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginLeft="@dimen/spacing_small"
-                            android:text="@string/collections"
+                            android:text="@string/balance"
                             android:textAlignment="center"
                             android:textColor="@color/white"
                             android:textSize="11sp" />
@@ -479,13 +479,13 @@
                                 android:layout_width="35dp"
                                 android:layout_height="35dp"
                                 android:tint="@color/white"
-                                app:srcCompat="@drawable/ic_sms_black_24dp" />
+                                app:srcCompat="@drawable/ic_local_atm" />
                         </LinearLayout>
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/quick_sms"
+                            android:text="@string/collections"
                             android:textAlignment="center"
                             android:textColor="@color/white"
                             android:textSize="11sp" />

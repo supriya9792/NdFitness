@@ -3,6 +3,7 @@ package com.ndfitnessplus.Adapter;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,7 +21,7 @@ import com.ndfitnessplus.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdSliderAdapter  extends PagerAdapter  {
+public class AdSliderAdapter  extends PagerAdapter implements LoopingPagerAdapter {
     private LayoutInflater layoutInflater;
     private Button btnNext;
     private Context mContext;
@@ -71,5 +72,14 @@ public class AdSliderAdapter  extends PagerAdapter  {
     public void destroyItem(ViewGroup container, int position, Object object) {
         View view = (View) object;
         container.removeView(view);
+    }
+    @Override
+    public Parcelable saveState()
+    {
+        return null;
+    }
+    @Override
+    public int getRealCount() {
+        return signalList.size();
     }
 }

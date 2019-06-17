@@ -1,13 +1,8 @@
 package com.ndfitnessplus.Activity;
 
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
-import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,41 +10,36 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.ndfitnessplus.Activity.Notification.TodaysAdmissionActivity;
 import com.ndfitnessplus.R;
 import com.ndfitnessplus.Utility.InternetConnection;
 import com.ndfitnessplus.Utility.ServerClass;
 import com.ndfitnessplus.Utility.ServiceUrls;
 import com.ndfitnessplus.Utility.SharedPrefereneceUtil;
 import com.ndfitnessplus.Utility.Utility;
+import com.ndfitnessplus.Utility.ViewDialog;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.HashMap;
 
-import static com.ndfitnessplus.Utility.Constants.IS_LOGIN;
 import static com.ndfitnessplus.Utility.HTTPRequestQueue.isOnline;
 
 public class LoginActivity extends AppCompatActivity {
-    TextInputEditText username, password;
+    EditText username, password;
     TextView forgetpwd, termsNConditions,privacy;
     Button login;
     private final String TAG = LoginActivity.class.getName();
     private RequestQueue queue;
     String domain;
+    //Loading gif
+    ViewDialog viewDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,11 +56,12 @@ public class LoginActivity extends AppCompatActivity {
         termsNConditions=findViewById(R.id.termsNConditions);
         privacy=findViewById(R.id.privacy);
         login=findViewById(R.id.btn_login);
+        viewDialog = new ViewDialog(this);
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               userLogin();
+                userLogin();
             }
         });
         login.setOnClickListener(new View.OnClickListener() {
@@ -100,8 +91,15 @@ public class LoginActivity extends AppCompatActivity {
                     username.setError(getString(R.string.invalid_username_error));
             }
         });
+        forgetpwd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(LoginActivity.this,ForgotPasswordActivity.class);
+                startActivity(intent);
+            }
+        });
     }
-//  ************  Validation of username and password **********
+    //  ************  Validation of username and password **********
     private boolean isValidUsername() {
         if (username.getText().length() < 4) {
             return false;
@@ -144,51 +142,53 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Perform the asyncTask sends data to server and gets response.
-     */
+/**
+ * Perform the asyncTask sends data to server and gets response.
+ */
 
-    class UserLoginClass extends AsyncTask<String, Void, String> {
-        @Override
-        protected void onPreExecute() {
-            Log.v(TAG,"onPreExecute");
-            super.onPreExecute();
-            showProgressDialog();
-        }
+class UserLoginClass extends AsyncTask<String, Void, String> {
+    @Override
+    protected void onPreExecute() {
+        Log.v(TAG,"onPreExecute");
+        super.onPreExecute();
+        //showProgressDialog();
+        viewDialog.showDialog();
+    }
 
-        @Override
-        protected void onPostExecute(String response) {
-            super.onPostExecute(response);
-            Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            dismissProgressDialog();
+    @Override
+    protected void onPostExecute(String response) {
+        super.onPostExecute(response);
+        Log.v(TAG, String.format("onPostExecute :: response = %s", response));
+        // dismissProgressDialog();
+        viewDialog.hideDialog();
 //            showToastMessage(response);
-            //Toast.makeText(LoginActivity.this, response, Toast.LENGTH_LONG).show();
-            loginServerResponse(response);
-        }
+        //Toast.makeText(LoginActivity.this, response, Toast.LENGTH_LONG).show();
+        loginServerResponse(response);
+    }
 
-        /**
-         *
-         * @param params
-         * @return
-         */
-        @Override
-        protected String doInBackground(String... params) {
+    /**
+     *
+     * @param params
+     * @return
+     */
+    @Override
+    protected String doInBackground(String... params) {
 //            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
 
-            HashMap<String, String> loginData = new HashMap<>();
-            loginData.put("username",username.getText().toString());
-            loginData.put("password",password.getText().toString());
-            SharedPrefereneceUtil.setUserNm(LoginActivity.this, username.getText().toString());
-            loginData.put(ServerClass.ACTION,"login");
-            ServerClass ruc = new ServerClass();
-            String domainurl=SharedPrefereneceUtil.getDomainUrl(LoginActivity.this);
-            String loginResult = ruc.sendPostRequest(ServiceUrls.LOGIN_URL, loginData);
+        HashMap<String, String> loginData = new HashMap<>();
+        loginData.put("username",username.getText().toString());
+        loginData.put("password",password.getText().toString());
+        SharedPrefereneceUtil.setUserNm(LoginActivity.this, username.getText().toString());
+        loginData.put(ServerClass.ACTION,"login");
+        ServerClass ruc = new ServerClass();
+        String domainurl=SharedPrefereneceUtil.getDomainUrl(LoginActivity.this);
+        String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, loginData);
 
-            Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
-            return loginResult;
+        Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
+        return loginResult;
 
-        }
     }
+}
 
 
 
@@ -201,7 +201,7 @@ public class LoginActivity extends AppCompatActivity {
 
         // jsonObjLoginResponse = null;
         try {
-           // jsonObjLoginResponse = new JSONObject(response);
+            // jsonObjLoginResponse = new JSONObject(response);
             JSONObject object = new JSONObject(response);
             String success = object.getString(getResources().getString(R.string.success));
 
@@ -225,16 +225,16 @@ public class LoginActivity extends AppCompatActivity {
                                 String Contact = jsonObj.getString("Contact");
                                 SharedPrefereneceUtil.setName(LoginActivity.this,name);
                                 SharedPrefereneceUtil.setUserId(LoginActivity.this,user_id);
-                              //  SharedPrefereneceUtil.setBranchAutoId(LoginActivity.this,jObject.getString("Branch_AutoID"));
-                              //  SharedPrefereneceUtil.setLoginId(LoginActivity.this,jObject.getString("Login_AutoID"));
+                                //  SharedPrefereneceUtil.setBranchAutoId(LoginActivity.this,jObject.getString("Branch_AutoID"));
+                                //  SharedPrefereneceUtil.setLoginId(LoginActivity.this,jObject.getString("Login_AutoID"));
                                 SharedPrefereneceUtil.setAuthority(LoginActivity.this,Authority);
                                 SharedPrefereneceUtil.setCompanyAutoId(LoginActivity.this,Company_Id);
                                 Log.v(TAG, String.format("responce :: company id = %s", Company_Id));
                                 SharedPrefereneceUtil.setMobile(LoginActivity.this,Contact);
                                 SharedPrefereneceUtil.setEmail(LoginActivity.this,user_email);
                                 //SharedPrefereneceUtil.setStatus(LoginActivity.this,jObject.getString("Status"));
-                               // SharedPrefereneceUtil.setStaff_auto_id(LoginActivity.this,jObject.getString("Staff_AutoID"));
-                              //  SharedPrefereneceUtil.setReg_date(LoginActivity.this,jObject.getString("RegDate"));
+                                // SharedPrefereneceUtil.setStaff_auto_id(LoginActivity.this,jObject.getString("Staff_AutoID"));
+                                //  SharedPrefereneceUtil.setReg_date(LoginActivity.this,jObject.getString("RegDate"));
                                 SharedPrefereneceUtil.setUserNm(LoginActivity.this,username.getText().toString());
                                 SharedPrefereneceUtil.setPassword(LoginActivity.this,password.getText().toString());
 
@@ -259,7 +259,7 @@ public class LoginActivity extends AppCompatActivity {
                 AlertDialog dialog = builder.create();
                 dialog.setCancelable(false);
                 dialog.show();
-               // Toast.makeText(LoginActivity.this,getResources().getString(R.string.inavlidlogin),Toast.LENGTH_LONG).show();
+                // Toast.makeText(LoginActivity.this,getResources().getString(R.string.inavlidlogin),Toast.LENGTH_LONG).show();
             }else if (success.equalsIgnoreCase(getResources().getString(R.string.one)))
             {
                 Toast.makeText(LoginActivity.this,getResources().getString(R.string.inavlidlogin),Toast.LENGTH_LONG).show();
@@ -269,7 +269,7 @@ public class LoginActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
             AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-            builder.setMessage(R.string.server_exception);
+            builder.setMessage(R.string.server_exception+e.getMessage());
             builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                     dialog.dismiss();

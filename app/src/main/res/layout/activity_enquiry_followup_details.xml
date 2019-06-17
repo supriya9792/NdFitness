@@ -41,12 +41,12 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:orientation="vertical"
-            android:padding="@dimen/spacing_mlarge">
+            android:padding="@dimen/spacing_medium">
 
             <com.mikhaellopez.circularimageview.CircularImageView
                 android:id="@+id/image"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
                 android:src="@drawable/nouser"
                 app:civ_border="true"
                 app:civ_border_width="3dp" />
@@ -98,7 +98,7 @@
                 android:layout_width="?attr/actionBarSize"
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:tint="@color/black"
+                android:tint="@color/colorPrimaryWeb"
                 app:srcCompat="@drawable/ic_local_phone" />
 
             <View
@@ -110,7 +110,7 @@
                 android:layout_width="?attr/actionBarSize"
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:tint="@color/black"
+                android:tint="@color/deep_orange_900"
                 app:srcCompat="@drawable/ic_comment_black_24dp" />
 
             <View
@@ -122,7 +122,7 @@
                 android:id="@+id/whatsapp"
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                app:srcCompat="@drawable/whatsapp128"
+                app:srcCompat="@drawable/whatsappcolor"
                 android:layout_gravity="center"
                 android:layout_marginLeft="@dimen/spacing_large"
                 android:adjustViewBounds="true"
@@ -152,15 +152,15 @@
                 android:background="@android:color/white"
                 android:isScrollContainer="false"
                 android:nestedScrollingEnabled="false" />
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/fab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|end"
-                android:layout_margin="@dimen/fab_margin"
-                android:tint="@color/white"
-                app:backgroundTint="@color/colorPrimary"
-                app:srcCompat="@drawable/ic_chat" />
+            <!--<android.support.design.widget.FloatingActionButton-->
+                <!--android:id="@+id/fab"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="bottom|end"-->
+                <!--android:layout_margin="@dimen/fab_margin"-->
+                <!--android:tint="@color/white"-->
+                <!--app:backgroundTint="@color/colorPrimary"-->
+                <!--app:srcCompat="@drawable/ic_chat" />-->
        </FrameLayout>
         <include layout="@layout/no_data"/>
     </LinearLayout>

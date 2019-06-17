@@ -13,6 +13,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.ConnectivityManager;
@@ -27,6 +29,8 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -204,6 +208,18 @@ public class Utility {
 
         return "";
     }
+    public static String formatDateDB(String dateStr) {
+        try {
+            SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+            Date date = fmt.parse(dateStr);
+            SimpleDateFormat fmtOut = new SimpleDateFormat("dd-MM-yyyy");
+            return fmtOut.format(date);
+        } catch (ParseException e) {
+
+        }
+
+        return "";
+    }
     public String formatMonYear(String dateStr) {
         try {
             SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -239,6 +255,38 @@ public class Utility {
         }
 
         return "";
+    }
+    public static String CalulateDateFromGivenDays(String date,int days){
+    String enddate="";
+        try {
+            SimpleDateFormat fmt = new SimpleDateFormat("dd-MM-yyyy");
+            Date startdate = null;
+            startdate = fmt.parse(date);
+            Calendar c = Calendar.getInstance();
+            c.setTime(startdate);
+            c.add(Calendar.DATE, days);
+            Date expDate = c.getTime();
+          enddate=fmt.format(expDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return enddate;
+    }
+    public static String getNextDate(String  curDate) {
+        final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        final Date date;
+        String nextdate="";
+        try {
+            date = format.parse(curDate);
+            final Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+            calendar.add(Calendar.DAY_OF_YEAR, 1);
+            SimpleDateFormat fmt = new SimpleDateFormat("dd-MM-yyyy");
+             nextdate=fmt.format(calendar.getTime());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+       return  nextdate;
     }
     public String get_time_ago(String cret_date){
         String ago="";
@@ -351,4 +399,6 @@ public class Utility {
             return true;
         }
     }
+
+
 }

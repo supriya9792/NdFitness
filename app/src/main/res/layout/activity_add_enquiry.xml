@@ -128,6 +128,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
+                    android:capitalize="characters"
+                    android:inputType="textCapWords|textCapSentences"
                     android:textColor="@color/black"
                     android:textColorHint="@color/black"
                     android:backgroundTint="@color/black"
@@ -222,7 +224,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:singleLine="true"
-                        android:maxLength="10"
+                        android:maxLength="15"
                         android:inputType="number"
                         android:textColorHint="@color/black"
                         android:backgroundTint="@color/black"
@@ -308,6 +310,8 @@
                     android:layout_height="wrap_content"
                     android:singleLine="true"
                     android:inputType="text"
+                    android:editable="false"
+                    android:focusableInTouchMode="false"
                     android:textColorHint="@color/black"
                     android:backgroundTint="@color/black"
                     android:textColor="@color/black"
@@ -390,27 +394,27 @@
             </android.support.design.widget.TextInputLayout>
             </LinearLayout>
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="3"
-                android:orientation="horizontal">
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_weight="3"
+             android:orientation="horizontal">
 
-                <ImageButton
-                    android:layout_width="@dimen/spacing_mxlarge"
-                    android:layout_height="@dimen/spacing_mxlarge"
-                    android:layout_marginTop="@dimen/spacing_mlarge"
-                    android:background="@android:color/transparent"
-                    android:tint="@color/grey_60"
-                    app:srcCompat="@drawable/ic_work" />
+             <ImageButton
+                 android:layout_width="@dimen/spacing_mxlarge"
+                 android:layout_height="@dimen/spacing_mxlarge"
+                 android:layout_marginTop="@dimen/spacing_mlarge"
+                 android:background="@android:color/transparent"
+                 android:tint="@color/grey_60"
+                 app:srcCompat="@drawable/ic_work" />
 
-                <View
-                    android:layout_width="@dimen/spacing_large"
-                    android:layout_height="match_parent" />
-         <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-             android:gravity="bottom">
+             <View
+                 android:layout_width="@dimen/spacing_large"
+                 android:layout_height="match_parent" />
+             <LinearLayout
+                 android:layout_width="match_parent"
+                 android:layout_height="match_parent"
+                 android:orientation="vertical"
+                 android:gravity="bottom">
 
 
             <TextView
@@ -739,6 +743,7 @@
                     android:textColor="@color/black"
                     android:textColorHint="@color/black"
                     android:inputType="text"
+                    android:focusableInTouchMode="false"
                     android:editable="false"
                     android:backgroundTint="@color/black"
                     android:layout_height="wrap_content"
@@ -749,6 +754,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
+                android:layout_marginBottom="@dimen/spacing_large"
                 android:orientation="horizontal">
 
                 <ImageButton

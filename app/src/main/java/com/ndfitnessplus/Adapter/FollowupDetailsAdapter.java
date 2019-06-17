@@ -136,15 +136,15 @@ public void clear() {
         }
 public class ViewHolder extends BaseViewHolder implements View.OnClickListener  {
     TextView nameTV,followup_dateTV,nextfollowupdate,commentTV,excecutive_nameTV,ratingTV,callRespondTV;
-    ImageView contactIV;
+    //ImageView contactIV;
     View layoutparent;
     public ViewHolder(View itemView) {
         super(itemView);
-        nameTV = (TextView) itemView.findViewById(R.id.nameTV);
+        //nameTV = (TextView) itemView.findViewById(R.id.nameTV);
         followup_dateTV = (TextView) itemView.findViewById(R.id.followup_dateTV);
         nextfollowupdate = (TextView) itemView.findViewById(R.id.Nextfollowup_dateTV);
-        contactIV = (ImageView) itemView.findViewById(R.id.contactIV);
-        contactIV.setOnClickListener(this);
+        //contactIV = (ImageView) itemView.findViewById(R.id.contactIV);
+        //contactIV.setOnClickListener(this);
         commentTV = (TextView) itemView.findViewById(R.id.commentTV);
         excecutive_nameTV = (TextView) itemView.findViewById(R.id.excecutive_nameTV);
         ratingTV = (TextView) itemView.findViewById(R.id.ratingTV);
@@ -159,17 +159,17 @@ public class ViewHolder extends BaseViewHolder implements View.OnClickListener  
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.contactIV){
-            Intent dialIntent = new Intent(Intent.ACTION_DIAL);
-            dialIntent.setData(Uri.parse("tel:"+arrayList.get(getAdapterPosition()).getContact()));
-            context.startActivity(dialIntent);
-        }
+//        if (view.getId() == R.id.contactIV){
+//            Intent dialIntent = new Intent(Intent.ACTION_DIAL);
+//            dialIntent.setData(Uri.parse("tel:"+arrayList.get(getAdapterPosition()).getContact()));
+//            context.startActivity(dialIntent);
+//        }
 
     }
     public void onBind(int position) {
         super.onBind(position);
         final FollowupList enq = arrayList.get(position);
-        nameTV.setText(enq.getName());
+        //nameTV.setText(enq.getName());
 //        contactTV.setText(arrayList.get(position).getContact());
         followup_dateTV.setText(enq.getFollowupDate());
         nextfollowupdate.setText(enq.getNextFollowupDate());

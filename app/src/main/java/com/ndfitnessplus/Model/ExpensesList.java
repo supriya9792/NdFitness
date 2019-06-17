@@ -1,6 +1,8 @@
 package com.ndfitnessplus.Model;
 
-public class ExpensesList {
+import java.io.Serializable;
+
+public class ExpensesList implements Serializable {
     String ttl_of_expenses,expenses_group,payment_dtl,amount,executive_name,payment_type,expenses_date,disc,expensesId;
 
     public ExpensesList() {

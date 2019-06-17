@@ -21,11 +21,13 @@ import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.ndfitnessplus.Activity.AddEnquiryActivity;
 import com.ndfitnessplus.Activity.EnquiryActivity;
+import com.ndfitnessplus.Activity.LoginActivity;
 import com.ndfitnessplus.Activity.MainActivity;
 import com.ndfitnessplus.Activity.NotificationActivity;
 import com.ndfitnessplus.Adapter.EnquiryAdapter;
@@ -36,6 +38,7 @@ import com.ndfitnessplus.Utility.ServerClass;
 import com.ndfitnessplus.Utility.ServiceUrls;
 import com.ndfitnessplus.Utility.SharedPrefereneceUtil;
 import com.ndfitnessplus.Utility.Utility;
+import com.ndfitnessplus.Utility.ViewDialog;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -59,7 +62,9 @@ public class TodaysEnquiryActivity extends AppCompatActivity implements SwipeRef
     ArrayList<EnquiryList> branchList;
     public static String TAG = TodaysEnquiryActivity.class.getName();
     private ProgressDialog pd;
-
+    //search
+    private EditText inputsearch;
+    ImageView search;
     //paginnation parameters
     public static final int PAGE_START = 1;
     private int currentPage = PAGE_START;
@@ -68,7 +73,8 @@ public class TodaysEnquiryActivity extends AppCompatActivity implements SwipeRef
     private boolean isLoading = false;
     int itemCount = 0;
     int offset = 0;
-
+    //Loading gif
+    ViewDialog viewDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,7 +90,6 @@ public class TodaysEnquiryActivity extends AppCompatActivity implements SwipeRef
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
     private void initComponent(){
-        FloatingActionButton addenquiry=findViewById(R.id.fab);
         progressBar=findViewById(R.id.progressBar);
         swipeRefresh=findViewById(R.id.swipeRefresh);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
@@ -93,6 +98,12 @@ public class TodaysEnquiryActivity extends AppCompatActivity implements SwipeRef
         recyclerView.setHasFixedSize(true);
         mainframe=findViewById(R.id.main_frame);
         nodata=findViewById(R.id.nodata);
+
+        inputsearch=(EditText)findViewById(R.id.inputsearchid);
+        search=findViewById(R.id.search);
+
+        swipeRefresh.setOnRefreshListener(this);
+        viewDialog = new ViewDialog(this);
 //        adapter = new EnquiryAdapter( new ArrayList<EnquiryList>(),EnquiryActivity.this);
 //        recyclerView.setAdapter(adapter);
 
@@ -115,7 +126,43 @@ public class TodaysEnquiryActivity extends AppCompatActivity implements SwipeRef
                 dialog.show();
 
             }
+        inputsearch.addTextChangedListener(new TextWatcher() {
 
+            @Override
+            public void afterTextChanged(Editable arg0) {
+                // TODO Auto-generated method stub
+                if (TodaysEnquiryActivity.this.adapter == null){
+                    // some print statement saying it is null
+                    Toast toast = Toast.makeText(TodaysEnquiryActivity.this,"no record found", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
+                }
+                else
+                {
+                    //isLoading = false;
+                    TodaysEnquiryActivity.this.adapter.filter(String.valueOf(arg0));
+
+                }
+            }
+            @Override
+            public void beforeTextChanged(CharSequence arg0, int arg1,
+                                          int arg2, int arg3) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence arg0, int arg1, int arg2,
+                                      int arg3) {
+                // TODO Auto-generated method stub
+                if(inputsearch.getText().length()==0) {
+                    //do your work here
+                    // Toast.makeText(AddEnquiryActivity.this ,"Text vhanged count  is 10 then: " , Toast.LENGTH_LONG).show();
+                   enquiryclass();
+                }
+
+            }
+        });
 
         /**
          * add scroll listener while user reach in bottom load more will call
@@ -127,7 +174,10 @@ public class TodaysEnquiryActivity extends AppCompatActivity implements SwipeRef
                 currentPage++;
                 Log.d(TAG, "prepare called current item: " + currentPage+"Total page"+totalPage);
                 if(currentPage<=totalPage){
-                    preparedListItem();
+                    currentPage = PAGE_START;
+                    Log.d(TAG, "currentPage: " + currentPage);
+                    isLastPage = false;
+                    //preparedListItem();
                 }
 
 
@@ -209,7 +259,7 @@ public class TodaysEnquiryActivity extends AppCompatActivity implements SwipeRef
         itemCount = 0;
         currentPage = PAGE_START;
         isLastPage = false;
-        adapter.clear();
+        //adapter.clear();
         preparedListItem();
 
     }
@@ -223,14 +273,16 @@ public class TodaysEnquiryActivity extends AppCompatActivity implements SwipeRef
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            showProgressDialog();
+            //showProgressDialog();
+            viewDialog.showDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            dismissProgressDialog();
+           // dismissProgressDialog();
+            viewDialog.hideDialog();
             //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             EnquiryDetails(response);
 
@@ -241,10 +293,11 @@ public class TodaysEnquiryActivity extends AppCompatActivity implements SwipeRef
             //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EnquiryDetails = new HashMap<String, String>();
             EnquiryDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(TodaysEnquiryActivity.this));
-            EnquiryDetails.put("offset", String.valueOf(offset));
+           // EnquiryDetails.put("offset", String.valueOf(offset));
             Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getCompanyAutoId(TodaysEnquiryActivity.this)));
             EnquiryDetails.put("action","show_todays_enquiry");
-            String loginResult = ruc.sendPostRequest(ServiceUrls.LOGIN_URL, EnquiryDetails);
+            String domainurl=SharedPrefereneceUtil.getDomainUrl(TodaysEnquiryActivity.this);
+            String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EnquiryDetails);
             //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
@@ -273,12 +326,12 @@ public class TodaysEnquiryActivity extends AppCompatActivity implements SwipeRef
                         int count=0;
                         ArrayList<EnquiryList> item = new ArrayList<EnquiryList>();
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
-                            if(jsonArrayResult.length()<100){
-                                count=jsonArrayResult.length();
-                            }else{
-                                count=100;
-                            }
-                            for (int i = 0; i < count; i++) {
+//                            if(jsonArrayResult.length()<100){
+//                                count=jsonArrayResult.length();
+//                            }else{
+//                                count=100;
+//                            }
+                            for (int i = 0; i < jsonArrayResult.length(); i++) {
 
 
                                 subList = new EnquiryList();
@@ -297,6 +350,9 @@ public class TodaysEnquiryActivity extends AppCompatActivity implements SwipeRef
                                     String NextFollowup_Date = jsonObj.getString("NextFollowup_Date");
                                     String Enquiry_ID = jsonObj.getString("Enquiry_ID");
                                     String Image = jsonObj.getString("Image");
+                                    String CallResponse = jsonObj.getString("CallResponse");
+                                    String Rating = jsonObj.getString("Rating");
+                                    String Followup_Date = jsonObj.getString("FollowupDate");
                                     //  for (int j = 0; j < 5; j++) {
                                     itemCount++;
                                     Log.d(TAG, "run: " + itemCount);
@@ -311,6 +367,10 @@ public class TodaysEnquiryActivity extends AppCompatActivity implements SwipeRef
                                     subList.setID(Enquiry_ID);
                                     Image.replace("\"", "");
                                     subList.setImage(Image);
+                                    subList.setCallResponse(CallResponse);
+                                    subList.setRating(Rating);
+                                    String foll_date= Utility.formatDate(Followup_Date);
+                                    subList.setFollowupdate(foll_date);
                                     //Toast.makeText(TodaysEnquiryActivity.this, "followup date: "+next_foll_date, Toast.LENGTH_SHORT).show();
 
                                     //Toast.makeText(MainActivity.this, "j "+j, Toast.LENGTH_SHORT).show();
@@ -375,11 +435,12 @@ public class TodaysEnquiryActivity extends AppCompatActivity implements SwipeRef
         protected String doInBackground(String... params) {
             //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EnquiryOffsetDetails = new HashMap<String, String>();
-            EnquiryOffsetDetails.put("comp_id", SharedPrefereneceUtil.getCompanyAutoId(TodaysEnquiryActivity.this));
+            EnquiryOffsetDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(TodaysEnquiryActivity.this));
             EnquiryOffsetDetails.put("offset", String.valueOf(offset));
-            Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getCompanyAutoId(TodaysEnquiryActivity.this)));
+            Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(TodaysEnquiryActivity.this)));
             EnquiryOffsetDetails.put("action","show_todays_enquiry");
-            String loginResult = ruc.sendPostRequest(ServiceUrls.LOGIN_URL, EnquiryOffsetDetails);
+            String domainurl=SharedPrefereneceUtil.getDomainUrl(TodaysEnquiryActivity.this);
+            String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EnquiryOffsetDetails);
             //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
@@ -425,6 +486,10 @@ public class TodaysEnquiryActivity extends AppCompatActivity implements SwipeRef
                                     String Comment = jsonObj.getString("Comment");
                                     String NextFollowup_Date = jsonObj.getString("NextFollowup_Date");
                                     String Enquiry_ID = jsonObj.getString("Enquiry_ID");
+                                    String Image = jsonObj.getString("Image");
+                                    String CallResponse = jsonObj.getString("CallResponse");
+                                    String Rating = jsonObj.getString("Rating");
+                                    String Followup_Date = jsonObj.getString("FollowupDate");
                                     //  for (int j = 0; j < 5; j++) {
                                     itemCount++;
                                     Log.d(TAG, "run offset: " + itemCount);
@@ -438,6 +503,12 @@ public class TodaysEnquiryActivity extends AppCompatActivity implements SwipeRef
                                     subList.setNextFollowUpDate(next_foll_date);
                                     subList.setID(Enquiry_ID);
 
+                                    Image.replace("\"", "");
+                                    subList.setImage(Image);
+                                    subList.setCallResponse(CallResponse);
+                                    subList.setRating(Rating);
+                                    String foll_date= Utility.formatDate(Followup_Date);
+                                    subList.setFollowupdate(foll_date);
                                     //Toast.makeText(EnquiryActivity.this, "followup date: "+next_foll_date, Toast.LENGTH_SHORT).show();
                                     subListArrayList.add(subList);
 
@@ -458,7 +529,7 @@ public class TodaysEnquiryActivity extends AppCompatActivity implements SwipeRef
                     // nodata.setVisibility(View.VISIBLE);
 
                     progressBar.setVisibility(View.GONE);
-                    //if (currentPage != PAGE_START)
+                    if (currentPage != PAGE_START)
                     adapter.removeblank();
                     //adapter.addAll(subListArrayList);
                     swipeRefresh.setRefreshing(false);
@@ -472,6 +543,12 @@ public class TodaysEnquiryActivity extends AppCompatActivity implements SwipeRef
                 nodata.setVisibility(View.VISIBLE);
             }
         }
+    }
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Intent intent=new Intent(TodaysEnquiryActivity.this,TodaysEnquiryActivity.class);
+        startActivity(intent);
     }
     @Override
     public boolean onSupportNavigateUp(){

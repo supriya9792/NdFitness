@@ -3,6 +3,7 @@ package com.ndfitnessplus.Adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.ndfitnessplus.Activity.MemberDetailsActivity;
+import com.ndfitnessplus.Activity.Notification.StaffBirthdayFollowupActivity;
+import com.ndfitnessplus.Model.MemberDataList;
 import com.ndfitnessplus.Model.StaffBirthdayList;
 import com.ndfitnessplus.Model.StaffBirthdayList;
 import com.ndfitnessplus.R;
@@ -34,10 +38,25 @@ public class StaffBirthdayAdapter extends RecyclerView.Adapter<StaffBirthdayAdap
 
     @Override
     public void onBindViewHolder(StaffBirthdayAdapter.ViewHolder holder, int position) {
+        final StaffBirthdayList enq = arrayList.get(position);
         holder.nameTV.setText(arrayList.get(position).getName());
-//        holder.contactTV.setText(arrayList.get(position).getContact());
+        holder.contactTV.setText(arrayList.get(position).getContact());
         holder.birth_dateTV.setText(arrayList.get(position).getBirthDate());
-        holder.statusTV.setText(arrayList.get(position).getStatus());
+        holder.designationTV.setText(arrayList.get(position).getDesignation());
+        holder.joindateTV.setText(arrayList.get(position).getJoiningDate());
+
+
+        holder.layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(context, StaffBirthdayFollowupActivity.class);
+                intent.putExtra("staff_id",enq.getID());
+                intent.putExtra("followup_type","Staff BirthDay");
+                intent.putExtra("name",enq.getName());
+                intent.putExtra("contact",enq.getContact());
+                context.startActivity(intent);
+            }
+        });
 
     }
 
@@ -47,18 +66,20 @@ public class StaffBirthdayAdapter extends RecyclerView.Adapter<StaffBirthdayAdap
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView nameTV,birth_dateTV,contactTV,statusTV,excecutive_nameTV;
+        TextView nameTV,birth_dateTV,contactTV,designationTV,excecutive_nameTV,joindateTV;
         ImageView contactIV;
-
+        View layout;
         public ViewHolder(View itemView) {
             super(itemView);
 
             nameTV = (TextView) itemView.findViewById(R.id.nameTV);
             birth_dateTV = (TextView) itemView.findViewById(R.id.birth_dateTV);
+            contactTV = (TextView) itemView.findViewById(R.id.contactTV);
             contactIV = (ImageView) itemView.findViewById(R.id.contactIV);
             contactIV.setOnClickListener(this);
-            statusTV = (TextView) itemView.findViewById(R.id.statusTV);
-
+            designationTV = (TextView) itemView.findViewById(R.id.designation);
+            joindateTV = (TextView) itemView.findViewById(R.id.join_dateTV);
+            layout=(View)itemView.findViewById(R.id.layout);
         }
 
         @Override

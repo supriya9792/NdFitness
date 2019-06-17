@@ -1,9 +1,211 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".Activity.Notification.ExpenseFilterActivity">
 
-</android.support.constraint.ConstraintLayout>
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <include layout="@layout/toolbar"/>
+
+
+    </android.support.design.widget.AppBarLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:weightSum="6"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            android:layout_weight="1"
+            android:padding="@dimen/spacing_large"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/layoutborder"
+                android:layout_weight="1"
+                android:weightSum="1">
+                <TextView
+                    android:id="@+id/to_date"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.8"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="01-03-2019"
+                    android:minHeight="@dimen/spacing_xmlarge"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                    android:textColor="@color/black" />
+
+                <View
+                    android:layout_width="@dimen/spacing_middle"
+                    android:layout_height="0dp" />
+
+                <ImageButton
+                    android:layout_width="0dp"
+                    android:layout_weight="0.2"
+                    android:layout_height="@dimen/spacing_xmlarge"
+                    android:id="@+id/btn_to_date"
+                    android:background="@android:color/transparent"
+                    android:layout_gravity="center_vertical"
+                    android:tint="@color/colorPrimary"
+                    app:srcCompat="@drawable/ic_today" />
+
+            </LinearLayout>
+            <View
+                android:layout_width="@dimen/spacing_large"
+                android:layout_height="0dp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/layoutborder"
+                android:layout_weight="1"
+                android:weightSum="1">
+                <TextView
+                    android:id="@+id/from_date"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.8"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="31-03-2019"
+                    android:minHeight="@dimen/spacing_xmlarge"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                    android:textColor="@color/black" />
+
+                <View
+                    android:layout_width="@dimen/spacing_middle"
+                    android:layout_height="0dp" />
+                <ImageButton
+                    android:layout_width="0dp"
+                    android:layout_weight="0.2"
+                    android:layout_height="@dimen/spacing_xmlarge"
+                    android:id="@+id/btn_from_date"
+                    android:background="@android:color/transparent"
+                    android:layout_gravity="center_vertical"
+                    android:tint="@color/colorPrimary"
+                    app:srcCompat="@drawable/ic_event" />
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            android:padding="@dimen/spacing_large"
+            android:layout_weight="1">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/layoutborder"
+                android:layout_weight="1"
+                android:weightSum="1">
+                <Spinner
+                    android:id="@+id/spinner_ttl_expense"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:spinnerMode="dialog"
+                    android:textColor="@color/black"
+                    android:dropDownSelector="@color/black"
+                    />
+
+            </LinearLayout>
+            <View
+                android:layout_width="@dimen/spacing_large"
+                android:layout_height="0dp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/layoutborder"
+                android:layout_weight="1"
+                android:weightSum="1">
+                <Spinner
+                    android:id="@+id/spinner_exp_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:spinnerMode="dialog"
+                    android:textColor="@color/black"
+                    android:dropDownSelector="@color/black"
+                    />
+            </LinearLayout>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            android:padding="@dimen/spacing_large"
+            android:layout_weight="1">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/layoutborder"
+                android:layout_weight="1"
+                android:weightSum="1">
+                <Spinner
+                    android:id="@+id/spinner_payment_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:spinnerMode="dialog"
+                    android:textColor="@color/black"
+                    android:dropDownSelector="@color/black"
+                    />
+
+            </LinearLayout>
+            <View
+                android:layout_width="@dimen/spacing_large"
+                android:layout_height="0dp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/layoutborder"
+                android:layout_weight="1"
+                android:weightSum="1">
+                <Spinner
+                    android:id="@+id/spinner_executive"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:spinnerMode="dialog"
+                    android:textColor="@color/black"
+                    android:dropDownSelector="@color/black"
+                    />
+            </LinearLayout>
+
+        </LinearLayout>
+        <View
+            android:layout_width="@dimen/spacing_large"
+            android:layout_height="0dp"
+            android:layout_weight="3"/>
+        <Button
+            android:id="@+id/btn_apply_filters"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/colorPrimary"
+            android:gravity="center"
+            android:text="@string/enquiry_filter"
+            android:textAllCaps="false"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+</LinearLayout>

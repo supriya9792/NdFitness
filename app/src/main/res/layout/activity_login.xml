@@ -5,7 +5,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activity.LoginActivity">
+    <!--<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+        <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:fitsSystemWindows="false"-->
+        <!--android:orientation="vertical">-->
 
+        <!--<ImageView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:foreground="@color/overlay_dark_60"-->
+            <!--android:scaleType="center"-->
+            <!--android:src="@drawable/girl_gym_back" />-->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -29,9 +41,10 @@
                 android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginTop="@dimen/spacing_mxlarge"
                 android:adjustViewBounds="true"
                 android:scaleType="centerInside"
-                android:src="@drawable/full_logo" />
+                android:src="@drawable/splashlogo" />
 
         </LinearLayout>
 
@@ -56,25 +69,27 @@
                 android:layout_marginTop="5dp"
                 android:clipToPadding="false"
                 android:gravity="center"
-                app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
+               >
 
-                <android.support.design.widget.TextInputEditText
+                <EditText
                     android:id="@+id/username"
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
                     android:layout_gravity="top"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
-                    android:background="@drawable/edit_text_style"
                     android:drawablePadding="5dp"
                     android:gravity="start|center_vertical"
                     android:hint="@string/username"
+                    android:ems="10"
+                    android:textColorHint="@color/white"
                     android:imeOptions="actionNext"
-                    android:inputType="textEmailAddress"
+                    android:inputType="textNoSuggestions"
                     android:nextFocusDown="@+id/password"
                     android:padding="2dp"
                     android:singleLine="true"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                  />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -85,25 +100,26 @@
                 android:layout_marginTop="10dp"
                 android:clipToPadding="false"
                 android:gravity="bottom"
-                app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
                 app:passwordToggleEnabled="true">
 
-                <android.support.design.widget.TextInputEditText
+                <EditText
                     android:id="@+id/password"
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
                     android:layout_marginBottom="5dp"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
-                    android:background="@drawable/edit_text_style"
                     android:drawablePadding="5dp"
                     android:gravity="start|center_vertical"
                     android:hint="@string/password"
+                    android:ems="10"
+                    android:textColorHint="@color/white"
                     android:imeOptions="actionDone"
                     android:inputType="textPassword"
                     android:padding="2dp"
                     android:singleLine="true"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                  />
             </android.support.design.widget.TextInputLayout>
 
             <TextView
@@ -169,5 +185,5 @@
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-
+    <!--</RelativeLayout>-->
 </android.support.constraint.ConstraintLayout>

@@ -3,12 +3,13 @@ package com.ndfitnessplus.Model;
 import java.io.Serializable;
 
 public class EnquiryList implements Serializable {
-    String ID , name ,Gender ,Contact ,Address ,ExecutiveName,Comment, NextFollowUpDate,image;
+    String ID , name ,Gender ,Contact ,Address ,ExecutiveName,Comment, NextFollowUpDate,image,CallResponse,Rating,followupdate;
 
     public EnquiryList() {
     }
 
-    public EnquiryList(String ID, String name, String gender, String contact, String address, String executiveName, String comment,String image) {
+    public EnquiryList(String ID, String name, String gender, String contact, String address, String executiveName, String comment
+            ,String image,String callResponse,String Rating,String followupdate) {
         this.ID = ID;
         this.name = name;
         Gender = gender;
@@ -17,6 +18,9 @@ public class EnquiryList implements Serializable {
         ExecutiveName = executiveName;
         Comment = comment;
         this.image = image;
+        this.followupdate=followupdate;
+        this.CallResponse=callResponse;
+        this.Rating=Rating;
     }
 
     public String getID() {
@@ -89,5 +93,29 @@ public class EnquiryList implements Serializable {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public String getCallResponse() {
+        return CallResponse;
+    }
+
+    public void setCallResponse(String callResponse) {
+        CallResponse = callResponse;
+    }
+
+    public String getRating() {
+        return Rating;
+    }
+
+    public void setRating(String rating) {
+        Rating = rating;
+    }
+
+    public String getFollowupdate() {
+        return followupdate;
+    }
+
+    public void setFollowupdate(String followupdate) {
+        this.followupdate = followupdate;
     }
 }

@@ -1,7 +1,12 @@
 package com.ndfitnessplus.Adapter;
 
+import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
@@ -10,19 +15,31 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.ndfitnessplus.Activity.EnquiryActivity;
+import com.ndfitnessplus.Activity.EnquiryFollowupDetailsActivity;
+import com.ndfitnessplus.Activity.FullImageActivity;
+import com.ndfitnessplus.Activity.MemberDetailsActivity;
 import com.ndfitnessplus.Model.BranchList;
 import com.ndfitnessplus.Model.EnquiryList;
 import com.ndfitnessplus.R;
 import com.ndfitnessplus.Utility.ServiceUrls;
+import com.ndfitnessplus.Utility.SharedPrefereneceUtil;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -143,7 +160,7 @@ public class EnquiryAdapter extends RecyclerView.Adapter<EnquiryAdapter.BaseView
         return arrayList.get(position);
     }
     //filter for search
-    public void filter(String charText) {
+    public int filter(String charText) {
        // subList=arrayList;
 
         charText = charText.toLowerCase(Locale.getDefault());
@@ -156,14 +173,18 @@ public class EnquiryAdapter extends RecyclerView.Adapter<EnquiryAdapter.BaseView
             for (EnquiryList wp : subList) {
                 if (wp.getName().toLowerCase(Locale.getDefault())
                         .contains(charText) || wp.getGender().toLowerCase(Locale.getDefault()).contains(charText)||
-                         wp.getAddress().toLowerCase(Locale.getDefault()).contains(charText)||wp.getExecutiveName().toLowerCase(Locale.getDefault()).contains(charText)
-                        ||wp.getComment().toLowerCase(Locale.getDefault()).contains(charText)) {
+                         wp.getAddress().toLowerCase(Locale.getDefault()).contains(charText)
+                        ||wp.getComment().toLowerCase(Locale.getDefault()).contains(charText)
+                        ||wp.getContact().toLowerCase(Locale.getDefault()).contains(charText)) {
                     arrayList.add(wp);
+                   // return arrayList.size();
                 }
             }
         }
-        Log.d(TAG, "sublist size filter: "+String.valueOf(subList.size()) );
         notifyDataSetChanged();
+        return arrayList.size();
+        //Log.d(TAG, "sublist size filter: "+String.valueOf(subList.size()) );
+
     }
     //filter for search
     public int search( String charTex,final ArrayList<EnquiryList> subList) {
@@ -202,25 +223,30 @@ public class EnquiryAdapter extends RecyclerView.Adapter<EnquiryAdapter.BaseView
     }
     //View for showing enquiry
     public class ViewHolder extends BaseViewHolder implements View.OnClickListener {
-        TextView nameTV,excecutive_nameTV,commentTV,nextFollowupdateTV,idTV;
-        ImageView contactIV;
+        TextView nameTV,excecutive_nameTV,commentTV,nextFollowupdateTV,followup_dateTV,ratingTV,callRespondTV,contactTV;
+      //  ImageView contactIV;
         CircularImageView imageView;
+        View layoutparent;
         public ViewHolder(View itemView) {
             super(itemView);
 
-            //idTV = (TextView) itemView.findViewById(R.id.idTV);
+            contactTV = (TextView) itemView.findViewById(R.id.contactTV);
+            followup_dateTV = (TextView) itemView.findViewById(R.id.followup_dateTV);
             nameTV = (TextView) itemView.findViewById(R.id.nameTV);
-            contactIV = (ImageView) itemView.findViewById(R.id.contactIV);
+           // contactIV = (ImageView) itemView.findViewById(R.id.contactIV);
             imageView=(CircularImageView) itemView.findViewById(R.id.input_image);
-            contactIV.setOnClickListener(this);
+           // contactIV.setOnClickListener(this);
             excecutive_nameTV = (TextView) itemView.findViewById(R.id.excecutive_nameTV);
             commentTV = (TextView) itemView.findViewById(R.id.commentTV);
             nextFollowupdateTV = (TextView) itemView.findViewById(R.id.nextFollowupdateTV);
+            ratingTV = (TextView) itemView.findViewById(R.id.ratingTV);
+            callRespondTV = (TextView) itemView.findViewById(R.id.callRespondTV);
+            layoutparent=(View)itemView.findViewById(R.id.lyt_parent);
         }
 
         @Override
         public void onClick(View view) {
-            if (view.getId() == R.id.contactIV){
+            if (view.getId() == R.id.contactTV){
                 Intent dialIntent = new Intent(Intent.ACTION_DIAL);
                 dialIntent.setData(Uri.parse("tel:"+arrayList.get(getAdapterPosition()).getContact()));
                 context.startActivity(dialIntent);
@@ -231,21 +257,117 @@ public class EnquiryAdapter extends RecyclerView.Adapter<EnquiryAdapter.BaseView
 
         }
 
-        public void onBind(int position) {
+        public void onBind(final int position) {
             super.onBind(position);
-            EnquiryList enq = arrayList.get(position);
+           final EnquiryList enq = arrayList.get(position);
             //Log.d(TAG, "enquiry name: " + enq.getName());
            // idTV.setText(enq.getID());
             nameTV.setText(enq.getName());
             //Log.d(TAG, "textview name: " + nameTV.getText().toString());
-//        contactTV.setText(enq.getContact());
+             contactTV.setText(enq.getContact());
             excecutive_nameTV.setText(enq.getExecutiveName());
             commentTV.setText(enq.getComment());
             nextFollowupdateTV.setText(enq.getNextFollowUpDate());
-            String url= ServiceUrls.IMAGES_URL + enq.getImage();
-            Log.d(TAG, "image url: "+url );
+            ratingTV.setText(enq.getRating());
+            followup_dateTV.setText(enq.getFollowupdate());
+            callRespondTV.setText(enq.getCallResponse());
+            String domainurl= SharedPrefereneceUtil.getDomainUrl((Activity)context);
+            String url= domainurl+ServiceUrls.IMAGES_URL + enq.getImage();
+            Log.d(TAG, "rating: "+enq.getRating() );
             Glide.with(context).load(url).placeholder(R.drawable.nouser).into(imageView);
+
+            final android.view.animation.Animation animation_1 = android.view.animation.AnimationUtils.loadAnimation(context,R.anim.zoom_out);
+            final android.view.animation.Animation animation_2 = android.view.animation.AnimationUtils.loadAnimation(context,R.anim.zoom_in);
+
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showCustomDialog(position);
+                }
+            });
+
+            layoutparent.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                  String   enquiryId=enq.getID();
+                    Intent intent=new Intent(context, EnquiryFollowupDetailsActivity.class);
+                    intent.putExtra("enquiry_id",enquiryId);
+                    intent.putExtra("rating",enq.getRating());
+                    intent.putExtra("call_response",enq.getCallResponse());
+                    context.startActivity(intent);
+                }
+            });
         }
+    }
+    private void showCustomDialog(int position) {
+        final Dialog dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE); // before
+        dialog.setContentView(R.layout.item_grid_image_two_line_light);
+        dialog.setCancelable(true);
+        final EnquiryList enq = arrayList.get(position);
+//        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+//        lp.copyFrom(dialog.getWindow().getAttributes());
+//        lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
+//        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        ImageView imageView = (ImageView) dialog. findViewById(R.id.image);
+        TextView name = (TextView) dialog. findViewById(R.id.name);
+        ImageButton phone=(ImageButton)dialog.findViewById(R.id.phone_call);
+        ImageView whatsapp=(ImageView)dialog.findViewById(R.id.whatsapp);
+        String url= ServiceUrls.IMAGES_URL + enq.getImage();
+        Log.d(TAG, "image: "+enq.getImage());
+        Log.d(TAG, "name: "+enq.getName());
+        Glide.with(context).load(url).placeholder(R.drawable.nouser).into(imageView);
+
+        name.setText(enq.getName());
+        phone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent dialIntent = new Intent(Intent.ACTION_DIAL);
+                dialIntent.setData(Uri.parse("tel:"+enq.getContact()));
+                context.startActivity(dialIntent);
+            }
+        });
+        whatsapp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                PackageManager pm=context.getPackageManager();
+                try {
+                    // Uri uri = Uri.parse("smsto:" + Contact);
+                    Uri uri = Uri.parse("whatsapp://send?phone=+91" + enq.getContact());
+                    Intent waIntent = new Intent(Intent.ACTION_VIEW,uri);
+                    //waIntent.setType("text/plain");
+                    String text = "YOUR TEXT HERE";
+
+                    PackageInfo info=pm.getPackageInfo("com.whatsapp", PackageManager.GET_META_DATA);
+                    //Check if package exists or not. If not then code
+                    //in catch block will be called
+                    waIntent.setPackage("com.whatsapp");
+
+                    // waIntent.putExtra(Intent.EXTRA_TEXT, text);
+                    context.startActivity(waIntent);
+
+                } catch (PackageManager.NameNotFoundException e) {
+                    Toast.makeText(context, "WhatsApp not Installed", Toast.LENGTH_SHORT)
+                            .show();
+                }
+            }
+        });
+
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(context, FullImageActivity.class);
+                intent.putExtra("image",enq.getImage());
+                intent.putExtra("contact",enq.getContact());
+                intent.putExtra("id",enq.getID());
+                intent.putExtra("user","Enquiry");
+                context.startActivity(intent);
+            }
+        });
+        dialog.show();
+        //dialog.getWindow().setAttributes(lp);
     }
     //view for loading on swipe of recyclerview
     public class FooterHolder extends BaseViewHolder {

@@ -185,7 +185,7 @@
                                 android:singleLine="true"
                                 android:maxLength="10"
                                 android:paddingLeft="@dimen/spacing_middle"
-                                android:theme="@style/EditTextBackWhite"
+                                android:theme="@style/TextAppearence.App.EditText"
                                 android:layout_marginLeft="@dimen/spacing_large"
                                 android:inputType="number"
                                 android:textColorHint="@color/black"

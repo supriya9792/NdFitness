@@ -22,7 +22,10 @@ import static com.ndfitnessplus.Utility.Constants.NAME;
 import static com.ndfitnessplus.Utility.Constants.PASSWORD;
 import static com.ndfitnessplus.Utility.Constants.REG_DATE;
 import static com.ndfitnessplus.Utility.Constants.SELECTED_BRANCH_ID;
-import static com.ndfitnessplus.Utility.Constants.STAFF_AUTO_ID;
+import static com.ndfitnessplus.Utility.Constants.SMS_PASSWORD;
+import static com.ndfitnessplus.Utility.Constants.SMS_ROUTE;
+import static com.ndfitnessplus.Utility.Constants.SMS_SENDERID;
+import static com.ndfitnessplus.Utility.Constants.SMS_USERNAME;
 import static com.ndfitnessplus.Utility.Constants.STATUS;
 import static com.ndfitnessplus.Utility.Constants.USER_NAME;
 
@@ -35,7 +38,7 @@ public class SharedPrefereneceUtil {
      String CompanyAutoId,Mobile,Email,Status,Staff_auto_id,Reg_date;
 
     public static String getDomainUrl(Activity activity) {
-        pref =activity.getSharedPreferences("MyPref", Context.MODE_PRIVATE);
+        pref =activity.getSharedPreferences("MyDomain", Context.MODE_PRIVATE);
         String domainurl = pref.getString("DomainUrl", null);
         Log.v("SharedPreferenece:: ","Stored ::");
         return domainurl;
@@ -44,7 +47,7 @@ public class SharedPrefereneceUtil {
 
 
     public static void setDomainUrl(Activity activity, String domainurl) {
-        pref =activity.getSharedPreferences("MyPref", Context.MODE_PRIVATE);
+        pref =activity.getSharedPreferences("MyDomain", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
         editor.putString("DomainUrl", domainurl);
         editor.commit();
@@ -253,35 +256,67 @@ public class SharedPrefereneceUtil {
         Log.v("SharedPreferenece:: ","Saved ::");
     }
 
-    public static String getStaff_auto_id(Activity activity) {
+    public static String getSmsUsername(Activity activity) {
         pref =activity.getSharedPreferences("MyPref", Context.MODE_PRIVATE);
-        String staffautoid = pref.getString(STAFF_AUTO_ID, "");
+        String smsusername = pref.getString(SMS_USERNAME, "");
 
         Log.v("SharedPreferenece:: ","Stored ::");
-        return staffautoid;
+        return smsusername;
     }
 
-    public static void setStaff_auto_id(Activity activity,String staff_auto_id) {
+    public static void setSmsUsername(Activity activity,String smsusername) {
         pref =activity.getSharedPreferences("MyPref", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
-        editor.putString(STAFF_AUTO_ID, staff_auto_id);
+        editor.putString(SMS_USERNAME, smsusername);
         editor.commit();
 
         Log.v("SharedPreferenece:: ","Saved ::");
     }
 
-    public static String getReg_date(Activity activity) {
+    public static String getSmsPassword(Activity activity) {
         pref =activity.getSharedPreferences("MyPref", Context.MODE_PRIVATE);
-        String reg_date = pref.getString(REG_DATE, "");
+        String sms_pass = pref.getString(SMS_PASSWORD, "");
 
         Log.v("SharedPreferenece:: ","Stored ::");
-        return reg_date;
+        return sms_pass;
     }
 
-    public static void setReg_date(Activity activity,String reg_date) {
+    public static void setSmsPassword(Activity activity,String sms_pass) {
         pref =activity.getSharedPreferences("MyPref", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
-        editor.putString(REG_DATE, reg_date);
+        editor.putString(SMS_PASSWORD, sms_pass);
+        editor.commit();
+
+        Log.v("SharedPreferenece:: ","Saved ::");
+    }
+    public static String getSmsRoute(Activity activity) {
+        pref =activity.getSharedPreferences("MyPref", Context.MODE_PRIVATE);
+        String sms_route = pref.getString(SMS_ROUTE, "");
+
+        Log.v("SharedPreferenece:: ","Stored ::");
+        return sms_route;
+    }
+
+    public static void setSmsRoute(Activity activity,String sms_route) {
+        pref =activity.getSharedPreferences("MyPref", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString(SMS_ROUTE, sms_route);
+        editor.commit();
+
+        Log.v("SharedPreferenece:: ","Saved ::");
+    }
+    public static String getSmsSenderid(Activity activity) {
+        pref =activity.getSharedPreferences("MyPref", Context.MODE_PRIVATE);
+        String sms_senderid = pref.getString(SMS_SENDERID, "");
+
+        Log.v("SharedPreferenece:: ","Stored ::");
+        return sms_senderid;
+    }
+
+    public static void setSmsSenderid(Activity activity,String sms_senderid) {
+        pref =activity.getSharedPreferences("MyPref", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString(SMS_SENDERID, sms_senderid);
         editor.commit();
 
         Log.v("SharedPreferenece:: ","Saved ::");
@@ -337,7 +372,13 @@ public class SharedPrefereneceUtil {
         editor.remove(EMAIL);
         editor.remove(STATUS);
         editor.remove(COMP_NAME);
+        editor.remove(BRANCH);
+        editor.remove(LOGIN_ID);
         editor.remove(SELECTED_BRANCH_ID);
+        editor.remove(SMS_USERNAME);
+        editor.remove(SMS_PASSWORD);
+        editor.remove(SMS_ROUTE);
+        editor.remove(SMS_SENDERID);
         editor.clear();
         editor.commit();
 

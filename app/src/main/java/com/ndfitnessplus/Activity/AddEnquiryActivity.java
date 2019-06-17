@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -21,16 +22,19 @@ import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -50,13 +54,18 @@ import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
 import com.basgeekball.awesomevalidation.utility.RegexTemplate;
 import com.mikhaellopez.circularimageview.CircularImageView;
+import com.ndfitnessplus.Activity.Notification.TodaysEnrollmentActivity;
 import com.ndfitnessplus.Adapter.AddEnquirySpinnerAdapter;
+import com.ndfitnessplus.Adapter.EnquiryAdapter;
+import com.ndfitnessplus.Model.EnquiryList;
 import com.ndfitnessplus.Model.Spinner_List;
 import com.ndfitnessplus.R;
 import com.ndfitnessplus.Utility.NetworkUtils;
 import com.ndfitnessplus.Utility.ServerClass;
 import com.ndfitnessplus.Utility.ServiceUrls;
 import com.ndfitnessplus.Utility.SharedPrefereneceUtil;
+import com.ndfitnessplus.Utility.Utility;
+import com.ndfitnessplus.Utility.ViewDialog;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -71,10 +80,13 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -98,6 +110,7 @@ public class AddEnquiryActivity extends AppCompatActivity  {
     int mSec;
      String nextfolltime;
     RadioButton genderradioButton;
+    Bitmap arrey[];
     RadioGroup radioGroup;
     //Camera
     String imgPath, fileName;
@@ -112,7 +125,7 @@ public class AddEnquiryActivity extends AppCompatActivity  {
     private Uri filePath;
     Bitmap bitmap;
     public int otp;
-
+    String afterEnquirySms;
     //Spinner Adapter
     public Spinner spinEnquiryType,spinEnquirySource,spinEnqFor,spinCallResponce,spinRating,spinOccupation;
     Spinner_List enquirytypelist,enquirySourcelist,enqForList,spinCallReslist,ratingList,occupationList;
@@ -125,6 +138,9 @@ public class AddEnquiryActivity extends AppCompatActivity  {
     public AddEnquirySpinnerAdapter enquirytypeadapter,enquirySourceadapter,enqforadapter,callresadapter,ratingadapter,occupationAdapter;
     String enquiryType,enquirySource,callResponce,Rating,enquiryFor,occupation;
     TextView txtEnqtype,txtEnqfor,txtEnqsrc,txtcallres,txtrating,txtoccupation;
+
+    //Loading gif
+    ViewDialog viewDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -152,6 +168,8 @@ public class AddEnquiryActivity extends AppCompatActivity  {
       inputLayoutNextFollowupDate = (TextInputLayout) findViewById(R.id.input_layout_next_foll_date);
       inputLayoutBudget = (TextInputLayout) findViewById(R.id.input_layout_budget);
 
+      viewDialog = new ViewDialog(this);
+
       imageView=findViewById(R.id.input_image);
       CapturedImage=findViewById(R.id.captured_image);
       radioGroup=(RadioGroup)findViewById(R.id.radioGroup);
@@ -166,6 +184,7 @@ public class AddEnquiryActivity extends AppCompatActivity  {
       inputNextFollowupdate=(EditText)findViewById(R.id.input_next_foll_date);
       inputBudget=(EditText)findViewById(R.id.input_budget);
 
+      inputName.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
      //spinners
       spinEnquiryType = (Spinner) findViewById(R.id.spinner_enq_type);
       spinEnquirySource = (Spinner) findViewById(R.id.spinner_enq_source);
@@ -185,10 +204,10 @@ public class AddEnquiryActivity extends AppCompatActivity  {
       //defining AwesomeValidation object
       awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
 
-      awesomeValidation.addValidation(this, R.id.input_name, "^[A-Za-z\\s]{1,}[\\.]{0,1}[A-Za-z\\s]{0,}$", R.string.err_msg_name);
-      awesomeValidation.addValidation(this, R.id.input_cont, "^[1-9]{1}[0-9]{9}$", R.string.err_msg_cont);
+      awesomeValidation.addValidation(this, R.id.input_name, RegexTemplate.NOT_EMPTY, R.string.err_msg_name);
+      awesomeValidation.addValidation(this, R.id.input_cont, RegexTemplate.NOT_EMPTY, R.string.err_msg_cont);
       awesomeValidation.addValidation(this, R.id.input_enquiry_comment, RegexTemplate.NOT_EMPTY, R.string.err_msg_comment);
-      awesomeValidation.addValidation(this, R.id.input_next_foll_date,RegexTemplate.NOT_EMPTY, R.string.err_msg_next_foll_date);
+
      // awesomeValidation.addValidation(this, R.id.input_budget,RegexTemplate.NOT_EMPTY, R.string.err_msg_budget);
 
       //api's for spinners
@@ -212,13 +231,82 @@ public class AddEnquiryActivity extends AppCompatActivity  {
           }
 
           public void afterTextChanged(Editable s) {
-              if(inputContact.getText().length()==10) {
+              if(inputContact.getText().length()>=10) {
                   //do your work here
                  // Toast.makeText(AddEnquiryActivity.this ,"Text vhanged count  is 10 then: " , Toast.LENGTH_LONG).show();
                   CheckContactClass();
               }
           }
       });
+//      inputComment.addTextChangedListener(new TextWatcher() {
+//
+//          public void onTextChanged(CharSequence s, int start, int before,
+//                                    int count) {
+//          }
+//
+//
+//
+//          public void beforeTextChanged(CharSequence s, int start, int count,
+//                                        int after) {
+//
+//          }
+//
+//          public void afterTextChanged(Editable s) {
+//             awesomeValidation.clear();
+//          }
+//      });
+      inputName.addTextChangedListener(new TextWatcher() {
+           int mStart = 0;
+
+           @Override
+           public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+           }
+
+           @Override
+           public void onTextChanged(CharSequence s, int start, int before, int count) {
+               mStart = start + count;
+           }
+
+           @Override
+           public void afterTextChanged(Editable s) {
+               String input = s.toString();
+               String capitalizedText;
+               if (input.length() < 1)
+                   capitalizedText = input;
+               else if (input.length() > 1 && input.contains(" ")) {
+                   String fstr = input.substring(0, input.lastIndexOf(" ") + 1);
+                   if (fstr.length() == input.length()) {
+                       capitalizedText = fstr;
+                   } else {
+                       String sstr = input.substring(input.lastIndexOf(" ") + 1);
+                       sstr = sstr.substring(0, 1).toUpperCase() + sstr.substring(1);
+                       capitalizedText = fstr + sstr;
+                   }
+               } else
+                   capitalizedText = input.substring(0, 1).toUpperCase() + input.substring(1);
+
+               if (!capitalizedText.equals(inputName.getText().toString())) {
+                   inputName.addTextChangedListener(new TextWatcher() {
+                       @Override
+                       public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                       }
+
+                       @Override
+                       public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                       }
+
+                       @Override
+                       public void afterTextChanged(Editable s) {
+                           inputName.setSelection(mStart);
+                           inputName.removeTextChangedListener(this);
+                       }
+                   });
+                   inputName.setText(capitalizedText);
+               }
+           }});
 
      //**************setting data to the spinners******************
 
@@ -227,20 +315,24 @@ public class AddEnquiryActivity extends AppCompatActivity  {
           public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
               int index = parent.getSelectedItemPosition();
-              TextView tv = (TextView) view.findViewById(R.id.tv_Name);
-              View layout=(View)view.findViewById(R.id.layout);
-              layout.setPadding(0,0,0,0);
-              if(index ==0){
-                  tv.setTextColor((Color.GRAY));
-              }else{
-                  tv.setTextColor((Color.BLACK));
-              }
-                enquiryType = tv.getText().toString();
-              if(index!=0){
-                 txtEnqtype.setVisibility(View.VISIBLE);
-              }
-              if(enquiryType.equals(getResources().getString(R.string.enquiry_type))){
-                  //awesomeValidation.addValidation(AddEnquiryActivity.this, R.id.spinner_enq_type,RegexTemplate.NOT_EMPTY, R.string.err_msg_next_foll_date);
+              if(view != null) {
+                  TextView tv = (TextView) view.findViewById(R.id.tv_Name);
+                  View layout = (View) view.findViewById(R.id.layout);
+                  layout.setPadding(0, 0, 0, 0);
+
+
+                  if (index == 0) {
+                      tv.setTextColor((Color.GRAY));
+                  } else {
+                      tv.setTextColor((Color.BLACK));
+                  }
+                  enquiryType = tv.getText().toString();
+                  if (index != 0) {
+                      txtEnqtype.setVisibility(View.VISIBLE);
+                  }
+                  if (enquiryType.equals(getResources().getString(R.string.enquiry_type))) {
+                      //awesomeValidation.addValidation(AddEnquiryActivity.this, R.id.spinner_enq_type,RegexTemplate.NOT_EMPTY, R.string.err_msg_next_foll_date);
+                  }
               }
              // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.black));
               // Showing selected spinner item
@@ -252,7 +344,15 @@ public class AddEnquiryActivity extends AppCompatActivity  {
               Toast.makeText(parent.getContext(), "Please Select Enquiry Type ", Toast.LENGTH_LONG).show();
           }
       });
+      spinEnquiryType.setOnTouchListener(new View.OnTouchListener() {
 
+          @Override
+          public boolean onTouch(View v, MotionEvent event) {
+              InputMethodManager imm=(InputMethodManager)getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+              imm.hideSoftInputFromWindow(inputAdd.getWindowToken(), 0);
+              return false;
+          }
+      }) ;
       //*************Enquiry source spinner adapter setting ****************
 
       spinEnquirySource.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -260,20 +360,22 @@ public class AddEnquiryActivity extends AppCompatActivity  {
           public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
               int index = parent.getSelectedItemPosition();
-              TextView tv = (TextView) view.findViewById(R.id.tv_Name);
-              View layout=(View)view.findViewById(R.id.layout);
-              layout.setPadding(0,0,0,0);
-              if(index ==0){
-                  tv.setTextColor((Color.GRAY));
-              }else{
-                  tv.setTextColor((Color.BLACK));
-              }
-              enquirySource = tv.getText().toString();
-              if(index!=0){
-                  txtEnqsrc.setVisibility(View.VISIBLE);
-              }
-              if(enquirySource.equals(getResources().getString(R.string.enquiry_source))){
-                  //awesomeValidation.addValidation(AddEnquiryActivity.this, R.id.spinner_enq_source,RegexTemplate.NOT_EMPTY, R.string.err_msg_next_foll_date);
+              if(view != null) {
+                  TextView tv = (TextView) view.findViewById(R.id.tv_Name);
+                  View layout = (View) view.findViewById(R.id.layout);
+                  layout.setPadding(0, 0, 0, 0);
+                  if (index == 0) {
+                      tv.setTextColor((Color.GRAY));
+                  } else {
+                      tv.setTextColor((Color.BLACK));
+                  }
+                  enquirySource = tv.getText().toString();
+                  if (index != 0) {
+                      txtEnqsrc.setVisibility(View.VISIBLE);
+                  }
+                  if (enquirySource.equals(getResources().getString(R.string.enquiry_source))) {
+                      //awesomeValidation.addValidation(AddEnquiryActivity.this, R.id.spinner_enq_source,RegexTemplate.NOT_EMPTY, R.string.err_msg_next_foll_date);
+                  }
               }
               // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.black));
               // Showing selected spinner item
@@ -285,7 +387,15 @@ public class AddEnquiryActivity extends AppCompatActivity  {
               Toast.makeText(parent.getContext(), "Please Select Enquiry Source ", Toast.LENGTH_LONG).show();
           }
       });
+      spinEnquirySource.setOnTouchListener(new View.OnTouchListener() {
 
+          @Override
+          public boolean onTouch(View v, MotionEvent event) {
+              InputMethodManager imm=(InputMethodManager)getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+              imm.hideSoftInputFromWindow(inputAdd.getWindowToken(), 0);
+              return false;
+          }
+      }) ;
 
       //Toast.makeText(MainActivity.this,genderradioButton.getText(), Toast.LENGTH_SHORT).show();
       spinCallResponce.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -293,20 +403,22 @@ public class AddEnquiryActivity extends AppCompatActivity  {
           public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
               int index = parent.getSelectedItemPosition();
-              TextView tv = (TextView) view.findViewById(R.id.tv_Name);
-              View layout=(View)view.findViewById(R.id.layout);
-              layout.setPadding(0,0,0,0);
-              if(index ==0){
-                  tv.setTextColor((Color.GRAY));
-              }else{
-                  tv.setTextColor((Color.BLACK));
-              }
-              callResponce = tv.getText().toString();
-              if(index!=0){
-                  txtcallres.setVisibility(View.VISIBLE);
-              }
-              if(callResponce.equals(getResources().getString(R.string.call_res))){
-                //  awesomeValidation.addValidation(AddEnquiryActivity.this, R.id.spinner_call_res,RegexTemplate.NOT_EMPTY, R.string.err_msg_next_foll_date);
+              if(view != null) {
+                  TextView tv = (TextView) view.findViewById(R.id.tv_Name);
+                  View layout = (View) view.findViewById(R.id.layout);
+                  layout.setPadding(0, 0, 0, 0);
+                  if (index == 0) {
+                      tv.setTextColor((Color.GRAY));
+                  } else {
+                      tv.setTextColor((Color.BLACK));
+                  }
+                  callResponce = tv.getText().toString();
+                  if (index != 0) {
+                      txtcallres.setVisibility(View.VISIBLE);
+                  }
+                  if (callResponce.equals(getResources().getString(R.string.call_res))) {
+                      //  awesomeValidation.addValidation(AddEnquiryActivity.this, R.id.spinner_call_res,RegexTemplate.NOT_EMPTY, R.string.err_msg_next_foll_date);
+                  }
               }
               // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.black));
               // Showing selected spinner item
@@ -356,28 +468,52 @@ public class AddEnquiryActivity extends AppCompatActivity  {
           };
           spinRating.setAdapter(ratingadapter);
       }
+      spinCallResponce.setOnTouchListener(new View.OnTouchListener() {
+
+          @Override
+          public boolean onTouch(View v, MotionEvent event) {
+              InputMethodManager imm=(InputMethodManager)getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+              imm.hideSoftInputFromWindow(inputAdd.getWindowToken(), 0);
+              return false;
+          }
+      }) ;
       //Toast.makeText(MainActivity.this,genderradioButton.getText(), Toast.LENGTH_SHORT).show();
       spinRating.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
           @Override
           public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
               int index = parent.getSelectedItemPosition();
-              TextView tv = (TextView) view.findViewById(R.id.tv_Name);
-              View layout=(View)view.findViewById(R.id.layout);
-              layout.setPadding(0,0,0,0);
+              if(view != null) {
+                  TextView tv = (TextView) view.findViewById(R.id.tv_Name);
+                  View layout = (View) view.findViewById(R.id.layout);
+                  layout.setPadding(0, 0, 0, 0);
 
-              if(index ==0){
-                  tv.setTextColor((Color.GRAY));
-              }else{
-                  tv.setTextColor((Color.BLACK));
-              }
-              Rating = tv.getText().toString();
-              if(index!=0){
-                  txtrating.setVisibility(View.VISIBLE);
-              }
-              if(Rating.equals(getResources().getString(R.string.rating))){
-                 // Toast.makeText(parent.getContext(), "Please Select Rating ", Toast.LENGTH_LONG).show();
-                  //awesomeValidation.addValidation(AddEnquiryActivity.this, R.id.spinner_rating,RegexTemplate.NOT_EMPTY, R.string.err_msg_next_foll_date);
+                  if (index == 0) {
+                      tv.setTextColor((Color.GRAY));
+                  } else {
+                      tv.setTextColor((Color.BLACK));
+                  }
+                  Rating = tv.getText().toString();
+                  if (index != 0) {
+                      txtrating.setVisibility(View.VISIBLE);
+                  }
+                  if (!(Rating == null)) {
+                      if (Rating.equals("Not Interested")|| Rating.equals("Converted")) {
+                          //  Toast.makeText(parent.getContext(), "no interetsed: ", Toast.LENGTH_LONG).show();
+                          //inputNextFollowupdate.setText("");
+                          awesomeValidation.clear();
+                          inputNextFollowupdate.getText().clear();
+                          inputNextFollowupdate.setEnabled(false);
+                          inputNextFollowupdate.setKeyListener(null);
+
+                      } else {
+                          inputNextFollowupdate.setEnabled(true);
+                      }
+                  }
+                  if (Rating.equals(getResources().getString(R.string.rating))) {
+                      // Toast.makeText(parent.getContext(), "Please Select Rating ", Toast.LENGTH_LONG).show();
+                      //awesomeValidation.addValidation(AddEnquiryActivity.this, R.id.spinner_rating,RegexTemplate.NOT_EMPTY, R.string.err_msg_next_foll_date);
+                  }
               }
               // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.black));
               // Showing selected spinner item
@@ -389,11 +525,21 @@ public class AddEnquiryActivity extends AppCompatActivity  {
               Toast.makeText(parent.getContext(), "Please Select Rating ", Toast.LENGTH_LONG).show();
           }
       });
+      spinRating.setOnTouchListener(new View.OnTouchListener() {
+
+          @Override
+          public boolean onTouch(View v, MotionEvent event) {
+              InputMethodManager imm=(InputMethodManager)getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+              imm.hideSoftInputFromWindow(inputAdd.getWindowToken(), 0);
+              return false;
+          }
+      }) ;
       spinEnqFor.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
           @Override
           public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
               int index = parent.getSelectedItemPosition();
+              if(view != null) {
               TextView tv = (TextView) view.findViewById(R.id.tv_Name);
               View layout=(View)view.findViewById(R.id.layout);
               layout.setPadding(0,0,0,0);
@@ -412,6 +558,7 @@ public class AddEnquiryActivity extends AppCompatActivity  {
               // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.black));
               // Showing selected spinner item
               //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+             }
           }
 
           @Override
@@ -419,26 +566,37 @@ public class AddEnquiryActivity extends AppCompatActivity  {
               //Toast.makeText(parent.getContext(), "Please Select Enquiry For ", Toast.LENGTH_LONG).show();
           }
       });
+      spinEnqFor.setOnTouchListener(new View.OnTouchListener() {
+
+          @Override
+          public boolean onTouch(View v, MotionEvent event) {
+              InputMethodManager imm=(InputMethodManager)getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+              imm.hideSoftInputFromWindow(inputAdd.getWindowToken(), 0);
+              return false;
+          }
+      }) ;
       //*************** Occupation listner **************
       spinOccupation.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
           @Override
           public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
               int index = parent.getSelectedItemPosition();
-              TextView tv = (TextView) view.findViewById(R.id.tv_Name);
-              View layout=(View)view.findViewById(R.id.layout);
-              layout.setPadding(0,0,0,0);
-              if(index ==0){
-                  tv.setTextColor((Color.GRAY));
-              }else{
-                  tv.setTextColor((Color.BLACK));
-              }
-              occupation = tv.getText().toString();
-              if(index!=0){
-                  txtoccupation.setVisibility(View.VISIBLE);
-              }
-              if(!occupation.equals(getResources().getString(R.string.occupation))){
-                  //awesomeValidation.addValidation(AddEnquiryActivity.this, R.id.spinner_occupation,RegexTemplate.NOT_EMPTY, R.string.err_msg_next_foll_date);
+              if(view != null) {
+                  TextView tv = (TextView) view.findViewById(R.id.tv_Name);
+                  View layout = (View) view.findViewById(R.id.layout);
+                  layout.setPadding(0, 0, 0, 0);
+                  if (index == 0) {
+                      tv.setTextColor((Color.GRAY));
+                  } else {
+                      tv.setTextColor((Color.BLACK));
+                  }
+                  occupation = tv.getText().toString();
+                  if (index != 0) {
+                      txtoccupation.setVisibility(View.VISIBLE);
+                  }
+                  if (!occupation.equals(getResources().getString(R.string.occupation))) {
+                      //awesomeValidation.addValidation(AddEnquiryActivity.this, R.id.spinner_occupation,RegexTemplate.NOT_EMPTY, R.string.err_msg_next_foll_date);
+                  }
               }
               // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.black));
               // Showing selected spinner item
@@ -450,7 +608,15 @@ public class AddEnquiryActivity extends AppCompatActivity  {
              // Toast.makeText(parent.getContext(), "Please Select Occupation ", Toast.LENGTH_LONG).show();
           }
       });
+      spinOccupation.setOnTouchListener(new View.OnTouchListener() {
 
+          @Override
+          public boolean onTouch(View v, MotionEvent event) {
+              InputMethodManager imm=(InputMethodManager)getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+              imm.hideSoftInputFromWindow(inputAdd.getWindowToken(), 0);
+              return false;
+          }
+      }) ;
       inputNextFollowupdate.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View v) {
@@ -460,7 +626,8 @@ public class AddEnquiryActivity extends AppCompatActivity  {
               mMonth = c.get(Calendar.MONTH);
               mDay = c.get(Calendar.DAY_OF_MONTH);
                 awesomeValidation.clear();
-
+              InputMethodManager imm=(InputMethodManager)getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+              imm.hideSoftInputFromWindow(inputNextFollowupdate.getWindowToken(), 0);
 
               DatePickerDialog datePickerDialog = new DatePickerDialog(AddEnquiryActivity.this,
                       new DatePickerDialog.OnDateSetListener() {
@@ -470,13 +637,14 @@ public class AddEnquiryActivity extends AppCompatActivity  {
                                                 int monthOfYear, int dayOfMonth) {
 
                               inputNextFollowupdate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
-                              tiemPicker();
+                             // tiemPicker();
                           }
                       }, mYear, mMonth, mDay);
               datePickerDialog.getDatePicker().setMinDate(c.getTimeInMillis());
               datePickerDialog.show();
           }
       });
+
       inputDOB.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View v) {
@@ -498,10 +666,11 @@ public class AddEnquiryActivity extends AppCompatActivity  {
 
                           }
                       }, mYear, mMonth, mDay);
-
+              datePickerDialog.getDatePicker().setMaxDate(c.getTimeInMillis());
               datePickerDialog.show();
           }
       });
+
 //      register=(Button)findViewById(R.id.btn_register);
 //      close=(Button)findViewById(R.id.btn_close);
       btn_verify=(Button)findViewById(R.id.btn_verify);
@@ -570,6 +739,8 @@ public class AddEnquiryActivity extends AppCompatActivity  {
                  RadioButton btn = (RadioButton) radioGroup.getChildAt(radioId);
                  gender= (String) btn.getText();
                //  Toast.makeText(AddEnquiryActivity.this, gender, Toast.LENGTH_SHORT).show();
+             }else{
+                 Toast.makeText(AddEnquiryActivity.this, "Please Select Gender", Toast.LENGTH_SHORT).show();
              }
              submitForm();
             return true;
@@ -607,10 +778,20 @@ public class AddEnquiryActivity extends AppCompatActivity  {
              if(I !=null){
             Bundle extras = I.getExtras();
             if (extras != null) {
-                bitmap = (Bitmap) extras.get("data");
-                CapturedImage.setImageBitmap(bitmap);
-                CapturedImage.setVisibility(View.VISIBLE);
+                Bitmap bitmap1 = (Bitmap) extras.get("data");
+                CapturedImage.setImageBitmap(bitmap1);
+                bitmap = Bitmap.createScaledBitmap(bitmap1, 75,
+                        75, true);
+                //return newBitmap;
 
+                CapturedImage.setVisibility(View.VISIBLE);
+//                String timeStamp =
+//                        new SimpleDateFormat("yyyyMMdd_HHmmss",
+//                                Locale.getDefault()).format(new Date());
+//                String imageFileName = "IMG_" + timeStamp;
+
+               // bitmap=Utility.resizeAndCompressImageBeforeSend(AddEnquiryActivity.this,bitmap1,imageFileName);
+                Log.v(TAG, String.format(" Bitmap= %s", bitmap));
                 uploadimageClass();
             }
              }
@@ -658,14 +839,16 @@ public class AddEnquiryActivity extends AppCompatActivity  {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-             showProgressDialog();
+            // showProgressDialog();
+            viewDialog.showDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            dismissProgressDialog();
+            //dismissProgressDialog();
+            viewDialog.hideDialog();
             //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
             //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
             AddEnquiryDetails(response);
@@ -692,13 +875,15 @@ public class AddEnquiryActivity extends AppCompatActivity  {
             AddEnquiryDetails.put("rating",Rating);
             AddEnquiryDetails.put("call_res",callResponce);
             AddEnquiryDetails.put("nextFoll_date",inputNextFollowupdate.getText().toString());
+            Log.v(TAG, String.format("doInBackground :: next followup date= %s", inputNextFollowupdate.getText().toString()));
             AddEnquiryDetails.put("dob",inputDOB.getText().toString());
             AddEnquiryDetails.put("budget",inputBudget.getText().toString());
             AddEnquiryDetails.put("image_path",ConvertImage);
-            AddEnquiryDetails.put("exe_name",SharedPrefereneceUtil.getUserNm(AddEnquiryActivity.this));
-            Log.v(TAG, String.format("doInBackground :: executive name= %s", SharedPrefereneceUtil.getUserNm(AddEnquiryActivity.this)));
+            AddEnquiryDetails.put("exe_name",SharedPrefereneceUtil.getName(AddEnquiryActivity.this));
+            Log.v(TAG, String.format("doInBackground :: executive name= %s", SharedPrefereneceUtil.getName(AddEnquiryActivity.this)));
             AddEnquiryDetails.put("action", "add_enquiry");
-            String loginResult2 = ruc.sendPostRequest(ServiceUrls.LOGIN_URL, AddEnquiryDetails);
+            String domainurl=SharedPrefereneceUtil.getDomainUrl(AddEnquiryActivity.this);
+            String loginResult2 = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, AddEnquiryDetails);
 
             Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult2));
             return loginResult2;
@@ -718,13 +903,13 @@ public class AddEnquiryActivity extends AppCompatActivity  {
             if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
                 Toast.makeText(AddEnquiryActivity.this,"Enquiry added succesfully",Toast.LENGTH_SHORT).show();
                 inputName.getText().clear();
-                inputContact.getText().clear();
+                //inputContact.getText().clear();
                 inputComment.getText().clear();
                 inputNextFollowupdate.getText().clear();
                 inputBudget.getText().clear();
-                imageView.setImageResource(R.drawable.add_photo);
-                Intent intent=new Intent(AddEnquiryActivity.this,EnquiryActivity.class);
-                startActivity(intent);
+               // imageView.setImageResource(R.drawable.add_photo);
+                SendEnquirySmsClass();
+
                // showCustomDialog();
 
                 //inputEmail, inputPhone,inputAdd,inputReq,inputFollowupdate;
@@ -748,9 +933,9 @@ public class AddEnquiryActivity extends AppCompatActivity  {
         ByteArrayOutputStream byteArrayOutputStreamObject ;
 
         byteArrayOutputStreamObject = new ByteArrayOutputStream();
-
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStreamObject);
-
+       if(bitmap != null) {
+           bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStreamObject);
+       }
         byte[] byteArrayVar = byteArrayOutputStreamObject.toByteArray();
 
            ConvertImage = Base64.encodeToString(byteArrayVar, Base64.DEFAULT);
@@ -762,9 +947,11 @@ public class AddEnquiryActivity extends AppCompatActivity  {
         //first validate the form then move ahead
         //if this becomes true that means validation is successfull
         //if(inputPassword.getText().toString().equals(inputCfmPassword.getText().toString())){
-        if(inputEmail.length()>0){
+        if((inputEmail.length()>0) ){
             awesomeValidation.addValidation(this, R.id.input_email, Patterns.EMAIL_ADDRESS, R.string.err_msg_email);
-        if (awesomeValidation.validate()) {
+            if(!(Rating.equals("Not Interested")|| Rating.equals("Converted"))){
+                awesomeValidation.addValidation(this,R.id.input_next_foll_date,RegexTemplate.NOT_EMPTY,R.string.err_msg_next_foll_date);
+                if (awesomeValidation.validate()) {
                     if(enquiryType.equals(getResources().getString(R.string.enquiry_type)) || enquirySource.equals(getResources().getString(R.string.enquiry_source))
                             || callResponce.equals(getResources().getString(R.string.call_res)) || Rating.equals(getResources().getString(R.string.rating))
                             ||enquiryFor.equals(getResources().getString(R.string.enq_for)) ||occupation.equals(getResources().getString(R.string.occupation)) ){
@@ -773,6 +960,20 @@ public class AddEnquiryActivity extends AppCompatActivity  {
                         AddEnquiryClass();
                     }
                 }
+
+            }else{
+                awesomeValidation.clear();
+                if (awesomeValidation.validate()) {
+                    if(enquiryType.equals(getResources().getString(R.string.enquiry_type)) || enquirySource.equals(getResources().getString(R.string.enquiry_source))
+                            || callResponce.equals(getResources().getString(R.string.call_res)) || Rating.equals(getResources().getString(R.string.rating))
+                            ||enquiryFor.equals(getResources().getString(R.string.enq_for)) ||occupation.equals(getResources().getString(R.string.occupation)) ){
+                        Toast.makeText(this, "Please fill all fields", Toast.LENGTH_LONG).show();
+                    }else{
+                        AddEnquiryClass();
+                    }
+                }
+            }
+
 
 
 //            if(enquiryType.equals(getResources().getString(R.string.enquiry_type)) || enquirySource.equals(getResources().getString(R.string.enquiry_source))
@@ -784,20 +985,51 @@ public class AddEnquiryActivity extends AppCompatActivity  {
 //            }
             // Toast.makeText(this, "Validation Successfull", Toast.LENGTH_LONG).show();
 
-           // uploadimageClass();
+            // uploadimageClass();
             //process the data further
         }else{
-            if (awesomeValidation.validate()) {
-                if(enquiryType.equals(getResources().getString(R.string.enquiry_type)) || enquirySource.equals(getResources().getString(R.string.enquiry_source))
-                        || callResponce.equals(getResources().getString(R.string.call_res)) || Rating.equals(getResources().getString(R.string.rating))
-                        ||enquiryFor.equals(getResources().getString(R.string.enq_for)) ||occupation.equals(getResources().getString(R.string.occupation)) ){
-                    Toast.makeText(this, "Please fill all fields", Toast.LENGTH_LONG).show();
+//            if(inputNextFollowupdate.getText().length()==0) {
+
+            if(!(Rating.equals("Not Interested") || Rating.equals("Converted"))) {
+               // Toast.makeText(this, "Rating :"+Rating, Toast.LENGTH_LONG).show();
+                awesomeValidation.addValidation(this, R.id.input_next_foll_date, RegexTemplate.NOT_EMPTY, R.string.err_msg_next_foll_date);
+                if (awesomeValidation.validate()) {
+                    if(enquiryType.equals(getResources().getString(R.string.enquiry_type)) || enquirySource.equals(getResources().getString(R.string.enquiry_source))
+                            || callResponce.equals(getResources().getString(R.string.call_res)) || Rating.equals(getResources().getString(R.string.rating))
+                            ||enquiryFor.equals(getResources().getString(R.string.enq_for)) ||occupation.equals(getResources().getString(R.string.occupation)) ){
+                        Toast.makeText(this, "Please fill all fields", Toast.LENGTH_LONG).show();
+                    }else{
+                        AddEnquiryClass();
+                    }
                 }else{
-                    AddEnquiryClass();
+                    Toast.makeText(this, "Validation Failed", Toast.LENGTH_LONG).show();
                 }
             }else{
-                Toast.makeText(this, "Validation Failed", Toast.LENGTH_LONG).show();
+                //Toast.makeText(this, "Clear next followup date validation", Toast.LENGTH_LONG).show();
+                awesomeValidation.clear();
+                if (awesomeValidation.validate()) {
+                    if(enquiryType.equals(getResources().getString(R.string.enquiry_type)) || enquirySource.equals(getResources().getString(R.string.enquiry_source))
+                            || callResponce.equals(getResources().getString(R.string.call_res)) || Rating.equals(getResources().getString(R.string.rating))
+                            ||enquiryFor.equals(getResources().getString(R.string.enq_for)) ||occupation.equals(getResources().getString(R.string.occupation)) ){
+                        Toast.makeText(this, "Please fill all fields", Toast.LENGTH_LONG).show();
+                    }else{
+                        AddEnquiryClass();
+                    }
+                }
+//                else{
+//                    awesomeValidation.clear();
+//                    if(enquiryType.equals(getResources().getString(R.string.enquiry_type)) || enquirySource.equals(getResources().getString(R.string.enquiry_source))
+//                            || callResponce.equals(getResources().getString(R.string.call_res)) || Rating.equals(getResources().getString(R.string.rating))
+//                            ||enquiryFor.equals(getResources().getString(R.string.enq_for)) ||occupation.equals(getResources().getString(R.string.occupation)) ){
+//                        Toast.makeText(this, "Please fill all fields", Toast.LENGTH_LONG).show();
+//                    }else{
+//                        AddEnquiryClass();
+//                    }
+//                }
             }
+
+//            }
+
 
             // awesomeValidation.addValidation(this, R.id.input_cfn_password,RegexTemplate.NOT_EMPTY,R.string.err_msg_cfm_password);
 
@@ -837,7 +1069,8 @@ public class AddEnquiryActivity extends AppCompatActivity  {
             HashMap<String, String> EnquiryForDetails = new HashMap<String, String>();
             EnquiryForDetails.put("action", "show_enq_for_list");
             //EnquiryForloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(EnquiryForloyee.this));
-            String loginResult = ruc.sendPostRequest(ServiceUrls.LOGIN_URL, EnquiryForDetails);
+            String domainurl=SharedPrefereneceUtil.getDomainUrl(AddEnquiryActivity.this);
+            String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EnquiryForDetails);
             Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
@@ -951,14 +1184,16 @@ public class AddEnquiryActivity extends AppCompatActivity  {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            showProgressDialog();
+            //showProgressDialog();
+            viewDialog.showDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            dismissProgressDialog();
+           // dismissProgressDialog();
+            viewDialog.hideDialog();
             //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             EnquiryTypeDetails(response);
 
@@ -970,7 +1205,8 @@ public class AddEnquiryActivity extends AppCompatActivity  {
             HashMap<String, String> EnquiryTypeDetails = new HashMap<String, String>();
             EnquiryTypeDetails.put("action", "show_enq_type_list");
             //EnquiryTypeloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(EnquiryTypeloyee.this));
-            String loginResult = ruc.sendPostRequest(ServiceUrls.LOGIN_URL, EnquiryTypeDetails);
+            String domainurl=SharedPrefereneceUtil.getDomainUrl(AddEnquiryActivity.this);
+            String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EnquiryTypeDetails);
             Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
@@ -1103,7 +1339,8 @@ public class AddEnquiryActivity extends AppCompatActivity  {
             HashMap<String, String> EnquirySourceDetails = new HashMap<String, String>();
             EnquirySourceDetails.put("action", "show_enq_source_list");
             //EnquirySourceloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(EnquirySourceloyee.this));
-            String loginResult = ruc.sendPostRequest(ServiceUrls.LOGIN_URL, EnquirySourceDetails);
+            String domainurl=SharedPrefereneceUtil.getDomainUrl(AddEnquiryActivity.this);
+            String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EnquirySourceDetails);
             Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
@@ -1235,7 +1472,8 @@ public class AddEnquiryActivity extends AppCompatActivity  {
             HashMap<String, String> OccupationDetails = new HashMap<String, String>();
             OccupationDetails.put("action", "show_occupation_list");
             //OccupationloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(Occupationloyee.this));
-            String loginResult = ruc.sendPostRequest(ServiceUrls.LOGIN_URL, OccupationDetails);
+            String domainurl=SharedPrefereneceUtil.getDomainUrl(AddEnquiryActivity.this);
+            String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, OccupationDetails);
             Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
@@ -1366,7 +1604,8 @@ public class AddEnquiryActivity extends AppCompatActivity  {
             HashMap<String, String> CallResponseDetails = new HashMap<String, String>();
             CallResponseDetails.put("action", "show_call_response_list");
             //CallResponseloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(CallResponseloyee.this));
-            String loginResult = ruc.sendPostRequest(ServiceUrls.LOGIN_URL, CallResponseDetails);
+            String domainurl=SharedPrefereneceUtil.getDomainUrl(AddEnquiryActivity.this);
+            String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, CallResponseDetails);
             Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
@@ -1480,14 +1719,16 @@ public class AddEnquiryActivity extends AppCompatActivity  {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            showProgressDialog();
+            //showProgressDialog();
+            viewDialog.showDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            dismissProgressDialog();
+            //dismissProgressDialog();
+            viewDialog.hideDialog();
             //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
             //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
             SensSMSDetails(response);
@@ -1499,7 +1740,10 @@ public class AddEnquiryActivity extends AppCompatActivity  {
             Log.v(TAG, String.format("doInBackground ::  params= %s", params));
              otp= NetworkUtils.generateOtp();
             String msg="your OTP to verify contact number is :"+otp;
-            String loginResult2 = ruc.SendSMS(inputContact.getText().toString(),msg);
+            String loginResult2 = ruc.SendSMS(inputContact.getText().toString(),msg,SharedPrefereneceUtil.getSmsUsername(AddEnquiryActivity.this),
+                    SharedPrefereneceUtil.getSmsPassword(AddEnquiryActivity.this),
+                    SharedPrefereneceUtil.getSmsRoute(AddEnquiryActivity.this),
+                    SharedPrefereneceUtil.getSmsSenderid(AddEnquiryActivity.this));
 
             Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult2));
             return loginResult2;
@@ -1567,14 +1811,16 @@ public class AddEnquiryActivity extends AppCompatActivity  {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            showProgressDialog();
+            //showProgressDialog();
+            viewDialog.showDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            dismissProgressDialog();
+           // dismissProgressDialog();
+            viewDialog.hideDialog();
             //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
             //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
             CheckContactDetails(response);
@@ -1591,7 +1837,8 @@ public class AddEnquiryActivity extends AppCompatActivity  {
             EnquiryForDetails.put("comp_id",SharedPrefereneceUtil.getSelectedBranchId(AddEnquiryActivity.this) );
             EnquiryForDetails.put("action", "check_mobile_already_exist_or_not");
             //EnquiryForloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(EnquiryForloyee.this));
-            String loginResult = ruc.sendPostRequest(ServiceUrls.LOGIN_URL, EnquiryForDetails);
+            String domainurl=SharedPrefereneceUtil.getDomainUrl(AddEnquiryActivity.this);
+            String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EnquiryForDetails);
             Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
@@ -1615,7 +1862,131 @@ public class AddEnquiryActivity extends AppCompatActivity  {
             {
                 Toast.makeText(AddEnquiryActivity.this,"Mobile Number Already Exits",Toast.LENGTH_SHORT).show();
                 inputContact.getText().clear();
-                Toast.makeText(AddEnquiryActivity.this,"Please Enter New Mobile Number",Toast.LENGTH_SHORT).show();
+               // Toast.makeText(AddEnquiryActivity.this,"Please Enter New Mobile Number",Toast.LENGTH_SHORT).show();
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+    // ******************* send sms for add enquiry **************
+    public void  SendEnquirySmsClass() {
+        AddEnquiryActivity.SendEnquirySmsTrackClass ru = new AddEnquiryActivity.SendEnquirySmsTrackClass();
+        ru.execute("5");
+    }
+
+    class SendEnquirySmsTrackClass extends AsyncTask<String, Void, String> {
+
+        ServerClass ruc = new ServerClass();
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Log.v(TAG, "onPreExecute");
+           // showProgressDialog();
+            viewDialog.showDialog();
+        }
+
+        @Override
+        protected void onPostExecute(String response) {
+            super.onPostExecute(response);
+            Log.v(TAG, String.format("onPostExecute :: response = %s", response));
+            //dismissProgressDialog();
+            viewDialog.hideDialog();
+            SendEnquirySmsDetails(response);
+
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+            HashMap<String, String> EnquiryForDetails = new HashMap<String, String>();
+
+            EnquiryForDetails.put("type","Enquiry" );
+            EnquiryForDetails.put("comp_id",SharedPrefereneceUtil.getSelectedBranchId(AddEnquiryActivity.this) );
+            EnquiryForDetails.put("action", "sms_for_add_enquiry");
+            //EnquiryForloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(EnquiryForloyee.this));
+            String domainurl=SharedPrefereneceUtil.getDomainUrl(AddEnquiryActivity.this);
+            String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EnquiryForDetails);
+            Log.v(TAG, String.format("doInBackground :: sms_for_add_enquiry= %s", loginResult));
+            return loginResult;
+        }
+    }
+    private void SendEnquirySmsDetails(String jsonResponse) {
+
+        Log.v(TAG, String.format("loginServerResponse :: response = %s", jsonResponse));
+
+        JSONObject object = null;
+        try {
+            object = new JSONObject(jsonResponse);
+            String success = object.getString(getResources().getString(R.string.success));
+
+            if (success.equalsIgnoreCase(getResources().getString(R.string.zero))) {
+                Intent intent = new Intent(AddEnquiryActivity.this, EnquiryActivity.class);
+                startActivity(intent);
+                // showCustomDialog();
+
+                //inputEmail, inputPhone,inputAdd,inputReq,inputFollowupdate;
+            }
+            else if (success.equalsIgnoreCase(getResources().getString(R.string.two)))
+            {
+                if (object != null) {
+                    JSONArray jsonArrayResult = object.getJSONArray("result");
+
+
+                    if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
+
+                        for (int i = 0; i < jsonArrayResult.length(); i++) {
+
+                            Log.v(TAG, "JsonResponseOpeartion ::");
+                            JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
+                            if (jsonObj != null) {
+
+                           afterEnquirySms = jsonObj.getString("Enquiry");
+                           afterEnquirySms = afterEnquirySms.replace(".", "");
+
+                                if(!afterEnquirySms.equals("")) {
+                                    AddEnquiryActivity.this.runOnUiThread(new Runnable() {
+
+                                        @Override
+                                        public void run() {
+                                            //second async stared within a asynctask but on the main thread
+                                            (new AsyncTask<String, String, String>() {
+                                                ServerClass ruc = new ServerClass();
+
+                                                @Override
+                                                protected String doInBackground(String... params) {
+                                                    String loginResult2 = ruc.SendSMS(inputContact.getText().toString(), afterEnquirySms,SharedPrefereneceUtil.getSmsUsername(AddEnquiryActivity.this),
+                                                            SharedPrefereneceUtil.getSmsPassword(AddEnquiryActivity.this),
+                                                            SharedPrefereneceUtil.getSmsRoute(AddEnquiryActivity.this),
+                                                            SharedPrefereneceUtil.getSmsSenderid(AddEnquiryActivity.this));
+                                                    Log.v(TAG, String.format("doInBackground :: Send Sms after enquiry= %s", loginResult2));
+                                                    return loginResult2;
+                                                }
+
+                                                @Override
+                                                protected void onPostExecute(String response) {
+                                                    super.onPostExecute(response);
+                                                    Log.v(TAG, String.format("onPostExecute :: response = %s", response));
+                                                    Intent intent = new Intent(AddEnquiryActivity.this, EnquiryActivity.class);
+                                                    startActivity(intent);
+
+
+                                                }
+                                            }).execute();
+
+                                        }
+                                    });
+                                }else{
+                                    Intent intent = new Intent(AddEnquiryActivity.this, EnquiryActivity.class);
+                                    startActivity(intent);
+
+                                }
+                            }
+                        }
+                    }
+                }
             }
 
         } catch (JSONException e) {

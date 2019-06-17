@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="300dp"
     android:layout_height="wrap_content"
-    android:padding="@dimen/spacing_large"
+    android:padding="@dimen/spacing_mlarge"
     android:orientation="vertical">
 
     <LinearLayout
@@ -17,7 +17,7 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:gravity="start"
-            android:text="@string/enquiry_followup"
+            android:text="@string/followup"
             android:textSize="18sp"
             android:textColor="@color/black"
             android:visibility="visible"/>
@@ -37,8 +37,40 @@
         android:layout_weight="1"
         android:orientation="vertical"
         >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/call_res"
+            android:textSize="11sp"
+            android:paddingTop="@dimen/spacing_medium"
+            android:visibility="gone"
+            android:id="@+id/txt_callres"
+            android:textColor="@android:color/darker_gray"
+            />
+        <Spinner
+            android:id="@+id/spinner_call_res"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:spinnerMode="dialog"
+            android:textColor="@color/black"
+            android:backgroundTint="@color/black"
+            android:dropDownSelector="@color/black"
+            />
 
-
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/grey_80" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/rating"
+            android:textSize="11sp"
+            android:paddingTop="@dimen/spacing_medium"
+            android:visibility="gone"
+            android:id="@+id/txt_rating"
+            android:textColor="@android:color/darker_gray"
+            />
         <Spinner
             android:id="@+id/spinner_rating"
             android:layout_width="match_parent"
@@ -51,25 +83,13 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/grey_80" />
-        <Spinner
-            android:id="@+id/spinner_call_res"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:spinnerMode="dialog"
-            android:textColor="@color/black"
-            android:backgroundTint="@color/black"
-            android:dropDownSelector="@color/black"
-            />
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
             android:background="@color/black" />
+
         <android.support.design.widget.TextInputLayout
             android:id="@+id/input_layout_next_foll_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:theme="@style/EditTextBackWhite">
+            >
 
             <EditText
                 android:id="@+id/input_next_foll_date"
@@ -77,6 +97,7 @@
                 android:textColor="@color/black"
                 android:textColorHint="@color/black"
                 android:inputType="text"
+                android:focusableInTouchMode="false"
                 android:editable="false"
                 android:backgroundTint="@color/black"
                 android:layout_height="wrap_content"
@@ -86,7 +107,7 @@
             android:id="@+id/input_layout_enquiry_comment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:theme="@style/EditTextBackWhite">
+            >
 
             <EditText
                 android:id="@+id/input_enquiry_comment"

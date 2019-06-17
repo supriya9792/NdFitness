@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,6 +28,7 @@ import android.widget.Toast;
 
 import com.ndfitnessplus.Activity.AddEnquiryActivity;
 import com.ndfitnessplus.Activity.EnquiryFollowupDetailsActivity;
+import com.ndfitnessplus.Activity.MemberDetailsActivity;
 import com.ndfitnessplus.Listeners.BaseViewHolder;
 import com.ndfitnessplus.Model.EnquiryList;
 import com.ndfitnessplus.Model.FollowupList;
@@ -64,7 +67,7 @@ public class FollowupAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         switch (viewType) {
             case VIEW_TYPE_NORMAL:
                 return new FollowupAdapter.ViewHolder(
-                        LayoutInflater.from(parent.getContext()).inflate(R.layout.followup_list_item, parent, false));
+                        LayoutInflater.from(parent.getContext()).inflate(R.layout.done_followup_list, parent, false));
             case VIEW_TYPE_LOADING:
                 return new FollowupAdapter.FooterHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_loading, parent, false));
             default:
@@ -137,8 +140,8 @@ public class FollowupAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         int position = arrayList.size() - 1;
         FollowupList item = getItem(position);
         if (item != null) {
-            //arrayList.remove(position);
-          //  notifyItemRemoved(position);
+            arrayList.remove(position);
+            notifyItemRemoved(position);
             //notifyDataSetChanged();
         }
     }
@@ -147,16 +150,51 @@ public class FollowupAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             remove(getItem(0));
         }
     }
+    //filter for search
+    public int search( String charTex,final ArrayList<FollowupList> subList) {
+        // subList=arrayList;
+
+        final String charText = charTex.toLowerCase(Locale.getDefault());
+        Log.d(TAG, "sublist size whentext  filter: "+String.valueOf(subList.size()) );
+        arrayList.clear();
+        if (charText.length() == 0) {
+
+            arrayList.addAll(subList);
+            return 0;
+        } else {
+            Handler handler = new Handler(Looper.getMainLooper());
+            handler.post(new Runnable() {
+                public void run() {
+                    // UI code goes here
+                    for (final FollowupList wp : subList) {
+                        if (wp.getName().toLowerCase(Locale.getDefault())
+                                .contains(charText) ||wp.getExecutiveName().toLowerCase(Locale.getDefault()).contains(charText)
+                                ||wp.getComment().toLowerCase(Locale.getDefault()).contains(charText)) {
+                            arrayList.add(wp);
+
+                        }
+                    }
+                }
+            });
+
+
+
+        }
+        Log.d(TAG, "sublist size search: "+String.valueOf(subList.size()) );
+        notifyDataSetChanged();
+        return arrayList.size();
+    }
     FollowupList getItem(int position) {
         return arrayList.get(position);
     }
     public class ViewHolder extends BaseViewHolder implements View.OnClickListener  {
-        TextView nameTV,followup_dateTV,nextfollowupdate,commentTV,excecutive_nameTV,ratingTV,callRespondTV;
+        TextView nameTV,followup_dateTV,nextfollowupdate,commentTV,excecutive_nameTV,ratingTV,callRespondTV,contactTV,foll_typeTV;
         ImageView contactIV;
         View layoutparent;
         public ViewHolder(View itemView) {
             super(itemView);
             nameTV = (TextView) itemView.findViewById(R.id.nameTV);
+            contactTV = (TextView) itemView.findViewById(R.id.contactTV);
             followup_dateTV = (TextView) itemView.findViewById(R.id.followup_dateTV);
             nextfollowupdate = (TextView) itemView.findViewById(R.id.Nextfollowup_dateTV);
             contactIV = (ImageView) itemView.findViewById(R.id.contactIV);
@@ -165,6 +203,7 @@ public class FollowupAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             excecutive_nameTV = (TextView) itemView.findViewById(R.id.excecutive_nameTV);
             ratingTV = (TextView) itemView.findViewById(R.id.ratingTV);
             callRespondTV = (TextView) itemView.findViewById(R.id.callRespondTV);
+            foll_typeTV = (TextView) itemView.findViewById(R.id.foll_typeTV);
             layoutparent=(View)itemView.findViewById(R.id.lyt_parent);
         }
 
@@ -186,25 +225,28 @@ public class FollowupAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             super.onBind(position);
            final FollowupList enq = arrayList.get(position);
             nameTV.setText(enq.getName());
-//        contactTV.setText(arrayList.get(position).getContact());
+            contactTV.setText(arrayList.get(position).getContact());
             followup_dateTV.setText(enq.getFollowupDate());
             nextfollowupdate.setText(enq.getNextFollowupDate());
             commentTV.setText(enq.getComment());
             excecutive_nameTV.setText(enq.getExecutiveName());
             ratingTV.setText(enq.getRating());
             callRespondTV.setText(enq.getCallRespond());
+            foll_typeTV.setText(enq.getFollowupType());
 
-            layoutparent.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    enquiryId=enq.getID();
-                    Intent intent=new Intent(context, EnquiryFollowupDetailsActivity.class);
-                    intent.putExtra("enquiry_id",enquiryId);
-                    intent.putExtra("rating",enq.getRating());
-                    intent.putExtra("call_response",enq.getCallRespond());
-                    context.startActivity(intent);
-                }
-            });
+                layoutparent.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        enquiryId=enq.getID();
+                        Intent intent=new Intent(context, EnquiryFollowupDetailsActivity.class);
+                        intent.putExtra("enquiry_id",enquiryId);
+                        intent.putExtra("rating",enq.getRating());
+                        intent.putExtra("call_response",enq.getCallRespond());
+                        context.startActivity(intent);
+                    }
+                });
+
+
 
         }
     }

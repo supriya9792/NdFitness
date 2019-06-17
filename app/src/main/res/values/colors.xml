@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#FC1A1A</color>
+    <color name="colorPrimary">#DA1414</color>
     <color name="colorAccent">#D81B60</color>
     <color name="colorPrimaryDark">#CF0516</color>
     <color name="colorPrimaryWeb">#3c8dbc</color>
@@ -14,23 +14,24 @@
     <color name="colorPrimaryDark2">#fa8802</color>
 
     <color name="colorPrimaryLight">#985AC0  </color>
+
     <color name="transparent">#00FFFFFF</color>
 
     <!--Dashboard Colors -->
     <color name="member_birthday_bg">#27a9e3</color>
     <color name="staff_birthday_bg">#28b779</color>
-    <color name="anniversary_bg">#ffb848</color>
     <color name="today_enquiry_bg">#da542e</color>
     <color name="enquiry_followup_bg">#2255a4</color>
-    <color name="today_admission_bg">#d06334</color>
+    <color name="today_admission_bg">#ffb848</color>
     <color name="active_member_bg">#31a9a9</color>
     <color name="deactive_member_bg">#689670</color>
     <color name="membership_end_dt_bg">#30658d</color>
     <color name="paymennt_dt_bg">#f74d4d</color>
     <color name="post_dated_chk_bg">#aab521</color>
     <color name="other_followup">#6b4174</color>
+    <color name="done_foll_bg">#4161f0</color>
 
-
+    <color name="anniversary_bg">#ffb848</color>
     <color name="theme">#4161f0</color>
     <color name="theme1">#f34721</color>
     <color name="theme2">#cd3615</color>
@@ -59,6 +60,7 @@
     <color name="overlay_orange">#fff9e8d3</color>
     <color name="overlay_orange_light">#9affa000</color>
     <color name="drinks_overlay">#440199ea</color>
+    <color name="overlay_light_pink_30">#4DF1BDBD</color>
 
     <color name="grey_3">#f7f7f7</color>
     <color name="grey_5">#f2f2f2</color>
@@ -177,6 +179,7 @@
     <color name="blue_grey_800">#37474F</color>
     <color name="blue_grey_900">#263238</color>
 
+    <color name="colorPink">#FFF8E1  </color>
     <color name="pink_50">#FCE4EC</color>
     <color name="pink_100">#F8BBD0</color>
     <color name="pink_200">#F48FB1</color>

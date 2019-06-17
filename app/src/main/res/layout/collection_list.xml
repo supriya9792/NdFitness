@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:focusable="true"
+    android:layout_marginBottom="@dimen/spacing_medium"
+    android:layout_marginLeft="@dimen/spacing_middle"
+    android:layout_marginRight="@dimen/spacing_middle"
+    android:layout_marginTop="@dimen/spacing_medium"
+    android:clickable="true"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="2dp"
+   >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/lyt_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <View
+            android:id="@+id/Topline"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#ECEFF1" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:padding="@dimen/spacing_small"
+            android:layout_weight="1">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_gravity="center">
+                <com.mikhaellopez.circularimageview.CircularImageView
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/input_image"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/nouser"
+                    android:layout_gravity="center"
+                    app:civ_border_width="2dp"
+                    app:civ_shadow_color="@color/white"
+                    app:civ_fill_color="@color/white"
+                    app:civ_border_color="@color/grey_10"/>
+                <TextView
+                    android:id="@+id/receiptTypeTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|bottom"
+                    android:gravity="center|bottom"
+                    android:text="New"
+                    android:textSize="8sp" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="5dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/reg_dateTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="8sp"
+                        android:layout_gravity="left"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginRight="4dp"
+                        android:gravity="left"
+                        android:text="Receipt Date"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="8sp"
+                        android:layout_gravity="right|center_vertical"
+                        android:gravity="right|center_vertical"
+                        android:text="Receipt: "/>
+                    <TextView
+                        android:id="@+id/invoice_idTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="8sp"
+                        android:layout_gravity="right"
+                        android:gravity="right"
+                        android:text="1"/>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/contactTV"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="7028259696"
+                        android:layout_gravity="right"
+                        android:gravity="right"
+                        android:autoLink="phone"
+                        android:textSize="12sp"
+                        android:visibility="gone"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/nameTV"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:layout_weight="2"
+                        android:gravity="left"
+                        android:text="Atul Patil"
+                        android:textStyle="bold"
+                        android:textSize="14sp"
+                        android:textColor="@color/colorPrimary1" />
+                    <TextView
+                        android:id="@+id/paidTV"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColor="@color/colorPrimary1"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:layout_gravity="right"
+                        android:layout_marginLeft="2dp"
+                        android:gravity="right"
+                        android:text="@string/paid"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/paymentTypeTV"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:gravity="right"
+                            android:text="Cash"
+                            android:layout_marginLeft="2dp"
+                            android:textSize="9sp" />
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="end"
+                        android:gravity="end"
+                        >
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="9sp"
+                            android:layout_gravity="right|center_vertical"
+                            android:gravity="right|center_vertical"
+                            android:text="Balance: "/>
+                        <TextView
+                            android:id="@+id/balanceTV"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textSize="9sp"
+                            android:layout_gravity="left|center_vertical"
+                            android:layout_marginLeft="2dp"
+                            android:gravity="left|center_vertical"
+                            android:text="@string/followup_date"/>
+                        <TextView
+                            android:id="@+id/paymentDtlTV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="fhgjjk"
+                            android:textSize="9sp" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="9sp"
+                        android:layout_gravity="right|center_vertical"
+                        android:gravity="right|center_vertical"
+                        android:text="Next Payment Date: "/>
+                    <TextView
+                        android:id="@+id/next_payment_dateTV"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textSize="9sp"
+                        android:layout_gravity="left|center_vertical"
+                        android:layout_marginLeft="2dp"
+                        android:gravity="left|center_vertical"
+                        android:text="@string/followup_date"/>
+                    <TextView
+                        android:id="@+id/excecutive_nameTV"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right|center_vertical"
+                        android:gravity="right|center_vertical"
+                        android:text="excecutive"
+                        android:textSize="9sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+
+        </LinearLayout>
+        <View
+            android:id="@+id/leftline"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#ECEFF1" />
+
+    </LinearLayout>
+</android.support.v7.widget.CardView>

@@ -1,7 +1,7 @@
 package com.ndfitnessplus.Model;
 
 public class Spinner_List {
-    String id,name;
+    String id,name,finicialyear;
 
     public Spinner_List() {
     }
@@ -25,5 +25,13 @@ public class Spinner_List {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getFinicialyear() {
+        return finicialyear;
+    }
+
+    public void setFinicialyear(String finicialyear) {
+        this.finicialyear = finicialyear;
     }
 }

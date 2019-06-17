@@ -23,6 +23,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.ndfitnessplus.Activity.Notification.TodaysEnrollmentActivity;
 import com.ndfitnessplus.Adapter.EnquiryAdapter;
 import com.ndfitnessplus.Adapter.FollowupAdapter;
 import com.ndfitnessplus.Listeners.PaginationScrollListener;
@@ -33,6 +34,7 @@ import com.ndfitnessplus.Utility.ServerClass;
 import com.ndfitnessplus.Utility.ServiceUrls;
 import com.ndfitnessplus.Utility.SharedPrefereneceUtil;
 import com.ndfitnessplus.Utility.Utility;
+import com.ndfitnessplus.Utility.ViewDialog;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -67,6 +69,8 @@ public class FollowupsActivity extends AppCompatActivity implements SwipeRefresh
 
     //search
     private EditText inputsearch;
+    //Loading gif
+    ViewDialog viewDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,6 +92,7 @@ public class FollowupsActivity extends AppCompatActivity implements SwipeRefresh
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
+        viewDialog = new ViewDialog(this);
 
         nodata=findViewById(R.id.nodata);
 //        adapter = new EnquiryAdapter( new ArrayList<EnquiryList>(),FollowupsActivity.this);
@@ -265,14 +270,16 @@ public class FollowupsActivity extends AppCompatActivity implements SwipeRefresh
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            showProgressDialog();
+//            showProgressDialog();
+            viewDialog.showDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            dismissProgressDialog();
+//            dismissProgressDialog();
+            viewDialog.hideDialog();
             //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             FollowupDetails(response);
 
@@ -286,7 +293,8 @@ public class FollowupsActivity extends AppCompatActivity implements SwipeRefresh
             FollowupDetails.put("offset", String.valueOf(offset));
             Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getCompanyAutoId(FollowupsActivity.this)));
             FollowupDetails.put("action","show_followup_list");
-            String loginResult = ruc.sendPostRequest(ServiceUrls.LOGIN_URL, FollowupDetails);
+            String domainurl=SharedPrefereneceUtil.getDomainUrl(FollowupsActivity.this);
+            String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, FollowupDetails);
             //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
@@ -423,7 +431,8 @@ public class FollowupsActivity extends AppCompatActivity implements SwipeRefresh
             FollowupOffsetDetails.put("offset", String.valueOf(offset));
             Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getCompanyAutoId(FollowupsActivity.this)));
             FollowupOffsetDetails.put("action","show_enquiry");
-            String loginResult = ruc.sendPostRequest(ServiceUrls.LOGIN_URL, FollowupOffsetDetails);
+            String domainurl=SharedPrefereneceUtil.getDomainUrl(FollowupsActivity.this);
+            String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, FollowupOffsetDetails);
             //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }

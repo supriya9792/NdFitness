@@ -6,9 +6,14 @@ import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
+import android.provider.Settings;
+import android.provider.Telephony;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +21,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -39,6 +45,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.ndfitnessplus.Activity.Notification.EnquiryFollowupActivity;
+import com.ndfitnessplus.Activity.Notification.TodaysEnrollmentActivity;
 import com.ndfitnessplus.Adapter.AddEnquirySpinnerAdapter;
 import com.ndfitnessplus.Adapter.EnquiryAdapter;
 import com.ndfitnessplus.Adapter.FollowupAdapter;
@@ -51,6 +58,7 @@ import com.ndfitnessplus.Utility.ServerClass;
 import com.ndfitnessplus.Utility.ServiceUrls;
 import com.ndfitnessplus.Utility.SharedPrefereneceUtil;
 import com.ndfitnessplus.Utility.Utility;
+import com.ndfitnessplus.Utility.ViewDialog;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -72,6 +80,7 @@ public class EnquiryFollowupDetailsActivity extends AppCompatActivity {
     private LinearLayoutManager layoutManager;
     ProgressBar progressBar;
     String enquiry_id;
+    String Image;
     View nodata;
 
     //setting popup
@@ -84,7 +93,7 @@ public class EnquiryFollowupDetailsActivity extends AppCompatActivity {
 
 
     AddEnquirySpinnerAdapter callresponceadapter,ratingadapter;
-    String callResponce;
+    String callResponce="";
     String Rating="";
     TextView txtcallres,txtrating;
     String[] callresponce ;
@@ -95,6 +104,8 @@ public class EnquiryFollowupDetailsActivity extends AppCompatActivity {
     ImageButton phone,message;
     ImageView whatsapp;
     String Contact;
+    //Loading gif
+    ViewDialog viewDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -114,7 +125,9 @@ public class EnquiryFollowupDetailsActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
-        FloatingActionButton take_followup=findViewById(R.id.fab);
+       // FloatingActionButton take_followup=findViewById(R.id.fab);
+        viewDialog = new ViewDialog(this);
+
         nodata=findViewById(R.id.nodata);
         username=findViewById(R.id.username);
         mobilenumber=findViewById(R.id.mobilenumber);
@@ -132,13 +145,13 @@ public class EnquiryFollowupDetailsActivity extends AppCompatActivity {
             callResponce=intent.getStringExtra("call_response");
 
         }
-       // Toast.makeText(EnquiryFollowupDetailsActivity.this, enquiry_id+" rating :"+Rating+" call response" +callResponce, Toast.LENGTH_LONG).show();
+        //Toast.makeText(EnquiryFollowupDetailsActivity.this, enquiry_id+" rating :"+Rating+" call response" +callResponce, Toast.LENGTH_LONG).show();
 
         if (isOnline(EnquiryFollowupDetailsActivity.this)) {
             followupclass();// check login details are valid or not from server
         }
         else {
-            Toast.makeText(EnquiryFollowupDetailsActivity.this, R.string.internet_unavailable, Toast.LENGTH_LONG).show();
+          //  Toast.makeText(EnquiryFollowupDetailsActivity.this, R.string.internet_unavailable, Toast.LENGTH_LONG).show();
             android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(EnquiryFollowupDetailsActivity.this);
             builder.setMessage(R.string.internet_unavailable);
             builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
@@ -152,6 +165,17 @@ public class EnquiryFollowupDetailsActivity extends AppCompatActivity {
             dialog.show();
 
         }
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(EnquiryFollowupDetailsActivity.this, FullImageActivity.class);
+                intent.putExtra("image",Image);
+                intent.putExtra("contact",Contact);
+                intent.putExtra("id",enquiry_id);
+                intent.putExtra("user","Enquiry");
+                startActivity(intent);
+            }
+        });
         phone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -160,23 +184,91 @@ public class EnquiryFollowupDetailsActivity extends AppCompatActivity {
                 startActivity(dialIntent);
             }
         });
+//        message.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+////                Uri smsUri = Uri.parse("tel:"+Contact);
+////                Intent intent = new Intent(Intent.ACTION_VIEW, smsUri);
+////                intent.putExtra("sms_body", "Hi welcome to ndfitness");
+////                intent.setType("vnd.android-dir/mms-sms");
+////                startActivity(intent);
+//
+//                String defaultSmsPackage = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT
+//                        ? Telephony.Sms.getDefaultSmsPackage(EnquiryFollowupDetailsActivity.this)
+//                        : Settings.Secure.getString(getContentResolver(), "sms_default_application");
+//
+//                Intent smsIntent = getPackageManager().getLaunchIntentForPackage(defaultSmsPackage);
+//
+//                if (smsIntent == null) {
+//                    Uri smsUri = Uri.parse("smsto:"+Contact);
+//                     smsIntent = new Intent(Intent.ACTION_SENDTO,smsUri);
+//// Invokes only SMS/MMS clients
+//                    smsIntent.setType("vnd.android-dir/mms-sms");
+//// Specify the Phone Number
+//                    smsIntent.putExtra("address", Contact);
+//// Specify the Message
+//                    smsIntent.putExtra("sms_body", "Hi welcome to Ndfitness");
+//
+//// Shoot!
+//                    //startActivity(smsIntent);
+//                    //smsIntent = new Intent(Intent.ACTION_SENDTO,smsUri);
+//                    //smsIntent.addCategory(Intent.CATEGORY_DEFAULT);
+//                   // smsIntent.putExtra("sms_body", "Hi welcome to ndfitness");
+//                   // smsIntent.setType("vnd.android-dir/mms-sms");
+//                }
+//
+//                try {
+//                    startActivity(smsIntent);
+//                } catch (Exception e) {
+//                    Log.w(TAG, "Could not open SMS app", e);
+//
+//                    // Inform user
+//                    Toast.makeText(EnquiryFollowupDetailsActivity.this,
+//                            "Your SMS app could not be opened. Please open it manually.",
+//                            Toast.LENGTH_LONG
+//                    ).show();
+//                }
+//            }
+//        });
         message.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Uri smsUri = Uri.parse("tel:"+Contact);
-                Intent intent = new Intent(Intent.ACTION_VIEW, smsUri);
-                intent.putExtra("sms_body", "Hi welcome to ndfitness");
-                intent.setType("vnd.android-dir/mms-sms");
-                startActivity(intent);
-            }
-        });
-
-        take_followup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showCustomDialog();
             }
         });
+        whatsapp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                PackageManager pm=getPackageManager();
+                try {
+                   // Uri uri = Uri.parse("smsto:" + Contact);
+                    Uri uri = Uri.parse("whatsapp://send?phone=+" + Contact);
+                    Intent waIntent = new Intent(Intent.ACTION_VIEW,uri);
+                    //waIntent.setType("text/plain");
+                    String text = "YOUR TEXT HERE";
+
+                    PackageInfo info=pm.getPackageInfo("com.whatsapp", PackageManager.GET_META_DATA);
+                    //Check if package exists or not. If not then code
+                    //in catch block will be called
+                    waIntent.setPackage("com.whatsapp");
+
+                   // waIntent.putExtra(Intent.EXTRA_TEXT, text);
+                    startActivity(waIntent);
+
+                } catch (PackageManager.NameNotFoundException e) {
+                    Toast.makeText(EnquiryFollowupDetailsActivity.this, "WhatsApp not Installed", Toast.LENGTH_SHORT)
+                            .show();
+                }
+            }
+        });
+//        take_followup.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                showCustomDialog();
+//            }
+//        });
     }
     //Popup dialog
     //int i=0;
@@ -186,12 +278,15 @@ public class EnquiryFollowupDetailsActivity extends AppCompatActivity {
         dialog.setContentView(R.layout.take_followup_popup);
         dialog.setCancelable(true);
 
-        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-        lp.copyFrom(dialog.getWindow().getAttributes());
-        lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
-        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+//        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+//        lp.copyFrom(dialog.getWindow().getAttributes());
+//        lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
+//        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
         spinCallResponce = (Spinner)dialog. findViewById(R.id.spinner_call_res);
         spinRating = (Spinner)dialog. findViewById(R.id.spinner_rating);
+        txtcallres=(TextView)dialog.findViewById(R.id.txt_callres);
+        txtrating=(TextView)dialog.findViewById(R.id.txt_rating);
+
         inputComment = (EditText)dialog. findViewById(R.id.input_enquiry_comment);
         //final EditText veri_otp=(EditText)dialog.findViewById(R.id.et_otp);
         inputNextFollowupdate=(EditText)dialog.findViewById(R.id.input_next_foll_date);
@@ -226,9 +321,10 @@ public class EnquiryFollowupDetailsActivity extends AppCompatActivity {
                                                   int monthOfYear, int dayOfMonth) {
 
                                 inputNextFollowupdate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
-                               tiemPicker();
+                               //tiemPicker();
                             }
                         }, mYear, mMonth, mDay);
+                datePickerDialog.getDatePicker().setMinDate(c.getTimeInMillis());
                 datePickerDialog.show();
             }
         });
@@ -236,17 +332,35 @@ public class EnquiryFollowupDetailsActivity extends AppCompatActivity {
         ((Button) dialog.findViewById(R.id.btn_submit)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+              if( callResponce.equals(getResources().getString(R.string.call_res)) || Rating.equals(getResources().getString(R.string.rating)) ){
+                  Toast.makeText(getApplicationContext(), "Please select Call Response or Rating", Toast.LENGTH_SHORT).show();
+              }else{
+                  if(inputComment.getText().length()==0){
+                      Toast.makeText(getApplicationContext(), "Please enter Comment", Toast.LENGTH_SHORT).show();
+                  }else{
+                      if(inputNextFollowupdate.getText().length()==0) {
+                          if (!(Rating.equals("Not Interested") || Rating.equals("Converted"))) {
+                              Toast.makeText(getApplicationContext(), "Please select Next Followup Date " , Toast.LENGTH_SHORT).show();
+                          }else{
+                              takefollowupclass();
+                              dialog.dismiss();
+                          }
+                      }else{
+                          takefollowupclass();
+                          dialog.dismiss();
+                      }
+                  }
+              }
 
-                takefollowupclass();
               //  Toast.makeText(EnquiryFollowupDetailsActivity.this, "Mobile number verified successully", Toast.LENGTH_SHORT).show();
 
-                dialog.dismiss();
+
                 //Toast.makeText(getApplicationContext(), "Subcribe Clicked", Toast.LENGTH_SHORT).show();
             }
         });
 
         dialog.show();
-        dialog.getWindow().setAttributes(lp);
+        //dialog.getWindow().setAttributes(lp);
     }
     private void tiemPicker(){
         // Get Current Time
@@ -277,19 +391,25 @@ public class EnquiryFollowupDetailsActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 int index = parent.getSelectedItemPosition();
+                if (view != null) {
                 TextView tv = (TextView) view.findViewById(R.id.tv_Name);
+                view.setPadding(0, 0, 0, 0);
                 tv.setTextColor(getResources().getColor(R.color.black));
-                if(callResponce.equals(tv.getText().toString())){
-                    spinCallResponce.setSelection(index);
+                if(!(callResponce==null)) {
+                    if (callResponce.equals(tv.getText().toString())) {
+                        spinCallResponce.setSelection(index);
+                        txtcallres.setVisibility(View.VISIBLE);
+                    }
+                    callResponce = tv.getText().toString();
                 }
-                callResponce = tv.getText().toString();
-//            if(index==0){
-//                //txtcallres.setVisibility(View.VISIBLE);
-//                tv.setText(callResponce);
-//            }
+                if(index==0){
+                    txtcallres.setVisibility(View.VISIBLE);
+                    tv.setText(callResponce);
+                }
                 // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.black));
                 // Showing selected spinner item
                 //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+            }
             }
 
             @Override
@@ -300,7 +420,40 @@ public class EnquiryFollowupDetailsActivity extends AppCompatActivity {
         //Call Responce spinner adapter setting
         final  String[] ratingarray = getResources().getStringArray(R.array.rating_array);
         ArrayAdapter<String> spinnerArrayAdapter1 = new ArrayAdapter<String>(
-                this,R.layout.spinner_item,ratingarray );
+                this,R.layout.spinner_item,ratingarray ){
+            @Override
+            public boolean isEnabled(int position){
+                if(position == 0)
+                {
+                    // Disable the first item from Spinner
+                    // First item will be use for hint
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            @Override
+            public View getDropDownView(int position, View convertView,
+                                        ViewGroup parent) {
+                View view = super.getDropDownView(position, convertView, parent);
+                if(view !=null){
+                    TextView tv = (TextView) view.findViewById(R.id.tv_Name);
+                    if(position == 0){
+                        // Set the hint text color gray
+                        tv.setTextColor(Color.GRAY);
+                        tv.setText(getResources().getString(R.string.rating));
+                        // tv.setTextColor(Color.GRAY);
+                    }
+                    else {
+                        tv.setTextColor(Color.BLACK);
+                    }
+                }
+
+                return view;
+            }
+        };
         spinnerArrayAdapter1.setDropDownViewResource(R.layout.spinner_item);
         spinRating.setAdapter(spinnerArrayAdapter1);
         int spinnerPositionrating = spinnerArrayAdapter1.getPosition(Rating);
@@ -313,21 +466,33 @@ public class EnquiryFollowupDetailsActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 int index = parent.getSelectedItemPosition();
-                TextView tv = (TextView) view.findViewById(R.id.tv_Name);
-                tv.setTextColor(getResources().getColor(R.color.black));
-                if(Rating.equals(tv.getText().toString())){
-                    spinRating.setSelection(index);
+                if (view != null) {
+                    TextView tv = (TextView) view.findViewById(R.id.tv_Name);
+                    view.setPadding(0, 0, 0, 0);
+                    tv.setTextColor(getResources().getColor(R.color.black));
+                    if (!(Rating == null)) {
+                        if (Rating.equals(tv.getText().toString())) {
+                            spinRating.setSelection(index);
+                            txtrating.setVisibility(View.VISIBLE);
+                        }
+                        Rating = tv.getText().toString();
+                    }
+                    if (!(Rating == null)) {
+                        if (Rating.equals("Not Interested") || Rating.equals("Converted")) {
+                            //Toast.makeText(parent.getContext(), "no interetsed: ", Toast.LENGTH_LONG).show();
+                            inputNextFollowupdate.setText("");
+                            inputNextFollowupdate.setEnabled(false);
+                            inputNextFollowupdate.setKeyListener(null);
+                        } else {
+                            inputNextFollowupdate.setEnabled(true);
+                        }
+                    }
+                    if(index==0){
+                        txtrating.setVisibility(View.VISIBLE);
+                        tv.setText(Rating);
+                    }
                 }
-                Rating = tv.getText().toString();
-                if(Rating.equals("Not interested")){
 
-                    inputNextFollowupdate.setText(Utility.getCurrentDate());
-                    inputNextFollowupdate.setEnabled(false);
-                    inputNextFollowupdate.setKeyListener(null);
-                }
-//            if(index==0){
-//                tv.setText(Rating);
-//            }
                 // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.black));
                 // Showing selected spinner item
                 //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
@@ -342,18 +507,27 @@ public class EnquiryFollowupDetailsActivity extends AppCompatActivity {
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.home_action_menu, menu);
+        getMenuInflater().inflate(R.menu.more_info_and_home, menu);
         return true;
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_home:
-                Intent intent = new Intent(EnquiryFollowupDetailsActivity.this, MainActivity.class);
-                startActivity(intent);
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
+        int id = item.getItemId();
+
+        if (id == R.id.action_home) {
+            Intent intent = new Intent(EnquiryFollowupDetailsActivity.this, MainActivity.class);
+            startActivity(intent);
+        }else if(id ==R.id.action_more_info){
+            Intent intent = new Intent(EnquiryFollowupDetailsActivity.this, MoreInfoActivity.class);
+            intent.putExtra("enquiry_id",enquiry_id);
+            startActivity(intent);
+        }else if(id== android.R.id.home){
+        //Toast.makeText(this,"Navigation back pressed",Toast.LENGTH_SHORT).show();
+        // NavUtils.navigateUpFromSameTask(this);
+           finish();
+    }
+
+        return true;
     }
     private void showProgressDialog() {
         Log.v(TAG, String.format("showProgressDialog"));
@@ -386,14 +560,16 @@ public class EnquiryFollowupDetailsActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            showProgressDialog();
+            //showProgressDialog();
+            viewDialog.showDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            dismissProgressDialog();
+            //dismissProgressDialog();
+            viewDialog.hideDialog();
             //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             FollowupDetails(response);
 
@@ -407,7 +583,8 @@ public class EnquiryFollowupDetailsActivity extends AppCompatActivity {
             FollowupDetails.put("enquiry_id",enquiry_id );
             Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(EnquiryFollowupDetailsActivity.this)));
             FollowupDetails.put("action","show_enquiry_followup_details");
-            String loginResult = ruc.sendPostRequest(ServiceUrls.LOGIN_URL, FollowupDetails);
+            String domainurl=SharedPrefereneceUtil.getDomainUrl(EnquiryFollowupDetailsActivity.this);
+            String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, FollowupDetails);
             //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
@@ -461,7 +638,7 @@ public class EnquiryFollowupDetailsActivity extends AppCompatActivity {
                                     String NextFollowup_Date = jsonObj.getString("NextFollowupDate");
                                     String Auto_Id = jsonObj.getString("Enquiry_ID");
                                     String Followup_Date = jsonObj.getString("FollowupDate");
-                                    String Image = jsonObj.getString("Image");
+                                     Image = jsonObj.getString("Image");
                                     //  for (int j = 0; j < 5; j++) {
                                     Log.d(TAG, "next followup date: " + NextFollowup_Date);
                                     Log.d(TAG, "Followup date: " + Followup_Date);
@@ -473,6 +650,7 @@ public class EnquiryFollowupDetailsActivity extends AppCompatActivity {
                                     subList.setContact(Contact);
                                     subList.setCallRespond(CallResponse);
                                     subList.setExecutiveName(ExecutiveName);
+                                   // String cmt="Comment: "+Comment;
                                     subList.setComment(Comment);
                                     subList.setFollowupType(FollowupType);
                                     String next_foll_date= Utility.formatDate(NextFollowup_Date);
@@ -483,7 +661,8 @@ public class EnquiryFollowupDetailsActivity extends AppCompatActivity {
                                     username.setText(name);
                                     mobilenumber.setText(Contact);
                                     Image.replace("\"", "");
-                                    String url= ServiceUrls.IMAGES_URL + Image;
+                                    String domainurl= SharedPrefereneceUtil.getDomainUrl(EnquiryFollowupDetailsActivity.this);
+                                    String url= domainurl+ServiceUrls.IMAGES_URL + Image;
                                     Log.d(TAG, "image url: "+url );
                                     Glide.with(this).load(url).placeholder(R.drawable.nouser).into(imageView);
                                     Log.d(TAG, "converted Followup date: " + foll_date);
@@ -535,14 +714,16 @@ public class EnquiryFollowupDetailsActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            showProgressDialog();
+            //showProgressDialog();
+            viewDialog.showDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            dismissProgressDialog();
+           // dismissProgressDialog();
+            viewDialog.hideDialog();
             //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
             //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
             TakeFollowupDetails(response);
@@ -565,10 +746,11 @@ public class EnquiryFollowupDetailsActivity extends AppCompatActivity {
             Log.v(TAG, String.format("doInBackground :: callResponce = %s", callResponce));
             TakeFollowupDetails.put("next_foll_date",inputNextFollowupdate.getText().toString());
             Log.v(TAG, String.format("doInBackground :: next_foll_date = %s", inputNextFollowupdate.getText().toString()));
-            TakeFollowupDetails.put("exe_name",SharedPrefereneceUtil.getUserNm(EnquiryFollowupDetailsActivity.this));
-            Log.v(TAG, String.format("doInBackground :: exe_name = %s", SharedPrefereneceUtil.getUserNm(EnquiryFollowupDetailsActivity.this)));
+            TakeFollowupDetails.put("exe_name",SharedPrefereneceUtil.getName(EnquiryFollowupDetailsActivity.this));
+            Log.v(TAG, String.format("doInBackground :: exe_name = %s", SharedPrefereneceUtil.getName(EnquiryFollowupDetailsActivity.this)));
             TakeFollowupDetails.put("action", "update_enquiry_followup");
-            String loginResult2 = ruc.sendPostRequest(ServiceUrls.LOGIN_URL, TakeFollowupDetails);
+            String domainurl=SharedPrefereneceUtil.getDomainUrl(EnquiryFollowupDetailsActivity.this);
+            String loginResult2 = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, TakeFollowupDetails);
 
             Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult2));
             return loginResult2;
@@ -642,8 +824,9 @@ public class EnquiryFollowupDetailsActivity extends AppCompatActivity {
             Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> CallResponseDetails = new HashMap<String, String>();
             CallResponseDetails.put("action", "show_call_response_list");
+            String domainurl=SharedPrefereneceUtil.getDomainUrl(EnquiryFollowupDetailsActivity.this);
             //CallResponseloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(CallResponseloyee.this));
-            String loginResult = ruc.sendPostRequest(ServiceUrls.LOGIN_URL, CallResponseDetails);
+            String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, CallResponseDetails);
             Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
@@ -665,8 +848,9 @@ public class EnquiryFollowupDetailsActivity extends AppCompatActivity {
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
                     if (object != null) {
                         JSONArray jsonArrayCountry = object.getJSONArray("result");
-                         callresponce=new String[ jsonArrayCountry.length()];
+                         callresponce=new String[ jsonArrayCountry.length()+1];
                         if (jsonArrayCountry != null && jsonArrayCountry.length() > 0){
+                            callresponce[0]=getResources().getString(R.string.call_res);
                             for (int i = 0; i < jsonArrayCountry.length(); i++) {
                                 spinCallReslist = new Spinner_List();
                                 Log.v(TAG, "JsonResponseOpeartion ::");
@@ -683,14 +867,45 @@ public class EnquiryFollowupDetailsActivity extends AppCompatActivity {
                                     spinCallReslist.setName(CallResponse);
                                     spinCallReslist.setId(id);
 
-                                    callresponce[i]=CallResponse;
+
+                                    callresponce[i+1]=CallResponse;
 
 
 
                                 }
                             }
                             ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(
-                                    this,R.layout.spinner_item,callresponce );
+                                    this,R.layout.spinner_item,callresponce ){
+                                @Override
+                                public boolean isEnabled(int position){
+                                    if(position == 0)
+                                    {
+                                        // Disable the first item from Spinner
+                                        // First item will be use for hint
+                                        return false;
+                                    }
+                                    else
+                                    {
+                                        return true;
+                                    }
+                                }
+                                @Override
+                                public View getDropDownView(int position, View convertView,
+                                                            ViewGroup parent) {
+                                    View view = super.getDropDownView(position, convertView, parent);
+                                    TextView tv = (TextView) view.findViewById(R.id.tv_Name);
+                                    if(position == 0){
+                                        // Set the hint text color gray
+                                        tv.setTextColor(Color.GRAY);
+                                        tv.setText(getResources().getString(R.string.call_res));
+                                        // tv.setTextColor(Color.GRAY);
+                                    }
+                                    else {
+                                        tv.setTextColor(Color.BLACK);
+                                    }
+                                    return view;
+                                }
+                            };
 
                             spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_item);
                             spinCallResponce.setAdapter(spinnerArrayAdapter);
@@ -713,13 +928,28 @@ public class EnquiryFollowupDetailsActivity extends AppCompatActivity {
         }
     }
     @Override
-    public boolean onSupportNavigateUp(){
-        finish();
-        return true;
+    protected void onResume() {
+        super.onResume();
+
     }
 
     @Override
-    public void onBackPressed() {
+    protected void onRestart() {
+        super.onRestart();
+       // swipeRefresh.setRefreshing(false);
+        Intent intent=new Intent(EnquiryFollowupDetailsActivity.this,EnquiryFollowupDetailsActivity.class);
+        intent.putExtra("enquiry_id",enquiry_id);
+        intent.putExtra("rating",Rating);
+        intent.putExtra("call_response",callResponce);
+        startActivity(intent);
+    }
+    @Override
+    public boolean onSupportNavigateUp(){
        finish();
+        return true;
+    }
+    @Override
+    public void onBackPressed() {
+      finish();
     }
 }

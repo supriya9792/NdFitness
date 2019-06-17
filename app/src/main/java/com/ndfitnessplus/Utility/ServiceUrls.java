@@ -12,12 +12,13 @@ public class ServiceUrls {
     //public static String  root_path = "http://www.nobletree.in/GoatTalkAdmin/interface/api.php";
     // public static String site_path =  "http://www.nobletree.in/GoatTalkAdmin/interface/";
      //Domain url =newgymtime.ndgymsoftware.com/AndroidApi
-//  public   static String domainurl=SharedPrefereneceUtil.getDomainUrl((Activity) context);
+    //public   static String domainurl=SharedPrefereneceUtil.getDomainUrl((Activity) context);
    // public static String site_path =  "http://192.168.133.2:8080/";//mysql database
    // public static String root_path =  site_path+"api.php";
     //public static String site_path =  "http://192.168.133.2:81/api/";
    // public static String site_path =  "http://a.ndgymsoftware.com/";
-    public static String site_path =  "http://gymtimenew.ndgymsoftware.com/";
+    //public static String site_path =  "http://gymtimenew.ndgymsoftware.com/";
+    public static String site_path =  "/";
     public static String root_path =  site_path+"AndroidApi/sql_server_api.php";
     public static String LOGIN_URL = root_path;
     // static String LOGIN_URL = site_path;

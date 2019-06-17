@@ -1,7 +1,9 @@
 package com.ndfitnessplus.Model;
 
-public class FollowupList {
-    String ID , name ,ExecutiveName, FollowupDate, Comment ,FollowupType, Rating, CallRespond, Contact, NextFollowupDate;
+import java.io.Serializable;
+
+public class FollowupList implements Serializable {
+    String ID,name,ExecutiveName, FollowupDate, Comment ,FollowupType, Rating, CallRespond, Contact, NextFollowupDate,Image;
 
     public FollowupList() {
     }
@@ -98,5 +100,13 @@ public class FollowupList {
 
     public void setNextFollowupDate(String nextFollowupDate) {
         NextFollowupDate = nextFollowupDate;
+    }
+
+    public String getImage() {
+        return Image;
+    }
+
+    public void setImage(String image) {
+        Image = image;
     }
 }

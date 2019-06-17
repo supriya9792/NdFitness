@@ -1,19 +1,19 @@
 package com.ndfitnessplus.Model;
 
 public class StaffBirthdayList {
-    String ID , name ,Gender ,BirthDate ,Contact ,Address , Status;
+    String ID , name ,Gender ,BirthDate ,Contact ,Address , Designation,JoiningDate;
 
     public StaffBirthdayList() {
     }
 
-    public StaffBirthdayList(String ID, String name, String gender, String birthDate, String contact, String address, String status) {
+    public StaffBirthdayList(String ID, String name, String gender, String birthDate, String contact, String address, String designation) {
         this.ID = ID;
         this.name = name;
         Gender = gender;
         BirthDate = birthDate;
         Contact = contact;
         Address = address;
-        Status = status;
+        Designation = designation;
     }
 
     public String getID() {
@@ -64,11 +64,19 @@ public class StaffBirthdayList {
         Address = address;
     }
 
-    public String getStatus() {
-        return Status;
+    public String getDesignation() {
+        return Designation;
     }
 
-    public void setStatus(String status) {
-        Status = status;
+    public void setDesignation(String designation) {
+        Designation = designation;
+    }
+
+    public String getJoiningDate() {
+        return JoiningDate;
+    }
+
+    public void setJoiningDate(String joiningDate) {
+        JoiningDate = joiningDate;
     }
 }

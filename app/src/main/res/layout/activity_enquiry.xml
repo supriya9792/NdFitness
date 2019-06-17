@@ -102,6 +102,7 @@
                 android:id="@+id/swipeRefresh"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+
               >
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recycler_view"
@@ -121,10 +122,11 @@
                 android:tint="@color/white"
                 app:backgroundTint="@color/colorPrimary"
                 app:srcCompat="@drawable/ic_add" />
+            <include layout="@layout/no_data"/>
         </FrameLayout>
 
 
-        <include layout="@layout/no_data"/>
+
         <include layout="@layout/no_internet_connection"/>
     </LinearLayout>
 </LinearLayout>

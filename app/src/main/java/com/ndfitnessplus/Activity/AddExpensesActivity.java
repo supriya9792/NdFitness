@@ -10,6 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -17,6 +19,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -25,6 +28,7 @@ import android.widget.Toast;
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
 import com.basgeekball.awesomevalidation.utility.RegexTemplate;
+import com.ndfitnessplus.Activity.Notification.TodaysEnrollmentActivity;
 import com.ndfitnessplus.Adapter.AddEnquirySpinnerAdapter;
 import com.ndfitnessplus.Adapter.SpinnerAdapter;
 import com.ndfitnessplus.Model.Spinner_List;
@@ -32,6 +36,7 @@ import com.ndfitnessplus.R;
 import com.ndfitnessplus.Utility.ServerClass;
 import com.ndfitnessplus.Utility.ServiceUrls;
 import com.ndfitnessplus.Utility.SharedPrefereneceUtil;
+import com.ndfitnessplus.Utility.ViewDialog;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,7 +46,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
-public class AddExpensesActivity extends AppCompatActivity implements  View.OnClickListener {
+public class AddExpensesActivity extends AppCompatActivity  {
     private EditText inputExepnseDate, inputTitleExpense,inputPaymentDetails, inputAmount, inputDisc;
     private TextInputLayout inputLayoutExepnseDate,inputLayoutTitleExpense,inputLayoutPaymentDetails, inputLayoutAmount,inputLayoutDisc;
     private Button submit,close;
@@ -58,6 +63,8 @@ public class AddExpensesActivity extends AppCompatActivity implements  View.OnCl
     String expenseGroup,paymentType;
     TextView txtExpenseGrp,txtPaymentType;
     private AwesomeValidation awesomeValidation;
+    //Loading gif
+    ViewDialog viewDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,24 +96,18 @@ public class AddExpensesActivity extends AppCompatActivity implements  View.OnCl
 
         txtExpenseGrp=findViewById(R.id.txt_exp_group);
         txtPaymentType=findViewById(R.id.txt_payment_type);
+        viewDialog = new ViewDialog(this);
 
         //defining AwesomeValidation object
         awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
 
-        awesomeValidation.addValidation(this, R.id.input_exp_date, RegexTemplate.NOT_EMPTY, R.string.err_msg_next_foll_date);
-        awesomeValidation.addValidation(this, R.id.input_ttl_of_expenses,RegexTemplate.NOT_EMPTY, R.string.err_msg_budget);
-        awesomeValidation.addValidation(this, R.id.input_payment_details,RegexTemplate.NOT_EMPTY, R.string.err_msg_budget);
-        awesomeValidation.addValidation(this, R.id.input_amt,RegexTemplate.NOT_EMPTY, R.string.err_msg_budget);
-        awesomeValidation.addValidation(this, R.id.input_payment_disc,RegexTemplate.NOT_EMPTY, R.string.err_msg_budget);
+        awesomeValidation.addValidation(this, R.id.input_exp_date, RegexTemplate.NOT_EMPTY, R.string.err_msg_expe_date);
+        awesomeValidation.addValidation(this, R.id.input_ttl_of_expenses,RegexTemplate.NOT_EMPTY, R.string.err_msg_ttl_of_expense);
+        awesomeValidation.addValidation(this, R.id.input_payment_details,RegexTemplate.NOT_EMPTY, R.string.err_msg_payment_dtl);
+        awesomeValidation.addValidation(this, R.id.input_amt,RegexTemplate.NOT_EMPTY, R.string.err_msg_amt);
+        awesomeValidation.addValidation(this, R.id.input_payment_disc,RegexTemplate.NOT_EMPTY, R.string.err_msg_payment_disc);
 
-        submit=(Button)findViewById(R.id.btn_submit);
-        close=(Button)findViewById(R.id.btn_close);
-        close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+
         inputExepnseDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -132,7 +133,7 @@ public class AddExpensesActivity extends AppCompatActivity implements  View.OnCl
             }
         });
 
-        submit.setOnClickListener(this);
+
         //api for binding masters
         ExpenseGroupClass();
         PaymenttypeClass();
@@ -144,11 +145,22 @@ public class AddExpensesActivity extends AppCompatActivity implements  View.OnCl
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 int index = parent.getSelectedItemPosition();
-                TextView tv = (TextView) view.findViewById(R.id.tv_Name);
-                tv.setTextColor(getResources().getColor(R.color.black));
-                expenseGroup = tv.getText().toString();
-                if(index!=0){
-                    txtExpenseGrp.setVisibility(View.VISIBLE);
+                if(view != null) {
+                    TextView tv = (TextView) view.findViewById(R.id.tv_Name);
+                    View layout = (View) view.findViewById(R.id.layout);
+                    layout.setPadding(0, 0, 0, 0);
+                    if (index == 0) {
+                        tv.setTextColor((Color.GRAY));
+                    } else {
+                        tv.setTextColor((Color.BLACK));
+                    }
+                    expenseGroup = tv.getText().toString();
+                    if (index != 0) {
+                        txtExpenseGrp.setVisibility(View.VISIBLE);
+                    }
+                    if (!expenseGroup.equals(getResources().getString(R.string.exepnses_group))) {
+                        //awesomeValidation.addValidation(AddEnquiryActivity.this, R.id.spinner_occupation,RegexTemplate.NOT_EMPTY, R.string.err_msg_next_foll_date);
+                    }
                 }
                 // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.black));
                 // Showing selected spinner item
@@ -167,11 +179,22 @@ public class AddExpensesActivity extends AppCompatActivity implements  View.OnCl
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 int index = parent.getSelectedItemPosition();
-                TextView tv = (TextView) view.findViewById(R.id.tv_Name);
-                tv.setTextColor(getResources().getColor(R.color.black));
-                paymentType = tv.getText().toString();
-                if(index!=0){
-                    txtPaymentType.setVisibility(View.VISIBLE);
+                if(view != null) {
+                    TextView tv = (TextView) view.findViewById(R.id.tv_Name);
+                    View layout = (View) view.findViewById(R.id.layout);
+                    layout.setPadding(0, 0, 0, 0);
+                    if (index == 0) {
+                        tv.setTextColor((Color.GRAY));
+                    } else {
+                        tv.setTextColor((Color.BLACK));
+                    }
+                    paymentType = tv.getText().toString();
+                    if (index != 0) {
+                        txtPaymentType.setVisibility(View.VISIBLE);
+                    }
+                    if (!paymentType.equals(getResources().getString(R.string.payment_type))) {
+                        //awesomeValidation.addValidation(AddEnquiryActivity.this, R.id.spinner_occupation,RegexTemplate.NOT_EMPTY, R.string.err_msg_next_foll_date);
+                    }
                 }
                 // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.black));
                 // Showing selected spinner item
@@ -184,6 +207,23 @@ public class AddExpensesActivity extends AppCompatActivity implements  View.OnCl
             }
         });
 
+    }
+    //************ Submit button on action bar ***********
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.save_enquiry_menu, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_save_enquiry) {
+
+            submitForm();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
     private void showProgressDialog() {
         Log.v(TAG, String.format("showProgressDialog"));
@@ -207,10 +247,7 @@ public class AddExpensesActivity extends AppCompatActivity implements  View.OnCl
         ru.execute("5");
     }
 
-    @Override
-    public void onClick(View v) {
-        submitForm();
-    }
+
     private void submitForm() {
         //first validate the form then move ahead
         //if this becomes true that means validation is successfull
@@ -260,7 +297,8 @@ public class AddExpensesActivity extends AppCompatActivity implements  View.OnCl
             HashMap<String, String> ExpenseGroupDetails = new HashMap<String, String>();
             ExpenseGroupDetails.put("action", "show_expense_group_list");
             //ExpenseGrouployeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(ExpenseGrouployee.this));
-            String loginResult = ruc.sendPostRequest(ServiceUrls.LOGIN_URL, ExpenseGroupDetails);
+            String domainurl=SharedPrefereneceUtil.getDomainUrl(AddExpensesActivity.this);
+            String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, ExpenseGroupDetails);
             Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
@@ -286,7 +324,7 @@ public class AddExpensesActivity extends AppCompatActivity implements  View.OnCl
                         JSONArray jsonArrayCountry = object.getJSONArray("result");
                         expensegrpArrayList.clear();
                         expensegrplist = new Spinner_List();
-                        expensegrplist.setName(getResources().getString(R.string.prompt_expense_grp));
+                        expensegrplist.setName(getResources().getString(R.string.exepnses_group));
                         expensegrpArrayList.add(0,expensegrplist);
                         if (jsonArrayCountry != null && jsonArrayCountry.length() > 0){
                             for (int i = 0; i < jsonArrayCountry.length(); i++) {
@@ -391,7 +429,8 @@ public class AddExpensesActivity extends AppCompatActivity implements  View.OnCl
             HashMap<String, String> PaymentTypeDetails = new HashMap<String, String>();
             PaymentTypeDetails.put("action", "show_payment_type_list");
             //PaymentTypeloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(PaymentTypeloyee.this));
-            String loginResult = ruc.sendPostRequest(ServiceUrls.LOGIN_URL, PaymentTypeDetails);
+            String domainurl=SharedPrefereneceUtil.getDomainUrl(AddExpensesActivity.this);
+            String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, PaymentTypeDetails);
             Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
@@ -417,7 +456,7 @@ public class AddExpensesActivity extends AppCompatActivity implements  View.OnCl
                         JSONArray jsonArrayCountry = object.getJSONArray("result");
                         paymentTypeArrayList.clear();
                         paymentTypeList = new Spinner_List();
-                        paymentTypeList.setName(getResources().getString(R.string.prompt_payment_type));
+                        paymentTypeList.setName(getResources().getString(R.string.payment_type));
                         paymentTypeArrayList.add(0,paymentTypeList);
                         if (jsonArrayCountry != null && jsonArrayCountry.length() > 0){
                             for (int i = 0; i < jsonArrayCountry.length(); i++) {
@@ -509,14 +548,16 @@ public class AddExpensesActivity extends AppCompatActivity implements  View.OnCl
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            showProgressDialog();
+            //showProgressDialog();
+            viewDialog.showDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            dismissProgressDialog();
+           // dismissProgressDialog();
+            viewDialog.hideDialog();
             //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
             //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
             AddExpenseDetails(response);
@@ -537,7 +578,8 @@ public class AddExpensesActivity extends AppCompatActivity implements  View.OnCl
             AddExpenseDetails.put("payment_type",paymentType);
             AddExpenseDetails.put("disc",inputDisc.getText().toString());
             AddExpenseDetails.put("action", "add_expenses");
-            String loginResult2 = ruc.sendPostRequest(ServiceUrls.LOGIN_URL, AddExpenseDetails);
+            String domainurl=SharedPrefereneceUtil.getDomainUrl(AddExpensesActivity.this);
+            String loginResult2 = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, AddExpenseDetails);
 
             Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult2));
             return loginResult2;
@@ -578,5 +620,14 @@ public class AddExpensesActivity extends AppCompatActivity implements  View.OnCl
             e.printStackTrace();
         }
     }
+    @Override
+    public boolean onSupportNavigateUp(){
+        finish();
+        return true;
+    }
 
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
 }

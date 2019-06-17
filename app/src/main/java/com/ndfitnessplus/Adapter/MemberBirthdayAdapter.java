@@ -3,6 +3,8 @@ package com.ndfitnessplus.Adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.ndfitnessplus.Activity.MemberDetailsActivity;
 import com.ndfitnessplus.Model.MemberDataList;
 import com.ndfitnessplus.R;
 
@@ -33,11 +36,29 @@ public class MemberBirthdayAdapter extends RecyclerView.Adapter<MemberBirthdayAd
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        final MemberDataList enq = arrayList.get(position);
         holder.nameTV.setText(arrayList.get(position).getName());
-//        holder.contactTV.setText(arrayList.get(position).getContact());
+        holder.contactTV.setText(arrayList.get(position).getContact());
         holder.birth_dateTV.setText(arrayList.get(position).getBirthDate());
-        holder.statusTV.setText(arrayList.get(position).getStatus());
+        holder.regDateTV.setText(arrayList.get(position).getRegistrationDate());
+        if(enq.getStatus().equals("Active")){
+
+            holder.statusTV.setColorFilter(ContextCompat.getColor(context, R.color.green), android.graphics.PorterDuff.Mode.SRC_IN);
+        }else{
+           holder.statusTV.setColorFilter(ContextCompat.getColor(context, R.color.red), android.graphics.PorterDuff.Mode.SRC_IN);
+        }
         holder.excecutive_nameTV.setText(arrayList.get(position).getExecutiveName());
+        holder.layoutp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String   member_id=enq.getID();
+                Intent intent=new Intent(context, MemberDetailsActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("filter_array_list", enq);
+                intent.putExtra("BUNDLE",bundle);
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -46,18 +67,21 @@ public class MemberBirthdayAdapter extends RecyclerView.Adapter<MemberBirthdayAd
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView nameTV,birth_dateTV,contactTV,statusTV,excecutive_nameTV;
-        ImageView contactIV;
-
+        TextView nameTV,birth_dateTV,contactTV,excecutive_nameTV,regDateTV;
+        ImageView statusTV;
+        View layoutp;
         public ViewHolder(View itemView) {
             super(itemView);
 
             nameTV = (TextView) itemView.findViewById(R.id.nameTV);
             birth_dateTV = (TextView) itemView.findViewById(R.id.birth_dateTV);
-            contactIV = (ImageView) itemView.findViewById(R.id.contactIV);
-            contactIV.setOnClickListener(this);
-            statusTV = (TextView) itemView.findViewById(R.id.statusTV);
+            contactTV = (TextView) itemView.findViewById(R.id.contactTV);
+
+            statusTV = (ImageView) itemView.findViewById(R.id.status);
             excecutive_nameTV = (TextView) itemView.findViewById(R.id.excecutive_nameTV);
+            regDateTV = (TextView) itemView.findViewById(R.id.reg_dateTV);
+
+            layoutp=(View)itemView.findViewById(R.id.layout);
         }
 
         @Override

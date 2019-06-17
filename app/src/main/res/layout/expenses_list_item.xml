@@ -4,7 +4,13 @@
     android:id="@+id/cardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/spacing_medium"
+    android:layout_marginLeft="@dimen/spacing_middle"
+    android:layout_marginRight="@dimen/spacing_middle"
+    android:layout_marginTop="@dimen/spacing_medium"
     android:clickable="true"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="2dp"
     android:focusable="true"
     android:foreground="?android:attr/selectableItemBackground">
 
@@ -13,21 +19,21 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
         <View
-            android:id="@+id/Topline"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="10dp"
-            android:background="#ECEFF1" />
+        android:id="@+id/Topline"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="10dp"
+        android:background="#ECEFF1" />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1">
 
-            <View
-                android:layout_width="20dp"
-                android:layout_height="match_parent"
-                android:background="@drawable/user_top"/>
+            <!--<View-->
+                <!--android:layout_width="20dp"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:background="@drawable/user_top"/>-->
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -49,7 +55,8 @@
                         android:layout_weight="2"
                         android:gravity="left"
                         android:text="@string/ttl_of_exepnses"
-                        android:textSize="12sp"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
                         android:textColor="@android:color/black" />
 
                     <TextView
@@ -59,7 +66,9 @@
                         android:layout_weight="1"
                         android:layout_gravity="right"
                         android:gravity="right"
-                        android:textSize="10sp" />
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        android:textSize="12sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -73,7 +82,7 @@
                         android:layout_weight="1"
                         android:layout_gravity="right"
                         android:gravity="right"
-                        android:textSize="10sp" />
+                        android:textSize="9sp" />
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -87,7 +96,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Expense Date :"
-                            android:textSize="10sp"
+                            android:textSize="9sp"
                             android:layout_gravity="left"
                             android:textStyle="bold"
                             android:gravity="left" />
@@ -99,7 +108,7 @@
                             android:layout_gravity="right"
                             android:gravity="right"
                             android:layout_marginLeft="2dp"
-                            android:textSize="10sp" />
+                            android:textSize="9sp" />
                     </LinearLayout>
 
                     <TextView
@@ -110,7 +119,7 @@
                         android:layout_gravity="right"
                         android:gravity="right"
                         android:text="excecutive"
-                        android:textSize="10sp" />
+                        android:textSize="9sp" />
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -125,8 +134,8 @@
                         android:layout_weight="2"
                         android:gravity="left"
                         android:text="@string/payment_details"
-                        android:textSize="10sp"
-                        android:textColor="@android:color/black" />
+                        android:textSize="9sp"
+                         />
 
                     <TextView
                         android:id="@+id/paymentTypeTV"
@@ -135,7 +144,7 @@
                         android:layout_weight="1"
                         android:layout_gravity="right"
                         android:gravity="right"
-                        android:textSize="10sp" />
+                        android:textSize="9sp" />
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -148,15 +157,15 @@
                         android:text="@string/exepnses_group"
                         android:layout_gravity="right"
                         android:gravity="right"
-                        android:textSize="10sp" />
+                        android:textSize="9sp" />
                 </LinearLayout>
 
             </LinearLayout>
 
-            <View
-                android:layout_width="10dp"
-                android:layout_height="match_parent"
-                android:background="@drawable/user_top"/>
+            <!--<View-->
+                <!--android:layout_width="10dp"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:background="@drawable/user_top"/>-->
 
         </LinearLayout>
         <View

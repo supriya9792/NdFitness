@@ -1,20 +1,25 @@
 package com.ndfitnessplus.Model;
 
-public class MemberDataList {
-    String ID , name ,Gender ,BirthDate ,Contact ,Address , Status, ExecutiveName;
+import java.io.Serializable;
+
+public class MemberDataList implements Serializable {
+    String ID , name ,Gender ,BirthDate ,Contact ,Occupation , Status, ExecutiveName,image, blodGroup,Email,FollowupType,RegistrationDate;
 
     public MemberDataList() {
     }
 
-    public MemberDataList(String ID, String name, String gender, String birthDate, String contact, String address, String status, String executiveName) {
+    public MemberDataList(String ID, String name, String gender, String birthDate, String contact, String occupation, String status, String executiveName, String image, String blodGroup, String email) {
         this.ID = ID;
         this.name = name;
         Gender = gender;
         BirthDate = birthDate;
         Contact = contact;
-        Address = address;
+        Occupation = occupation;
         Status = status;
         ExecutiveName = executiveName;
+        this.image = image;
+        this.blodGroup = blodGroup;
+        Email = email;
     }
 
     public String getID() {
@@ -57,12 +62,12 @@ public class MemberDataList {
         Contact = contact;
     }
 
-    public String getAddress() {
-        return Address;
+    public String getOccupation() {
+        return Occupation;
     }
 
-    public void setAddress(String address) {
-        Address = address;
+    public void setOccupation(String occupation) {
+        Occupation = occupation;
     }
 
     public String getStatus() {
@@ -79,5 +84,45 @@ public class MemberDataList {
 
     public void setExecutiveName(String executiveName) {
         ExecutiveName = executiveName;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getBlodGroup() {
+        return blodGroup;
+    }
+
+    public void setBlodGroup(String blodGroup) {
+        this.blodGroup = blodGroup;
+    }
+
+    public String getEmail() {
+        return Email;
+    }
+
+    public void setEmail(String email) {
+        Email = email;
+    }
+
+    public String getFollowupType() {
+        return FollowupType;
+    }
+
+    public void setFollowupType(String followupType) {
+        FollowupType = followupType;
+    }
+
+    public String getRegistrationDate() {
+        return RegistrationDate;
+    }
+
+    public void setRegistrationDate(String registrationDate) {
+        RegistrationDate = registrationDate;
     }
 }

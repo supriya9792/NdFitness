@@ -1,6 +1,7 @@
 package com.ndfitnessplus.Activity;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,9 +9,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ndfitnessplus.Adapter.BranchSelectionAdapter;
 import com.ndfitnessplus.Model.BranchList;
@@ -18,6 +23,7 @@ import com.ndfitnessplus.R;
 import com.ndfitnessplus.Utility.ServerClass;
 import com.ndfitnessplus.Utility.ServiceUrls;
 import com.ndfitnessplus.Utility.SharedPrefereneceUtil;
+import com.ndfitnessplus.Utility.ViewDialog;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,7 +45,8 @@ public class BranchSelectionActivity extends AppCompatActivity {
     ArrayList<BranchList> branchList;
     public static String TAG = BranchSelectionActivity.class.getName();
     private ProgressDialog pd;
-
+    //Loading gif
+    ViewDialog viewDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +57,7 @@ public class BranchSelectionActivity extends AppCompatActivity {
     private void initToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(getResources().getString(R.string.select_domain));
+        getSupportActionBar().setTitle(getResources().getString(R.string.wel_gymtime));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
     private  void initComponent(){
@@ -59,11 +66,36 @@ public class BranchSelectionActivity extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
-
+        viewDialog = new ViewDialog(this);
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
         String currentDateandTime = sdf.format(new Date());
         todayDate.setText(currentDateandTime);
         branchclass();
+    }
+    //************ Submit button on action bar ***********
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_logout, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_logout) {
+            SharedPrefereneceUtil.LogOut(BranchSelectionActivity.this);
+            Intent intent=new Intent(BranchSelectionActivity.this,LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
+            return true;
+        }else  if (id == R.id.action_refresh) {
+
+            Intent intent=new Intent(BranchSelectionActivity.this,BranchSelectionActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
     private void showProgressDialog() {
         Log.v(TAG, String.format("showProgressDialog"));
@@ -95,14 +127,16 @@ public class BranchSelectionActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            showProgressDialog();
-        }
+            //showProgressDialog();
+            viewDialog.showDialog();
+    }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            dismissProgressDialog();
+            //dismissProgressDialog();
+            viewDialog.hideDialog();
             //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             BranchSelctionDetails(response);
 
@@ -115,7 +149,8 @@ public class BranchSelectionActivity extends AppCompatActivity {
             BranchSelctionDetails.put("Company_Id", SharedPrefereneceUtil.getCompanyAutoId(BranchSelectionActivity.this));
             Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getCompanyAutoId(BranchSelectionActivity.this)));
             BranchSelctionDetails.put("action","show_branch_details");
-            String loginResult = ruc.sendPostRequest(ServiceUrls.LOGIN_URL, BranchSelctionDetails);
+            String domainurl=SharedPrefereneceUtil.getDomainUrl(BranchSelectionActivity.this);
+            String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, BranchSelctionDetails);
             //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
@@ -149,11 +184,19 @@ public class BranchSelectionActivity extends AppCompatActivity {
                                     String branch = jsonObj.getString("Branch");
                                     String Contact = jsonObj.getString("Contact");
                                     String Branch_id = jsonObj.getString("Branch_id");
+                                    String Status = jsonObj.getString("Status");
+                                    String Logo = jsonObj.getString("Logo");
+                                    String Todays_Collection = jsonObj.getString("Todays_Collection");
+                                    String Month_Collection = jsonObj.getString("Month_Collection");
 
                                    subList.setBranchName(branch_name);
                                    subList.setCity(branch);
                                    subList.setContactNumber(Contact);
                                    subList.setBranchId(Branch_id);
+                                   subList.setStatus(Status);
+                                   subList.setImage(Logo);
+                                   subList.setDailyCollection(Todays_Collection);
+                                   subList.setMonthlyCollection(Month_Collection);
 
                                     //Toast.makeText(MainActivity.this, "j "+j, Toast.LENGTH_SHORT).show();
                                     subListArrayList.add(subList);
@@ -167,7 +210,7 @@ public class BranchSelectionActivity extends AppCompatActivity {
                         }
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
-                    //nodata.setVisibility(View.VISIBLE);
+                   // nodata.setVisibility(View.VISIBLE);
                     recyclerView.setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
@@ -176,4 +219,10 @@ public class BranchSelectionActivity extends AppCompatActivity {
             }
         }
     }
+//    @Override
+//    public boolean onSupportNavigateUp(){
+//        finish();
+//       // moveTaskToBack(true);
+//        return true;
+//    }
 }

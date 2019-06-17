@@ -15,24 +15,13 @@
         <include layout="@layout/toolbar"/>
 
     </android.support.design.widget.AppBarLayout>
-    <ScrollView
-        android:id="@+id/nested_scroll_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical">
-        <!--<ImageView-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:foreground="@color/overlay_dark_10"-->
-            <!--android:scaleType="fitXY"-->
-            <!--android:src="@drawable/pinkabstract" />-->
-        <android.support.design.widget.CoordinatorLayout
+
+
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:gravity="center_vertical"
             >
             <LinearLayout
                 android:layout_width="fill_parent"
@@ -45,6 +34,22 @@
                 android:fitsSystemWindows="true"
                 >
 
+         <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:layout_width="@dimen/spacing_mxlarge"
+                        android:layout_height="@dimen/spacing_mxlarge"
+                        android:layout_marginTop="@dimen/spacing_mlarge"
+                        android:background="@android:color/transparent"
+                        android:tint="@color/grey_60"
+                        app:srcCompat="@drawable/ic_event" />
+
+                    <View
+                        android:layout_width="@dimen/spacing_large"
+                        android:layout_height="match_parent" />
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/input_layout_exp_date"
                     android:layout_width="match_parent"
@@ -57,18 +62,42 @@
                         android:inputType="number"
                         android:textColor="@color/black"
                         android:textColorHint="@color/black"
-                        android:backgroundTint="@color/black"
                         android:layout_height="wrap_content"
                         android:hint="@string/expense_date" />
-                </android.support.design.widget.TextInputLayout>
+                 </android.support.design.widget.TextInputLayout>
+          </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:layout_width="@dimen/spacing_mxlarge"
+                        android:layout_height="@dimen/spacing_mxlarge"
+                        android:layout_marginTop="@dimen/spacing_mlarge"
+                        android:background="@android:color/transparent"
+                        android:tint="@color/grey_60"
+                        app:srcCompat="@drawable/ic_group_black_24dp" />
+
+                    <View
+                        android:layout_width="@dimen/spacing_large"
+                        android:layout_height="match_parent" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="bottom">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/exepnses_group"
-                    android:textSize="14sp"
+                    android:textSize="11sp"
+                    android:paddingTop="@dimen/spacing_medium"
+                    android:textColor="@android:color/darker_gray"
                     android:visibility="gone"
                     android:id="@+id/txt_exp_group"
-                    android:textColor="@color/black"
+
                     />
                 <Spinner
                     android:id="@+id/spinner_exp_group"
@@ -82,6 +111,24 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/black" />
+              </LinearLayout>
+         </LinearLayout>
+         <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:layout_width="@dimen/spacing_mxlarge"
+                        android:layout_height="@dimen/spacing_mxlarge"
+                        android:layout_marginTop="@dimen/spacing_mlarge"
+                        android:background="@android:color/transparent"
+                        android:tint="@color/grey_60"
+                        app:srcCompat="@drawable/ic_local_atm" />
+
+                    <View
+                        android:layout_width="@dimen/spacing_large"
+                        android:layout_height="match_parent" />
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/input_layout_ttl_of_expenses"
                     android:layout_width="match_parent"
@@ -94,19 +141,44 @@
                         android:textColor="@color/black"
                         android:textColorHint="@color/black"
                         android:inputType="text"
-                        android:editable="false"
                         android:backgroundTint="@color/black"
                         android:layout_height="wrap_content"
                         android:hint="@string/ttl_of_exepnses" />
                 </android.support.design.widget.TextInputLayout>
-                <TextView
+         </LinearLayout>
+         <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:layout_width="@dimen/spacing_mxlarge"
+                        android:layout_height="@dimen/spacing_mxlarge"
+                        android:layout_marginTop="@dimen/spacing_mlarge"
+                        android:background="@android:color/transparent"
+                        android:tint="@color/grey_60"
+                        app:srcCompat="@drawable/ic_payment" />
+
+                    <View
+                        android:layout_width="@dimen/spacing_large"
+                        android:layout_height="match_parent" />
+              <LinearLayout
+                     android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="bottom">
+
+
+                    <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/payment_type"
                     android:id="@+id/txt_payment_type"
                     android:visibility="gone"
-                    android:textSize="14sp"
-                    android:textColor="@color/black"
+                    android:textSize="11sp"
+                    android:paddingTop="@dimen/spacing_medium"
+                    android:textColor="@android:color/darker_gray"
                     />
                 <Spinner
                     android:id="@+id/spinner_payment_type"
@@ -121,13 +193,31 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/black" />
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/input_layout_payment_details"
+              </LinearLayout>
+           </LinearLayout>
+           <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                   >
+                    android:orientation="horizontal">
 
-                    <EditText
+                    <ImageButton
+                        android:layout_width="@dimen/spacing_mxlarge"
+                        android:layout_height="@dimen/spacing_mxlarge"
+                        android:layout_marginTop="@dimen/spacing_mlarge"
+                        android:background="@android:color/transparent"
+                        android:tint="@color/grey_60"
+                        app:srcCompat="@drawable/ic_payment" />
+
+                    <View
+                        android:layout_width="@dimen/spacing_large"
+                        android:layout_height="match_parent" />
+                     <android.support.design.widget.TextInputLayout
+                        android:id="@+id/input_layout_payment_details"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                       >
+
+                     <EditText
                         android:id="@+id/input_payment_details"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -136,12 +226,29 @@
                         android:backgroundTint="@color/black"
                         android:inputType="text"
                         android:hint="@string/payment_details" />
-                </android.support.design.widget.TextInputLayout>
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/input_layout_amt"
+                    </android.support.design.widget.TextInputLayout>
+           </LinearLayout>
+           <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                   >
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:layout_width="@dimen/spacing_mxlarge"
+                        android:layout_height="@dimen/spacing_mxlarge"
+                        android:layout_marginTop="@dimen/spacing_mlarge"
+                        android:background="@android:color/transparent"
+                        android:tint="@color/grey_60"
+                        app:srcCompat="@drawable/ic_payment" />
+
+                    <View
+                        android:layout_width="@dimen/spacing_large"
+                        android:layout_height="match_parent" />
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/input_layout_amt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                       >
 
                     <EditText
                         android:id="@+id/input_amt"
@@ -152,16 +259,32 @@
                         android:backgroundTint="@color/black"
                         android:inputType="number"
                         android:hint="@string/payment_amt" />
-                </android.support.design.widget.TextInputLayout>
-
-
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/input_layout_payment_disc"
+                    </android.support.design.widget.TextInputLayout>
+           </LinearLayout>
+           <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                   >
+                    android:orientation="horizontal">
 
-                <EditText
+                    <ImageView
+                        android:layout_width="@dimen/spacing_mxlarge"
+                        android:layout_height="@dimen/spacing_mxlarge"
+                        android:layout_marginTop="@dimen/spacing_mlarge"
+                        android:background="@android:color/transparent"
+                        android:tint="@color/grey_60"
+                        app:srcCompat="@drawable/checked" />
+
+                    <View
+                        android:layout_width="@dimen/spacing_large"
+                        android:layout_height="match_parent" />
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/input_layout_payment_disc"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                       >
+
+                 <EditText
                     android:id="@+id/input_payment_disc"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -170,43 +293,12 @@
                     android:backgroundTint="@color/black"
                     android:inputType="text"
                     android:hint="@string/payment_discription" />
-                </android.support.design.widget.TextInputLayout>
+                 </android.support.design.widget.TextInputLayout>
+           </LinearLayout>
 
 
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:gravity="center|right"
-                    >
-                    <Button android:id="@+id/btn_close"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/hint_close"
-                        android:paddingLeft="@dimen/spacing_large"
-                        android:paddingRight="@dimen/spacing_large"
-                        android:background="@drawable/btn_outline"
-                        android:textColor="@color/black"/>
-                    <View
-                        android:layout_width="@dimen/spacing_large"
-                        android:layout_height="0dp"/>
-
-                    <Button android:id="@+id/btn_submit"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/hint_submit"
-                        android:paddingLeft="@dimen/spacing_large"
-                        android:paddingRight="@dimen/spacing_large"
-                        android:background="@drawable/btn_outline"
-                        android:gravity="center"
-                        android:textColor="@color/black"/>
-                </LinearLayout>
             </LinearLayout>
 
-        </android.support.design.widget.CoordinatorLayout>
-    </RelativeLayout>
-    </ScrollView>
+        </LinearLayout>
+
 </LinearLayout>

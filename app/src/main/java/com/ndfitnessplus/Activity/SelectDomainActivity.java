@@ -36,7 +36,7 @@ public class SelectDomainActivity extends AppCompatActivity {
        btn_save=findViewById(R.id.save);
        domain=findViewById(R.id.domainurl);
 
-
+        domain.setSelection(7);
        String domain_url= SharedPrefereneceUtil.getDomainUrl(SelectDomainActivity.this);
         //Log.d("Domain url", domain_url);
         Log.v(TAG, String.format("domain url ::  = %s", domain_url));
@@ -73,5 +73,16 @@ public class SelectDomainActivity extends AppCompatActivity {
 
            }
        });
+    }
+    @Override
+    public void onBackPressed() {
+        finish();
+        moveTaskToBack(true);
+    }
+    @Override
+    public boolean onSupportNavigateUp(){
+        finish();
+        moveTaskToBack(true);
+        return true;
     }
 }

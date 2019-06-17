@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "533180861070",
+    "firebase_url": "https://ndfitness-1709a.firebaseio.com",
+    "project_id": "ndfitness-1709a",
+    "storage_bucket": "ndfitness-1709a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:533180861070:android:628daf6a1981c77e",
+        "android_client_info": {
+          "package_name": "com.ndfitnessplus"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "533180861070-ofvfd9669l2fqprbmhi6lh9a8ggol62j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ndfitnessplus",
+            "certificate_hash": "54956e9264d97637fc22df75fd2d69a52aee7f1b"
+          }
+        },
+        {
+          "client_id": "533180861070-0k3p6bqnju6o9oampt4g9d97v2oulgl2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCtZxLQcxmbBRsM304smFHtYqcq9nvaTtM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "533180861070-0k3p6bqnju6o9oampt4g9d97v2oulgl2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -89,15 +89,24 @@ Context context;
     }
 //    Send otp sms function
 
-    public static String SendSMS(String MoNumber, String Message)
+    public static String SendSMS(String MoNumber, String Message,String username,String password,String route,String senderid)
     {
         URL url;
         StringBuilder sb=null;
         BufferedReader reader=null;
         String response = "";
-        String strUrl = "http://173.45.76.226:81/send.aspx?username=aaa1" + "&pass=Navkaraaa1" + "&route=trans1" + "&senderid=Gymmmm" +
-                "&numbers="+ MoNumber + "&message=" + Message;
-        strUrl = strUrl.replaceAll(" ", "%20");
+        String strUrl = null;
+
+        try {
+            strUrl = "http://173.45.76.226:81/send.aspx?username="+username + "&pass="+password + "&route="+ route+ "&senderid="+senderid +
+                "&numbers="+ MoNumber + "&message=" + URLEncoder.encode(Message, "UTF-8").replace("+", "%20");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+//        strUrl = strUrl.replaceAll(" ", "%20");
+//        strUrl = strUrl.replaceAll("\r\n", "%0A");
+//        strUrl = strUrl.replaceAll(".", "");
         try {
             url = new URL(strUrl);
 

@@ -33,6 +33,7 @@
             android:layout_height="wrap_content"
             android:background="@color/white"
             android:gravity="top"
+            android:inputType="number"
             android:hint="Enter your Otp"
             android:lines="1"
             android:padding="@dimen/spacing_small" />

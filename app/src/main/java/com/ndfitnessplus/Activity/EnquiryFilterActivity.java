@@ -31,6 +31,7 @@ import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
 import com.basgeekball.awesomevalidation.utility.RegexTemplate;
 import com.ndfitnessplus.Activity.Notification.OtherFollowupActivity;
+import com.ndfitnessplus.Activity.Notification.TodaysEnrollmentActivity;
 import com.ndfitnessplus.Adapter.AddEnquirySpinnerAdapter;
 import com.ndfitnessplus.Adapter.EnquiryAdapter;
 import com.ndfitnessplus.Adapter.SpinnerAdapter;
@@ -41,6 +42,7 @@ import com.ndfitnessplus.Utility.ServerClass;
 import com.ndfitnessplus.Utility.ServiceUrls;
 import com.ndfitnessplus.Utility.SharedPrefereneceUtil;
 import com.ndfitnessplus.Utility.Utility;
+import com.ndfitnessplus.Utility.ViewDialog;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -80,6 +82,8 @@ public class EnquiryFilterActivity extends AppCompatActivity {
     ArrayList<EnquiryList> subListArrayList = new ArrayList<EnquiryList>();
     EnquiryList subList;
     Button btn_applyFilter;
+    //Loading gif
+    ViewDialog viewDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,7 +93,7 @@ public class EnquiryFilterActivity extends AppCompatActivity {
     private void initToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(getResources().getString(R.string.enquiry_filter));
+        getSupportActionBar().setTitle(getResources().getString(R.string.enquiry_filters));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         initComponent();
     }
@@ -106,7 +110,7 @@ public class EnquiryFilterActivity extends AppCompatActivity {
         spinOccupation = (Spinner) findViewById(R.id.spinner_occupation);
         spinLocation = (Spinner) findViewById(R.id.spinner_location);
         spinExecutive = (Spinner) findViewById(R.id.spinner_executive);
-
+        viewDialog = new ViewDialog(this);
         todate=findViewById(R.id.to_date);
         fromdate=findViewById(R.id.from_date);
         fromDateBtn=findViewById(R.id.btn_from_date);
@@ -136,7 +140,11 @@ public class EnquiryFilterActivity extends AppCompatActivity {
                             public void onDateSet(DatePicker view, int year,
                                                   int monthOfYear, int dayOfMonth) {
 
-                                todate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                                String date=(year + "-"
+                                        + (monthOfYear + 1) + "-" + dayOfMonth).toString();
+                                String cdate=Utility.formatDateDB(date);
+                                todate.setText(cdate);
+                                //todate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
                                 CampareTwoDates();
 
                             }
@@ -159,8 +167,12 @@ public class EnquiryFilterActivity extends AppCompatActivity {
                             @Override
                             public void onDateSet(DatePicker view, int year,
                                                   int monthOfYear, int dayOfMonth) {
+                                String date=(year + "-"
+                                        + (monthOfYear + 1) + "-" + dayOfMonth).toString();
+                                String cdate=Utility.formatDateDB(date);
 
-                                fromdate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                                fromdate.setText(cdate);
+                               // fromdate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
 
                             }
                         }, mYear, mMonth, mDay);
@@ -184,6 +196,7 @@ public class EnquiryFilterActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 int index = parent.getSelectedItemPosition();
+                if(view != null) {
                 TextView tv = (TextView) view.findViewById(R.id.tv_Name);
                 tv.setTextSize(10);
                 if(index==0){
@@ -200,7 +213,7 @@ public class EnquiryFilterActivity extends AppCompatActivity {
                 // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.white));
                 // Showing selected spinner item
                 //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
-            }
+            }}
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -215,22 +228,23 @@ public class EnquiryFilterActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 int index = parent.getSelectedItemPosition();
-                TextView tv = (TextView) view.findViewById(R.id.tv_Name);
-                tv.setTextSize(10);
-                if(index==0){
-                    tv.setText(getResources().getString(R.string.prompt_enquiry_source));
-                }
+                if (view != null) {
+                    TextView tv = (TextView) view.findViewById(R.id.tv_Name);
+                    tv.setTextSize(10);
+                    if (index == 0) {
+                        tv.setText(getResources().getString(R.string.prompt_enquiry_source));
+                    }
 //               // tv.setTextColor(getResources().getColor(R.color.black));
-                enquirySource = tv.getText().toString();
-                if((enquirySource.equals(getResources().getString(R.string.prompt_enquiry_source)))||
-                        (enquirySource.equals(getResources().getString(R.string.all)))){
-                    enquirySource="";
+                    enquirySource = tv.getText().toString();
+                    if ((enquirySource.equals(getResources().getString(R.string.prompt_enquiry_source))) ||
+                            (enquirySource.equals(getResources().getString(R.string.all)))) {
+                        enquirySource = "";
+                    }
+                    // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.white));
+                    // Showing selected spinner item
+                    //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
                 }
-                // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.white));
-                // Showing selected spinner item
-                //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
@@ -242,6 +256,7 @@ public class EnquiryFilterActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 int index = parent.getSelectedItemPosition();
+                if(view != null) {
                 TextView tv = (TextView) view.findViewById(R.id.tv_Name);
                 tv.setTextSize(10);
                 if(index==0){
@@ -256,7 +271,7 @@ public class EnquiryFilterActivity extends AppCompatActivity {
                 // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.white));
                 // Showing selected spinner item
                 //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
-            }
+            }}
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -311,22 +326,23 @@ public class EnquiryFilterActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 int index = parent.getSelectedItemPosition();
-                TextView tv = (TextView) view.findViewById(R.id.tv_Name);
-                tv.setTextSize(10);
-                if(index==0){
-                    tv.setText(getResources().getString(R.string.prompt_rating));
-                }
+                if (view != null) {
+                    TextView tv = (TextView) view.findViewById(R.id.tv_Name);
+                    tv.setTextSize(10);
+                    if (index == 0) {
+                        tv.setText(getResources().getString(R.string.prompt_rating));
+                    }
 //                tv.setTextColor(getResources().getColor(R.color.black));
-                Rating = tv.getText().toString();
-                if((Rating.equals(getResources().getString(R.string.prompt_rating)))||
-                        (Rating.equals(getResources().getString(R.string.all)))){
-                    Rating="";
+                    Rating = tv.getText().toString();
+                    if ((Rating.equals(getResources().getString(R.string.prompt_rating))) ||
+                            (Rating.equals(getResources().getString(R.string.all)))) {
+                        Rating = "";
+                    }
+                    // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.white));
+                    // Showing selected spinner item
+                    //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
                 }
-                // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.white));
-                // Showing selected spinner item
-                //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
@@ -337,6 +353,7 @@ public class EnquiryFilterActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 int index = parent.getSelectedItemPosition();
+                if(view != null) {
                 TextView tv = (TextView) view.findViewById(R.id.tv_Name);
                 tv.setTextSize(10);
                 if(index==0){
@@ -351,7 +368,7 @@ public class EnquiryFilterActivity extends AppCompatActivity {
                 // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.white));
                 // Showing selected spinner item
                 //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
-            }
+            }}
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -406,6 +423,7 @@ public class EnquiryFilterActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 int index = parent.getSelectedItemPosition();
+                if(view != null) {
                 TextView tv = (TextView) view.findViewById(R.id.tv_Name);
                 tv.setTextSize(10);
                 if(index==0){
@@ -420,13 +438,14 @@ public class EnquiryFilterActivity extends AppCompatActivity {
                 // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.white));
                 // Showing selected spinner item
                 //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
-            }
+            }}
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
+
         //Enquiry date type spinners
         final  String[] enquirydatearray = getResources().getStringArray(R.array.enq_date_array);
 
@@ -465,17 +484,20 @@ public class EnquiryFilterActivity extends AppCompatActivity {
             };
             spinEnqDate.setAdapter(enqdateadapter);
         }
+
         //Toast.makeText(MainActivity.this,genderradioButton.getText(), Toast.LENGTH_SHORT).show();
         spinEnqDate.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 int index = parent.getSelectedItemPosition();
+                if (view != null) {
                 TextView tv = (TextView) view.findViewById(R.id.tv_Name);
                 tv.setTextSize(10);
                 if(index==0){
                     tv.setText(getResources().getString(R.string.prompt_enq_date));
                 }
+                 spinEnqDate.setSelection(2);
 //                tv.setTextColor(getResources().getColor(R.color.black));
                 enquiryDate = tv.getText().toString();
                 if((enquiryDate.equals(getResources().getString(R.string.prompt_enq_date)))||
@@ -485,7 +507,7 @@ public class EnquiryFilterActivity extends AppCompatActivity {
                 // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.white));
                 // Showing selected spinner item
                 //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
-            }
+            }}
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -497,22 +519,23 @@ public class EnquiryFilterActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 int index = parent.getSelectedItemPosition();
-                TextView tv = (TextView) view.findViewById(R.id.tv_Name);
-                tv.setTextSize(10);
-                if(index==0){
-                    tv.setText(getResources().getString(R.string.prompt_occupation));
-                }
+                if (view != null) {
+                    TextView tv = (TextView) view.findViewById(R.id.tv_Name);
+                    tv.setTextSize(10);
+                    if (index == 0) {
+                        tv.setText(getResources().getString(R.string.prompt_occupation));
+                    }
 //                tv.setTextColor(getResources().getColor(R.color.black));
-                occupation = tv.getText().toString();
-                if((occupation.equals(getResources().getString(R.string.prompt_occupation)))||
-                        (occupation.equals(getResources().getString(R.string.all)))){
-                    occupation="";
+                    occupation = tv.getText().toString();
+                    if ((occupation.equals(getResources().getString(R.string.prompt_occupation))) ||
+                            (occupation.equals(getResources().getString(R.string.all)))) {
+                        occupation = "";
+                    }
+                    // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.white));
+                    // Showing selected spinner item
+                    //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
                 }
-                // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.white));
-                // Showing selected spinner item
-                //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
@@ -524,20 +547,22 @@ public class EnquiryFilterActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 int index = parent.getSelectedItemPosition();
-                TextView tv = (TextView) view.findViewById(R.id.tv_Name);
-                tv.setTextSize(10);
-                if(index==0){
-                    tv.setText(getResources().getString(R.string.prompt_location));
-                }
+                if (view != null) {
+                    TextView tv = (TextView) view.findViewById(R.id.tv_Name);
+                    tv.setTextSize(10);
+                    if (index == 0) {
+                        tv.setText(getResources().getString(R.string.prompt_location));
+                    }
 //                tv.setTextColor(getResources().getColor(R.color.black));
-                location = tv.getText().toString();
-                if((location.equals(getResources().getString(R.string.prompt_location)))||
-                        (location.equals(getResources().getString(R.string.all)))){
-                    location="";
+                    location = tv.getText().toString();
+                    if ((location.equals(getResources().getString(R.string.prompt_location))) ||
+                            (location.equals(getResources().getString(R.string.all)))) {
+                        location = "";
+                    }
+                    // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.white));
+                    // Showing selected spinner item
+                    //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
                 }
-                // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.white));
-                // Showing selected spinner item
-                //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -550,6 +575,7 @@ public class EnquiryFilterActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 int index = parent.getSelectedItemPosition();
+                if(view != null) {
                 TextView tv = (TextView) view.findViewById(R.id.tv_Name);
                 tv.setTextSize(10);
                 if(index==0){
@@ -564,7 +590,7 @@ public class EnquiryFilterActivity extends AppCompatActivity {
                 // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.white));
                 // Showing selected spinner item
                 //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
-            }
+            }}
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -579,8 +605,8 @@ public class EnquiryFilterActivity extends AppCompatActivity {
                 SearchEnquiryClass();
             }
         });
-    }
 
+}
     public void CampareTwoDates(){
         //******************campare two dates****************
 //        String date = "03/26/2012 11:00:00";
@@ -592,7 +618,7 @@ public class EnquiryFilterActivity extends AppCompatActivity {
         try {
             convertedDate = dateFormat.parse(todate.getText().toString());
             convertedDate2 = dateFormat.parse(fromdate.getText().toString());
-            if (convertedDate2.after(convertedDate)) {
+            if (convertedDate2.after(convertedDate) || convertedDate2.equals(convertedDate)) {
                 //.setText("true");
             } else {
                 Toast.makeText(this, "From date should be greater than to date: " , Toast.LENGTH_LONG).show();
@@ -665,8 +691,9 @@ public class EnquiryFilterActivity extends AppCompatActivity {
             Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EnquiryForDetails = new HashMap<String, String>();
             EnquiryForDetails.put("action", "show_enq_for_list");
+            String domainurl=SharedPrefereneceUtil.getDomainUrl(EnquiryFilterActivity.this);
             //EnquiryForloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(EnquiryForloyee.this));
-            String loginResult = ruc.sendPostRequest(ServiceUrls.LOGIN_URL, EnquiryForDetails);
+            String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EnquiryForDetails);
             Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
@@ -779,14 +806,16 @@ public class EnquiryFilterActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            showProgressDialog();
+          //  showProgressDialog();
+            viewDialog.showDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            dismissProgressDialog();
+            //dismissProgressDialog();
+            viewDialog.hideDialog();
             //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             EnquiryTypeDetails(response);
 
@@ -797,8 +826,9 @@ public class EnquiryFilterActivity extends AppCompatActivity {
             Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EnquiryTypeDetails = new HashMap<String, String>();
             EnquiryTypeDetails.put("action", "show_enq_type_list");
+            String domainurl=SharedPrefereneceUtil.getDomainUrl(EnquiryFilterActivity.this);
             //EnquiryTypeloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(EnquiryTypeloyee.this));
-            String loginResult = ruc.sendPostRequest(ServiceUrls.LOGIN_URL, EnquiryTypeDetails);
+            String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EnquiryTypeDetails);
             Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
@@ -930,8 +960,9 @@ public class EnquiryFilterActivity extends AppCompatActivity {
             Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EnquirySourceDetails = new HashMap<String, String>();
             EnquirySourceDetails.put("action", "show_enq_source_list");
+            String domainurl=SharedPrefereneceUtil.getDomainUrl(EnquiryFilterActivity.this);
             //EnquirySourceloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(EnquirySourceloyee.this));
-            String loginResult = ruc.sendPostRequest(ServiceUrls.LOGIN_URL, EnquirySourceDetails);
+            String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EnquirySourceDetails);
             Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
@@ -1063,8 +1094,9 @@ public class EnquiryFilterActivity extends AppCompatActivity {
             Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> OccupationDetails = new HashMap<String, String>();
             OccupationDetails.put("action", "show_occupation_list");
+            String domainurl=SharedPrefereneceUtil.getDomainUrl(EnquiryFilterActivity.this);
             //OccupationloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(Occupationloyee.this));
-            String loginResult = ruc.sendPostRequest(ServiceUrls.LOGIN_URL, OccupationDetails);
+            String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, OccupationDetails);
             Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
@@ -1203,9 +1235,11 @@ public class EnquiryFilterActivity extends AppCompatActivity {
         protected String doInBackground(String... params) {
             Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> LocationDetails = new HashMap<String, String>();
+            LocationDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(EnquiryFilterActivity.this));
             LocationDetails.put("action", "show_location_list");
+            String domainurl=SharedPrefereneceUtil.getDomainUrl(EnquiryFilterActivity.this);
             //LocationloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(Locationloyee.this));
-            String loginResult = ruc.sendPostRequest(ServiceUrls.LOGIN_URL, LocationDetails);
+            String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, LocationDetails);
             Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
@@ -1248,7 +1282,7 @@ public class EnquiryFilterActivity extends AppCompatActivity {
                                 JSONObject jsonObj = jsonArrayCountry.getJSONObject(i);
                                 if (jsonObj != null) {
 
-                                    String Address     = jsonObj.getString("Address");
+                                    String Location     = jsonObj.getString("Location");
 
 //                               if(i==0){
 //                                   LocationList.setName(getResources().getString(R.string.promt_country));
@@ -1256,7 +1290,7 @@ public class EnquiryFilterActivity extends AppCompatActivity {
 //                               }
 
 
-                                    LocationList.setName(Address);
+                                    LocationList.setName(Location);
 
                                     LocationArrayList.add(LocationList);
 
@@ -1282,7 +1316,7 @@ public class EnquiryFilterActivity extends AppCompatActivity {
                                             if(position == 0){
                                                 // Set the hint text color gray
                                                 tv.setTextColor(Color.GRAY);
-                                                tv.setText(getResources().getString(R.string.prompt_occupation));
+                                                tv.setText(getResources().getString(R.string.prompt_location));
                                                 // tv.setTextColor(Color.GRAY);
                                             }
                                             else {
@@ -1347,8 +1381,9 @@ public class EnquiryFilterActivity extends AppCompatActivity {
             String compid=comp_name+"-"+location+",";
             ExecutiveNameDetails.put("comp_id", compid);
             ExecutiveNameDetails.put("action", "show_executive_list");
+            String domainurl=SharedPrefereneceUtil.getDomainUrl(EnquiryFilterActivity.this);
             //ExecutiveNameloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(ExecutiveNameloyee.this));
-            String loginResult = ruc.sendPostRequest(ServiceUrls.LOGIN_URL, ExecutiveNameDetails);
+            String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, ExecutiveNameDetails);
             Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
@@ -1487,8 +1522,9 @@ public class EnquiryFilterActivity extends AppCompatActivity {
             Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> CallResponseDetails = new HashMap<String, String>();
             CallResponseDetails.put("action", "show_call_response_list");
+            String domainurl=SharedPrefereneceUtil.getDomainUrl(EnquiryFilterActivity.this);
             //CallResponseloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(CallResponseloyee.this));
-            String loginResult = ruc.sendPostRequest(ServiceUrls.LOGIN_URL, CallResponseDetails);
+            String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, CallResponseDetails);
             Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
@@ -1603,14 +1639,16 @@ public class EnquiryFilterActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            showProgressDialog();
+            //showProgressDialog();
+            viewDialog.showDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            dismissProgressDialog();
+          //  dismissProgressDialog();
+            viewDialog.hideDialog();
             //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
             //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
             SearchEnquiryDetails(response);
@@ -1648,7 +1686,8 @@ public class EnquiryFilterActivity extends AppCompatActivity {
             SearchEnquiryDetails.put("enq_date_type",enquiryDate);
             Log.v(TAG, String.format("doInBackground :: enq_date_type = %s",enquiryDate));
             SearchEnquiryDetails.put("action", "search_enquiry_filter");
-            String loginResult2 = ruc.sendPostRequest(ServiceUrls.LOGIN_URL, SearchEnquiryDetails);
+            String domainurl=SharedPrefereneceUtil.getDomainUrl(EnquiryFilterActivity.this);
+            String loginResult2 = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, SearchEnquiryDetails);
 
             Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult2));
             return loginResult2;
@@ -1692,6 +1731,10 @@ public class EnquiryFilterActivity extends AppCompatActivity {
                                 String Comment = jsonObj.getString("Comment");
                                 String NextFollowup_Date = jsonObj.getString("NextFollowup_Date");
                                 String Enquiry_ID = jsonObj.getString("Enquiry_ID");
+                                String Image = jsonObj.getString("Image");
+                                String CallResponse = jsonObj.getString("CallResponse");
+                                String Rating = jsonObj.getString("Rating");
+                                String Followup_Date = jsonObj.getString("FollowupDate");
                                 //  for (int j = 0; j < 5; j++) {
 //                                itemCount++;
 //                                Log.d(TAG, "run offset: " + itemCount);
@@ -1704,7 +1747,12 @@ public class EnquiryFilterActivity extends AppCompatActivity {
                                 String next_foll_date= Utility.formatDate(NextFollowup_Date);
                                 subList.setNextFollowUpDate(next_foll_date);
                                 subList.setID(Enquiry_ID);
-
+                                Image.replace("\"", "");
+                                subList.setImage(Image);
+                                subList.setRating(Rating);
+                                subList.setCallResponse(CallResponse);
+                                String foll_date= Utility.formatDate(Followup_Date);
+                                subList.setFollowupdate(foll_date);
 
                                 //Toast.makeText(EnquiryActivity.this, "followup date: "+next_foll_date, Toast.LENGTH_SHORT).show();
                                 subListArrayList.add(subList);

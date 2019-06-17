@@ -34,7 +34,10 @@ public class Constants {
     public static final String MOBILE = "mobile";
     public static final String EMAIL = "email";
     public static final String STATUS = "status";
-    public static final String STAFF_AUTO_ID = "staff_id";
+    public static final String SMS_USERNAME = "sms_username";
+    public static final String SMS_PASSWORD = "sms_password";
+    public static final String SMS_ROUTE = "sms_route";
+    public static final String SMS_SENDERID = "sms_senderid";
     public static final String REG_DATE = "reg_date";
     public static final String NAME = "name";
     public static final String USER_NAME = "user_name";
@@ -62,6 +65,14 @@ public class Constants {
     public static  final String USER_TOP_NAV_COLLECTION = "Collection";
     public static  final String USER_TOP_NAV_ENQUIRY = "Enquiry";
     public static  final String USER_TOP_NAV_NOTIFICATIONS = "Notifications";
+
+    //************** firebase push notification **********************
+    public static final String REGISTRATION_COMPLETE = "registrationComplete";
+    public static final String PUSH_NOTIFICATION = "pushNotification";
+    // id to handle the notification in the notification tray
+    public static final int NOTIFICATION_ID = 100;
+    public static final int NOTIFICATION_ID_BIG_IMAGE = 101;
+    public static final String TOPIC_GLOBAL = "global";
 
     public static boolean isMyServiceRunning(Context context, Class<?> serviceClass) {
         ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);

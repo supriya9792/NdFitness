@@ -22,21 +22,35 @@
             android:paddingBottom="10dp"
             android:paddingLeft="10dp"
             android:paddingRight="20dp"
-            android:paddingTop="10dp">
+            android:paddingTop="10dp"
+            android:id="@+id/layout">
 
-            <ImageView
+            <!--<ImageView-->
+                <!--android:id="@+id/branchImage"-->
+                <!--android:layout_width="50dp"-->
+                <!--android:layout_height="50dp"-->
+                <!--android:layout_alignParentTop="true"-->
+                <!--android:layout_centerHorizontal="true"-->
+                <!--android:layout_gravity="top|center_horizontal"-->
+                <!--android:layout_marginRight="10dp"-->
+                <!--android:layout_marginTop="5dp"-->
+                <!--android:adjustViewBounds="true"-->
+                <!--android:scaleType="fitCenter"-->
+                <!--android:src="@drawable/gym" />-->
+
+            <com.mikhaellopez.circularimageview.CircularImageView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/branchImage"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:layout_gravity="top|center_horizontal"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="5dp"
-                android:adjustViewBounds="true"
-                android:scaleType="fitCenter"
-                android:src="@drawable/gym" />
-
+                android:src="@drawable/nouser"
+                android:layout_gravity="center"
+                app:civ_border_width="2dp"
+                app:civ_shadow_color="@color/white"
+                app:civ_fill_color="@color/white"
+                app:civ_border_color="@color/grey_10"/>
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -63,7 +77,7 @@
                         android:text="Branch Name"
                         android:textColor="@android:color/black"
                         android:textSize="14sp"
-                        android:textStyle="normal" />
+                        android:textStyle="bold" />
 
 
                     <TextView
@@ -107,14 +121,14 @@
                         android:paddingRight="5dp"
                         android:text="Wakad, Pune"
                         android:textColor="@android:color/black"
-                        android:textSize="12sp" />
+                        android:textSize="10sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="right|bottom"
-                        android:text="@string/monthly_collect"
-                        android:textSize="12sp" />
+                        android:text="@string/daily_collection"
+                        android:textSize="10sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -146,8 +160,16 @@
                     android:paddingLeft="7dp"
                     android:paddingRight="7dp"
                     android:paddingTop="2dp">
-
-
+                    <TextView
+                        android:id="@+id/statusTv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="left"
+                        android:paddingRight="5dp"
+                        android:text="status"
+                        android:textColor="@android:color/black"
+                        android:textSize="10sp" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -161,8 +183,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
-                            android:text="@string/daily_collection"
-                            android:textSize="12sp" />
+                            android:text="@string/monthly_collection"
+                            android:textSize="10sp" />
 
                         <TextView
                             android:layout_width="wrap_content"

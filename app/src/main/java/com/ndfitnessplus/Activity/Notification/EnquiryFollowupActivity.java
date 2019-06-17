@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.ndfitnessplus.Activity.EnquiryActivity;
+import com.ndfitnessplus.Activity.LoginActivity;
 import com.ndfitnessplus.Activity.MainActivity;
 import com.ndfitnessplus.Activity.NotificationActivity;
 import com.ndfitnessplus.Adapter.FollowupAdapter;
@@ -34,6 +36,7 @@ import com.ndfitnessplus.Utility.ServerClass;
 import com.ndfitnessplus.Utility.ServiceUrls;
 import com.ndfitnessplus.Utility.SharedPrefereneceUtil;
 import com.ndfitnessplus.Utility.Utility;
+import com.ndfitnessplus.Utility.ViewDialog;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -60,12 +63,14 @@ public class EnquiryFollowupActivity extends AppCompatActivity implements SwipeR
     public static final int PAGE_START = 1;
     private int currentPage = PAGE_START;
     private boolean isLastPage = false;
-    private int totalPage = 10;
+    private int totalPage = 2;
     private boolean isLoading = false;
     int itemCount = 0;
     int offset = 0;
     //search
     private EditText inputsearch;
+    //Loading gif
+    ViewDialog viewDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,10 +91,10 @@ public class EnquiryFollowupActivity extends AppCompatActivity implements SwipeR
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
-
+        viewDialog = new ViewDialog(this);
         nodata=findViewById(R.id.nodata);
         inputsearch=(EditText)findViewById(R.id.inputsearchid);
-
+        swipeRefresh.setOnRefreshListener(this);
         inputsearch.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -154,6 +159,9 @@ public class EnquiryFollowupActivity extends AppCompatActivity implements SwipeR
                 currentPage++;
                 Log.d(TAG, "prepare called current item: " + currentPage+"Total page"+totalPage);
                 if(currentPage<=totalPage){
+                    //currentPage = PAGE_START;
+                    Log.d(TAG, "currentPage: " + currentPage);
+                    isLastPage = false;
                     preparedListItem();
                 }
 
@@ -212,8 +220,9 @@ public class EnquiryFollowupActivity extends AppCompatActivity implements SwipeR
         itemCount = 0;
         currentPage = PAGE_START;
         isLastPage = false;
-        adapter.clear();
+        //adapter.clear();
         preparedListItem();
+
     }
     private void showProgressDialog() {
         Log.v(TAG, String.format("showProgressDialog"));
@@ -248,14 +257,16 @@ public class EnquiryFollowupActivity extends AppCompatActivity implements SwipeR
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            showProgressDialog();
+          //  showProgressDialog();
+            viewDialog.showDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            dismissProgressDialog();
+            //dismissProgressDialog();
+            viewDialog.hideDialog();
             //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             FollowupDetails(response);
 
@@ -270,7 +281,8 @@ public class EnquiryFollowupActivity extends AppCompatActivity implements SwipeR
             Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(EnquiryFollowupActivity.this)));
             Log.v(TAG, String.format("doInBackground :: offset  = %s",offset ));
             FollowupDetails.put("action","show_enquiry_followup");
-            String loginResult = ruc.sendPostRequest(ServiceUrls.LOGIN_URL, FollowupDetails);
+            String domainurl=SharedPrefereneceUtil.getDomainUrl(EnquiryFollowupActivity.this);
+            String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, FollowupDetails);
             //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
@@ -408,9 +420,11 @@ public class EnquiryFollowupActivity extends AppCompatActivity implements SwipeR
             HashMap<String, String> FollowupOffsetDetails = new HashMap<String, String>();
             FollowupOffsetDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(EnquiryFollowupActivity.this));
             FollowupOffsetDetails.put("offset", String.valueOf(offset));
+            Log.v(TAG, String.format("doInBackground :: offset  = %s",offset ));
             Log.v(TAG, String.format("doInBackground :: offset company id = %s", SharedPrefereneceUtil.getSelectedBranchId(EnquiryFollowupActivity.this)));
             FollowupOffsetDetails.put("action","show_enquiry_followup");
-            String loginResult = ruc.sendPostRequest(ServiceUrls.LOGIN_URL, FollowupOffsetDetails);
+            String domainurl=SharedPrefereneceUtil.getDomainUrl(EnquiryFollowupActivity.this);
+            String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, FollowupOffsetDetails);
             //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
@@ -500,7 +514,7 @@ public class EnquiryFollowupActivity extends AppCompatActivity implements SwipeR
                     nodata.setVisibility(View.VISIBLE);
 
                     progressBar.setVisibility(View.GONE);
-                    //if (currentPage != PAGE_START)
+                    if (currentPage != PAGE_START)
                     adapter.removeblank();
                     //adapter.addAll(subListArrayList);
                     swipeRefresh.setRefreshing(false);
@@ -514,6 +528,12 @@ public class EnquiryFollowupActivity extends AppCompatActivity implements SwipeR
 //                nodata.setVisibility(View.VISIBLE);
             }
         }
+    }
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Intent intent=new Intent(EnquiryFollowupActivity.this,EnquiryFollowupActivity.class);
+        startActivity(intent);
     }
     @Override
     public boolean onSupportNavigateUp(){

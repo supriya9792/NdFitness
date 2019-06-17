@@ -44,7 +44,8 @@ public class ExpensesAdapter extends RecyclerView.Adapter<ExpensesAdapter.ViewHo
 //        holder.contactTV.setText(arrayList.get(position).getContact());
         holder.expenseDate.setText(arrayList.get(position).getExpenses_date());
         holder.expenseGroup.setText(arrayList.get(position).getExpenses_group());
-        holder.amount.setText(arrayList.get(position).getAmount());
+        String amt="₹ "+arrayList.get(position).getAmount();
+        holder.amount.setText(amt);
         holder.excecutive_nameTV.setText(arrayList.get(position).getExecutive_name());
         holder.paymentType.setText(arrayList.get(position).getPayment_type());
         holder.disc.setText(arrayList.get(position).getDisc());
@@ -72,6 +73,8 @@ public class ExpensesAdapter extends RecyclerView.Adapter<ExpensesAdapter.ViewHo
             excecutive_nameTV = (TextView) itemView.findViewById(R.id.excecutive_nameTV);
             paymentType = (TextView) itemView.findViewById(R.id.paymentTypeTV);
             disc = (TextView) itemView.findViewById(R.id.pay_disc);
+            disc.setVisibility(View.GONE);
+            expenseGroup.setVisibility(View.GONE);
 
         }
 
