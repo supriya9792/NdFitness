@@ -1,5 +1,6 @@
 package com.ndfitnessplus.Activity.Notification;
 
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,9 +20,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ndfitnessplus.Activity.EnquiryActivity;
@@ -45,7 +51,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 
 import static com.ndfitnessplus.Utility.HTTPRequestQueue.isOnline;
@@ -77,9 +87,17 @@ public class OtherFollowupActivity extends AppCompatActivity implements SwipeRef
     private EditText inputsearch;
     //Loading gif
     ViewDialog viewDialog;
+    //Search ...
+    TextView todate,fromdate;
+    ImageButton toDatebtn,fromDateBtn;
+    Button BtnSearch;
+    private int mYear, mMonth, mDay;
+    TextView ttl_followups;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
+                WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_other_followup);
         initToolbar();
         initComponent();
@@ -99,11 +117,15 @@ public class OtherFollowupActivity extends AppCompatActivity implements SwipeRef
         recyclerView.setHasFixedSize(true);
         viewDialog = new ViewDialog(this);
         nodata=findViewById(R.id.nodata);
+        ttl_followups=findViewById(R.id.ttl_foll);
         frame=findViewById(R.id.main_frame);
         noInternet=findViewById(R.id.no_internet);
         progress_bar = (ProgressBar) findViewById(R.id.progress_bar);
         inputsearch=(EditText)findViewById(R.id.inputsearchid);
         swipeRefresh.setOnRefreshListener(this);
+
+
+
         inputsearch.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -118,7 +140,8 @@ public class OtherFollowupActivity extends AppCompatActivity implements SwipeRef
                 else
                 {
                     isLoading = false;
-                    OtherFollowupActivity.this.adapter.filter(String.valueOf(arg0));
+                   int cnt= OtherFollowupActivity.this.adapter.filter(String.valueOf(arg0));
+                   ttl_followups.setText(String.valueOf(cnt));
 
                 }
             }
@@ -145,8 +168,8 @@ public class OtherFollowupActivity extends AppCompatActivity implements SwipeRef
         if (args != null) {
             ArrayList<FollowupList> filterArrayList = (ArrayList<FollowupList>) args.getSerializable("filter_array_list");
             progressBar.setVisibility(View.GONE);
-            //int length=filterArrayList.size();
-            //total_enquiry.setText(String.valueOf(length));
+            int length=filterArrayList.size();
+            ttl_followups.setText(String.valueOf(length));
             adapter = new FollowupAdapter( filterArrayList,OtherFollowupActivity.this);
             recyclerView.setAdapter(adapter);
         }else {
@@ -181,6 +204,7 @@ public class OtherFollowupActivity extends AppCompatActivity implements SwipeRef
         }
 
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.filter_action_menu, menu);
@@ -301,15 +325,12 @@ public class OtherFollowupActivity extends AppCompatActivity implements SwipeRef
 //                        if(jsonArrayResult.length() >10){
 //                            totalPage=jsonArrayResult.length()/10;
 //                        }
+                        ttl_followups.setText(String.valueOf(jsonArrayResult.length()));
                         int count=0;
                         ArrayList<FollowupList> item = new ArrayList<FollowupList>();
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
-                            if(jsonArrayResult.length()<100){
-                                count=jsonArrayResult.length();
-                            }else{
-                                count=100;
-                            }
-                            for (int i = 0; i < count; i++) {
+
+                            for (int i = 0; i < jsonArrayResult.length(); i++) {
 
 
                                 subList = new FollowupList();
@@ -337,7 +358,9 @@ public class OtherFollowupActivity extends AppCompatActivity implements SwipeRef
 
                                     subList.setName(name);
                                     subList.setRating(Rating);
+                                    String cont=Utility.lastFour(Contact);
                                     subList.setContact(Contact);
+                                    subList.setContactEncrypt(cont);
                                     subList.setCallRespond(CallResponse);
                                     subList.setExecutiveName(ExecutiveName);
                                     subList.setComment(Comment);
@@ -350,6 +373,7 @@ public class OtherFollowupActivity extends AppCompatActivity implements SwipeRef
                                     Log.d(TAG, "converted Followup date: " + foll_date);
                                     subList.setFollowupDate(foll_date);
                                     subList.setID(Member_ID);
+                                    subList.setImage("");
                                     item.add(subList);
                                     adapter = new FollowupAdapter( item,OtherFollowupActivity.this);
                                     recyclerView.setAdapter(adapter);
@@ -361,6 +385,7 @@ public class OtherFollowupActivity extends AppCompatActivity implements SwipeRef
                         }
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
+                    ttl_followups.setText("0");
                     nodata.setVisibility(View.VISIBLE);
                     recyclerView.setVisibility(View.GONE);
                 }
@@ -381,6 +406,7 @@ public class OtherFollowupActivity extends AppCompatActivity implements SwipeRef
             }
         }
     }
+
     @Override
     protected void onRestart() {
         super.onRestart();

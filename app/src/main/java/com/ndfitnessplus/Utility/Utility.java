@@ -15,6 +15,8 @@ import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.ConnectivityManager;
@@ -29,6 +31,8 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import com.ndfitnessplus.R;
+
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.text.DateFormat;
@@ -42,7 +46,8 @@ import java.util.concurrent.TimeUnit;
 
 
 public class Utility {
-
+    private static final String ALPHA_NUMERIC_STRING = "abcdefghijklmnopqrstuvwxyz0123456789";
+    private static final String NUMERIC = "0123456789";
 
     private static final String TAG = Utility.class.getSimpleName();
     private static ProgressDialog sProgressDialog;
@@ -68,7 +73,22 @@ public class Utility {
         }
     }
 
+    public static void setBadgeCount(Context context, LayerDrawable icon, String count) {
 
+        BadgeDrawable badge;
+
+        // Reuse drawable if possible
+        Drawable reuse = icon.findDrawableByLayerId(R.id.ic_badge);
+        if (reuse != null && reuse instanceof BadgeDrawable) {
+            badge = (BadgeDrawable) reuse;
+        } else {
+            badge = new BadgeDrawable(context);
+        }
+
+        badge.setCount(count);
+        icon.mutate();
+        icon.setDrawableByLayerId(R.id.ic_badge, badge);
+    }
     public static void showProgressDialog(Context context) {
         if (null != sProgressDialog && sProgressDialog.isShowing()) {
             return;
@@ -342,6 +362,25 @@ public class Utility {
         return ago;
 
     }
+    public  static  String getWishes(){
+        Calendar c = Calendar.getInstance();
+        int timeOfDay = c.get(Calendar.HOUR_OF_DAY);
+
+        if(timeOfDay >= 0 && timeOfDay < 12){
+            return "Good Morning";
+          //  Toast.makeText(this, "Good Morning", Toast.LENGTH_SHORT).show();
+        }else if(timeOfDay >= 12 && timeOfDay < 16){
+            return "Good Afternoon";
+          //  Toast.makeText(this, "Good Afternoon", Toast.LENGTH_SHORT).show();
+        }else if(timeOfDay >= 16 && timeOfDay < 21){
+            return "Good Evening";
+           // Toast.makeText(this, "Good Evening", Toast.LENGTH_SHORT).show();
+        }else if(timeOfDay >= 21 && timeOfDay < 24){
+            return "Good Night";
+          //  Toast.makeText(this, "Good Night", Toast.LENGTH_SHORT).show();
+        }
+        return "";
+    }
     public static String getLocation(double latitude, double longitude, Context context) {
 
         Geocoder gc = new Geocoder(context, Locale.getDefault());
@@ -399,6 +438,50 @@ public class Utility {
             return true;
         }
     }
+    public static String randomEncodededCompId(int count,String comp_id) {
+        StringBuilder builder = new StringBuilder();
+        while (count-- != 0) {
+            int character = (int)(Math.random()*ALPHA_NUMERIC_STRING.length());
+            if(count == 6){
+                builder.append(comp_id);
+            }
+            builder.append(ALPHA_NUMERIC_STRING.charAt(character));
+        }
+        return builder.toString();
+    }
+    public static String lastFour(String s) {
+        StringBuilder lastFour = new StringBuilder();
+        int check = 0;
+        for (int i = s.length() - 1; i >= 0; i--) {
+            if (Character.isDigit(s.charAt(i))) {
+                check++;
+            }
+            if (check <= 2||check >=s.length()-1) {
+                lastFour.append(s.charAt(i));
+            } else {
+               lastFour.append(Character.isDigit(s.charAt(i)) ? "*" : s.charAt(i));
+            }
+        }
+        return lastFour.reverse().toString();
+    }
+    public static String getyesterdayDate() {
+        SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd");//"yyyy-MM-dd"
+        Date now = new Date();
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, -1);
+        String strDate = sdfDate.format(cal.getTime());
+        return strDate;
+    }
+    public static String formatDateMonthDB(String dateStr) {
+        try {
+            SimpleDateFormat fmt = new SimpleDateFormat("d MMM yyyy");
+            Date date = fmt.parse(dateStr);
+            SimpleDateFormat fmtOut = new SimpleDateFormat("yyyy-MM-dd");
+            return fmtOut.format(date);
+        } catch (ParseException e) {
 
+        }
 
+        return "";
+    }
 }

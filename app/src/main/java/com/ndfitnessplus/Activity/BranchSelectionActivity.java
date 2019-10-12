@@ -1,17 +1,22 @@
 package com.ndfitnessplus.Activity;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.AsyncTask;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -47,9 +52,13 @@ public class BranchSelectionActivity extends AppCompatActivity {
     private ProgressDialog pd;
     //Loading gif
     ViewDialog viewDialog;
+    public  String ImeiNo;
+    TelephonyManager telephonyManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
+                WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_branch_selection);
         initToolbar();
         initComponent();
@@ -62,6 +71,7 @@ public class BranchSelectionActivity extends AppCompatActivity {
     }
     private  void initComponent(){
 
+        deviceId();
         todayDate=findViewById(R.id.todayDate);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -217,6 +227,33 @@ public class BranchSelectionActivity extends AppCompatActivity {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
             }
+        }
+    }
+    private void deviceId() {
+        telephonyManager = (TelephonyManager) getSystemService(this.TELEPHONY_SERVICE);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_PHONE_STATE}, 101);
+            return;
+        }
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults){
+        switch (requestCode) {
+            case 101:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_PHONE_STATE}, 101);
+                        return;
+                    }
+                    ImeiNo = telephonyManager.getDeviceId();
+                    Log.v(TAG, "IMEI No: "+ImeiNo);
+                   // Toast.makeText(BranchSelectionActivity.this,ImeiNo,Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(BranchSelectionActivity.this,"Without permission we check",Toast.LENGTH_LONG).show();
+                }
+                break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 //    @Override

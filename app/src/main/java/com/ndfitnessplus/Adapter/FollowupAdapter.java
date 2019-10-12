@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v7.widget.RecyclerView;
@@ -32,8 +33,10 @@ import com.ndfitnessplus.Activity.MemberDetailsActivity;
 import com.ndfitnessplus.Listeners.BaseViewHolder;
 import com.ndfitnessplus.Model.EnquiryList;
 import com.ndfitnessplus.Model.FollowupList;
+import com.ndfitnessplus.Model.MemberDataList;
 import com.ndfitnessplus.Model.Spinner_List;
 import com.ndfitnessplus.R;
+import com.ndfitnessplus.Utility.Utility;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -169,7 +172,7 @@ public class FollowupAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                     for (final FollowupList wp : subList) {
                         if (wp.getName().toLowerCase(Locale.getDefault())
                                 .contains(charText) ||wp.getExecutiveName().toLowerCase(Locale.getDefault()).contains(charText)
-                                ||wp.getComment().toLowerCase(Locale.getDefault()).contains(charText)) {
+                                ||wp.getContact().toLowerCase(Locale.getDefault()).contains(charText)) {
                             arrayList.add(wp);
 
                         }
@@ -225,7 +228,7 @@ public class FollowupAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             super.onBind(position);
            final FollowupList enq = arrayList.get(position);
             nameTV.setText(enq.getName());
-            contactTV.setText(arrayList.get(position).getContact());
+            contactTV.setText(arrayList.get(position).getContactEncrypt());
             followup_dateTV.setText(enq.getFollowupDate());
             nextfollowupdate.setText(enq.getNextFollowupDate());
             commentTV.setText(enq.getComment());
@@ -233,16 +236,54 @@ public class FollowupAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             ratingTV.setText(enq.getRating());
             callRespondTV.setText(enq.getCallRespond());
             foll_typeTV.setText(enq.getFollowupType());
+            final MemberDataList subList = new MemberDataList();
+            subList.setName(enq.getName());
+            subList.setGender("NA");
+            Log.d(TAG, "Contact: " + enq.getContact());
+            try {
+                if (!(enq.getContact().equals("null") || enq.getContact().equals(""))) {
+                    String cont = Utility.lastFour(enq.getContact());
+                    subList.setContactEncrypt(cont);
+                    subList.setContact(enq.getContact());
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+          //  String dob= Utility.formatDate(enq.getContact());
+            subList.setBirthDate("");
+            subList.setExecutiveName(enq.getExecutiveName());
+            subList.setBlodGroup("NA");
+            subList.setOccupation("NA");
+            subList.setID(enq.getID());
+            String image=enq.getImage();
+            try {
+            if((image.equals("null")||image.equals(""))) {
+                String replace = image.replace("\"", "");
+                subList.setImage(replace);
+            }}catch (Exception e){
+                e.printStackTrace();
+            }
+            subList.setStatus("");
+            subList.setEmail("");
 
                 layoutparent.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        enquiryId=enq.getID();
-                        Intent intent=new Intent(context, EnquiryFollowupDetailsActivity.class);
-                        intent.putExtra("enquiry_id",enquiryId);
-                        intent.putExtra("rating",enq.getRating());
-                        intent.putExtra("call_response",enq.getCallRespond());
-                        context.startActivity(intent);
+                        if(enq.getFollowupType().equals("Enquiry")) {
+                            enquiryId = enq.getID();
+                            Intent intent = new Intent(context, EnquiryFollowupDetailsActivity.class);
+                            intent.putExtra("enquiry_id", enquiryId);
+                            intent.putExtra("rating", enq.getRating());
+                            intent.putExtra("call_response", enq.getCallRespond());
+                            context.startActivity(intent);
+                        }else{
+                            String   member_id=enq.getID();
+                            Intent intent=new Intent(context, MemberDetailsActivity.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable("filter_array_list", subList);
+                            intent.putExtra("BUNDLE",bundle);
+                            context.startActivity(intent);
+                        }
                     }
                 });
 
@@ -270,7 +311,7 @@ public class FollowupAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     }
 
     //filter for search
-    public void filter(String charText) {
+    public int filter(String charText) {
         // subList=arrayList;
 
         charText = charText.toLowerCase(Locale.getDefault());
@@ -282,7 +323,7 @@ public class FollowupAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         } else {
             for (FollowupList wp : subList) {
                 if (wp.getName().toLowerCase(Locale.getDefault())
-                        .contains(charText) || wp.getRating().toLowerCase(Locale.getDefault()).contains(charText)||
+                        .contains(charText) || wp.getContact().toLowerCase(Locale.getDefault()).contains(charText)||
                         wp.getCallRespond().toLowerCase(Locale.getDefault()).contains(charText)||wp.getExecutiveName().toLowerCase(Locale.getDefault()).contains(charText)
                         ||wp.getComment().toLowerCase(Locale.getDefault()).contains(charText)) {
                     arrayList.add(wp);
@@ -291,6 +332,7 @@ public class FollowupAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         }
         Log.d(TAG, "sublist size filter: "+String.valueOf(subList.size()) );
         notifyDataSetChanged();
+        return  arrayList.size();
     }
 
 }

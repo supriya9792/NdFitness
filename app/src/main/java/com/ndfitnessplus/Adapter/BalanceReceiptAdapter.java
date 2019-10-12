@@ -23,7 +23,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.mikhaellopez.circularimageview.CircularImageView;
+import com.ndfitnessplus.Activity.AddEnquiryActivity;
 import com.ndfitnessplus.Activity.CourseDetailsActivity;
 import com.ndfitnessplus.Activity.FullImageActivity;
 import com.ndfitnessplus.Activity.MemberDetailsActivity;
@@ -153,7 +155,7 @@ public class BalanceReceiptAdapter  extends RecyclerView.Adapter<BalanceReceiptA
         return arrayList.get(position);
     }
     //filter for search
-    public void filter(String charText) {
+    public int filter(String charText) {
         // subList=arrayList;
 
         charText = charText.toLowerCase(Locale.getDefault());
@@ -175,6 +177,7 @@ public class BalanceReceiptAdapter  extends RecyclerView.Adapter<BalanceReceiptA
         }
         Log.d(TAG, "sublist size filter: "+String.valueOf(subList.size()) );
         notifyDataSetChanged();
+        return arrayList.size();
     }
     //filter for search
     public int search( String charTex,final ArrayList<CourseList> subList) {
@@ -258,7 +261,7 @@ public class BalanceReceiptAdapter  extends RecyclerView.Adapter<BalanceReceiptA
             // idTV.setText(enq.getID());
             nameTV.setText(enq.getName());
             //Log.d(TAG, "textview name: " + nameTV.getText().toString());
-            contactTV.setText(enq.getContact());
+            contactTV.setText(enq.getContactEncrypt());
             regdateTV.setText(enq.getRegistrationDate());
             packagenameTV.setText(enq.getPackageName());
             executiveNameTV.setText(enq.getExecutiveName());
@@ -275,7 +278,15 @@ public class BalanceReceiptAdapter  extends RecyclerView.Adapter<BalanceReceiptA
             String domainurl= SharedPrefereneceUtil.getDomainUrl((Activity) context);
             String url= domainurl+ServiceUrls.IMAGES_URL + enq.getImage();
 
-            Glide.with(context).load(url).placeholder(R.drawable.nouser).into(imageView);
+           // Glide.with(context).load(url).placeholder(R.drawable.nouser).into(imageView);
+            RequestOptions requestOptions = new RequestOptions();
+            requestOptions.placeholder(R.drawable.nouser);
+            requestOptions.error(R.drawable.nouser);
+
+
+            Glide.with(context)
+                    .setDefaultRequestOptions(requestOptions)
+                    .load(url).into(imageView);
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -310,10 +321,19 @@ public class BalanceReceiptAdapter  extends RecyclerView.Adapter<BalanceReceiptA
         TextView name = (TextView) dialog. findViewById(R.id.name);
         ImageButton phone=(ImageButton)dialog.findViewById(R.id.phone_call);
         ImageView whatsapp=(ImageView)dialog.findViewById(R.id.whatsapp);
-        String url= ServiceUrls.IMAGES_URL + enq.getImage();
+        String domainurl= SharedPrefereneceUtil.getDomainUrl((Activity) context);
+        String url= domainurl+ServiceUrls.IMAGES_URL + enq.getImage();
         Log.d(TAG, "image: "+enq.getImage());
         Log.d(TAG, "name: "+enq.getName());
-        Glide.with(context).load(url).placeholder(R.drawable.nouser).into(imageView);
+       // Glide.with(context).load(url).placeholder(R.drawable.nouser).into(imageView);
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.placeholder(R.drawable.nouser);
+        requestOptions.error(R.drawable.nouser);
+
+
+        Glide.with(context)
+                .setDefaultRequestOptions(requestOptions)
+                .load(url).into(imageView);
 
         name.setText(enq.getName());
         phone.setOnClickListener(new View.OnClickListener() {

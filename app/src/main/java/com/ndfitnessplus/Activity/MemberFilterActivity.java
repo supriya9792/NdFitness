@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -75,6 +76,8 @@ public class MemberFilterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
+                WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_member_filter);
         initToolbar();
     }
@@ -284,6 +287,7 @@ public class MemberFilterActivity extends AppCompatActivity {
             };
             spinDateWise.setAdapter(enqdateadapter);
         }
+        spinDateWise.setSelection(1);
         //Toast.makeText(MainActivity.this,genderradioButton.getText(), Toast.LENGTH_SHORT).show();
         spinDateWise.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -296,7 +300,7 @@ public class MemberFilterActivity extends AppCompatActivity {
                     if (index == 0) {
                         tv.setText(getResources().getString(R.string.prompt_mem_date));
                     }
-                    spinDateWise.setSelection(1);
+
 //                tv.setTextColor(getResources().getColor(R.color.black));
                     Datewise = tv.getText().toString();
                     if ((Datewise.equals(getResources().getString(R.string.prompt_mem_date))) ||
@@ -1099,9 +1103,7 @@ public class MemberFilterActivity extends AppCompatActivity {
 
                 if (object != null) {
                     JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
+                               Log.d(TAG, "array size: " + jsonArrayResult.length());
                     if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
                         for (int i = 0; i < jsonArrayResult.length(); i++) {
 
@@ -1129,7 +1131,9 @@ public class MemberFilterActivity extends AppCompatActivity {
 
                                 subList.setName(name);
                                 subList.setGender(gender);
+                                String cont=Utility.lastFour(Contact);
                                 subList.setContact(Contact);
+                                subList.setContactEncrypt(cont);
                                 String dob= Utility.formatDate(DOB);
                                 subList.setBirthDate(dob);
                                 subList.setExecutiveName(ExecutiveName);

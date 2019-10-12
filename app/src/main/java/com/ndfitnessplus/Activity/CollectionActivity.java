@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -85,6 +86,8 @@ public class CollectionActivity extends AppCompatActivity implements SwipeRefres
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
+                WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_collection);
         initToolbar();
     }
@@ -223,7 +226,7 @@ public class CollectionActivity extends AppCompatActivity implements SwipeRefres
             @Override
             protected void loadMoreItems() {
                 isLoading = true;
-                currentPage++;
+
                 Log.d(TAG, "prepare called current item: " + currentPage+"Total page"+totalPage);
                 if(currentPage<=totalPage){
                     currentPage = PAGE_START;
@@ -412,7 +415,9 @@ public class CollectionActivity extends AppCompatActivity implements SwipeRefres
                                     Log.d(TAG, "run: " + itemCount);
                                     subList.setName(name);
 
+                                    String cont=Utility.lastFour(Contact);
                                     subList.setContact(Contact);
+                                    subList.setContactEncrypt(cont);
                                    // String pack=Package_Name+"(Duration:"+Duration_Days+","+"Session:"+Session+")";
                                     subList.setPaymentType(PaymentType);
                                     subList.setExecutiveName(ExecutiveName);
@@ -574,7 +579,9 @@ public class CollectionActivity extends AppCompatActivity implements SwipeRefres
                                     Log.d(TAG, "run: " + itemCount);
                                     subList.setName(name);
 
+                                    String cont=Utility.lastFour(Contact);
                                     subList.setContact(Contact);
+                                    subList.setContactEncrypt(cont);
                                     // String pack=Package_Name+"(Duration:"+Duration_Days+","+"Session:"+Session+")";
                                     subList.setPaymentType(PaymentType);
                                     subList.setExecutiveName(ExecutiveName);
@@ -616,7 +623,7 @@ public class CollectionActivity extends AppCompatActivity implements SwipeRefres
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
                     // nodata.setVisibility(View.VISIBLE);
-
+                    Toast.makeText(CollectionActivity.this, "NO Record Found", Toast.LENGTH_SHORT).show();
                     progressBar.setVisibility(View.GONE);
 
                     //recyclerView.setVisibility(View.GONE);
@@ -632,10 +639,18 @@ public class CollectionActivity extends AppCompatActivity implements SwipeRefres
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.filter_action_menu, menu);
+        if(SharedPrefereneceUtil.getAuthority(CollectionActivity.this).equals("User")){
+            MenuItem item = menu.findItem(R.id.action_filter);
+            item.setVisible(false);
+        }else{
+            MenuItem item = menu.findItem(R.id.action_filter);
+            item.setVisible(true);
+        }
         return true;
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         int id = item.getItemId();
 
         if (id == R.id.action_home) {

@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.ndfitnessplus.Activity.EnquiryActivity;
 import com.ndfitnessplus.Activity.EnquiryFollowupDetailsActivity;
@@ -34,6 +35,7 @@ import com.ndfitnessplus.Activity.FullImageActivity;
 import com.ndfitnessplus.Activity.MemberDetailsActivity;
 import com.ndfitnessplus.Model.BranchList;
 import com.ndfitnessplus.Model.EnquiryList;
+import com.ndfitnessplus.Model.POSItemList;
 import com.ndfitnessplus.R;
 import com.ndfitnessplus.Utility.ServiceUrls;
 import com.ndfitnessplus.Utility.SharedPrefereneceUtil;
@@ -160,14 +162,13 @@ public class EnquiryAdapter extends RecyclerView.Adapter<EnquiryAdapter.BaseView
         return arrayList.get(position);
     }
     //filter for search
-    public int filter(String charText) {
+    public ArrayList<EnquiryList> filter(String charText) {
        // subList=arrayList;
 
         charText = charText.toLowerCase(Locale.getDefault());
         Log.d(TAG, "sublist size whentext  filter: "+String.valueOf(subList.size()) );
         arrayList.clear();
         if (charText.length() == 0) {
-
             arrayList.addAll(subList);
         } else {
             for (EnquiryList wp : subList) {
@@ -182,7 +183,7 @@ public class EnquiryAdapter extends RecyclerView.Adapter<EnquiryAdapter.BaseView
             }
         }
         notifyDataSetChanged();
-        return arrayList.size();
+        return arrayList;
         //Log.d(TAG, "sublist size filter: "+String.valueOf(subList.size()) );
 
     }
@@ -264,7 +265,7 @@ public class EnquiryAdapter extends RecyclerView.Adapter<EnquiryAdapter.BaseView
            // idTV.setText(enq.getID());
             nameTV.setText(enq.getName());
             //Log.d(TAG, "textview name: " + nameTV.getText().toString());
-             contactTV.setText(enq.getContact());
+             contactTV.setText(enq.getContactEncrypt());
             excecutive_nameTV.setText(enq.getExecutiveName());
             commentTV.setText(enq.getComment());
             nextFollowupdateTV.setText(enq.getNextFollowUpDate());
@@ -274,7 +275,15 @@ public class EnquiryAdapter extends RecyclerView.Adapter<EnquiryAdapter.BaseView
             String domainurl= SharedPrefereneceUtil.getDomainUrl((Activity)context);
             String url= domainurl+ServiceUrls.IMAGES_URL + enq.getImage();
             Log.d(TAG, "rating: "+enq.getRating() );
-            Glide.with(context).load(url).placeholder(R.drawable.nouser).into(imageView);
+           // Glide.with(context).load(url).placeholder(R.drawable.nouser).into(imageView);
+            RequestOptions requestOptions = new RequestOptions();
+            requestOptions.placeholder(R.drawable.nouser);
+            requestOptions.error(R.drawable.nouser);
+
+
+            Glide.with(context)
+                    .setDefaultRequestOptions(requestOptions)
+                    .load(url).into(imageView);
 
             final android.view.animation.Animation animation_1 = android.view.animation.AnimationUtils.loadAnimation(context,R.anim.zoom_out);
             final android.view.animation.Animation animation_2 = android.view.animation.AnimationUtils.loadAnimation(context,R.anim.zoom_in);
@@ -313,10 +322,19 @@ public class EnquiryAdapter extends RecyclerView.Adapter<EnquiryAdapter.BaseView
         TextView name = (TextView) dialog. findViewById(R.id.name);
         ImageButton phone=(ImageButton)dialog.findViewById(R.id.phone_call);
         ImageView whatsapp=(ImageView)dialog.findViewById(R.id.whatsapp);
-        String url= ServiceUrls.IMAGES_URL + enq.getImage();
+        String domainurl= SharedPrefereneceUtil.getDomainUrl((Activity) context);
+        String url= domainurl+ServiceUrls.IMAGES_URL + enq.getImage();
         Log.d(TAG, "image: "+enq.getImage());
         Log.d(TAG, "name: "+enq.getName());
-        Glide.with(context).load(url).placeholder(R.drawable.nouser).into(imageView);
+        //Glide.with(context).load(url).placeholder(R.drawable.nouser).into(imageView);
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.placeholder(R.drawable.nouser);
+        requestOptions.error(R.drawable.nouser);
+
+
+        Glide.with(context)
+                .setDefaultRequestOptions(requestOptions)
+                .load(url).into(imageView);
 
         name.setText(enq.getName());
         phone.setOnClickListener(new View.OnClickListener() {

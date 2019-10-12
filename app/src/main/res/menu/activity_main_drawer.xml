@@ -3,9 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <item android:title="NDFitness"
-        android:id="@+id/selected_org">
-        <menu>
+    <!--<item android:title=""-->
+        <!--android:id="@+id/selected_org">-->
+        <!--<menu>-->
             <item
                 android:id="@+id/nav_coll"
                 android:icon="@drawable/collections"
@@ -15,28 +15,29 @@
                 android:icon="@drawable/enquiry"
                 android:title="@string/menu_today_enquiry" />
             <item
-                android:id="@+id/nav_followup"
-                android:icon="@drawable/followup"
-                android:title="@string/menu_followup" />
-            <item
             android:id="@+id/nav_todays_admi"
             android:icon="@drawable/admission"
             android:title="@string/menu_today_adminssion" />
+            <item
+                android:id="@+id/nav_push_noti"
+                android:icon="@drawable/ic_notifications"
+                android:title="@string/menu_push_noti" />
 
-        </menu>
-    </item>
+        <!--</menu>-->
+    <!--</item>-->
     <item android:title="Other"
       >
         <menu>
         <group android:checkableBehavior="single">
             <item
-                android:id="@+id/nav_switch_branch"
-                android:icon="@drawable/switchbranch"
-                android:title="@string/menu_switch_branch" />
+            android:id="@+id/nav_switch_branch"
+            android:icon="@drawable/switchbranch"
+            android:title="@string/menu_switch_branch" />
             <item
-                android:id="@+id/nav_cont_us"
-                android:icon="@drawable/ic_local_phone"
-                android:title="@string/menu_cont_us" />
+                android:id="@+id/nav_generate_qr"
+                android:icon="@drawable/scanrq"
+                android:title="@string/menu_generate_qr" />
+
             <item
                 android:id="@+id/nav_terms"
                 android:icon="@drawable/term"

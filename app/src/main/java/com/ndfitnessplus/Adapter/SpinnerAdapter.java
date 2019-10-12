@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-
 import com.ndfitnessplus.Model.Spinner_List;
 import com.ndfitnessplus.R;
 
@@ -52,7 +51,7 @@ public class SpinnerAdapter extends BaseAdapter {
                     getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         if (convertView == null)
-            convertView = inflater.inflate(R.layout.spinner_list, null);
+            convertView = inflater.inflate(com.ndfitnessplus.R.layout.spinner_list, null);
 
         final Spinner_List model = itemList.get(position);
 

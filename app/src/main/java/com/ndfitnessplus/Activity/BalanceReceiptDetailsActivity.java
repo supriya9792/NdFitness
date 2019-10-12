@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -83,6 +84,8 @@ public class BalanceReceiptDetailsActivity extends AppCompatActivity  implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
+                WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_balance_receipt_details);
         initToolbar();
     }
@@ -230,10 +233,10 @@ public class BalanceReceiptDetailsActivity extends AppCompatActivity  implements
             @Override
             protected void loadMoreItems() {
                 isLoading = true;
-                currentPage++;
+
                 Log.d(TAG, "prepare called current item: " + currentPage+"Total page"+totalPage);
                 if(currentPage<=totalPage){
-                    currentPage = PAGE_START;
+                    //currentPage = PAGE_START;
                     Log.d(TAG, "currentPage: " + currentPage);
                     isLastPage = false;
                     preparedListItem();
@@ -450,7 +453,9 @@ public class BalanceReceiptDetailsActivity extends AppCompatActivity  implements
                                     String edate=Utility.formatDate(End_Date);
                                     String todate=sdate+" to "+edate;
                                     subList.setStartToEndDate(todate);
+                                    String cont=Utility.lastFour(Contact);
                                     subList.setContact(Contact);
+                                    subList.setContactEncrypt(cont);
                                     String pack=Package_Name;
                                     subList.setPackageName(pack);
                                     String dur_sess="Duration:"+Duration_Days+","+"Session:"+Session;
@@ -473,6 +478,7 @@ public class BalanceReceiptDetailsActivity extends AppCompatActivity  implements
                                     String nextpaydate=Utility.formatDate(Next_payment_date);
                                     subList.setNextPaymentdate(nextpaydate);
                                     subList.setFinancialYear(Financial_Year);
+                                    subList.setFollowuptype("Payment");
                                     //Toast.makeText(BalanceReceiptDetailsActivity.this, "followup date: "+next_foll_date, Toast.LENGTH_SHORT).show();
 
                                     //Toast.makeText(MainActivity.this, "j "+j, Toast.LENGTH_SHORT).show();
@@ -566,11 +572,13 @@ public class BalanceReceiptDetailsActivity extends AppCompatActivity  implements
                     double ttlcol=Double.parseDouble(ttl_enq);
                     DecimalFormat df = new DecimalFormat("##,##,##,##,##,##,##0.00");
                     String tb=total_balance.getText().toString();
-                    double tbcol=Double.parseDouble(tb);
+
+                    double tbcol=Double.parseDouble(tb.replaceAll(",",""));
                     double ttl_bal=ttlcol+tbcol;
                     String rt= df.format(ttl_bal);
                     total_balance.setText(rt);
                     totalPage++;
+                    currentPage++;
                     progressBar.setVisibility(View.GONE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
@@ -618,7 +626,9 @@ public class BalanceReceiptDetailsActivity extends AppCompatActivity  implements
                                     String edate=Utility.formatDate(End_Date);
                                     String todate=sdate+" to "+edate;
                                     subList.setStartToEndDate(todate);
+                                    String cont=Utility.lastFour(Contact);
                                     subList.setContact(Contact);
+                                    subList.setContactEncrypt(cont);
                                     String pack=Package_Name;
                                     String dur_sess="Duration:"+Duration_Days+","+"Session:"+Session;
                                     subList.setPackageNameWithDS(dur_sess);
@@ -641,6 +651,7 @@ public class BalanceReceiptDetailsActivity extends AppCompatActivity  implements
                                     String nextpaydate=Utility.formatDate(Next_payment_date);
                                     subList.setNextPaymentdate(nextpaydate);
                                     subList.setFinancialYear(Financial_Year);
+                                    subList.setFollowuptype("Payment");
                                     //Toast.makeText(BalanceReceiptDetailsActivity.this, "followup date: "+next_foll_date, Toast.LENGTH_SHORT).show();
                                     subListArrayList.add(subList);
 
@@ -663,6 +674,7 @@ public class BalanceReceiptDetailsActivity extends AppCompatActivity  implements
                     progressBar.setVisibility(View.GONE);
                     if (currentPage != PAGE_START)
                         adapter.removeblank();
+                    currentPage = PAGE_START;
                     //adapter.addAll(subListArrayList);
                     swipeRefresh.setRefreshing(false);
                     isLoading = false;
@@ -733,7 +745,7 @@ public class BalanceReceiptDetailsActivity extends AppCompatActivity  implements
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
-                    String ttl_enq = object.getString("total_balance");
+                    String ttl_enq = object.getString("balance");
                     double ttlcol=Double.parseDouble(ttl_enq);
                     DecimalFormat df = new DecimalFormat("##,##,##,##,##,##,##0.00");
                     String rt= df.format(ttlcol);
@@ -785,7 +797,9 @@ public class BalanceReceiptDetailsActivity extends AppCompatActivity  implements
                                     String edate=Utility.formatDate(End_Date);
                                     String todate=sdate+" to "+edate;
                                     subList.setStartToEndDate(todate);
+                                    String cont=Utility.lastFour(Contact);
                                     subList.setContact(Contact);
+                                    subList.setContactEncrypt(cont);
                                     String pack=Package_Name;
                                     String dur_sess="Duration:"+Duration_Days+","+"Session:"+Session;
                                     subList.setPackageNameWithDS(dur_sess);
@@ -808,6 +822,7 @@ public class BalanceReceiptDetailsActivity extends AppCompatActivity  implements
                                     String nextpaydate=Utility.formatDate(Next_payment_date);
                                     subList.setNextPaymentdate(nextpaydate);
                                     subList.setFinancialYear(Financial_Year);
+                                    subList.setFollowuptype("Payment");
                                     subListArrayList.add(subList);
 
                                     adapter = new BalanceReceiptAdapter( subListArrayList,BalanceReceiptDetailsActivity.this);
@@ -823,7 +838,7 @@ public class BalanceReceiptDetailsActivity extends AppCompatActivity  implements
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
                     // nodata.setVisibility(View.VISIBLE);
-
+                    Toast.makeText(BalanceReceiptDetailsActivity.this, "NO Record Found", Toast.LENGTH_SHORT).show();
                     progressBar.setVisibility(View.GONE);
 
                     //recyclerView.setVisibility(View.GONE);

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".Fragment.GroupFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:padding="@dimen/spacing_large"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_gravity="start"
+            android:layout_marginLeft="@dimen/spacing_middle"
+            android:text="Common SMS Send To Group Members"
+            android:minHeight="@dimen/spacing_xmlarge"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            android:textColor="@color/grey_60" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/spacing_large"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:background="@drawable/layoutborder"
+                android:layout_weight="1"
+                android:weightSum="1">
+                <Spinner
+                    android:id="@+id/spinner_status"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:spinnerMode="dialog"
+                    android:textColor="@color/black"
+                    android:dropDownSelector="@color/black"
+                    />
+
+            </LinearLayout>
+            <View
+                android:layout_width="@dimen/spacing_large"
+                android:layout_height="0dp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/layoutborder"
+                android:layout_weight="1"
+                android:weightSum="1">
+                <Spinner
+                    android:id="@+id/spinner_enq_gender"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:spinnerMode="dialog"
+                    android:textColor="@color/black"
+                    android:dropDownSelector="@color/black"
+                    />
+
+            </LinearLayout>
+
+        </LinearLayout>
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:padding="@dimen/spacing_middle">-->
+            <!--<AutoCompleteTextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight="2.5"-->
+                <!--android:id="@+id/search_name"-->
+                <!--android:hint="Search Name"-->
+                <!--android:textColor="#000"-->
+                <!--android:textColorHint="#787578"-->
+                <!--android:gravity="center"-->
+                <!--android:layout_marginRight="10dp"-->
+                <!--android:drawableLeft="@drawable/ic_search"-->
+                <!--android:inputType="textVisiblePassword"-->
+                <!--/>-->
+            <!--<AutoCompleteTextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight="2.5"-->
+                <!--android:id="@+id/search_contact"-->
+                <!--android:hint="Search Contact"-->
+                <!--android:textColor="#000"-->
+                <!--android:textColorHint="#787578"-->
+                <!--android:gravity="center"-->
+                <!--android:layout_marginRight="10dp"-->
+                <!--android:inputType="textVisiblePassword"-->
+                <!--/>-->
+        <!--</LinearLayout>-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_gravity="start"
+            android:layout_marginLeft="@dimen/spacing_middle"
+            android:text="Text Message : "
+            android:minHeight="@dimen/spacing_xmlarge"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            android:textColor="@color/black" />
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/spacing_middle"
+            android:layout_marginRight="@dimen/spacing_middle"
+            app:cardBackgroundColor="@android:color/white"
+            app:cardCornerRadius="3dp"
+            app:cardElevation="2dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/spacing_middle"
+                android:orientation="vertical">
+
+
+                <EditText
+                    android:id="@+id/message"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:maxLines="5"
+                    android:gravity="start"
+                    android:hint="@string/textmeg_hint"
+                    android:layout_marginTop="@dimen/spacing_medium"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textColor="@color/grey_60" />
+
+
+            </LinearLayout> `
+        </android.support.v7.widget.CardView>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="55dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="10dp"
+            android:id="@+id/send"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/spacing_xlarge"
+            android:background="@drawable/btn_rounded"
+            android:text="@string/btn_send"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+        <View
+            android:layout_width="0dp"
+            android:layout_height="@dimen/spacing_middle" />
+
+    </LinearLayout>
+
+</FrameLayout>

@@ -22,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -35,6 +36,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.ndfitnessplus.Adapter.AddEnquirySpinnerAdapter;
 import com.ndfitnessplus.Adapter.MemberDetailsAdapter;
@@ -105,6 +107,8 @@ public class RenewFollowupDetailsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
+                WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_renew_followup_details);
         initToolbar();
         initComponent();
@@ -158,7 +162,15 @@ public class RenewFollowupDetailsActivity extends AppCompatActivity {
             String url= domainurl+ ServiceUrls.IMAGES_URL + Image;
             username.setText(name);
             mobilenumber.setText(Contact);
-            Glide.with(this).load(url).placeholder(R.drawable.nouser).into(imageView);
+          //  Glide.with(this).load(url).placeholder(R.drawable.nouser).into(imageView);
+            RequestOptions requestOptions = new RequestOptions();
+            requestOptions.placeholder(R.drawable.nouser);
+            requestOptions.error(R.drawable.nouser);
+
+
+            Glide.with(this)
+                    .setDefaultRequestOptions(requestOptions)
+                    .load(url).into(imageView);
             folldetailsclass();
         }
 
@@ -661,7 +673,9 @@ public class RenewFollowupDetailsActivity extends AppCompatActivity {
                                     String edate=Utility.formatDate(End_Date);
                                     String todate=sdate+" to "+edate;
                                     subList.setStartToEndDate(todate);
+                                    String cont=Utility.lastFour(Contact);
                                     subList.setContact(Contact);
+                                    subList.setContactEncrypt(cont);
                                     String pack=Package_Name+"(Duration:"+Duration_Days+","+"Session:"+Session+")";
                                     subList.setPackageNameWithDS(pack);
                                     subList.setPackageName(Package_Name);

@@ -74,8 +74,10 @@ Context context;
 
             if (responseCode == HttpsURLConnection.HTTP_OK) {
                 BufferedReader br=new BufferedReader(new InputStreamReader(conn.getInputStream()));
-
-                response = br.readLine();
+                String line;
+                while ((line=br.readLine()) != null) {
+                    response+=line;
+                }
             }
             else {
                 response="Error Registering";
@@ -231,8 +233,10 @@ Context context;
 
             if (responseCode == HttpsURLConnection.HTTP_OK) {
                 BufferedReader br=new BufferedReader(new InputStreamReader(conn.getInputStream()));
-
-                response = br.readLine();
+                String line;
+                while ((line=br.readLine()) != null) {
+                    response+=line;
+                }
             }
             else {
                 response="Error Registering";

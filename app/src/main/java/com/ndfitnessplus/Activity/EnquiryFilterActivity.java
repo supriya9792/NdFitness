@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -87,6 +88,8 @@ public class EnquiryFilterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
+                WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_enquiry_filter);
         initToolbar();
     }
@@ -484,7 +487,7 @@ public class EnquiryFilterActivity extends AppCompatActivity {
             };
             spinEnqDate.setAdapter(enqdateadapter);
         }
-
+        spinEnqDate.setSelection(2);
         //Toast.makeText(MainActivity.this,genderradioButton.getText(), Toast.LENGTH_SHORT).show();
         spinEnqDate.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -497,7 +500,7 @@ public class EnquiryFilterActivity extends AppCompatActivity {
                 if(index==0){
                     tv.setText(getResources().getString(R.string.prompt_enq_date));
                 }
-                 spinEnqDate.setSelection(2);
+
 //                tv.setTextColor(getResources().getColor(R.color.black));
                 enquiryDate = tv.getText().toString();
                 if((enquiryDate.equals(getResources().getString(R.string.prompt_enq_date)))||
@@ -1705,6 +1708,7 @@ public class EnquiryFilterActivity extends AppCompatActivity {
             String success = object.getString(getResources().getString(R.string.success));
 
             if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
+                String tt_budget = object.getString("ttl_budget");
                 //Toast.makeText(EnquiryFilterActivity.this,"Enquiry added succesfully",Toast.LENGTH_SHORT).show();
 
                 if (object != null) {
@@ -1735,12 +1739,15 @@ public class EnquiryFilterActivity extends AppCompatActivity {
                                 String CallResponse = jsonObj.getString("CallResponse");
                                 String Rating = jsonObj.getString("Rating");
                                 String Followup_Date = jsonObj.getString("FollowupDate");
+                                String Budget = jsonObj.getString("Budget");
                                 //  for (int j = 0; j < 5; j++) {
 //                                itemCount++;
 //                                Log.d(TAG, "run offset: " + itemCount);
                                 subList.setName(name);
                                 subList.setGender(gender);
+                                String cont=Utility.lastFour(Contact);
                                 subList.setContact(Contact);
+                                subList.setContactEncrypt(cont);
                                 subList.setAddress(address);
                                 subList.setExecutiveName(ExecutiveName);
                                 subList.setComment(Comment);
@@ -1753,7 +1760,10 @@ public class EnquiryFilterActivity extends AppCompatActivity {
                                 subList.setCallResponse(CallResponse);
                                 String foll_date= Utility.formatDate(Followup_Date);
                                 subList.setFollowupdate(foll_date);
-
+                                if(Budget.equals(".00")){
+                                    Budget="0.00";
+                                }
+                                subList.setBudget(Budget);
                                 //Toast.makeText(EnquiryActivity.this, "followup date: "+next_foll_date, Toast.LENGTH_SHORT).show();
                                 subListArrayList.add(subList);
 
@@ -1764,6 +1774,7 @@ public class EnquiryFilterActivity extends AppCompatActivity {
                         Bundle bundle = new Bundle();
                         bundle.putSerializable("filter_array_list", subListArrayList);
                         intent.putExtra("BUNDLE",bundle);
+                        intent.putExtra("ttl_budget",tt_budget);
                         startActivity(intent);
 
                     } else if (jsonArrayResult.length() == 0) {

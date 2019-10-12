@@ -13,7 +13,7 @@ import com.ndfitnessplus.R;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link MemberBirthdayFragment.OnFragmentInteractionListener} interface
+// * {@link MemberBirthdayFragment} interface
  * to handle interaction events.
  * Use the {@link MemberBirthdayFragment#newInstance} factory method to
  * create an instance of this fragment.

@@ -3,8 +3,10 @@ package com.ndfitnessplus.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -87,6 +90,8 @@ public class CourseActivity extends AppCompatActivity implements SwipeRefreshLay
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
+                WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_course);
         initToolbar();
     }
@@ -129,6 +134,7 @@ public class CourseActivity extends AppCompatActivity implements SwipeRefreshLay
             total_courses.setText(String.valueOf(length));
             adapter = new CourseAdapter( filterArrayList,CourseActivity.this);
             recyclerView.setAdapter(adapter);
+
         }else{
             if (isOnline(CourseActivity.this)) {
                 enquiryclass();// check login details are valid or not from server
@@ -240,10 +246,10 @@ public class CourseActivity extends AppCompatActivity implements SwipeRefreshLay
             @Override
             protected void loadMoreItems() {
                 isLoading = true;
-                currentPage++;
+
                 Log.d(TAG, "prepare called current item: " + currentPage+"Total page"+totalPage);
                 if(currentPage<=totalPage){
-                    //currentPage = PAGE_START;
+                  //  currentPage = PAGE_START;
                     Log.d(TAG, "currentPage: " + currentPage);
                     isLastPage = false;
                     preparedListItem();
@@ -477,7 +483,9 @@ public class CourseActivity extends AppCompatActivity implements SwipeRefreshLay
                                         e.printStackTrace();
                                     }
 
+                                    String cont=Utility.lastFour(Contact);
                                     subList.setContact(Contact);
+                                    subList.setContactEncrypt(cont);
 //                                    String pack=Package_Name;
                                     subList.setPackageName(Package_Name);
                                     subList.setExecutiveName(ExecutiveName);
@@ -591,6 +599,8 @@ public class CourseActivity extends AppCompatActivity implements SwipeRefreshLay
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
                     totalPage++;
+                    currentPage++;
+
                     progressBar.setVisibility(View.GONE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
@@ -617,12 +627,12 @@ public class CourseActivity extends AppCompatActivity implements SwipeRefreshLay
                                     String Duration_Days = jsonObj.getString("Duration_Days");
                                     String Session = jsonObj.getString("Session");
                                     String Member_ID = jsonObj.getString("Member_ID");
-                                    String Image = jsonObj.getString("Image");
                                     String Start_Date = jsonObj.getString("Start_Date");
                                     String End_Date = jsonObj.getString("End_Date");
                                     String Rate = jsonObj.getString("Rate");
                                     String Final_paid = jsonObj.getString("Final_paid");
                                     String Final_Balance = jsonObj.getString("Final_Balance");
+                                    String Image = jsonObj.getString("Image");
                                     String Invoice_ID = jsonObj.getString("Invoice_ID");
                                     String Tax = jsonObj.getString("Tax");
                                     String Member_Email_ID = jsonObj.getString("Member_Email_ID");
@@ -658,23 +668,30 @@ public class CourseActivity extends AppCompatActivity implements SwipeRefreshLay
                                         e.printStackTrace();
                                     }
 
+                                    String cont=Utility.lastFour(Contact);
                                     subList.setContact(Contact);
-                                    String pack=Package_Name+"(d:"+Duration_Days+","+"s:"+Session+")";
-                                    subList.setPackageName(pack);
+                                    subList.setContactEncrypt(cont);
+//                                    String pack=Package_Name;
+                                    subList.setPackageName(Package_Name);
                                     subList.setExecutiveName(ExecutiveName);
                                     subList.setTax(Tax);
-
+                                    String dur_sess="Duration:"+Duration_Days+","+"Session:"+Session;
+                                    subList.setPackageNameWithDS(dur_sess);
                                     String reg_date= Utility.formatDate(RegistrationDate);
                                     subList.setRegistrationDate(reg_date);
                                     subList.setID(Member_ID);
-                                    Image.replace("\"", "");
-                                    subList.setImage(Image);
+                                    subList.setInvoiceID(Invoice_ID);
+
                                     subList.setRate(Rate);
+                                    // String fpaid="₹ "+Final_paid;
                                     subList.setPaid(Final_paid);
+                                    if(Final_Balance.equals(".00")){
+                                        Final_Balance="0.00";
+                                    }
+                                    //String fbalance="₹ "+Final_Balance;
                                     subList.setBalance(Final_Balance);
                                     Image.replace("\"", "");
                                     subList.setImage(Image);
-                                    subList.setInvoiceID(Invoice_ID);
                                     subList.setEmail(Member_Email_ID);
                                     subList.setFinancialYear(Financial_Year);
                                     //Toast.makeText(CourseActivity.this, "followup date: "+next_foll_date, Toast.LENGTH_SHORT).show();
@@ -699,6 +716,7 @@ public class CourseActivity extends AppCompatActivity implements SwipeRefreshLay
                     progressBar.setVisibility(View.GONE);
                     if (currentPage != PAGE_START)
                         adapter.removeblank();
+                    currentPage = PAGE_START;
                     //adapter.addAll(subListArrayList);
                     swipeRefresh.setRefreshing(false);
                     isLoading = false;
@@ -774,8 +792,10 @@ public class CourseActivity extends AppCompatActivity implements SwipeRefreshLay
 //                        if(jsonArrayResult.length() >10){
 //                            totalPage=jsonArrayResult.length()/10;
 //                        }
+                        total_courses.setText(String.valueOf(jsonArrayResult.length()));
                         final   ArrayList<CourseList> subListArrayList = new ArrayList<CourseList>();
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
+
                             for (int i = 0; i < jsonArrayResult.length(); i++) {
 
 
@@ -794,12 +814,12 @@ public class CourseActivity extends AppCompatActivity implements SwipeRefreshLay
                                     String Duration_Days = jsonObj.getString("Duration_Days");
                                     String Session = jsonObj.getString("Session");
                                     String Member_ID = jsonObj.getString("Member_ID");
-                                    String Image = jsonObj.getString("Image");
                                     String Start_Date = jsonObj.getString("Start_Date");
                                     String End_Date = jsonObj.getString("End_Date");
                                     String Rate = jsonObj.getString("Rate");
                                     String Final_paid = jsonObj.getString("Final_paid");
                                     String Final_Balance = jsonObj.getString("Final_Balance");
+                                    String Image = jsonObj.getString("Image");
                                     String Invoice_ID = jsonObj.getString("Invoice_ID");
                                     String Tax = jsonObj.getString("Tax");
                                     String Member_Email_ID = jsonObj.getString("Member_Email_ID");
@@ -814,21 +834,51 @@ public class CourseActivity extends AppCompatActivity implements SwipeRefreshLay
                                     String edate=Utility.formatDate(End_Date);
                                     String todate=sdate+" to "+edate;
                                     subList.setStartToEndDate(todate);
+
+                                    SimpleDateFormat dateFormat = new SimpleDateFormat(
+                                            "dd-MM-yyyy");
+                                    Date endDate = new Date();
+                                    Date currentdate = new Date();
+                                    String endc=Utility.formatDateDB(End_Date);
+                                    try {
+                                        endDate = dateFormat.parse(endc);
+                                        currentdate = dateFormat.parse(Utility.getCurrentDate());
+                                        Log.v(TAG, String.format(" ::endDate = %s", endDate));
+                                        Log.v(TAG, String.format(" :: currentdate = %s",currentdate));
+                                        if (currentdate.before(endDate)|| currentdate.equals(endDate) ) {
+                                            subList.setStatus("Active");
+                                        } else {
+                                            subList.setStatus("Inactive");
+                                        }
+                                    } catch (ParseException e) {
+                                        // TODO Auto-generated catch block
+                                        e.printStackTrace();
+                                    }
+
+                                    String cont=Utility.lastFour(Contact);
                                     subList.setContact(Contact);
-                                    String pack=Package_Name+"(Duration:"+Duration_Days+","+"Session:"+Session+")";
-                                    subList.setPackageName(pack);
+                                    subList.setContactEncrypt(cont);
+//                                    String pack=Package_Name;
+                                    subList.setPackageName(Package_Name);
                                     subList.setExecutiveName(ExecutiveName);
                                     subList.setTax(Tax);
-
+                                    String dur_sess="Duration:"+Duration_Days+","+"Session:"+Session;
+                                    subList.setPackageNameWithDS(dur_sess);
                                     String reg_date= Utility.formatDate(RegistrationDate);
                                     subList.setRegistrationDate(reg_date);
                                     subList.setID(Member_ID);
+                                    subList.setInvoiceID(Invoice_ID);
+
+                                    subList.setRate(Rate);
+                                    // String fpaid="₹ "+Final_paid;
+                                    subList.setPaid(Final_paid);
+                                    if(Final_Balance.equals(".00")){
+                                        Final_Balance="0.00";
+                                    }
+                                    //String fbalance="₹ "+Final_Balance;
+                                    subList.setBalance(Final_Balance);
                                     Image.replace("\"", "");
                                     subList.setImage(Image);
-                                    subList.setRate(Rate);
-                                    subList.setPaid(Final_paid);
-                                    subList.setBalance(Final_Balance);
-                                    subList.setInvoiceID(Invoice_ID);
                                     subList.setEmail(Member_Email_ID);
                                     subList.setFinancialYear(Financial_Year);
 
@@ -846,7 +896,7 @@ public class CourseActivity extends AppCompatActivity implements SwipeRefreshLay
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
                     // nodata.setVisibility(View.VISIBLE);
-
+                    Toast.makeText(CourseActivity.this, "NO Record Found", Toast.LENGTH_SHORT).show();
                     progressBar.setVisibility(View.GONE);
 
                     //recyclerView.setVisibility(View.GONE);
@@ -905,5 +955,22 @@ public class CourseActivity extends AppCompatActivity implements SwipeRefreshLay
     public void onBackPressed() {
         Intent intent=new Intent(CourseActivity.this,MainActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        int length = 1000;
+        Uri uri = getIntent().getData();
+        if (uri != null) {
+            try {
+                length = Integer.parseInt(uri.getLastPathSegment());
+            } catch (NumberFormatException e) {
+            }
+        }
+
+        byte[] data = new byte[length];
+        outState.putByteArray("data", data);
     }
 }

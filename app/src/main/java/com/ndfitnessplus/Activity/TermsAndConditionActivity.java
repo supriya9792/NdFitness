@@ -7,9 +7,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.ndfitnessplus.Activity.Notification.TodaysEnrollmentActivity;
 import com.ndfitnessplus.R;
@@ -36,6 +38,8 @@ public class TermsAndConditionActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
+                WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_terms_and_condition);
         initToolbar();
     }
@@ -100,7 +104,7 @@ public class TermsAndConditionActivity extends AppCompatActivity {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
            // dismissProgressDialog();
-            viewDialog.showDialog();
+            viewDialog.hideDialog();
             //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
             //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
             CheckCompanyDetails(response);
@@ -145,7 +149,15 @@ public class TermsAndConditionActivity extends AppCompatActivity {
                                 String TermsAndConditions = jsonObj.getString("TermsAndConditions");
                                 String url= ServiceUrls.IMAGES_URL + Logo;
                                 Log.d(TAG, "url: " +url);
-                                Glide.with(TermsAndConditionActivity.this).load(url).placeholder(R.drawable.nouser).into(logo);
+                               // Glide.with(TermsAndConditionActivity.this).load(url).placeholder(R.drawable.nouser).into(logo);
+                                RequestOptions requestOptions = new RequestOptions();
+                                requestOptions.placeholder(R.drawable.nouser);
+                                requestOptions.error(R.drawable.nouser);
+
+
+                                Glide.with(this)
+                                        .setDefaultRequestOptions(requestOptions)
+                                        .load(url).into(logo);
                                 termasandcondition.setText(TermsAndConditions);
 
 

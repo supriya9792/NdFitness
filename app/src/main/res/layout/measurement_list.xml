@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+    <android.support.v7.widget.CardView
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/spacing_middle"
+        android:layout_marginTop="@dimen/spacing_medium"
+        android:layout_marginRight="@dimen/spacing_middle"
+        android:layout_marginBottom="@dimen/spacing_medium"
+        app:cardCornerRadius="10.0dip"
+        app:cardElevation="2.0dip">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/spacing_middle">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/spacing_large"
+                android:paddingRight="@dimen/spacing_large">
+
+                <TextView
+                    android:id="@+id/nameTV"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_weight="2"
+                    android:gravity="left"
+                    android:text="Atul Patil"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:textColor="@android:color/black" />
+                <TextView
+                    android:id="@+id/contactTV"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="7028259696"
+                    android:textColor="@color/black"
+                    android:layout_gravity="right"
+                    android:gravity="right"
+                    android:textSize="14sp"
+                    android:visibility="visible"/>
+
+
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:id="@+id/lyt_parent"
+                android:paddingLeft="@dimen/spacing_large"
+                android:paddingRight="@dimen/spacing_large"
+                android:paddingBottom="@dimen/spacing_middle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:weightSum="4.0">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="0.0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0">
+                    <View android:layout_width="0.0dip"
+                        android:layout_height="@dimen/spacing_medium" />
+                    <TextView
+                        android:textSize="12.0sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/measurement_date" />
+                    <TextView
+                        android:textSize="12.0sp"
+                        android:textColor="@color/black"
+                        android:id="@+id/measurement_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/measurement_date" />
+                    <View
+                        android:layout_width="0.0dip"
+                        android:layout_height="@dimen/spacing_medium" />
+                    <TextView
+                        android:textSize="12.0sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/bmi" />
+                    <TextView
+                        android:textSize="12.0sp"
+                        android:textColor="@color/black"
+                        android:id="@+id/bmi"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/bmi" />
+                    <View
+                        android:layout_width="0.0dip"
+                        android:layout_height="@dimen/spacing_medium" />
+                    <TextView
+                        android:textSize="12.0sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/chest" />
+                    <TextView
+                        android:textSize="12.0sp"
+                        android:textColor="@color/black"
+                        android:id="@+id/chest"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/chest" />
+                    <View
+                        android:layout_width="0.0dip"
+                        android:layout_height="@dimen/spacing_medium" />
+                    <TextView
+                        android:textSize="12.0sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/waist" />
+                    <TextView
+                        android:textSize="12.0sp"
+                        android:textColor="@color/black"
+                        android:id="@+id/waist"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/waist" />
+                    <View
+                        android:layout_width="0.0dip"
+                        android:layout_height="@dimen/spacing_medium" />
+                    <TextView
+                        android:textSize="12.0sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/calf_r" />
+                    <TextView
+                        android:textSize="12.0sp"
+                        android:textColor="@color/black"
+                        android:id="@+id/calf_r"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/calf_r" />
+
+                </LinearLayout>
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="0.0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0">
+                    <View android:layout_width="0.0dip"
+                        android:layout_height="@dimen/spacing_medium" />
+                    <TextView
+                        android:textSize="12.0sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/weight" />
+                    <TextView
+                        android:textSize="12.0sp"
+                        android:textColor="@color/black"
+                        android:id="@+id/weight"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/weight" />
+                    <View android:layout_width="0.0dip"
+                        android:layout_height="@dimen/spacing_medium" />
+                    <TextView
+                        android:textSize="12.0sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/fat" />
+                    <TextView
+                        android:textSize="12.0sp"
+                        android:textColor="@color/black"
+                        android:id="@+id/fat"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/fat" />
+                    <View
+                        android:layout_width="0.0dip"
+                        android:layout_height="@dimen/spacing_medium" />
+                    <TextView
+                        android:textSize="12.0sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/arms_r" />
+                    <TextView
+                        android:textSize="12.0sp"
+                        android:textColor="@color/black"
+                        android:id="@+id/arms_r"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/arms_r" />
+                    <View
+                        android:layout_width="0.0dip"
+                        android:layout_height="@dimen/spacing_medium" />
+                    <TextView
+                        android:textSize="12.0sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/hips" />
+                    <TextView
+                        android:textSize="12.0sp"
+                        android:textColor="@color/black"
+                        android:id="@+id/hips"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/hips" />
+                    <View
+                        android:layout_width="0.0dip"
+                        android:layout_height="@dimen/spacing_medium" />
+                    <TextView
+                        android:textSize="12.0sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/calf_l" />
+                    <TextView
+                        android:textSize="12.0sp"
+                        android:textColor="@color/black"
+                        android:id="@+id/calf_l"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/calf_l" />
+                </LinearLayout>
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="0.0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0">
+
+                    <View android:layout_width="0.0dip"
+                        android:layout_height="@dimen/spacing_medium" />
+                    <TextView
+                        android:textSize="12.0sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/height" />
+                    <TextView
+                        android:textSize="12.0sp"
+                        android:textColor="@color/black"
+                        android:id="@+id/height"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/height" />
+                    <View android:layout_width="0.0dip"
+                        android:layout_height="@dimen/spacing_medium" />
+                    <TextView
+                        android:textSize="12.0sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/neck" />
+                    <TextView
+                        android:textSize="14.0sp"
+                        android:textColor="@color/black"
+                        android:id="@+id/neck"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/neck" />
+                    <View
+                        android:layout_width="0.0dip"
+                        android:layout_height="@dimen/spacing_medium" />
+                    <TextView
+                        android:textSize="12.0sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/arms_l" />
+                    <TextView
+                        android:textSize="12.0sp"
+                        android:textColor="@color/black"
+                        android:id="@+id/arms_l"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/arms_l" />
+                    <View
+                        android:layout_width="0.0dip"
+                        android:layout_height="@dimen/spacing_medium" />
+                    <TextView
+                        android:textSize="12.0sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/thigh_r" />
+                    <TextView
+                        android:textSize="12.0sp"
+                        android:textColor="@color/black"
+                        android:id="@+id/thigh_r"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/thigh_r" />
+                    <View
+                        android:layout_width="0.0dip"
+                        android:layout_height="@dimen/spacing_medium" />
+                    <!--<TextView-->
+                        <!--android:textSize="12.0sp"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="@string/next_followup_date" />-->
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0.0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:orientation="vertical">
+
+                    <View
+                        android:layout_width="0.0dip"
+                        android:layout_height="@dimen/spacing_medium" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/age"
+                        android:textSize="12.0sp" />
+
+                    <TextView
+                        android:id="@+id/age"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/age"
+                        android:textColor="@color/black"
+                        android:textSize="12.0sp" />
+
+                    <View
+                        android:layout_width="0.0dip"
+                        android:layout_height="@dimen/spacing_medium" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/shoulder"
+                        android:textSize="12.0sp" />
+
+                    <TextView
+                        android:id="@+id/shoulder"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/shoulder"
+                        android:textColor="@color/black"
+                        android:textSize="12.0sp" />
+
+                    <View
+                        android:layout_width="0.0dip"
+                        android:layout_height="@dimen/spacing_medium" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/forarms"
+                        android:textSize="12.0sp" />
+
+                    <TextView
+                        android:id="@+id/forarms"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/forarms"
+                        android:textColor="@color/black"
+                        android:textSize="12.0sp" />
+
+                    <View
+                        android:layout_width="0.0dip"
+                        android:layout_height="@dimen/spacing_medium" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/thigh_l"
+                        android:textSize="12.0sp" />
+
+                    <TextView
+                        android:id="@+id/thigh_l"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/thigh_l"
+                        android:textColor="@color/black"
+                        android:textSize="12.0sp" />
+
+                    <View
+                        android:layout_width="0.0dip"
+                        android:layout_height="@dimen/spacing_medium" />
+
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="@string/exe_name"-->
+                        <!--android:textSize="12.0sp" />-->
+
+
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="end">
+
+            <TextView
+                android:id="@+id/exe_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/exe_name"
+                android:textColor="@color/black"
+                android:textSize="12.0sp" />
+            <TextView
+                android:textSize="12.0sp"
+                android:textColor="@color/black"
+                android:id="@+id/nextFollDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/measurement_date" />
+                <TextView
+                    android:textSize="12.0sp"
+                    android:textColor="@color/black"
+                    android:id="@+id/mdate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/next_followup_date" />
+            </LinearLayout>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+</LinearLayout>

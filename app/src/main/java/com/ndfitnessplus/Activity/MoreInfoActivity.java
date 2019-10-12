@@ -12,9 +12,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.ndfitnessplus.Activity.Notification.TodaysEnrollmentActivity;
 import com.ndfitnessplus.Adapter.FollowupDetailsAdapter;
@@ -48,6 +50,8 @@ public class MoreInfoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
+                WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_more_info);
         initToolbar();
     }
@@ -177,6 +181,7 @@ public class MoreInfoActivity extends AppCompatActivity {
             FollowupDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(MoreInfoActivity.this));
             FollowupDetails.put("enquiry_id",enquiry_id );
             Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(MoreInfoActivity.this)));
+            Log.v(TAG, String.format("doInBackground :: enquiry_id= %s", enquiry_id));
             FollowupDetails.put("action","show_enquiry_followup_more_details");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(MoreInfoActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, FollowupDetails);
@@ -242,8 +247,15 @@ public class MoreInfoActivity extends AppCompatActivity {
                                     Image.replace("\"", "");
                                     String domainurl= SharedPrefereneceUtil.getDomainUrl(MoreInfoActivity.this);
                                     String url= domainurl+ServiceUrls.IMAGES_URL + Image;
+                                    RequestOptions requestOptions = new RequestOptions();
+                                    requestOptions.placeholder(R.drawable.nouser);
+                                    requestOptions.error(R.drawable.nouser);
 
-                                    Glide.with(this).load(url).placeholder(R.drawable.nouser).into(imageView);
+
+                                    Glide.with(this)
+                                            .setDefaultRequestOptions(requestOptions)
+                                            .load(url).into(imageView);
+                                  //  Glide.with(this).load(url).placeholder(R.drawable.nouser).into(imageView);
                                     Email.setText(email);
                                     Gender.setText(gender);
                                     Address.setText(address);

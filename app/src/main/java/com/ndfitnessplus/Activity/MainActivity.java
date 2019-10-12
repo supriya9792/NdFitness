@@ -1,5 +1,7 @@
 package com.ndfitnessplus.Activity;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -7,12 +9,15 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -23,10 +28,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.ndfitnessplus.Activity.Notification.TodaysEnquiryActivity;
 import com.ndfitnessplus.Adapter.AdSliderAdapter;
@@ -38,6 +47,7 @@ import com.ndfitnessplus.Model.EnquiryList;
 import com.ndfitnessplus.Notification.NotificationUtils;
 import com.ndfitnessplus.R;
 import com.ndfitnessplus.Utility.Constants;
+import com.ndfitnessplus.Utility.NetworkUtils;
 import com.ndfitnessplus.Utility.ServerClass;
 import com.ndfitnessplus.Utility.ServiceUrls;
 import com.ndfitnessplus.Utility.SharedPrefManager;
@@ -64,22 +74,26 @@ public class MainActivity extends AppCompatActivity
     AdSliderAdapter adapter;
     private static ArrayList<AdSliderList> data;
     private BroadcastReceiver mRegistrationBroadcastReceiver;
-    int currentPage=0;
-    int NUM_PAGES=0;
-    int MAX_STEP=5;
+    int currentPage = 0;
+    int NUM_PAGES = 0;
+    int MAX_STEP = 5;
     Timer timer;
     public final String TAG = MainActivity.class.getName();
     private ProgressDialog pd;
     //dashnoard menu
-    LinearLayout notification,enquiry,add_member,renew,balance_receipt,expenses,member_info,collections;
-    TextView Username;
-    String UName,companyname,token;
-
+    LinearLayout notification, enquiry, add_member, renew, balance_receipt, expenses, member_info, collections, attendance, measurement, pos, diet;
+    TextView Username, Welcome;
+    String UName, companyname, token;
+    ImageView compLogo;
     //Loading gif
     ViewDialog viewDialog;
+    public  String ImeiNo;
+    TelephonyManager telephonyManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
+                WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -110,17 +124,29 @@ public class MainActivity extends AppCompatActivity
         expenses=findViewById(R.id.expenses);
         member_info=findViewById(R.id.mem_info);
         collections=findViewById(R.id.quicksms);
+        attendance=findViewById(R.id.attendance);
+        measurement=findViewById(R.id.measurement);
+        pos=findViewById(R.id.pos);
+        diet=findViewById(R.id.diet);
 
         Username=findViewById(R.id.user_name);
+        Welcome=findViewById(R.id.welcome);
         UName=SharedPrefereneceUtil.getName(MainActivity.this);
 
+        deviceId();
+        String device_id = NetworkUtils.getIMEINo(this);
+        Log.v(TAG, "IMEI No: "+device_id);
         token = SharedPrefManager.getInstance(this).getDeviceToken();
         //Toast.makeText(MainActivity.this, token, Toast.LENGTH_LONG).show();
         registerDeviceClass();
         String upperString = UName.substring(0,1).toUpperCase() + UName.substring(1);
         Username.setText(upperString);
+
+        String wishes=Utility.getWishes();
+        Welcome.setText(wishes);
         CheckCompanyClass();
         SmsLoginClass();
+
         notification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -177,6 +203,34 @@ public class MainActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
+        attendance.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(MainActivity.this, AttendenceActivity.class);
+                startActivity(intent);
+            }
+        });
+        measurement.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(MainActivity.this, MeasurementActivity.class);
+                startActivity(intent);
+            }
+        });
+        pos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(MainActivity.this, POSActivity.class);
+                startActivity(intent);
+            }
+        });
+        diet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(MainActivity.this, DietActivity.class);
+                startActivity(intent);
+            }
+        });
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -188,19 +242,24 @@ public class MainActivity extends AppCompatActivity
         TextView navUsername = (TextView) headerView.findViewById(R.id.wel_user);
 
         TextView compname=(TextView)headerView.findViewById(R.id.company_name);
+         compLogo=(ImageView)headerView.findViewById(R.id.imageView);
         //String name=UName;
         String name = UName.substring(0,1).toUpperCase() + UName.substring(1);
+         String  authority=SharedPrefereneceUtil.getAuthority(MainActivity.this);
         companyname=SharedPrefereneceUtil.getCompanyName(MainActivity.this);
-        navUsername.setText(name);
-        compname.setText(companyname);
+        String brnach=SharedPrefereneceUtil.getSelectedBranch(MainActivity.this);
+        String aname=name+"-"+authority;
+        navUsername.setText(aname);
+        String comp_branch=companyname+"-"+brnach;
+        compname.setText(comp_branch);
         // get menu from navigationView
         Menu menu = navigationView.getMenu();
 
         // find MenuItem you want to change
-        MenuItem selcteorg = menu.findItem(R.id.selected_org);
-
-        // set new title to the MenuItem
-        selcteorg.setTitle(SharedPrefereneceUtil.getSelectedBranch(MainActivity.this));
+//        MenuItem selcteorg = menu.findItem(R.id.selected_org);
+//
+//        // set new title to the MenuItem
+//        selcteorg.setTitle(SharedPrefereneceUtil.getSelectedBranch(MainActivity.this));
         navigationView.setNavigationItemSelectedListener(this);
 
         mRegistrationBroadcastReceiver = new BroadcastReceiver() {
@@ -226,7 +285,33 @@ public class MainActivity extends AppCompatActivity
             }
         };
     }
-
+    private void deviceId() {
+        telephonyManager = (TelephonyManager) getSystemService(this.TELEPHONY_SERVICE);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_PHONE_STATE}, 101);
+            return;
+        }
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults){
+        switch (requestCode) {
+            case 101:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_PHONE_STATE}, 101);
+                        return;
+                    }
+                     ImeiNo = telephonyManager.getDeviceId();
+                    Log.v(TAG, "IMEI No: "+ImeiNo);
+                    Toast.makeText(MainActivity.this,ImeiNo,Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(MainActivity.this,"Without permission we check",Toast.LENGTH_LONG).show();
+                }
+                break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
     private void setupAutoPager() {
         final Handler handler = new Handler();
         final Runnable Update = new Runnable() {
@@ -325,16 +410,18 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_todays_enq) {
             Intent intent=new Intent(MainActivity.this, TodaysEnquiryActivity.class);
             startActivity(intent);
-        } else if (id == R.id.nav_followup) {
-
         } else if (id == R.id.nav_todays_admi) {
-             Intent intent=new Intent(MainActivity.this,EnrollmentActivity.class);
-             startActivity(intent);
+            Intent intent=new Intent(MainActivity.this,EnrollmentActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_push_noti) {
+            Intent intent=new Intent(MainActivity.this,PushNotificationActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_switch_branch) {
             Intent intent=new Intent(MainActivity.this,BranchSelectionActivity.class);
             startActivity(intent);
-        } else if (id == R.id.nav_cont_us) {
-
+        }else if (id == R.id.nav_generate_qr) {
+            Intent intent=new Intent(MainActivity.this,GenerateQRActivity.class);
+            startActivity(intent);
         }else if (id == R.id.nav_terms) {
             Intent intent=new Intent(MainActivity.this,TermsAndConditionActivity.class);
             startActivity(intent);
@@ -428,7 +515,17 @@ public class MainActivity extends AppCompatActivity
             }
             else if (success.equalsIgnoreCase(getResources().getString(R.string.two)))
             {
+                String logo = jsonObjLoginResponse.getString("Logo");
+                RequestOptions requestOptions = new RequestOptions();
+                requestOptions.placeholder(R.drawable.nouser);
+                requestOptions.error(R.drawable.nouser);
+                String domainurl= SharedPrefereneceUtil.getDomainUrl(MainActivity.this);
+                String url= domainurl+ServiceUrls.IMAGES_URL + logo;
 
+                Glide.with(MainActivity.this)
+                        .setDefaultRequestOptions(requestOptions)
+                        .load(url).into(compLogo);
+                checkDeviceClass();
             }
 
         } catch (JSONException e) {
@@ -569,10 +666,13 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         protected String doInBackground(String... params) {
+            String device_id = NetworkUtils.getIMEINo(MainActivity.this);
             Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> registerDeviceDetails = new HashMap<String, String>();
             registerDeviceDetails.put("token",token);
+            registerDeviceDetails.put("imei_no",device_id);
             Log.v(TAG, String.format("doInBackground :: Token= %s", token));
+            Log.v(TAG, String.format("doInBackground :: ImeiNo= %s", device_id));
             registerDeviceDetails.put("user_id",SharedPrefereneceUtil.getUserId(MainActivity.this));
             registerDeviceDetails.put("user","User");
             Log.v(TAG, String.format("doInBackground :: user_id= %s", SharedPrefereneceUtil.getUserId(MainActivity.this)));
@@ -606,6 +706,84 @@ public class MainActivity extends AppCompatActivity
     protected void onPause() {
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
         super.onPause();
+    }
+    public void  checkDeviceClass() {
+        MainActivity.checkDeviceTrackClass ru = new MainActivity.checkDeviceTrackClass();
+        ru.execute("5");
+    }
+
+
+    class checkDeviceTrackClass extends AsyncTask<String, Void, String> {
+
+        ServerClass ruc = new ServerClass();
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Log.v(TAG, "onPreExecute");
+            // showProgressDialog();
+        }
+
+        @Override
+        protected void onPostExecute(String response) {
+            super.onPostExecute(response);
+            Log.v(TAG, String.format("onPostExecute :: response = %s", response));
+            //dismissProgressDialog();
+            //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
+            // Toast.makeText(Drawer.this, response, Toast.LENGTH_LONG).show();
+            checkDeviceDetails(response);
+
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            String device_id = NetworkUtils.getIMEINo(MainActivity.this);
+            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+            HashMap<String, String> checkDeviceDetails = new HashMap<String, String>();
+            checkDeviceDetails.put("username",SharedPrefereneceUtil.getUserNm(MainActivity.this));
+            checkDeviceDetails.put("imei_no",device_id);
+            checkDeviceDetails.put("mode","AdminApp");
+            Log.v(TAG, String.format("doInBackground :: ImeiNo= %s", device_id));
+            checkDeviceDetails.put("comp_id",SharedPrefereneceUtil.getSelectedBranchId(MainActivity.this));
+            Log.v(TAG, String.format("doInBackground :: user_id= %s", SharedPrefereneceUtil.getUserNm(MainActivity.this)));
+            checkDeviceDetails.put("action", "check_device_login");
+            String domainurl=SharedPrefereneceUtil.getDomainUrl(MainActivity.this);
+            String loginResult2 = ruc.sendPostRequest(domainurl+ ServiceUrls.LOGIN_URL, checkDeviceDetails);
+            Log.v(TAG, String.format("doInBackground :: domainurl= %s", domainurl+ ServiceUrls.LOGIN_URL));
+            Log.v(TAG, String.format("doInBackground :: check_device_login= %s", loginResult2));
+            return loginResult2;
+        }
+
+
+    }
+    private void checkDeviceDetails(String jsonResponse) {
+
+        Log.v(TAG, String.format(" :: check_device_login = %s", jsonResponse));
+
+        JSONObject jsonObjLoginResponse = null;
+        try {
+            jsonObjLoginResponse = new JSONObject(jsonResponse);
+            String success = jsonObjLoginResponse.getString(getResources().getString(R.string.success));
+
+            if (success.equalsIgnoreCase(getResources().getString(R.string.one))) {
+
+                // showCustomDialog();
+
+                //inputEmail, inputPhone,inputAdd,inputReq,inputFollowupdate;
+            }
+            else if (success.equalsIgnoreCase(getResources().getString(R.string.two)))
+            {
+                SharedPrefereneceUtil.LogOut(MainActivity.this);
+                Intent intent=new Intent(MainActivity.this,LoginActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish();
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
 }

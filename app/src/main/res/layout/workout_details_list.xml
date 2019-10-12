@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+    <LinearLayout
+        android:id="@+id/lyt_parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/spacing_medium"
+        android:visibility="visible">
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/spacing_medium"
+            app:cardCornerRadius="4dp"
+            app:cardElevation="2dp">
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp">
+
+                    <ImageView
+                        android:id="@+id/workout_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/gym" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+            <View android:layout_width="@dimen/spacing_large"
+                   android:layout_height="0.0dip" />
+           <LinearLayout
+                   android:orientation="vertical"
+                   android:layout_width="0dp"
+                   android:layout_height="wrap_content"
+                   android:gravity="center"
+                   android:layout_weight="1.7">
+                   <LinearLayout android:orientation="vertical"
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       android:layout_marginTop="@dimen/spacing_middle">
+                       <TextView
+                           android:textSize="18.0sp"
+                           android:textColor="@color/black"
+                           android:id="@+id/workout_nameTV"
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:text="Warm up" />
+                       <!--<TextView-->
+                           <!--android:textSize="12.0sp"-->
+                           <!--android:textColor="@color/black"-->
+                           <!--android:id="@+id/timeTV"-->
+                           <!--android:layout_width="wrap_content"-->
+                           <!--android:layout_height="wrap_content"-->
+                           <!--android:text="10 min" />-->
+                   </LinearLayout>
+                   <LinearLayout
+                       android:orientation="horizontal"
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content">
+                       <LinearLayout
+                           android:orientation="vertical"
+                           android:layout_width="0.0dip"
+                           android:layout_height="wrap_content"
+                           android:layout_weight="1.0">
+                           <View android:layout_width="0.0dip"
+                               android:layout_height="@dimen/spacing_medium" />
+                           <TextView
+                               android:id="@+id/sets"
+                               android:textSize="11.0sp"
+                               android:textColor="@color/black"
+                               android:layout_width="wrap_content"
+                               android:layout_height="wrap_content"
+                               android:text="@string/set_repitations" />
+                           <TextView
+                               android:textSize="12.0sp"
+                               android:textColor="@color/black"
+                               android:id="@+id/repitationTV"
+                               android:layout_width="wrap_content"
+                               android:layout_height="wrap_content"
+                                />
+                           <View
+                               android:layout_width="0.0dip"
+                               android:layout_height="@dimen/spacing_medium" />
+                           <LinearLayout
+                               android:layout_width="match_parent"
+                               android:layout_height="wrap_content">
+                           <TextView
+                               android:textSize="12.0sp"
+                               android:textColor="@color/black"
+                               android:layout_width="wrap_content"
+                               android:layout_height="wrap_content"
+                               android:text="@string/body_part" />
+                               <View
+                                   android:layout_width="@dimen/spacing_xsmall"
+                                   android:layout_height="@dimen/spacing_medium" />
+                           <TextView
+                               android:textSize="12.0sp"
+                               android:textColor="@color/black"
+                               android:id="@+id/musculargroup"
+                               android:layout_width="wrap_content"
+                               android:layout_height="wrap_content"
+                               android:text="@string/workout_name" />
+                           </LinearLayout>
+                       </LinearLayout>
+                   </LinearLayout>
+               </LinearLayout>
+           </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+    </LinearLayout>
+
+</LinearLayout>

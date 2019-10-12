@@ -1,28 +1,39 @@
 package com.ndfitnessplus.Activity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.text.Html;
 import android.text.InputType;
+import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
@@ -53,6 +64,12 @@ import android.widget.Toast;
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
 import com.basgeekball.awesomevalidation.utility.RegexTemplate;
+import com.bumptech.glide.Glide;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.MultiplePermissionsReport;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.ndfitnessplus.Activity.Notification.TodaysEnrollmentActivity;
 import com.ndfitnessplus.Adapter.AddEnquirySpinnerAdapter;
@@ -66,6 +83,8 @@ import com.ndfitnessplus.Utility.ServiceUrls;
 import com.ndfitnessplus.Utility.SharedPrefereneceUtil;
 import com.ndfitnessplus.Utility.Utility;
 import com.ndfitnessplus.Utility.ViewDialog;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -86,6 +105,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -93,7 +113,7 @@ import javax.net.ssl.HttpsURLConnection;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AddEnquiryActivity extends AppCompatActivity  {
-
+    private Uri mCropImageUri;
     private EditText inputName,inputContact, inputAdd, inputComment,
             inputEmail,inputLocation,inputNextFollowupdate,inputBudget,inputDOB;
     private TextInputLayout inputLayoutName,inputLayoutContact, inputLayoutAdd,inputLayoutComment,
@@ -117,7 +137,7 @@ public class AddEnquiryActivity extends AppCompatActivity  {
             String gender="";
     public  static final int RequestPermissionCode  = 1 ;
     static final int REQUEST_IMAGE_CAPTURE = 1;
-  ;
+    public static final int REQUEST_IMAGE = 100;
     // Bitmap bitmap;
     String ConvertImage="";
     ImageView CapturedImage;
@@ -141,9 +161,12 @@ public class AddEnquiryActivity extends AppCompatActivity  {
 
     //Loading gif
     ViewDialog viewDialog;
+    Spanned redStar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
+                WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_add_enquiry);
         initToolbar();
     }
@@ -200,7 +223,32 @@ public class AddEnquiryActivity extends AppCompatActivity  {
       txtrating=findViewById(R.id.txt_rating);
       txtoccupation=findViewById(R.id.txt_occupation);
 
+     // inputLayoutName.setHint(inputLayoutName.getHint()+" "+getString(R.string.asteriskred));
+//      String html = "<string style="color:grey;">Legal first name<span style="color:red;">*</span></string>";
 
+//      if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+//          redStar = Html.fromHtml(getResources().getString(R.string.hint_Name_red),Html.FROM_HTML_MODE_LEGACY);
+//      } else {
+//          redStar = Html.fromHtml(getResources().getString(R.string.hint_Name_red));
+//      }
+
+//      inputName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//          @Override
+//          public void onFocusChange(View v, boolean hasFocus) {
+//              if (hasFocus)
+//                  inputName.setHint(redStar.toString());
+//              else
+//                  inputName.setHint(getResources().getString(R.string.hint_Name));
+//          }
+//      });
+
+//      inputLayoutName.setHint(
+//              TextUtils.concat(
+//                      inputLayoutName.getHint(),
+//                      Html.fromHtml(
+//                              this.getString(
+//                                      R.string.required_asterisk))));
+      inputLayoutName.setHint(Html.fromHtml(getString(R.string.hints)));
       //defining AwesomeValidation object
       awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
 
@@ -217,28 +265,7 @@ public class AddEnquiryActivity extends AppCompatActivity  {
       enqsourceClass();
       callResponseClass();
 
-      inputContact.addTextChangedListener(new TextWatcher() {
-
-          public void onTextChanged(CharSequence s, int start, int before,
-                                    int count) {
-          }
-
-
-
-          public void beforeTextChanged(CharSequence s, int start, int count,
-                                        int after) {
-
-          }
-
-          public void afterTextChanged(Editable s) {
-              if(inputContact.getText().length()>=10) {
-                  //do your work here
-                 // Toast.makeText(AddEnquiryActivity.this ,"Text vhanged count  is 10 then: " , Toast.LENGTH_LONG).show();
-                  CheckContactClass();
-              }
-          }
-      });
-//      inputComment.addTextChangedListener(new TextWatcher() {
+//      inputContact.addTextChangedListener(new TextWatcher() {
 //
 //          public void onTextChanged(CharSequence s, int start, int before,
 //                                    int count) {
@@ -252,9 +279,58 @@ public class AddEnquiryActivity extends AppCompatActivity  {
 //          }
 //
 //          public void afterTextChanged(Editable s) {
-//             awesomeValidation.clear();
+//              if(inputContact.getText().length()>=10) {
+//                  //do your work here
+//                 // Toast.makeText(AddEnquiryActivity.this ,"Text vhanged count  is 10 then: " , Toast.LENGTH_LONG).show();
+//                  CheckContactClass();
+//              }
 //          }
 //      });
+
+      inputContact.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+          @Override
+          public void onFocusChange(View v, boolean hasFocus) {
+
+              if(inputContact.getText().length()>0){
+                  CheckContactClass();
+              }
+//              else{
+//                  inputName.setText("");
+//                  inputEmail.setText("");
+//                  inputAdd.setText("");
+//                  inputDOB.setText("");
+//
+////                  RadioButton btnm=findViewById(R.id.radioButton);
+////                  RadioButton btnf=findViewById(R.id.radioButton2);
+////                  btnf.setChecked(false);
+//                  //btnm.setChecked(true);
+//                  CapturedImage.setImageDrawable(getResources().getDrawable(R.drawable.nouser));
+//                  CapturedImage.setVisibility(View.GONE);
+//              }
+
+
+          }
+      });
+      String curr_date = Utility.getCurrentDate();
+      inputNextFollowupdate.setText(curr_date);
+
+      inputComment.addTextChangedListener(new TextWatcher() {
+
+          public void onTextChanged(CharSequence s, int start, int before,
+                                    int count) {
+          }
+
+
+
+          public void beforeTextChanged(CharSequence s, int start, int count,
+                                        int after) {
+
+          }
+
+          public void afterTextChanged(Editable s) {
+             awesomeValidation.clear();
+          }
+      });
       inputName.addTextChangedListener(new TextWatcher() {
            int mStart = 0;
 
@@ -307,9 +383,30 @@ public class AddEnquiryActivity extends AppCompatActivity  {
                    inputName.setText(capitalizedText);
                }
            }});
+      inputEmail.addTextChangedListener(new TextWatcher() {
+          @Override
+          public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
+          }
+
+          @Override
+          public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+          }
+
+          @Override
+          public void afterTextChanged(Editable editable) {
+              String s = editable.toString();
+              if (!s.equals(s.toLowerCase())) {
+                  s = s.toLowerCase();
+                 inputEmail.setText(s);
+                 inputEmail.setSelection(inputEmail.getText().toString().length());
+              }
+          }
+      });
      //**************setting data to the spinners******************
-
+      spinEnquiryType.setSelection(1);
+      txtEnqtype.setVisibility(View.VISIBLE);
       spinEnquiryType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
           @Override
           public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -321,11 +418,11 @@ public class AddEnquiryActivity extends AppCompatActivity  {
                   layout.setPadding(0, 0, 0, 0);
 
 
-                  if (index == 0) {
-                      tv.setTextColor((Color.GRAY));
-                  } else {
+//                  if (index == 0) {
+//                      tv.setTextColor((Color.GRAY));
+//                  } else {
                       tv.setTextColor((Color.BLACK));
-                  }
+//                  }
                   enquiryType = tv.getText().toString();
                   if (index != 0) {
                       txtEnqtype.setVisibility(View.VISIBLE);
@@ -354,7 +451,8 @@ public class AddEnquiryActivity extends AppCompatActivity  {
           }
       }) ;
       //*************Enquiry source spinner adapter setting ****************
-
+      spinEnquirySource.setSelection(1);
+      txtEnqsrc.setVisibility(View.VISIBLE);
       spinEnquirySource.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
           @Override
           public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -364,11 +462,11 @@ public class AddEnquiryActivity extends AppCompatActivity  {
                   TextView tv = (TextView) view.findViewById(R.id.tv_Name);
                   View layout = (View) view.findViewById(R.id.layout);
                   layout.setPadding(0, 0, 0, 0);
-                  if (index == 0) {
-                      tv.setTextColor((Color.GRAY));
-                  } else {
+//                  if (index == 0) {
+//                      tv.setTextColor((Color.GRAY));
+//                  } else {
                       tv.setTextColor((Color.BLACK));
-                  }
+//                  }
                   enquirySource = tv.getText().toString();
                   if (index != 0) {
                       txtEnqsrc.setVisibility(View.VISIBLE);
@@ -396,8 +494,9 @@ public class AddEnquiryActivity extends AppCompatActivity  {
               return false;
           }
       }) ;
-
-      //Toast.makeText(MainActivity.this,genderradioButton.getText(), Toast.LENGTH_SHORT).show();
+      spinCallResponce.setSelection(1);
+      txtcallres.setVisibility(View.VISIBLE);
+      //Toast.makeText(AddEnquiryActivity.this,genderradioButton.getText(), Toast.LENGTH_SHORT).show();
       spinCallResponce.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
           @Override
           public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -407,11 +506,11 @@ public class AddEnquiryActivity extends AppCompatActivity  {
                   TextView tv = (TextView) view.findViewById(R.id.tv_Name);
                   View layout = (View) view.findViewById(R.id.layout);
                   layout.setPadding(0, 0, 0, 0);
-                  if (index == 0) {
-                      tv.setTextColor((Color.GRAY));
-                  } else {
+//                  if (index == 0) {
+//                      tv.setTextColor((Color.GRAY));
+//                  } else {
                       tv.setTextColor((Color.BLACK));
-                  }
+//                  }
                   callResponce = tv.getText().toString();
                   if (index != 0) {
                       txtcallres.setVisibility(View.VISIBLE);
@@ -477,7 +576,7 @@ public class AddEnquiryActivity extends AppCompatActivity  {
               return false;
           }
       }) ;
-      //Toast.makeText(MainActivity.this,genderradioButton.getText(), Toast.LENGTH_SHORT).show();
+      //Toast.makeText(AddEnquiryActivity.this,genderradioButton.getText(), Toast.LENGTH_SHORT).show();
       spinRating.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
           @Override
           public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -508,6 +607,8 @@ public class AddEnquiryActivity extends AppCompatActivity  {
 
                       } else {
                           inputNextFollowupdate.setEnabled(true);
+                          String curr_date = Utility.getCurrentDate();
+                          inputNextFollowupdate.setText(curr_date);
                       }
                   }
                   if (Rating.equals(getResources().getString(R.string.rating))) {
@@ -534,6 +635,8 @@ public class AddEnquiryActivity extends AppCompatActivity  {
               return false;
           }
       }) ;
+      spinEnqFor.setSelection(1);
+      txtEnqfor.setVisibility(View.VISIBLE);
       spinEnqFor.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
           @Override
           public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -543,11 +646,11 @@ public class AddEnquiryActivity extends AppCompatActivity  {
               TextView tv = (TextView) view.findViewById(R.id.tv_Name);
               View layout=(View)view.findViewById(R.id.layout);
               layout.setPadding(0,0,0,0);
-              if(index ==0){
-                  tv.setTextColor((Color.GRAY));
-              }else{
+//              if(index ==0){
+//                  tv.setTextColor((Color.GRAY));
+//              }else{
                   tv.setTextColor((Color.BLACK));
-              }
+//              }
               enquiryFor = tv.getText().toString();
               if(index!=0){
                   txtEnqfor.setVisibility(View.VISIBLE);
@@ -576,6 +679,8 @@ public class AddEnquiryActivity extends AppCompatActivity  {
           }
       }) ;
       //*************** Occupation listner **************
+      spinOccupation.setSelection(1);
+      txtoccupation.setVisibility(View.VISIBLE);
       spinOccupation.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
           @Override
           public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -585,11 +690,11 @@ public class AddEnquiryActivity extends AppCompatActivity  {
                   TextView tv = (TextView) view.findViewById(R.id.tv_Name);
                   View layout = (View) view.findViewById(R.id.layout);
                   layout.setPadding(0, 0, 0, 0);
-                  if (index == 0) {
-                      tv.setTextColor((Color.GRAY));
-                  } else {
+//                  if (index == 0) {
+//                      tv.setTextColor((Color.GRAY));
+//                  } else {
                       tv.setTextColor((Color.BLACK));
-                  }
+//                  }
                   occupation = tv.getText().toString();
                   if (index != 0) {
                       txtoccupation.setVisibility(View.VISIBLE);
@@ -688,17 +793,23 @@ public class AddEnquiryActivity extends AppCompatActivity  {
                //SendSMS(inputContact.getText().toString(),msg);
           }
       });
-     // register.setOnClickListener(this);
       EnableRuntimePermissionToAccessCamera();
+
       imageView.setOnClickListener(new View.OnClickListener() {
           @Override
-          public void onClick(View v) {
-              Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-              startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
+          public void onClick(View view) {
+              CropImage.startPickImageActivity(AddEnquiryActivity.this);
           }
       });
-
   }
+
+    // navigating user to app settings
+    private void openSettings() {
+        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        Uri uri = Uri.fromParts("package", getPackageName(), null);
+        intent.setData(uri);
+        startActivityForResult(intent, 101);
+    }
   //*********** time picker **********
     private void tiemPicker(){
         // Get Current Time
@@ -721,7 +832,7 @@ public class AddEnquiryActivity extends AppCompatActivity  {
                 }, mHour, mMinute, false);
         timePickerDialog.show();
     }
-    //************ Submit button on action bar ***********
+       //************ Submit button on action bar ***********
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.save_enquiry_menu, menu);
@@ -731,18 +842,18 @@ public class AddEnquiryActivity extends AppCompatActivity  {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-         if (id == R.id.action_save_enquiry) {
-             if(radioGroup.getCheckedRadioButtonId()!=-1){
-                 int id1= radioGroup.getCheckedRadioButtonId();
-                 View radioButton = radioGroup.findViewById(id1);
-                 int radioId = radioGroup.indexOfChild(radioButton);
-                 RadioButton btn = (RadioButton) radioGroup.getChildAt(radioId);
-                 gender= (String) btn.getText();
-               //  Toast.makeText(AddEnquiryActivity.this, gender, Toast.LENGTH_SHORT).show();
-             }else{
-                 Toast.makeText(AddEnquiryActivity.this, "Please Select Gender", Toast.LENGTH_SHORT).show();
-             }
-             submitForm();
+        if (id == R.id.action_save_enquiry) {
+            if(radioGroup.getCheckedRadioButtonId()!=-1){
+                int id1= radioGroup.getCheckedRadioButtonId();
+                View radioButton = radioGroup.findViewById(id1);
+                int radioId = radioGroup.indexOfChild(radioButton);
+                RadioButton btn = (RadioButton) radioGroup.getChildAt(radioId);
+                gender= (String) btn.getText();
+                //  Toast.makeText(AddEnquiryActivity.this, gender, Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(AddEnquiryActivity.this, "Please Select Gender", Toast.LENGTH_SHORT).show();
+            }
+            submitForm();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -765,46 +876,66 @@ public class AddEnquiryActivity extends AppCompatActivity  {
         }
     }
     @Override
-    protected void onActivityResult(int RC, int RQC, Intent I) {
+    @SuppressLint("NewApi")
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        super.onActivityResult(RC, RQC, I);
-           if (RC == REQUEST_IMAGE_CAPTURE ) {
+        // handle result of pick image chooser
+        if (requestCode == CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            Uri imageUri = CropImage.getPickImageResultUri(this, data);
 
-
-//            uri = I.getData();
-//            Log.v(TAG, String.format("camera request "));
-//            Log.v(TAG, String.format("camera capture :: uri= %s", uri));
-//            try {
-             if(I !=null){
-            Bundle extras = I.getExtras();
-            if (extras != null) {
-                Bitmap bitmap1 = (Bitmap) extras.get("data");
-                CapturedImage.setImageBitmap(bitmap1);
-                bitmap = Bitmap.createScaledBitmap(bitmap1, 75,
-                        75, true);
-                //return newBitmap;
-
-                CapturedImage.setVisibility(View.VISIBLE);
-//                String timeStamp =
-//                        new SimpleDateFormat("yyyyMMdd_HHmmss",
-//                                Locale.getDefault()).format(new Date());
-//                String imageFileName = "IMG_" + timeStamp;
-
-               // bitmap=Utility.resizeAndCompressImageBeforeSend(AddEnquiryActivity.this,bitmap1,imageFileName);
-                Log.v(TAG, String.format(" Bitmap= %s", bitmap));
-                uploadimageClass();
+            // For API >= 23 we need to check specifically that we have permissions to read external storage.
+            if (CropImage.isReadExternalStoragePermissionsRequired(this, imageUri)) {
+                // request permissions and handle the result in onRequestPermissionsResult()
+                mCropImageUri = imageUri;
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
+            } else {
+                // no permissions required or already grunted, can start crop image activity
+                startCropImageActivity(imageUri);
             }
-             }
-//                imgPreview.setImageBitmap(imageBitmap);
-            //  bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-//               Toast.makeText(UploadImageActivity.this,bitmap.toString(),Toast.LENGTH_SHORT).show();
+        }
 
-//            } catch (IOException e) {
-//
-//                e.printStackTrace();
-//            }
+        // handle result of CropImageActivity
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                CapturedImage.setVisibility(View.VISIBLE);
+               // ((ImageButton) findViewById(R.id.quick_start_cropped_image)).setImageURI(result.getUri());
+                CapturedImage.setImageURI(result.getUri());
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), result.getUri());
+                    uploadimageClass();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+              //  Toast.makeText(this, "Cropping successful, Sample: " + result.getSampleSize(), Toast.LENGTH_LONG).show();
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Toast.makeText(this, "Cropping failed: " + result.getError(), Toast.LENGTH_LONG).show();
+            }
         }
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        if (mCropImageUri != null && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            // required permissions granted, start crop image activity
+            startCropImageActivity(mCropImageUri);
+        } else {
+          //  Toast.makeText(this, "Cancelling, required permissions are not granted", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    /**
+     * Start crop image activity for the given image.
+     */
+    private void startCropImageActivity(Uri imageUri) {
+        CropImage.activity(imageUri)
+                .setGuidelines(CropImageView.Guidelines.ON)
+                .setMultiTouchEnabled(true)
+                .setAspectRatio(1,1)
+                .setFixAspectRatio(true)
+                .start(this);
+    }
+
     //*************** Add enquiry to database *************
     public void  AddEnquiryClass() {
         AddEnquiryActivity.AddEnquiryTrackClass ru = new AddEnquiryActivity.AddEnquiryTrackClass();
@@ -918,9 +1049,9 @@ public class AddEnquiryActivity extends AppCompatActivity  {
 
             else if (success.equalsIgnoreCase(getResources().getString(R.string.one)))
             {
-                Toast.makeText(AddEnquiryActivity.this,"Mobile Number Already Exits",Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddEnquiryActivity.this,"Contact Already Exits",Toast.LENGTH_SHORT).show();
                 inputContact.getText().clear();
-                Toast.makeText(AddEnquiryActivity.this,"Please Enter New Mobile Number",Toast.LENGTH_SHORT).show();
+               // Toast.makeText(AddEnquiryActivity.this,"Please Enter New Mobile Number",Toast.LENGTH_SHORT).show();
             }
 
         } catch (JSONException e) {
@@ -934,7 +1065,7 @@ public class AddEnquiryActivity extends AppCompatActivity  {
 
         byteArrayOutputStreamObject = new ByteArrayOutputStream();
        if(bitmap != null) {
-           bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStreamObject);
+          bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStreamObject);
        }
         byte[] byteArrayVar = byteArrayOutputStreamObject.toByteArray();
 
@@ -963,7 +1094,7 @@ public class AddEnquiryActivity extends AppCompatActivity  {
 
             }else{
                 awesomeValidation.clear();
-                if (awesomeValidation.validate()) {
+                //if (awesomeValidation.validate()) {
                     if(enquiryType.equals(getResources().getString(R.string.enquiry_type)) || enquirySource.equals(getResources().getString(R.string.enquiry_source))
                             || callResponce.equals(getResources().getString(R.string.call_res)) || Rating.equals(getResources().getString(R.string.rating))
                             ||enquiryFor.equals(getResources().getString(R.string.enq_for)) ||occupation.equals(getResources().getString(R.string.occupation)) ){
@@ -971,7 +1102,7 @@ public class AddEnquiryActivity extends AppCompatActivity  {
                     }else{
                         AddEnquiryClass();
                     }
-                }
+               // }
             }
 
 
@@ -1004,32 +1135,38 @@ public class AddEnquiryActivity extends AppCompatActivity  {
                 }else{
                     Toast.makeText(this, "Validation Failed", Toast.LENGTH_LONG).show();
                 }
-            }else{
-                //Toast.makeText(this, "Clear next followup date validation", Toast.LENGTH_LONG).show();
+            }else {
+               // Toast.makeText(this, "Clear next followup date validation", Toast.LENGTH_LONG).show();
                 awesomeValidation.clear();
-                if (awesomeValidation.validate()) {
-                    if(enquiryType.equals(getResources().getString(R.string.enquiry_type)) || enquirySource.equals(getResources().getString(R.string.enquiry_source))
+               // if (awesomeValidation.validate()) {
+                    if (enquiryType.equals(getResources().getString(R.string.enquiry_type)) || enquirySource.equals(getResources().getString(R.string.enquiry_source))
                             || callResponce.equals(getResources().getString(R.string.call_res)) || Rating.equals(getResources().getString(R.string.rating))
-                            ||enquiryFor.equals(getResources().getString(R.string.enq_for)) ||occupation.equals(getResources().getString(R.string.occupation)) ){
+                            || enquiryFor.equals(getResources().getString(R.string.enq_for)) || occupation.equals(getResources().getString(R.string.occupation))) {
                         Toast.makeText(this, "Please fill all fields", Toast.LENGTH_LONG).show();
-                    }else{
+                    } else {
                         AddEnquiryClass();
                     }
-                }
-//                else{
-//                    awesomeValidation.clear();
-//                    if(enquiryType.equals(getResources().getString(R.string.enquiry_type)) || enquirySource.equals(getResources().getString(R.string.enquiry_source))
+
+                    // awesomeValidation.clear();
+
+               // }
+//                else {
+//
+//                    if (enquiryType.equals(getResources().getString(R.string.enquiry_type)) || enquirySource.equals(getResources().getString(R.string.enquiry_source))
 //                            || callResponce.equals(getResources().getString(R.string.call_res)) || Rating.equals(getResources().getString(R.string.rating))
-//                            ||enquiryFor.equals(getResources().getString(R.string.enq_for)) ||occupation.equals(getResources().getString(R.string.occupation)) ){
+//                            || enquiryFor.equals(getResources().getString(R.string.enq_for)) || occupation.equals(getResources().getString(R.string.occupation))) {
 //                        Toast.makeText(this, "Please fill all fields", Toast.LENGTH_LONG).show();
-//                    }else{
-//                        AddEnquiryClass();
+//                    } else {
+//                        awesomeValidation.clear();
+//                        Toast.makeText(this, "Please enter comment", Toast.LENGTH_LONG).show();
+//                       if(inputComment.getText().length()>0){
+//                           AddEnquiryClass();
+//                       }
+//
 //                    }
+
 //                }
             }
-
-//            }
-
 
             // awesomeValidation.addValidation(this, R.id.input_cfn_password,RegexTemplate.NOT_EMPTY,R.string.err_msg_cfm_password);
 
@@ -1099,6 +1236,8 @@ public class AddEnquiryActivity extends AppCompatActivity  {
                         enqForList.setName(getResources().getString(R.string.enq_for));
                         enqForArrayList.add(0,enqForList);
                         if (jsonArrayCountry != null && jsonArrayCountry.length() > 0){
+                            enqForList.setName(getResources().getString(R.string.na));
+                            enqForArrayList.add(1,enqForList);
                             for (int i = 0; i < jsonArrayCountry.length(); i++) {
                                 enqForList = new Spinner_List();
                                 Log.v(TAG, "JsonResponseOpeartion ::");
@@ -1235,6 +1374,8 @@ public class AddEnquiryActivity extends AppCompatActivity  {
                         enquirytypelist.setName(getResources().getString(R.string.enquiry_type));
                         enquiryTypeArrayList.add(0,enquirytypelist);
                         if (jsonArrayCountry != null && jsonArrayCountry.length() > 0){
+                            enquirytypelist.setName(getResources().getString(R.string.na));
+                            enquiryTypeArrayList.add(1,enquirytypelist);
                             for (int i = 0; i < jsonArrayCountry.length(); i++) {
                                 enquirytypelist = new Spinner_List();
                                 Log.v(TAG, "JsonResponseOpeartion ::");
@@ -1369,6 +1510,8 @@ public class AddEnquiryActivity extends AppCompatActivity  {
                         enquirySourcelist.setName(getResources().getString(R.string.enquiry_source));
                         enquirySourceArrayList.add(0,enquirySourcelist);
                         if (jsonArrayCountry != null && jsonArrayCountry.length() > 0){
+                            enquirySourcelist.setName(getResources().getString(R.string.na));
+                            enquirySourceArrayList.add(1,enquirySourcelist);
                             for (int i = 0; i < jsonArrayCountry.length(); i++) {
                                 enquirySourcelist = new Spinner_List();
                                 Log.v(TAG, "JsonResponseOpeartion ::");
@@ -1500,6 +1643,8 @@ public class AddEnquiryActivity extends AppCompatActivity  {
                         occupationList.setName(getResources().getString(R.string.occupation));
                         occupationArraylist.add(0,occupationList);
                         if (jsonArrayCountry != null && jsonArrayCountry.length() > 0){
+                            occupationList.setName(getResources().getString(R.string.na));
+                            occupationArraylist.add(1,occupationList);
                             for (int i = 0; i < jsonArrayCountry.length(); i++) {
                                 occupationList = new Spinner_List();
                                 Log.v(TAG, "JsonResponseOpeartion ::");
@@ -1632,6 +1777,8 @@ public class AddEnquiryActivity extends AppCompatActivity  {
                         spinCallReslist.setName(getResources().getString(R.string.call_res));
                         CallResArrayList.add(0,spinCallReslist);
                         if (jsonArrayCountry != null && jsonArrayCountry.length() > 0){
+                            spinCallReslist.setName(getResources().getString(R.string.na));
+                            CallResArrayList.add(1,spinCallReslist);
                             for (int i = 0; i < jsonArrayCountry.length(); i++) {
                                 spinCallReslist = new Spinner_List();
                                 Log.v(TAG, "JsonResponseOpeartion ::");
@@ -1839,13 +1986,13 @@ public class AddEnquiryActivity extends AppCompatActivity  {
             //EnquiryForloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(EnquiryForloyee.this));
             String domainurl=SharedPrefereneceUtil.getDomainUrl(AddEnquiryActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EnquiryForDetails);
-            Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
+            Log.v(TAG, String.format("doInBackground :: check_mobile_already_exist_or_not= %s", loginResult));
             return loginResult;
         }
     }
     private void CheckContactDetails(String jsonResponse) {
 
-        Log.v(TAG, String.format("loginServerResponse :: response = %s", jsonResponse));
+        Log.v(TAG, String.format("check_mobile_already_exist_or_not :: response = %s", jsonResponse));
 
         JSONObject jsonObjLoginResponse = null;
         try {
@@ -1853,14 +2000,14 @@ public class AddEnquiryActivity extends AppCompatActivity  {
             String success = jsonObjLoginResponse.getString(getResources().getString(R.string.success));
 
             if (success.equalsIgnoreCase(getResources().getString(R.string.zero))) {
-
+                CheckContactInMemberClass();
                 // showCustomDialog();
 
                 //inputEmail, inputPhone,inputAdd,inputReq,inputFollowupdate;
             }
             else if (success.equalsIgnoreCase(getResources().getString(R.string.two)))
             {
-                Toast.makeText(AddEnquiryActivity.this,"Mobile Number Already Exits",Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddEnquiryActivity.this,"Contact Already Exits",Toast.LENGTH_SHORT).show();
                 inputContact.getText().clear();
                // Toast.makeText(AddEnquiryActivity.this,"Please Enter New Mobile Number",Toast.LENGTH_SHORT).show();
             }
@@ -1987,6 +2134,176 @@ public class AddEnquiryActivity extends AppCompatActivity  {
                         }
                     }
                 }
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void  CheckContactInMemberClass() {
+        AddEnquiryActivity.CheckContactInEnquiryTrackClass ru = new AddEnquiryActivity.CheckContactInEnquiryTrackClass();
+        ru.execute("5");
+    }
+
+    class CheckContactInEnquiryTrackClass extends AsyncTask<String, Void, String> {
+
+        ServerClass ruc = new ServerClass();
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Log.v(TAG, "onPreExecute");
+            // showProgressDialog();
+            //viewDialog.showDialog();
+        }
+
+        @Override
+        protected void onPostExecute(String response) {
+            super.onPostExecute(response);
+            Log.v(TAG, String.format("onPostExecute :: response = %s", response));
+            // dismissProgressDialog();
+          //  viewDialog.hideDialog();
+            //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
+            //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
+            CheckContactInEnquiryDetails(response);
+
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+            HashMap<String, String> EnquiryForDetails = new HashMap<String, String>();
+
+            EnquiryForDetails.put("mobileno",inputContact.getText().toString() );
+            EnquiryForDetails.put("user","Member" );
+            EnquiryForDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(AddEnquiryActivity.this) );
+            EnquiryForDetails.put("action", "check_mobile_already_exist_in_enquiry_or_not");
+            //EnquiryForloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(EnquiryForloyee.this));
+            String domainurl=SharedPrefereneceUtil.getDomainUrl(AddEnquiryActivity.this);
+            String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EnquiryForDetails);
+            Log.v(TAG, String.format("doInBackground :: check_mobile_already_exist_in_enquiry_or_not= %s", loginResult));
+            return loginResult;
+        }
+    }
+    private void CheckContactInEnquiryDetails(String jsonResponse) {
+
+        Log.v(TAG, String.format("loginServerResponse :: response = %s", jsonResponse));
+
+        JSONObject jsonObjLoginResponse = null;
+        try {
+            jsonObjLoginResponse = new JSONObject(jsonResponse);
+            String success = jsonObjLoginResponse.getString(getResources().getString(R.string.success));
+
+            if (success.equalsIgnoreCase(getResources().getString(R.string.zero))) {
+//                inputName.setText("");
+//                inputEmail.setText("");
+//                inputAdd.setText("");
+//                inputDOB.setText("");
+
+//                  RadioButton btnm=findViewById(R.id.radioButton);
+//                  RadioButton btnf=findViewById(R.id.radioButton2);
+//                  btnf.setChecked(false);
+                //btnm.setChecked(true);
+//                CapturedImage.setImageDrawable(getResources().getDrawable(R.drawable.nouser));
+//                CapturedImage.setVisibility(View.GONE);
+                // showCustomDialog();
+
+                //inputEmail, inputPhone,inputAdd,inputReq,inputFollowupdate;
+            }
+            else if (success.equalsIgnoreCase(getResources().getString(R.string.two)))
+            {
+                inputContact.getText().clear();
+                Toast.makeText(AddEnquiryActivity.this,"Contact Already Exits in Member",Toast.LENGTH_SHORT).show();
+                //JSONArray jsonArrayResult = jsonObjLoginResponse.getJSONArray("Data");
+//
+//                if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
+////                    for (int i = 0; i < jsonArrayResult.length(); i++) {
+////
+////                        Log.v(TAG, "JsonResponseOpeartion ::");
+////                        JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
+////                        if (jsonObj != null) {
+////
+////                            String Name = jsonObj.getString("Name");
+////                            String Email = jsonObj.getString("Email");
+////                            String Address = jsonObj.getString("Address");
+////                            gender = jsonObj.getString("Gender");
+////                            String DOB = jsonObj.getString("DOB");
+////                            occupation = jsonObj.getString("Occupation");
+////                            String enq_owner_exe = jsonObj.getString("EnquiryOwnerExecutive");
+////                            //bloodgroup = jsonObj.getString("Blood_Group");
+////                            String   Image = jsonObj.getString("Image");
+////
+////                            inputName.setText(Name);
+////                            inputEmail.setText(Email);
+////                            inputAdd.setText(Address);
+////                            String bday= Utility.formatDateDB(DOB);
+////                            inputDOB.setText(bday);
+////                            String img=Image.replace("\"", "");
+////                            String domainurl=SharedPrefereneceUtil.getDomainUrl(AddEnquiryActivity.this);
+////                            final String url=domainurl+ ServiceUrls.IMAGES_URL + img;
+////                            Log.d(TAG, "img url: "+url);
+////                            CapturedImage.setVisibility(View.VISIBLE);
+////
+////                            Glide.with(AddEnquiryActivity.this).load(url).placeholder(R.drawable.nouser).into(CapturedImage);
+////                            uploadimageClass();
+////                            AddEnquiryActivity.this.runOnUiThread(new Runnable() {
+////
+////                                @Override
+////                                public void run() {
+////
+////                                    (new AsyncTask<String, String, Bitmap>() {
+////                                        ServerClass ruc = new ServerClass();
+////                                        @Override
+////                                        protected Bitmap doInBackground(String... params) {
+////                                            try {
+////
+////                                                URL urlb = new URL(url);
+////                                                bitmap = BitmapFactory.decodeStream(urlb.openConnection().getInputStream());
+////                                            } catch (IOException e) {
+////                                                System.out.println(e);
+////                                            }
+////
+////                                            return bitmap;
+////                                        }
+////                                        @Override
+////                                        protected void onPostExecute(Bitmap response) {
+////                                            super.onPostExecute(response);
+////                                            Log.v(TAG, String.format("onPostExecute :: image bitmap = %s", response));
+////
+////                                        }
+////                                    }).execute();
+////                                }});
+////                            if(gender.equals("Male"))
+////                                radioGroup.check(R.id.radioButton);
+////                            else if(gender.equals("Female"))
+////                                radioGroup.check(R.id.radioButton2);
+////
+////                            for (int j=0;j<occupationArraylist.size();j++){
+////
+////                                String occ = occupationArraylist.get(j).getName();
+////                                if(occupation.equals(occ)){
+////                                    spinOccupation.setSelection(j);
+////                                }
+////
+////                            }
+//////                            for (int j=0;j<bloodgroupArrayList.size();j++){
+//////
+//////                                String occ = bloodgroupArrayList.get(j).getName();
+//////                                if(bloodgroup.equals(occ)){
+//////                                    spinBloodGroup.setSelection(j);
+//////                                }
+//////
+//////                            }
+////
+////
+////                        }
+////                    }
+//                } else if (jsonArrayResult.length() == 0) {
+//                    System.out.println("No records found");
+//                }
+                //Toast.makeText(AddEnquiryActivity.this,"Please Enter New Mobile Number",Toast.LENGTH_SHORT).show();
             }
 
         } catch (JSONException e) {

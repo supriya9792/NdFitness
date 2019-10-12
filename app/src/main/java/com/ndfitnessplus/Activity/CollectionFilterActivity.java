@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -19,12 +20,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ndfitnessplus.Activity.Notification.ExpenseFilterActivity;
-import com.ndfitnessplus.Activity.Notification.TodaysEnrollmentActivity;
 import com.ndfitnessplus.Adapter.SpinnerAdapter;
 import com.ndfitnessplus.Model.CollectionList;
-import com.ndfitnessplus.Model.CourseList;
-import com.ndfitnessplus.Model.ExpensesList;
 import com.ndfitnessplus.Model.Spinner_List;
 import com.ndfitnessplus.R;
 import com.ndfitnessplus.Utility.ServerClass;
@@ -71,6 +68,8 @@ public class CollectionFilterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
+                WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_collection_filter);
         initToolbar();
     }
@@ -196,6 +195,7 @@ public class CollectionFilterActivity extends AppCompatActivity {
             };
             spinDateWise.setAdapter(datewiseadapter);
         }
+        spinDateWise.setSelection(1);
         //Toast.makeText(MainActivity.this,genderradioButton.getText(), Toast.LENGTH_SHORT).show();
         spinDateWise.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -208,7 +208,7 @@ public class CollectionFilterActivity extends AppCompatActivity {
                     if (index == 0) {
                         tv.setText(getResources().getString(R.string.prompt_mem_date));
                     }
-                    spinDateWise.setSelection(1);
+
 //                tv.setTextColor(getResources().getColor(R.color.black));
                     Datewise = tv.getText().toString();
                     if ((Datewise.equals(getResources().getString(R.string.prompt_mem_date))) ||
@@ -653,6 +653,7 @@ public class CollectionFilterActivity extends AppCompatActivity {
             SearchCollectionDetails.put("payment_type",paymentType);
             Log.v(TAG, String.format("doInBackground :: paymentType = %s", paymentType));
             SearchCollectionDetails.put("exe_name",salesExecutiveName);
+            SearchCollectionDetails.put("offset","0");
             Log.v(TAG, String.format("doInBackground :: exe_name = %s",salesExecutiveName));
             SearchCollectionDetails.put("action", "search_collection_filter");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(CollectionFilterActivity.this);
@@ -718,7 +719,9 @@ public class CollectionFilterActivity extends AppCompatActivity {
 
                                 subList.setName(name);
 
+                                String cont=Utility.lastFour(Contact);
                                 subList.setContact(Contact);
+                                subList.setContactEncrypt(cont);
                                 // String pack=Package_Name+"(Duration:"+Duration_Days+","+"Session:"+Session+")";
                                 subList.setPaymentType(PaymentType);
                                 subList.setExecutiveName(ExecutiveName);

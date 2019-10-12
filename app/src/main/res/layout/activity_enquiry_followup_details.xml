@@ -105,13 +105,13 @@
                 android:layout_width="@dimen/spacing_xlarge"
                 android:layout_height="0dp" />
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/message"
                 android:layout_width="?attr/actionBarSize"
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:tint="@color/deep_orange_900"
-                app:srcCompat="@drawable/ic_comment_black_24dp" />
+                app:srcCompat="@drawable/follow" />
 
             <View
                 android:layout_width="@dimen/spacing_xlarge"

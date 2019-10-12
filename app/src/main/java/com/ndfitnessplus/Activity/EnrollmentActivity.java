@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -83,6 +84,8 @@ public class EnrollmentActivity extends AppCompatActivity implements SwipeRefres
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
+                WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_enrollment);
         initToolbar();
     }
@@ -431,7 +434,8 @@ public class EnrollmentActivity extends AppCompatActivity implements SwipeRefres
                                     Log.d(TAG, "run: " + itemCount);
                                     subList.setName(name);
                                     subList.setGender(gender);
-                                    subList.setContact(Contact);
+                                    String cont=Utility.lastFour(Contact);
+                                    subList.setContact(cont);
                                     String dob= Utility.formatDate(DOB);
                                     subList.setBirthDate(dob);
                                     subList.setExecutiveName(ExecutiveName);
@@ -569,7 +573,9 @@ public class EnrollmentActivity extends AppCompatActivity implements SwipeRefres
                                     Log.d(TAG, "run: " + itemCount);
                                     subList.setName(name);
                                     subList.setGender(gender);
+                                    String cont=Utility.lastFour(Contact);
                                     subList.setContact(Contact);
+                                    subList.setContactEncrypt(cont);
                                     String dob= Utility.formatDate(DOB);
                                     subList.setBirthDate(dob);
                                     subList.setExecutiveName(ExecutiveName);
@@ -708,7 +714,9 @@ public class EnrollmentActivity extends AppCompatActivity implements SwipeRefres
                                     Log.d(TAG, "run: " + itemCount);
                                     subList.setName(name);
                                     subList.setGender(gender);
+                                    String cont=Utility.lastFour(Contact);
                                     subList.setContact(Contact);
+                                    subList.setContactEncrypt(cont);
                                     String dob= Utility.formatDate(DOB);
                                     subList.setBirthDate(dob);
                                     subList.setExecutiveName(ExecutiveName);

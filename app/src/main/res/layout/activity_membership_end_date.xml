@@ -35,6 +35,89 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/spacing_large"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/layoutborder"
+                android:layout_weight="1"
+                android:weightSum="1">
+                <TextView
+                    android:id="@+id/to_date"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.8"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="01-03-2019"
+                    android:minHeight="@dimen/spacing_mlarge"
+                    android:textSize="14sp"
+                    android:textColor="@color/black" />
+
+
+                <ImageButton
+                    android:layout_width="0dp"
+                    android:layout_weight="0.2"
+                    android:layout_height="@dimen/spacing_mlarge"
+                    android:id="@+id/btn_to_date"
+                    android:background="@android:color/transparent"
+                    android:layout_gravity="center_vertical"
+                    android:tint="@color/colorPrimary"
+                    app:srcCompat="@drawable/ic_today" />
+
+            </LinearLayout>
+            <View
+                android:layout_width="@dimen/spacing_middle"
+                android:layout_height="0dp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/layoutborder"
+                android:layout_weight="1"
+                android:weightSum="1">
+                <TextView
+                    android:id="@+id/from_date"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.8"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="31-03-2019"
+                    android:minHeight="@dimen/spacing_mlarge"
+                    android:textSize="14sp"
+                    android:textColor="@color/black" />
+
+                <ImageButton
+                    android:layout_width="0dp"
+                    android:layout_weight="0.2"
+                    android:layout_height="@dimen/spacing_mlarge"
+                    android:id="@+id/btn_from_date"
+                    android:background="@android:color/transparent"
+                    android:layout_gravity="center_vertical"
+                    android:tint="@color/colorPrimary"
+                    app:srcCompat="@drawable/ic_event" />
+
+
+            </LinearLayout>
+            <View
+                android:layout_width="@dimen/spacing_middle"
+                android:layout_height="0dp" />
+
+            <Button
+                android:id="@+id/btn_search"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@drawable/btn_add_background"
+                android:text="search"
+                android:textAllCaps="false"
+                android:textColor="@color/white" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:weightSum="3"
             android:focusable="true"
             android:focusableInTouchMode="true"
@@ -62,12 +145,39 @@
                 android:src="@drawable/ic_search"
                 android:gravity="center"/>
         </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:padding="@dimen/spacing_medium"
+            android:gravity="center">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:gravity="end"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:text="Total Membership End:"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:id="@+id/ttl_membership_end"
+                android:gravity="start"
+                android:layout_marginLeft="@dimen/spacing_small"
+                android:text="0"
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                />
+        </LinearLayout>
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginTop="@dimen/spacing_large"
+            android:layout_marginTop="@dimen/spacing_xsmall"
             android:background="@android:color/white"
             android:isScrollContainer="false"
             android:nestedScrollingEnabled="false" />

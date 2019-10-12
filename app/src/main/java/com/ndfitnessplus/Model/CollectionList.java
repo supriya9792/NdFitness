@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class CollectionList implements Serializable {
     String  ID , name ,Contact,ReceiptDate ,PaymentType ,ExecutiveName, Paid, Balance,Email,
-            InvoiceID,NextPaymentdate,ReceiptId,image,ReceiptType,Tax,PaymentDetails;
+            InvoiceID,NextPaymentdate,ReceiptId,image,ReceiptType,Tax,PaymentDetails,ContactEncrypt;
 
     public CollectionList() {
     }
@@ -152,5 +152,13 @@ public class CollectionList implements Serializable {
 
     public void setPaymentDetails(String paymentDetails) {
         PaymentDetails = paymentDetails;
+    }
+
+    public String getContactEncrypt() {
+        return ContactEncrypt;
+    }
+
+    public void setContactEncrypt(String contactEncrypt) {
+        ContactEncrypt = contactEncrypt;
     }
 }

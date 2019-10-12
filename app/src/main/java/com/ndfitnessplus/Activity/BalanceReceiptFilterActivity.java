@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -71,6 +72,8 @@ public class BalanceReceiptFilterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
+                WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_balance_receipt_filter);
         initToolbar();
     }
@@ -195,6 +198,7 @@ public class BalanceReceiptFilterActivity extends AppCompatActivity {
             };
             spinDateWise.setAdapter(datewiseadapter);
         }
+        spinDateWise.setSelection(1);
         //Toast.makeText(MainActivity.this,genderradioButton.getText(), Toast.LENGTH_SHORT).show();
         spinDateWise.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -207,7 +211,7 @@ public class BalanceReceiptFilterActivity extends AppCompatActivity {
                     if (index == 0) {
                         tv.setText(getResources().getString(R.string.prompt_mem_date));
                     }
-                    spinDateWise.setSelection(1);
+
 //                tv.setTextColor(getResources().getColor(R.color.black));
                     Datewise = tv.getText().toString();
                     if ((Datewise.equals(getResources().getString(R.string.prompt_mem_date))) ||
@@ -927,7 +931,45 @@ public class BalanceReceiptFilterActivity extends AppCompatActivity {
                         }
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
+                    instructorArrayList.clear();
+                    instructorList = new Spinner_List();
+                    instructorList.setName(getResources().getString(R.string.hint_instructor));
+                    instructorArrayList.add(0,instructorList);
+                    instructorList.setName(getResources().getString(R.string.all));
+                    instructorArrayList.add(1,instructorList);
+                    instructoradapter = new SpinnerAdapter(BalanceReceiptFilterActivity.this, instructorArrayList){
+                        @Override
+                        public boolean isEnabled(int position){
+                            if(position == 0)
+                            {
+                                // Disable the first item from Spinner
+                                // First item will be use for hint
+                                return false;
+                            }
+                            else
+                            {
+                                return true;
+                            }
+                        }
+                        @Override
+                        public View getDropDownView(int position, View convertView,
+                                                    ViewGroup parent) {
+                            View view = super.getDropDownView(position, convertView, parent);
+                            TextView tv = (TextView) view.findViewById(R.id.tv_Name);
+                            if(position == 0){
+                                // Set the hint text color gray
+                                tv.setTextColor(Color.GRAY);
+                                tv.setText(getResources().getString(R.string.prompt_instructor));
+                                // tv.setTextColor(Color.GRAY);
+                            }
+                            else {
+                                tv.setTextColor(Color.BLACK);
+                            }
+                            return view;
+                        }
 
+                    };
+                    spinInstructor.setAdapter(instructoradapter);
                     //forumCount.setVisibility(View.INVISBLE);
                     // queCount.setVisibility(View.INVISIBLE);
                 }
@@ -1049,18 +1091,24 @@ public class BalanceReceiptFilterActivity extends AppCompatActivity {
                                 String Tax = jsonObj.getString("Tax");
                                 String Member_Email_ID = jsonObj.getString("Member_Email_ID");
                                 String Next_payment_date = jsonObj.getString("Next_payment_date");
+                                String Financial_Year = jsonObj.getString("Financial_Year");
 
 
                                 //  for (int j = 0; j < 5; j++) {
-
+                               // itemCount++;
+                                //Log.d(TAG, "run: " + itemCount);
                                 subList.setName(name);
                                 String sdate= Utility.formatDate(Start_Date);
                                 String edate=Utility.formatDate(End_Date);
                                 String todate=sdate+" to "+edate;
                                 subList.setStartToEndDate(todate);
+                                String cont=Utility.lastFour(Contact);
                                 subList.setContact(Contact);
-                                String pack=Package_Name+"(Duration:"+Duration_Days+","+"Session:"+Session+")";
+                                subList.setContactEncrypt(cont);
+                                String pack=Package_Name;
                                 subList.setPackageName(pack);
+                                String dur_sess="Duration:"+Duration_Days+","+"Session:"+Session;
+                                subList.setPackageNameWithDS(dur_sess);
                                 subList.setExecutiveName(ExecutiveName);
                                 subList.setTax(Tax);
                                 String reg_date= Utility.formatDate(RegistrationDate);
@@ -1078,6 +1126,8 @@ public class BalanceReceiptFilterActivity extends AppCompatActivity {
                                 subList.setEmail(Member_Email_ID);
                                 String nextpaydate=Utility.formatDate(Next_payment_date);
                                 subList.setNextPaymentdate(nextpaydate);
+                                subList.setFinancialYear(Financial_Year);
+                                subList.setFollowuptype("Payment");
                                 //Toast.makeText(EnquiryActivity.this, "followup date: "+next_foll_date, Toast.LENGTH_SHORT).show();
                                 subListArrayList.add(subList);
 

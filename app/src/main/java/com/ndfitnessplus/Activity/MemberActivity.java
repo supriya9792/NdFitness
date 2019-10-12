@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -74,7 +75,7 @@ public class MemberActivity extends AppCompatActivity implements SwipeRefreshLay
     private boolean isLoading = false;
     int itemCount = 0;
     int offset = 0;
-
+    int length=0;
     //search
     private EditText inputsearch;
     ImageView search;
@@ -84,6 +85,8 @@ public class MemberActivity extends AppCompatActivity implements SwipeRefreshLay
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
+                WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_member);
         initToolbar();
     }
@@ -122,7 +125,7 @@ public class MemberActivity extends AppCompatActivity implements SwipeRefreshLay
         if (args != null) {
             ArrayList<MemberDataList> filterArrayList = (ArrayList<MemberDataList>) args.getSerializable("filter_array_list");
             progressBar.setVisibility(View.GONE);
-            int length=filterArrayList.size();
+             length=filterArrayList.size();
             total_member.setText(String.valueOf(length));
             adapter = new MemberAdapter( filterArrayList,MemberActivity.this);
             recyclerView.setAdapter(adapter);
@@ -241,9 +244,9 @@ public class MemberActivity extends AppCompatActivity implements SwipeRefreshLay
             @Override
             protected void loadMoreItems() {
                 isLoading = true;
-                currentPage++;
+
                 Log.d(TAG, "prepare called current item: " + currentPage+"Total page"+totalPage);
-                if(currentPage<=totalPage){
+                if(currentPage<=totalPage&& length<=0){
                    // currentPage = PAGE_START;
                     Log.d(TAG, "currentPage: " + currentPage);
                     isLastPage = false;
@@ -286,35 +289,7 @@ public class MemberActivity extends AppCompatActivity implements SwipeRefreshLay
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.show();
         }
-//        final ArrayList<MemberDataList> items = new ArrayList<>();
-//        new Handler().postDelayed(new Runnable() {
 //
-//            @Override
-//            public void run() {
-//
-//                for (int i = 0; i < 5; i++) {
-//                    itemCount++;
-//                    Log.d(TAG, "prepare called : " + itemCount);
-//
-//                    MemberDataList postItem = subListArrayList.get(i);
-//                    subList.setExecutiveName(postItem.getExecutiveName());
-//                    subList.setName(postItem.getName());
-//                    subList.setGender(postItem.getGender());
-//                    subList.setContact(postItem.getContact());
-//                    subList.setAddress(postItem.getAddress());
-//                    subList.setComment(postItem.getComment());
-//                    subList.setNextFollowUpDate(postItem.getNextFollowUpDate());
-//                    items.add(subList);
-//                }
-//                if (currentPage != PAGE_START) adapter.removeLoading();
-//                adapter.addAll(items);
-//                swipeRefresh.setRefreshing(false);
-//                if (currentPage < totalPage) adapter.addLoading();
-//                else isLastPage = true;
-//                isLoading = false;
-//
-//            }
-//        }, 2000);
     }
     //Showing progress dialog
     private void showProgressDialog() {
@@ -416,7 +391,7 @@ public class MemberActivity extends AppCompatActivity implements SwipeRefreshLay
                         int count=0;
                         ArrayList<MemberDataList> item = new ArrayList<MemberDataList>();
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
-                            if(jsonArrayResult.length()<100){
+                            if(jsonArrayResult.length()<100 ||jsonArrayResult.length()<length){
                                 count=jsonArrayResult.length();
                             }else{
                                 count=100;
@@ -447,9 +422,12 @@ public class MemberActivity extends AppCompatActivity implements SwipeRefreshLay
                                     //  for (int j = 0; j < 5; j++) {
                                     itemCount++;
                                     Log.d(TAG, "run: " + itemCount);
+                                   // String Name=MemberID+"_"+name;
                                     subList.setName(name);
                                     subList.setGender(gender);
+                                    String cont=Utility.lastFour(Contact);
                                     subList.setContact(Contact);
+                                    subList.setContactEncrypt(cont);
                                     String dob= Utility.formatDate(DOB);
                                     subList.setBirthDate(dob);
                                     subList.setExecutiveName(ExecutiveName);
@@ -553,6 +531,7 @@ public class MemberActivity extends AppCompatActivity implements SwipeRefreshLay
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
                     totalPage++;
+                    currentPage++;
                    // currentPage = PAGE_START;
                     progressBar.setVisibility(View.GONE);
                     if (object != null) {
@@ -587,8 +566,11 @@ public class MemberActivity extends AppCompatActivity implements SwipeRefreshLay
                                     //  for (int j = 0; j < 5; j++) {
                                     itemCount++;
                                     Log.d(TAG, "run: " + itemCount);
+                                   // String Name=MemberID+"-"+name;
                                     subList.setName(name);
                                     subList.setGender(gender);
+                                    String cont=Utility.lastFour(Contact);
+                                    subList.setContactEncrypt(cont);
                                     subList.setContact(Contact);
                                     String dob= Utility.formatDate(DOB);
                                     subList.setBirthDate(dob);
@@ -624,6 +606,7 @@ public class MemberActivity extends AppCompatActivity implements SwipeRefreshLay
                     Log.d(TAG, "PAGE_START: " + PAGE_START);
                     if (currentPage != PAGE_START)
                         adapter.removeblank();
+                    currentPage = PAGE_START;
                     //adapter.addAll(subListArrayList);
                     swipeRefresh.setRefreshing(false);
                     isLoading = false;
@@ -726,9 +709,12 @@ public class MemberActivity extends AppCompatActivity implements SwipeRefreshLay
                                     //  for (int j = 0; j < 5; j++) {
                                     itemCount++;
                                     Log.d(TAG, "run: " + itemCount);
+                                   // String Name=MemberID+"-"+name;
                                     subList.setName(name);
                                     subList.setGender(gender);
-                                    subList.setContact(Contact);
+                                    String cont=Utility.lastFour(Contact);
+                                     subList.setContactEncrypt(cont);
+                                     subList.setContact(Contact);
                                     String dob= Utility.formatDate(DOB);
                                     subList.setBirthDate(dob);
                                     subList.setExecutiveName(ExecutiveName);
@@ -754,7 +740,7 @@ public class MemberActivity extends AppCompatActivity implements SwipeRefreshLay
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
                     // nodata.setVisibility(View.VISIBLE);
-
+                    Toast.makeText(MemberActivity.this, "NO Record Found", Toast.LENGTH_SHORT).show();
                     progressBar.setVisibility(View.GONE);
 
                     //recyclerView.setVisibility(View.GONE);
@@ -782,6 +768,10 @@ public class MemberActivity extends AppCompatActivity implements SwipeRefreshLay
             return true;
         } else if (id == R.id.action_filter) {
             Intent intent = new Intent(MemberActivity.this, MemberFilterActivity.class);
+            startActivity(intent);
+            return true;
+        }else if (id == android.R.id.home) {
+            Intent intent=new Intent(MemberActivity.this, MainActivity.class);
             startActivity(intent);
             return true;
         }

@@ -43,6 +43,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.ndfitnessplus.Activity.Notification.EnquiryFollowupActivity;
 import com.ndfitnessplus.Activity.Notification.TodaysEnrollmentActivity;
@@ -101,14 +102,16 @@ public class EnquiryFollowupDetailsActivity extends AppCompatActivity {
     private ProgressDialog pd;
     TextView username,mobilenumber;
     CircularImageView imageView;
-    ImageButton phone,message;
-    ImageView whatsapp;
+    ImageButton phone;
+    ImageView whatsapp,message;
     String Contact;
     //Loading gif
     ViewDialog viewDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
+                WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_enquiry_followup_details);
         initToolbar();
         initComponent();
@@ -244,20 +247,25 @@ public class EnquiryFollowupDetailsActivity extends AppCompatActivity {
                 PackageManager pm=getPackageManager();
                 try {
                    // Uri uri = Uri.parse("smsto:" + Contact);
-                    Uri uri = Uri.parse("whatsapp://send?phone=+" + Contact);
+                    Uri uri = Uri.parse("whatsapp://send?phone=+91" + Contact);
                     Intent waIntent = new Intent(Intent.ACTION_VIEW,uri);
                     //waIntent.setType("text/plain");
                     String text = "YOUR TEXT HERE";
 
                     PackageInfo info=pm.getPackageInfo("com.whatsapp", PackageManager.GET_META_DATA);
+                  //  PackageInfo info1=pm.getPackageInfo("com.whatsapp.w4b", PackageManager.GET_META_DATA);
                     //Check if package exists or not. If not then code
                     //in catch block will be called
+                    //Log.e(TAG, String.format("package Name  :: = %s", info1));
                     waIntent.setPackage("com.whatsapp");
+                   // waIntent.setPackage("com.whatsapp.w4b");
 
                    // waIntent.putExtra(Intent.EXTRA_TEXT, text);
                     startActivity(waIntent);
 
                 } catch (PackageManager.NameNotFoundException e) {
+                    Log.e(TAG, String.format("Name Not found execeptiaon  :: = %s", ""));
+                    e.printStackTrace();
                     Toast.makeText(EnquiryFollowupDetailsActivity.this, "WhatsApp not Installed", Toast.LENGTH_SHORT)
                             .show();
                 }
@@ -302,6 +310,8 @@ public class EnquiryFollowupDetailsActivity extends AppCompatActivity {
             //i++;
         //}
         callResponseClass();
+        String curr_date = Utility.getCurrentDate();
+        inputNextFollowupdate.setText(curr_date);
 
         inputNextFollowupdate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -582,6 +592,7 @@ public class EnquiryFollowupDetailsActivity extends AppCompatActivity {
             FollowupDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(EnquiryFollowupDetailsActivity.this));
             FollowupDetails.put("enquiry_id",enquiry_id );
             Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(EnquiryFollowupDetailsActivity.this)));
+            Log.v(TAG, String.format("doInBackground :: enquiry_id = %s", enquiry_id));
             FollowupDetails.put("action","show_enquiry_followup_details");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(EnquiryFollowupDetailsActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, FollowupDetails);
@@ -664,7 +675,15 @@ public class EnquiryFollowupDetailsActivity extends AppCompatActivity {
                                     String domainurl= SharedPrefereneceUtil.getDomainUrl(EnquiryFollowupDetailsActivity.this);
                                     String url= domainurl+ServiceUrls.IMAGES_URL + Image;
                                     Log.d(TAG, "image url: "+url );
-                                    Glide.with(this).load(url).placeholder(R.drawable.nouser).into(imageView);
+                                   // Glide.with(this).load(url).placeholder(R.drawable.nouser).into(imageView);
+                                    RequestOptions requestOptions = new RequestOptions();
+                                    requestOptions.placeholder(R.drawable.nouser);
+                                    requestOptions.error(R.drawable.nouser);
+
+
+                                    Glide.with(this)
+                                            .setDefaultRequestOptions(requestOptions)
+                                            .load(url).into(imageView);
                                     Log.d(TAG, "converted Followup date: " + foll_date);
                                     subList.setFollowupDate(foll_date);
                                     subList.setID(Auto_Id);
@@ -850,7 +869,7 @@ public class EnquiryFollowupDetailsActivity extends AppCompatActivity {
                         JSONArray jsonArrayCountry = object.getJSONArray("result");
                          callresponce=new String[ jsonArrayCountry.length()+1];
                         if (jsonArrayCountry != null && jsonArrayCountry.length() > 0){
-                            callresponce[0]=getResources().getString(R.string.call_res);
+                            callresponce[0]=getResources().getString(R.string.na);
                             for (int i = 0; i < jsonArrayCountry.length(); i++) {
                                 spinCallReslist = new Spinner_List();
                                 Log.v(TAG, "JsonResponseOpeartion ::");
@@ -937,11 +956,11 @@ public class EnquiryFollowupDetailsActivity extends AppCompatActivity {
     protected void onRestart() {
         super.onRestart();
        // swipeRefresh.setRefreshing(false);
-        Intent intent=new Intent(EnquiryFollowupDetailsActivity.this,EnquiryFollowupDetailsActivity.class);
-        intent.putExtra("enquiry_id",enquiry_id);
-        intent.putExtra("rating",Rating);
-        intent.putExtra("call_response",callResponce);
-        startActivity(intent);
+//        Intent intent=new Intent(EnquiryFollowupDetailsActivity.this,EnquiryFollowupDetailsActivity.class);
+//        intent.putExtra("enquiry_id",enquiry_id);
+//        intent.putExtra("rating",Rating);
+//        intent.putExtra("call_response",callResponce);
+//        startActivity(intent);
     }
     @Override
     public boolean onSupportNavigateUp(){

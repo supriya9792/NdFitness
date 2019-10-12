@@ -1,4 +1,4 @@
-package com.ndfitnessplus.Activity.Notification;
+package com.ndfitnessplus.Activity;
 
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -19,16 +20,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ndfitnessplus.Activity.AddExpensesActivity;
-import com.ndfitnessplus.Activity.BalanceReceiptDetailsActivity;
-import com.ndfitnessplus.Activity.BalanceReceiptFilterActivity;
-import com.ndfitnessplus.Activity.EnquiryFilterActivity;
-import com.ndfitnessplus.Activity.ExpensesActivity;
-import com.ndfitnessplus.Activity.LoginActivity;
-import com.ndfitnessplus.Adapter.AddEnquirySpinnerAdapter;
 import com.ndfitnessplus.Adapter.SpinnerAdapter;
-import com.ndfitnessplus.Model.CourseList;
-import com.ndfitnessplus.Model.EnquiryList;
 import com.ndfitnessplus.Model.ExpensesList;
 import com.ndfitnessplus.Model.Spinner_List;
 import com.ndfitnessplus.R;
@@ -77,6 +69,8 @@ public class ExpenseFilterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
+                WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_expense_filter);
 
         initToolbar();

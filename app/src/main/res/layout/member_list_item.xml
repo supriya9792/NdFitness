@@ -65,6 +65,43 @@
                     android:layout_height="wrap_content">
 
                     <TextView
+                        android:id="@+id/reg_dateTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="9sp"
+                        android:layout_gravity="left"
+                        android:layout_marginRight="4dp"
+                        android:gravity="left"
+                        android:visibility="gone"
+                        android:text="@string/hint_register"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="9sp"
+                        android:text="@string/member_id"/>
+                    <TextView
+                        android:id="@+id/member_idTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="9sp"
+                        android:layout_marginRight="2dp"
+                        android:text="@string/hint_register"/>
+                    <TextView
+                        android:id="@+id/contactTV"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="7028259696"
+                        android:layout_gravity="right"
+                        android:gravity="right"
+                        android:textSize="10sp"
+                        android:visibility="visible"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
                         android:id="@+id/nameTV"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -75,22 +112,15 @@
                         android:textStyle="bold"
                         android:textSize="14sp"
                         android:textColor="@android:color/black" />
-                    <TextView
-                        android:id="@+id/contactTV"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="7028259696"
-                        android:layout_gravity="right"
-                        android:gravity="right"
-                        android:autoLink="phone"
-                        android:textSize="12sp"
-                        android:visibility="visible"/>
-                    <!--<ImageView-->
-                        <!--android:id="@+id/contactIV"-->
-                        <!--android:layout_width="24dp"-->
-                        <!--android:layout_height="24dp"-->
-                        <!--android:src="@drawable/ic_local_phone"/>-->
+                    <ImageView
+                        android:id="@+id/status"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:tint="@color/green"
+                        android:padding="@dimen/spacing_medium"
+                        android:src="@drawable/ic_active_member"/>
+
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -113,12 +143,10 @@
                         android:gravity="start|bottom"
                         android:textSize="10sp" />
                     <ImageView
-                        android:id="@+id/status"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:tint="@color/green"
-                        android:padding="@dimen/spacing_medium"
-                        android:src="@drawable/ic_active_member"/>
+                    android:id="@+id/attendanceIV"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_fingerprint"/>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -141,6 +169,16 @@
                         android:layout_marginLeft="2dp"
                         android:gravity="left"
                         android:text="@string/gender"/>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textSize="10sp"
+                        android:textColor="@color/black"
+                        android:layout_gravity="right"
+                        android:layout_marginLeft="2dp"
+                        android:gravity="right"
+                        android:text="@string/present"/>
 
                 </LinearLayout>
                 <LinearLayout

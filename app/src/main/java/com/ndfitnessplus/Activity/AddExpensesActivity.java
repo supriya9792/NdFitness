@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -36,6 +37,7 @@ import com.ndfitnessplus.R;
 import com.ndfitnessplus.Utility.ServerClass;
 import com.ndfitnessplus.Utility.ServiceUrls;
 import com.ndfitnessplus.Utility.SharedPrefereneceUtil;
+import com.ndfitnessplus.Utility.Utility;
 import com.ndfitnessplus.Utility.ViewDialog;
 
 import org.json.JSONArray;
@@ -68,6 +70,8 @@ public class AddExpensesActivity extends AppCompatActivity  {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
+                WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_add_expenses);
         initToolbar();
     }
@@ -107,7 +111,8 @@ public class AddExpensesActivity extends AppCompatActivity  {
         awesomeValidation.addValidation(this, R.id.input_amt,RegexTemplate.NOT_EMPTY, R.string.err_msg_amt);
         awesomeValidation.addValidation(this, R.id.input_payment_disc,RegexTemplate.NOT_EMPTY, R.string.err_msg_payment_disc);
 
-
+        String curr_date = Utility.getCurrentDate();
+        inputExepnseDate.setText(curr_date);
         inputExepnseDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -253,7 +258,7 @@ public class AddExpensesActivity extends AppCompatActivity  {
         //if this becomes true that means validation is successfull
         //if(inputPassword.getText().toString().equals(inputCfmPassword.getText().toString())){
         if (awesomeValidation.validate()) {
-            if(expenseGroup.equals(getResources().getString(R.string.prompt_expense_grp)) || paymentType.equals(getResources().getString(R.string.prompt_payment_type))
+            if(expenseGroup.equals(getResources().getString(R.string.exepnses_group)) || paymentType.equals(getResources().getString(R.string.payment_type))
             ){           Toast.makeText(this, "Please fill all fields", Toast.LENGTH_LONG).show();
             }else{
                 AddExpenseClass();

@@ -1,14 +1,18 @@
 package com.ndfitnessplus.Activity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
@@ -25,6 +29,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -43,6 +48,7 @@ import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
 import com.basgeekball.awesomevalidation.utility.RegexTemplate;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.ndfitnessplus.Activity.Notification.OtherFollowupActivity;
 import com.ndfitnessplus.Activity.Notification.TodaysEnrollmentActivity;
@@ -54,6 +60,8 @@ import com.ndfitnessplus.Utility.ServiceUrls;
 import com.ndfitnessplus.Utility.SharedPrefereneceUtil;
 import com.ndfitnessplus.Utility.Utility;
 import com.ndfitnessplus.Utility.ViewDialog;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -72,7 +80,7 @@ import java.util.Locale;
 import static com.ndfitnessplus.Activity.EnquiryActivity.TAG;
 
 public class AddMemberActivity extends AppCompatActivity implements View.OnClickListener{
-
+    private Uri mCropImageUri;
     public EditText inputName,inputContact, inputEmail,inputAdd,inputEmContact,inputDob,inputGstNo;
     public TextInputLayout inputLayoutName,inputLayoutContact,inputLayoutEmail,
             inputLayoutAdd,inputLayoutEmContact,inputLayoutDob,inputLayoutGstNo;
@@ -114,6 +122,8 @@ public class AddMemberActivity extends AppCompatActivity implements View.OnClick
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
+                WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_add_member);
         initToolbar();
     }
@@ -187,30 +197,66 @@ public class AddMemberActivity extends AppCompatActivity implements View.OnClick
                 if(inputContact.getText().length()>0){
                     CheckContactClass();
                 }
+//                else{
+//                    inputName.setText("");
+//                    inputEmail.setText("");
+//                    inputAdd.setText("");
+//
+////                  RadioButton btnm=findViewById(R.id.radioButton);
+////                  RadioButton btnf=findViewById(R.id.radioButton2);
+////                  btnf.setChecked(false);
+//                    //btnm.setChecked(true);
+//                    CapturedImage.setImageDrawable(getResources().getDrawable(R.drawable.nouser));
+//                    CapturedImage.setVisibility(View.GONE);
+//            }
 
 
             }
         });
 
-        inputContact.addTextChangedListener(new TextWatcher() {
+//        inputContact.addTextChangedListener(new TextWatcher() {
+//
+//            public void onTextChanged(CharSequence s, int start, int before,
+//                                      int count) {
+//                CheckContactClass();
+//            }
+//
+//
+//
+//            public void beforeTextChanged(CharSequence s, int start, int count,
+//                                          int after) {
+//
+//            }
+//
+//            public void afterTextChanged(Editable s) {
+//                if(inputContact.getText().length()>0) {
+//                    //do your work here
+//                    // Toast.makeText(AddEnquiryActivity.this ,"Text vhanged count  is 10 then: " , Toast.LENGTH_LONG).show();
+//                    CheckContactClass();
+//                }
+//            }
+//        });
+        inputName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
 
-            public void onTextChanged(CharSequence s, int start, int before,
-                                      int count) {
-            }
-
-
-
-            public void beforeTextChanged(CharSequence s, int start, int count,
-                                          int after) {
-
-            }
-
-            public void afterTextChanged(Editable s) {
-                if(inputContact.getText().length()>=10) {
-                    //do your work here
-                    // Toast.makeText(AddEnquiryActivity.this ,"Text vhanged count  is 10 then: " , Toast.LENGTH_LONG).show();
+                if(inputContact.getText().length()>0){
                     CheckContactClass();
                 }
+//                else{
+//                    inputName.setText("");
+//                    inputEmail.setText("");
+//                    inputAdd.setText("");
+//
+////                  RadioButton btnm=findViewById(R.id.radioButton);
+////                  RadioButton btnf=findViewById(R.id.radioButton2);
+////                  btnf.setChecked(false);
+//                    //btnm.setChecked(true);
+//                    CapturedImage.setImageDrawable(getResources().getDrawable(R.drawable.nouser));
+//                    CapturedImage.setVisibility(View.GONE);
+//            }
+
+
             }
         });
         inputName.addTextChangedListener(new TextWatcher() {
@@ -345,6 +391,7 @@ public class AddMemberActivity extends AppCompatActivity implements View.OnClick
         });
 
 
+        spinOccupation.setSelection(1);
         //Occupation listner
         spinOccupation.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -355,16 +402,16 @@ public class AddMemberActivity extends AppCompatActivity implements View.OnClick
                     TextView tv = (TextView) view.findViewById(R.id.tv_Name);
                     View layout = (View) view.findViewById(R.id.layout);
                     layout.setPadding(0, 0, 0, 0);
-                    if (index == 0) {
+//                    if (index == 0) {
 
-                        tv.setTextColor((Color.GRAY));
-                    } else {
+//                        tv.setTextColor((Color.GRAY));
+//                    } else {
                         tv.setTextColor((Color.BLACK));
-                    }
+//                    }
                     occupation = tv.getText().toString();
-                    if (index != 0) {
+
                         txtoccupation.setVisibility(View.VISIBLE);
-                    }
+
                     if (!occupation.equals(getResources().getString(R.string.occupation))) {
                         //awesomeValidation.addValidation(AddEnquiryActivity.this, R.id.spinner_occupation,RegexTemplate.NOT_EMPTY, R.string.err_msg_next_foll_date);
                     }
@@ -409,11 +456,17 @@ public class AddMemberActivity extends AppCompatActivity implements View.OnClick
 
 
         EnableRuntimePermissionToAccessCamera();
+//        cameraBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+//                startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
+//            }
+//        });
         cameraBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
+            public void onClick(View view) {
+                CropImage.startPickImageActivity(AddMemberActivity.this);
             }
         });
 
@@ -435,51 +488,109 @@ public class AddMemberActivity extends AppCompatActivity implements View.OnClick
         }
     }
     @Override
-    protected void onActivityResult(int RC, int RQC, Intent I) {
+    @SuppressLint("NewApi")
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        super.onActivityResult(RC, RQC, I);
-        if (RC == REQUEST_IMAGE_CAPTURE ) {
+        // handle result of pick image chooser
+        if (requestCode == CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            Uri imageUri = CropImage.getPickImageResultUri(this, data);
 
-
-//            uri = I.getData();
-//            Log.v(TAG, String.format("camera request "));
-//            Log.v(TAG, String.format("camera capture :: uri= %s", uri));
-//            try {
-
-            if(I !=null){
-                Bundle extras = I.getExtras();
-                if (extras != null) {
-                    Bitmap bitmap1 = (Bitmap) extras.get("data");
-                    CapturedImage.setImageBitmap(bitmap1);
-                    bitmap = Bitmap.createScaledBitmap(bitmap1, 75,
-                            75, true);
-                    //return newBitmap;
-
-                    CapturedImage.setVisibility(View.VISIBLE);
-                    String timeStamp =
-                            new SimpleDateFormat("yyyyMMdd_HHmmss",
-                                    Locale.getDefault()).format(new Date());
-                    String imageFileName = "IMG_" + timeStamp;
-
-                    // bitmap=Utility.resizeAndCompressImageBeforeSend(AddEnquiryActivity.this,bitmap1,imageFileName);
-                    Log.v(TAG, String.format(" Bitmap= %s", bitmap));
-                    uploadimageClass();
-                }
+            // For API >= 23 we need to check specifically that we have permissions to read external storage.
+            if (CropImage.isReadExternalStoragePermissionsRequired(this, imageUri)) {
+                // request permissions and handle the result in onRequestPermissionsResult()
+                mCropImageUri = imageUri;
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
+            } else {
+                // no permissions required or already grunted, can start crop image activity
+                startCropImageActivity(imageUri);
             }
-//                imgPreview.setImageBitmap(imageBitmap);
-            //  bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-//               Toast.makeText(UploadImageActivity.this,bitmap.toString(),Toast.LENGTH_SHORT).show();
+        }
 
-
+        // handle result of CropImageActivity
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                CapturedImage.setVisibility(View.VISIBLE);
+                // ((ImageButton) findViewById(R.id.quick_start_cropped_image)).setImageURI(result.getUri());
+                CapturedImage.setImageURI(result.getUri());
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), result.getUri());
+                    uploadimageClass();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Toast.makeText(this, "Cropping successful, Sample: " + result.getSampleSize(), Toast.LENGTH_LONG).show();
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Toast.makeText(this, "Cropping failed: " + result.getError(), Toast.LENGTH_LONG).show();
+            }
         }
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        if (mCropImageUri != null && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            // required permissions granted, start crop image activity
+            startCropImageActivity(mCropImageUri);
+        } else {
+            //  Toast.makeText(this, "Cancelling, required permissions are not granted", Toast.LENGTH_LONG).show();
+        }
+    }
+    private void startCropImageActivity(Uri imageUri) {
+        CropImage.activity(imageUri)
+                .setGuidelines(CropImageView.Guidelines.ON)
+                .setMultiTouchEnabled(true)
+                .setAspectRatio(1,1)
+                .setFixAspectRatio(true)
+                .start(this);
+    }
+    //    @Override
+//    protected void onActivityResult(int RC, int RQC, Intent I) {
+//
+//        super.onActivityResult(RC, RQC, I);
+//        if (RC == REQUEST_IMAGE_CAPTURE ) {
+//
+//
+////            uri = I.getData();
+////            Log.v(TAG, String.format("camera request "));
+////            Log.v(TAG, String.format("camera capture :: uri= %s", uri));
+////            try {
+//
+//            if(I !=null){
+//                Bundle extras = I.getExtras();
+//                if (extras != null) {
+//                    Bitmap bitmap1 = (Bitmap) extras.get("data");
+//                    CapturedImage.setImageBitmap(bitmap1);
+//                    bitmap = Bitmap.createScaledBitmap(bitmap1, 75,
+//                            75, true);
+//                    //return newBitmap;
+//
+//                    CapturedImage.setVisibility(View.VISIBLE);
+//                    String timeStamp =
+//                            new SimpleDateFormat("yyyyMMdd_HHmmss",
+//                                    Locale.getDefault()).format(new Date());
+//                    String imageFileName = "IMG_" + timeStamp;
+//
+//                    // bitmap=Utility.resizeAndCompressImageBeforeSend(AddEnquiryActivity.this,bitmap1,imageFileName);
+//                    Log.v(TAG, String.format(" Bitmap= %s", bitmap));
+//                    uploadimageClass();
+//                }
+//            }
+////                imgPreview.setImageBitmap(imageBitmap);
+//            //  bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+////               Toast.makeText(UploadImageActivity.this,bitmap.toString(),Toast.LENGTH_SHORT).show();
+//
+//
+//        }
+//    }
     private void uploadimageClass() {
 
         ByteArrayOutputStream byteArrayOutputStreamObject ;
 
         byteArrayOutputStreamObject = new ByteArrayOutputStream();
+        if(bitmap != null) {
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStreamObject);
+        }
 
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStreamObject);
 
         byte[] byteArrayVar = byteArrayOutputStreamObject.toByteArray();
 
@@ -617,6 +728,8 @@ public class AddMemberActivity extends AppCompatActivity implements View.OnClick
                         occupationList.setName(getResources().getString(R.string.occupation));
                         occupationArraylist.add(0,occupationList);
                         if (jsonArrayCountry != null && jsonArrayCountry.length() > 0){
+                            occupationList.setName(getResources().getString(R.string.na));
+                            occupationArraylist.add(1,occupationList);
                             for (int i = 0; i < jsonArrayCountry.length(); i++) {
                                 occupationList = new Spinner_List();
                                 Log.v(TAG, "JsonResponseOpeartion ::");
@@ -702,7 +815,7 @@ public class AddMemberActivity extends AppCompatActivity implements View.OnClick
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
             //showProgressDialog();
-            viewDialog.showDialog();
+           // viewDialog.showDialog();
         }
 
         @Override
@@ -710,7 +823,7 @@ public class AddMemberActivity extends AppCompatActivity implements View.OnClick
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
             //dismissProgressDialog();
-            viewDialog.hideDialog();
+           // viewDialog.hideDialog();
             //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
             //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
             CheckContactDetails(response);
@@ -750,7 +863,7 @@ public class AddMemberActivity extends AppCompatActivity implements View.OnClick
             }
             else if (success.equalsIgnoreCase(getResources().getString(R.string.two))||success.equalsIgnoreCase(getResources().getString(R.string.one)))
             {
-                Toast.makeText(AddMemberActivity.this,"Mobile Number Already Exits. Please Enter New Mobile Number",Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddMemberActivity.this,"Contact Already Exits. Please Enter New Mobile Number",Toast.LENGTH_SHORT).show();
                 inputContact.getText().clear();
                 //Toast.makeText(AddMemberActivity.this,"Please Enter New Mobile Number",Toast.LENGTH_SHORT).show();
             }
@@ -848,7 +961,7 @@ public class AddMemberActivity extends AppCompatActivity implements View.OnClick
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
            // showProgressDialog();
-            viewDialog.showDialog();
+//            viewDialog.showDialog();
         }
 
         @Override
@@ -856,7 +969,7 @@ public class AddMemberActivity extends AppCompatActivity implements View.OnClick
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
            // dismissProgressDialog();
-            viewDialog.hideDialog();
+//            viewDialog.hideDialog();
             //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
             //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
             CheckContactInEnquiryDetails(response);
@@ -869,6 +982,7 @@ public class AddMemberActivity extends AppCompatActivity implements View.OnClick
             HashMap<String, String> EnquiryForDetails = new HashMap<String, String>();
 
             EnquiryForDetails.put("mobileno",inputContact.getText().toString() );
+            EnquiryForDetails.put("user","Enquiry" );
             EnquiryForDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(AddMemberActivity.this) );
             EnquiryForDetails.put("action", "check_mobile_already_exist_in_enquiry_or_not");
             //EnquiryForloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(EnquiryForloyee.this));
@@ -889,9 +1003,6 @@ public class AddMemberActivity extends AppCompatActivity implements View.OnClick
 
             if (success.equalsIgnoreCase(getResources().getString(R.string.zero))) {
 
-                // showCustomDialog();
-
-                //inputEmail, inputPhone,inputAdd,inputReq,inputFollowupdate;
             }
             else if (success.equalsIgnoreCase(getResources().getString(R.string.two)))
             {
@@ -920,10 +1031,22 @@ public class AddMemberActivity extends AppCompatActivity implements View.OnClick
                             String bday= Utility.formatDateDB(DOB);
                             inputDob.setText(bday);
                             String img=Image.replace("\"", "");
-                            final String url= ServiceUrls.IMAGES_URL + img;
+                            String domainurl=SharedPrefereneceUtil.getDomainUrl(AddMemberActivity.this);
+                            final String url= domainurl+ServiceUrls.IMAGES_URL + img;
                             Log.d(TAG, "img url: "+url);
                             CapturedImage.setVisibility(View.VISIBLE);
-                            Glide.with(AddMemberActivity.this).load(url).placeholder(R.drawable.nouser).into(CapturedImage);
+
+                            if(!(img.equals("null")||img.equals(""))) {
+                                RequestOptions requestOptions = new RequestOptions();
+                                requestOptions.placeholder(R.drawable.nouser);
+                                requestOptions.error(R.drawable.nouser);
+
+
+                                Glide.with(this)
+                                        .setDefaultRequestOptions(requestOptions)
+                                        .load(url).into(CapturedImage);
+                               // Glide.with(AddMemberActivity.this).load(url).placeholder(R.drawable.nouser).into(CapturedImage);
+                            }
                             AddMemberActivity.this.runOnUiThread(new Runnable() {
 
                                 @Override
@@ -937,6 +1060,7 @@ public class AddMemberActivity extends AppCompatActivity implements View.OnClick
 
                                                 URL urlb = new URL(url);
                                                 bitmap = BitmapFactory.decodeStream(urlb.openConnection().getInputStream());
+                                                uploadimageClass();
                                             } catch (IOException e) {
                                                 System.out.println(e);
                                             }
@@ -951,6 +1075,7 @@ public class AddMemberActivity extends AppCompatActivity implements View.OnClick
                                        }
                                     }).execute();
                                 }});
+
                             if(gender.equals("Male"))
                                 radioGroup.check(R.id.radioButton);
                             else
@@ -1070,7 +1195,10 @@ public class AddMemberActivity extends AppCompatActivity implements View.OnClick
 //                inputEmContact.getText().clear();
 //                inputEmail.getText().clear();
                // SendEnquirySmsClass();
+                finish();
+                String member_id=jsonObjLoginResponse.getString("member_id");
                 Intent intent=new Intent(AddMemberActivity.this,RenewActivity.class);
+                intent.putExtra("member_id",member_id);
                 intent.putExtra("name",inputName.getText().toString());
                 intent.putExtra("contact",inputContact.getText().toString());
                 intent.putExtra("email",inputEmail.getText().toString());
@@ -1115,136 +1243,136 @@ public class AddMemberActivity extends AppCompatActivity implements View.OnClick
 
         }else{
 
-            if (awesomeValidation.validate()) {
+           // if (awesomeValidation.validate()) {
 
                 addMemberClass();
 
-            }else{
-                Toast.makeText(this, "Validation Failed", Toast.LENGTH_LONG).show();
-            }
+//                   }else{
+//                Toast.makeText(this, "Validation Failed", Toast.LENGTH_LONG).show();
+//            }
 
             // awesomeValidation.addValidation(this, R.id.input_cfn_password,RegexTemplate.NOT_EMPTY,R.string.err_msg_cfm_password);
 
         }
 
     }
-    // ******************* send sms for add Member **************
-    public void  SendEnquirySmsClass() {
-        AddMemberActivity.SendEnquirySmsTrackClass ru = new AddMemberActivity.SendEnquirySmsTrackClass();
-        ru.execute("5");
-    }
-
-    class SendEnquirySmsTrackClass extends AsyncTask<String, Void, String> {
-
-        ServerClass ruc = new ServerClass();
-
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
-            viewDialog.showDialog();
-        }
-
-        @Override
-        protected void onPostExecute(String response) {
-            super.onPostExecute(response);
-            Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
-            viewDialog.hideDialog();
-
-            SendEnquirySmsDetails(response);
-
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
-            HashMap<String, String> EnquiryForDetails = new HashMap<String, String>();
-
-            EnquiryForDetails.put("type","Member" );
-            EnquiryForDetails.put("comp_id",SharedPrefereneceUtil.getSelectedBranchId(AddMemberActivity.this) );
-            EnquiryForDetails.put("action", "sms_for_add_enquiry");
-            String domainurl=SharedPrefereneceUtil.getDomainUrl(AddMemberActivity.this);
-            //EnquiryForloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(EnquiryForloyee.this));
-            String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EnquiryForDetails);
-            Log.v(TAG, String.format("doInBackground :: sms_for_add_enquiry= %s", loginResult));
-            return loginResult;
-        }
-    }
-    private void SendEnquirySmsDetails(String jsonResponse) {
-
-        Log.v(TAG, String.format("loginServerResponse :: response = %s", jsonResponse));
-
-        JSONObject object = null;
-        try {
-            object = new JSONObject(jsonResponse);
-            String success = object.getString(getResources().getString(R.string.success));
-
-            if (success.equalsIgnoreCase(getResources().getString(R.string.zero))) {
-
-                // showCustomDialog();
-
-                //inputEmail, inputPhone,inputAdd,inputReq,inputFollowupdate;
-            }
-            else if (success.equalsIgnoreCase(getResources().getString(R.string.two)))
-            {
-                if (object != null) {
-                    JSONArray jsonArrayResult = object.getJSONArray("result");
-
-
-                    if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
-
-                        for (int i = 0; i < jsonArrayResult.length(); i++) {
-
-                            Log.v(TAG, "JsonResponseOpeartion ::");
-                            JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
-                            if (jsonObj != null) {
-
-                                afterEnquirySms = jsonObj.getString("Member");
-                                afterEnquirySms = afterEnquirySms.replace(".", "");
-
-
-                                AddMemberActivity.this.runOnUiThread(new Runnable() {
-
-                                    @Override
-                                    public void run() {
-                                        //second async stared within a asynctask but on the main thread
-                                        (new AsyncTask<String, String, String>() {
-                                            ServerClass ruc = new ServerClass();
-                                            @Override
-                                            protected String doInBackground(String... params) {
-                                                String loginResult2 = ruc.SendSMS(inputContact.getText().toString(),afterEnquirySms,SharedPrefereneceUtil.getSmsUsername(AddMemberActivity.this),
-                                                        SharedPrefereneceUtil.getSmsPassword(AddMemberActivity.this),
-                                                        SharedPrefereneceUtil.getSmsRoute(AddMemberActivity.this),
-                                                        SharedPrefereneceUtil.getSmsSenderid(AddMemberActivity.this));
-                                                Log.v(TAG, String.format("doInBackground :: Send Sms after member added= %s", loginResult2));
-                                                return loginResult2;
-                                            }
-                                            @Override
-                                            protected void onPostExecute(String response) {
-                                                super.onPostExecute(response);
-                                                Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-                                                Intent intent=new Intent(AddMemberActivity.this,AddMemberActivity.class);
-                                                startActivity(intent);
-
-
-
-                                            }
-                                        }).execute();
-
-                                    }
-                                });
-
-                            }
-                        }
-                    }
-                }
-            }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
+//    // ******************* send sms for add Member **************
+//    public void  SendEnquirySmsClass() {
+//        AddMemberActivity.SendEnquirySmsTrackClass ru = new AddMemberActivity.SendEnquirySmsTrackClass();
+//        ru.execute("5");
+//    }
+//
+//    class SendEnquirySmsTrackClass extends AsyncTask<String, Void, String> {
+//
+//        ServerClass ruc = new ServerClass();
+//
+//
+//        @Override
+//        protected void onPreExecute() {
+//            super.onPreExecute();
+//            Log.v(TAG, "onPreExecute");
+//            //showProgressDialog();
+//            viewDialog.showDialog();
+//        }
+//
+//        @Override
+//        protected void onPostExecute(String response) {
+//            super.onPostExecute(response);
+//            Log.v(TAG, String.format("onPostExecute :: response = %s", response));
+//            //dismissProgressDialog();
+//            viewDialog.hideDialog();
+//
+//            SendEnquirySmsDetails(response);
+//
+//        }
+//
+//        @Override
+//        protected String doInBackground(String... params) {
+//            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+//            HashMap<String, String> EnquiryForDetails = new HashMap<String, String>();
+//
+//            EnquiryForDetails.put("type","Member" );
+//            EnquiryForDetails.put("comp_id",SharedPrefereneceUtil.getSelectedBranchId(AddMemberActivity.this) );
+//            EnquiryForDetails.put("action", "sms_for_add_enquiry");
+//            String domainurl=SharedPrefereneceUtil.getDomainUrl(AddMemberActivity.this);
+//            //EnquiryForloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(EnquiryForloyee.this));
+//            String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EnquiryForDetails);
+//            Log.v(TAG, String.format("doInBackground :: sms_for_add_enquiry= %s", loginResult));
+//            return loginResult;
+//        }
+//    }
+//    private void SendEnquirySmsDetails(String jsonResponse) {
+//
+//        Log.v(TAG, String.format("loginServerResponse :: response = %s", jsonResponse));
+//
+//        JSONObject object = null;
+//        try {
+//            object = new JSONObject(jsonResponse);
+//            String success = object.getString(getResources().getString(R.string.success));
+//
+//            if (success.equalsIgnoreCase(getResources().getString(R.string.zero))) {
+//
+//                // showCustomDialog();
+//
+//                //inputEmail, inputPhone,inputAdd,inputReq,inputFollowupdate;
+//            }
+//            else if (success.equalsIgnoreCase(getResources().getString(R.string.two)))
+//            {
+//                if (object != null) {
+//                    JSONArray jsonArrayResult = object.getJSONArray("result");
+//
+//
+//                    if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
+//
+//                        for (int i = 0; i < jsonArrayResult.length(); i++) {
+//
+//                            Log.v(TAG, "JsonResponseOpeartion ::");
+//                            JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
+//                            if (jsonObj != null) {
+//
+//                                afterEnquirySms = jsonObj.getString("Member");
+//                                afterEnquirySms = afterEnquirySms.replace(".", "");
+//
+//
+//                                AddMemberActivity.this.runOnUiThread(new Runnable() {
+//
+//                                    @Override
+//                                    public void run() {
+//                                        //second async stared within a asynctask but on the main thread
+//                                        (new AsyncTask<String, String, String>() {
+//                                            ServerClass ruc = new ServerClass();
+//                                            @Override
+//                                            protected String doInBackground(String... params) {
+//                                                String loginResult2 = ruc.SendSMS(inputContact.getText().toString(),afterEnquirySms,SharedPrefereneceUtil.getSmsUsername(AddMemberActivity.this),
+//                                                        SharedPrefereneceUtil.getSmsPassword(AddMemberActivity.this),
+//                                                        SharedPrefereneceUtil.getSmsRoute(AddMemberActivity.this),
+//                                                        SharedPrefereneceUtil.getSmsSenderid(AddMemberActivity.this));
+//                                                Log.v(TAG, String.format("doInBackground :: Send Sms after member added= %s", loginResult2));
+//                                                return loginResult2;
+//                                            }
+//                                            @Override
+//                                            protected void onPostExecute(String response) {
+//                                                super.onPostExecute(response);
+//                                                Log.v(TAG, String.format("onPostExecute :: response = %s", response));
+//                                                Intent intent=new Intent(AddMemberActivity.this,AddMemberActivity.class);
+//                                                startActivity(intent);
+//
+//
+//
+//                                            }
+//                                        }).execute();
+//
+//                                    }
+//                                });
+//
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//    }
 }

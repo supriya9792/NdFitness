@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -74,6 +75,8 @@ public class FollowupsActivity extends AppCompatActivity implements SwipeRefresh
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
+                WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_followups);
         initToolbar();
     }
@@ -356,7 +359,9 @@ public class FollowupsActivity extends AppCompatActivity implements SwipeRefresh
                                     Log.d(TAG, "run offset: " + itemCount);
                                     subList.setName(name);
                                     subList.setRating(gender);
+                                    String cont=Utility.lastFour(Contact);
                                     subList.setContact(Contact);
+                                    subList.setContactEncrypt(cont);
                                     subList.setCallRespond(address);
                                     subList.setExecutiveName(ExecutiveName);
                                     subList.setComment(Comment);
@@ -484,7 +489,9 @@ public class FollowupsActivity extends AppCompatActivity implements SwipeRefresh
                                     Log.d(TAG, "run offset: " + itemCount);
                                     subList.setName(name);
                                     subList.setRating(gender);
+                                    String cont=Utility.lastFour(Contact);
                                     subList.setContact(Contact);
+                                    subList.setContactEncrypt(cont);
                                     subList.setCallRespond(address);
                                     subList.setExecutiveName(ExecutiveName);
                                     subList.setComment(Comment);

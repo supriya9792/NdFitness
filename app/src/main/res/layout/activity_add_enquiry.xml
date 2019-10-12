@@ -100,7 +100,49 @@
 
 
             </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <ImageButton
+                    android:layout_width="@dimen/spacing_mxlarge"
+                    android:layout_height="@dimen/spacing_mxlarge"
+                    android:layout_marginTop="@dimen/spacing_mlarge"
+                    android:background="@android:color/transparent"
+                    android:tint="@color/grey_60"
+                    app:srcCompat="@drawable/ic_local_phone" />
+                <View
+                    android:layout_width="@dimen/spacing_large"
+                    android:layout_height="match_parent" />
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_layout_cont"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    >
 
+                    <EditText
+                        android:id="@+id/input_cont"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:maxLength="15"
+                        android:inputType="number"
+                        android:textColorHint="@color/black"
+                        android:backgroundTint="@color/black"
+                        android:textColor="@color/black"
+                        android:hint="@string/hint_mob_no" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="verify"
+                    android:id="@+id/btn_verify"
+                    android:background="@color/transparent"
+                    android:textColor="@color/black"/>
+            </LinearLayout>
          <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -131,9 +173,8 @@
                     android:capitalize="characters"
                     android:inputType="textCapWords|textCapSentences"
                     android:textColor="@color/black"
-                    android:textColorHint="@color/black"
                     android:backgroundTint="@color/black"
-                    android:hint="@string/hint_name" />
+                    android:hint="@string/hints" />
             </android.support.design.widget.TextInputLayout>
        </LinearLayout>
        <LinearLayout
@@ -198,49 +239,7 @@
              </RadioGroup>
            </LinearLayout>
        </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <ImageButton
-                    android:layout_width="@dimen/spacing_mxlarge"
-                    android:layout_height="@dimen/spacing_mxlarge"
-                    android:layout_marginTop="@dimen/spacing_mlarge"
-                    android:background="@android:color/transparent"
-                    android:tint="@color/grey_60"
-                    app:srcCompat="@drawable/ic_local_phone" />
-                <View
-                    android:layout_width="@dimen/spacing_large"
-                    android:layout_height="match_parent" />
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/input_layout_cont"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    >
 
-                    <EditText
-                        android:id="@+id/input_cont"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:singleLine="true"
-                        android:maxLength="15"
-                        android:inputType="number"
-                        android:textColorHint="@color/black"
-                        android:backgroundTint="@color/black"
-                        android:textColor="@color/black"
-                        android:hint="@string/hint_mob_no" />
-
-                </android.support.design.widget.TextInputLayout>
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="verify"
-                    android:id="@+id/btn_verify"
-                    android:background="@color/transparent"
-                    android:textColor="@color/black"/>
-            </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -410,36 +409,38 @@
              <View
                  android:layout_width="@dimen/spacing_large"
                  android:layout_height="match_parent" />
-             <LinearLayout
-                 android:layout_width="match_parent"
-                 android:layout_height="match_parent"
-                 android:orientation="vertical"
-                 android:gravity="bottom">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="bottom"
+                    android:orientation="vertical">
 
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/occupation"
-                android:textSize="11sp"
-                android:paddingTop="@dimen/spacing_medium"
-                android:visibility="gone"
-                android:id="@+id/txt_occupation"
-                android:textColor="@android:color/darker_gray"
-                />
-            <Spinner
-                android:id="@+id/spinner_occupation"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:spinnerMode="dialog"
-                android:textColor="@android:color/darker_gray"
-                android:dropDownSelector="@color/white"
+                    <TextView
+                        android:id="@+id/txt_occupation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="@dimen/spacing_medium"
+                        android:text="@string/occupation"
+                        android:textColor="@android:color/darker_gray"
+                        android:textSize="11sp"
+                        android:visibility="gone" />
 
-                />
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1.5dp"
-                android:background="@android:color/darker_gray" />
+                    <Spinner
+                        android:id="@+id/spinner_occupation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:spinnerMode="dialog"
+                        android:textColor="@android:color/darker_gray"
+                        android:backgroundTint="@color/black"
+                        android:dropDownSelector="@color/black"
+                        />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1.5dp"
+                        android:background="@android:color/darker_gray" />
                 </LinearLayout>
             </LinearLayout>
         <LinearLayout
@@ -545,7 +546,7 @@
 
             <ImageButton
                 android:layout_width="@dimen/spacing_mxlarge"
-                android:layout_height="@dimen/spacing_mxlarge"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_mlarge"
                 android:background="@android:color/transparent"
                 android:tint="@color/grey_60"

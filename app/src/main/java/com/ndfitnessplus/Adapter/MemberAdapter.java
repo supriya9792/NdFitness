@@ -6,7 +6,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.media.AudioManager;
+import android.media.ToneGenerator;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -24,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.ndfitnessplus.Activity.EnquiryFollowupDetailsActivity;
 import com.ndfitnessplus.Activity.FullImageActivity;
@@ -32,10 +36,16 @@ import com.ndfitnessplus.Activity.RenewActivity;
 import com.ndfitnessplus.Model.EnquiryList;
 import com.ndfitnessplus.Model.MemberDataList;
 import com.ndfitnessplus.R;
+import com.ndfitnessplus.Utility.ServerClass;
 import com.ndfitnessplus.Utility.ServiceUrls;
 import com.ndfitnessplus.Utility.SharedPrefereneceUtil;
+import com.ndfitnessplus.Utility.ViewDialog;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Locale;
 
 import butterknife.BindView;
@@ -51,7 +61,9 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.BaseViewHo
     private static final int VIEW_TYPE_LOADING = 0;
     private static final int VIEW_TYPE_NORMAL = 1;
     private boolean isLoaderVisible = false;
-
+    String member_id,name,contact,status;
+    //Loading gif
+    ViewDialog viewDialog;
     public MemberAdapter(ArrayList<MemberDataList> enquiryList, Context context) {
         //this.arrayList = enquiryList;
         this.subList = enquiryList;
@@ -167,9 +179,7 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.BaseViewHo
         } else {
             for (MemberDataList wp : subList) {
                 if (wp.getName().toLowerCase(Locale.getDefault())
-                        .contains(charText) || wp.getGender().toLowerCase(Locale.getDefault()).contains(charText)||
-                        wp.getBlodGroup().toLowerCase(Locale.getDefault()).contains(charText)
-                        ||wp.getOccupation().toLowerCase(Locale.getDefault()).contains(charText)
+                        .contains(charText)
                         ||wp.getContact().toLowerCase(Locale.getDefault()).contains(charText)) {
                     arrayList.add(wp);
                 }
@@ -197,9 +207,8 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.BaseViewHo
                     // UI code goes here
                     for (final MemberDataList wp : subList) {
                         if (wp.getName().toLowerCase(Locale.getDefault())
-                                .contains(charText) || wp.getGender().toLowerCase(Locale.getDefault()).contains(charText)||
-                                wp.getBlodGroup().toLowerCase(Locale.getDefault()).contains(charText)||wp.getExecutiveName().toLowerCase(Locale.getDefault()).contains(charText)
-                                ||wp.getOccupation().toLowerCase(Locale.getDefault()).contains(charText)) {
+                                .contains(charText)
+                                ||wp.getContact().toLowerCase(Locale.getDefault()).contains(charText)) {
                             arrayList.add(wp);
 
                         }
@@ -216,8 +225,8 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.BaseViewHo
     }
     //View for showing enquiry
     public class ViewHolder extends MemberAdapter.BaseViewHolder implements View.OnClickListener {
-        TextView nameTV,excecutive_nameTV,dobTV,genderTV,occupationTV,bloodgroupTV,contactTV;
-        ImageView statusIv;
+        TextView nameTV,excecutive_nameTV,dobTV,genderTV,occupationTV,bloodgroupTV,contactTV,memberidTv;
+        ImageView statusIv,attendanceIv;
         CircularImageView imageView;
         View layoutparent;
         public ViewHolder(View itemView) {
@@ -233,8 +242,11 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.BaseViewHo
             dobTV = (TextView) itemView.findViewById(R.id.dobTV);
             genderTV = (TextView) itemView.findViewById(R.id.genderTV);
             bloodgroupTV = (TextView) itemView.findViewById(R.id.bloodgrpTV);
+            memberidTv = (TextView) itemView.findViewById(R.id.member_idTV);
             statusIv = (ImageView) itemView.findViewById(R.id.status);
+            attendanceIv = (ImageView) itemView.findViewById(R.id.attendanceIV);
             layoutparent=(View)itemView.findViewById(R.id.lyt_parent);
+            viewDialog = new ViewDialog((Activity) context);
         }
 
         @Override
@@ -257,7 +269,7 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.BaseViewHo
             // idTV.setText(enq.getID());
             nameTV.setText(enq.getName());
             //Log.d(TAG, "textview name: " + nameTV.getText().toString());
-            contactTV.setText(enq.getContact());
+            contactTV.setText(enq.getContactEncrypt());
             excecutive_nameTV.setText(enq.getExecutiveName());
             dobTV.setText(enq.getBirthDate());
             genderTV.setText(enq.getGender());
@@ -265,17 +277,41 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.BaseViewHo
             occupationTV.setText(enq.getOccupation());
             if(enq.getStatus()!=null){
              if(enq.getStatus().equals("Active")){
-
                  statusIv.setColorFilter(ContextCompat.getColor(context, R.color.green), android.graphics.PorterDuff.Mode.SRC_IN);
              }else{
                  statusIv.setColorFilter(ContextCompat.getColor(context, R.color.red), android.graphics.PorterDuff.Mode.SRC_IN);
              }
             }
+
+                attendanceIv.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(enq.getStatus().equals("Active")) {
+                        member_id = enq.getID();
+                        name = enq.getName();
+                        status = enq.getStatus();
+                        contact = enq.getContact();
+                        makeattendanceclass();
+                        }else{
+                            Toast.makeText(context,"Your An Inactive Member",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
             String domainurl= SharedPrefereneceUtil.getDomainUrl((Activity) context);
             String url= domainurl+ServiceUrls.IMAGES_URL + enq.getImage();
             Log.d(TAG, "img url: "+url);
-            Glide.with(context).load(url).placeholder(R.drawable.nouser).into(imageView);
+           // Glide.with(context).load(url).placeholder(R.drawable.nouser).into(imageView);
+            RequestOptions requestOptions = new RequestOptions();
+            requestOptions.placeholder(R.drawable.nouser);
+            requestOptions.error(R.drawable.nouser);
 
+
+            Glide.with(context)
+                    .setDefaultRequestOptions(requestOptions)
+                    .load(url).into(imageView);
+
+            memberidTv.setText(enq.getID());
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -310,11 +346,19 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.BaseViewHo
         TextView name = (TextView) dialog. findViewById(R.id.name);
         ImageButton phone=(ImageButton)dialog.findViewById(R.id.phone_call);
         ImageView whatsapp=(ImageView)dialog.findViewById(R.id.whatsapp);
-        String url= ServiceUrls.IMAGES_URL + enq.getImage();
+        String domainurl= SharedPrefereneceUtil.getDomainUrl((Activity) context);
+        String url= domainurl+ServiceUrls.IMAGES_URL + enq.getImage();
         Log.d(TAG, "image: "+enq.getImage());
         Log.d(TAG, "name: "+enq.getName());
-        Glide.with(context).load(url).placeholder(R.drawable.nouser).into(imageView);
+      //  Glide.with(context).load(url).placeholder(R.drawable.nouser).into(imageView);
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.placeholder(R.drawable.nouser);
+        requestOptions.error(R.drawable.nouser);
 
+
+        Glide.with(context)
+                .setDefaultRequestOptions(requestOptions)
+                .load(url).into(imageView);
         name.setText(enq.getName());
         phone.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -404,5 +448,95 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.BaseViewHo
             return mCurrentPosition;
         }
 
+    }
+    private void makeattendanceclass() {
+        MakeAttendanceTrackclass ru = new MakeAttendanceTrackclass();
+        ru.execute("5");
+    }
+    class MakeAttendanceTrackclass extends AsyncTask<String, Void, String> {
+
+        ServerClass ruc = new ServerClass();
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Log.v(TAG, "onPreExecute");
+            //showProgressDialog();
+            viewDialog.showDialog();
+        }
+
+        @Override
+        protected void onPostExecute(String response) {
+            super.onPostExecute(response);
+            Log.v(TAG, String.format("onPostExecute :: response = %s", response));
+            // dismissProgressDialog();
+            viewDialog.hideDialog();
+            //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
+            //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
+            MakeAttendanceDetails(response);
+
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+            HashMap<String, String> MakeAttendanceDetails = new HashMap<String, String>();
+            MakeAttendanceDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId((Activity)context));
+            Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId((Activity)context)));
+            MakeAttendanceDetails.put("member_id",member_id);
+            Log.v(TAG, String.format("doInBackground :: member_id = %s", member_id));
+            MakeAttendanceDetails.put("invoice_id","");
+            Log.v(TAG, String.format("doInBackground :: invoice_id = %s", ""));
+            MakeAttendanceDetails.put("pack_name","");
+            Log.v(TAG, String.format("doInBackground :: pack_name = %s", ""));
+            MakeAttendanceDetails.put("name",name);
+            Log.v(TAG, String.format("doInBackground :: name = %s", name));
+            MakeAttendanceDetails.put("contact",contact);
+            Log.v(TAG, String.format("doInBackground :: contact = %s", contact));
+            MakeAttendanceDetails.put("balance","");
+            MakeAttendanceDetails.put("expiry_date","");
+            MakeAttendanceDetails.put("status",status);
+            MakeAttendanceDetails.put("mode", "AdminApp");
+            MakeAttendanceDetails.put("financial_yr", "");
+            Log.v(TAG, String.format("doInBackground :: expiry_date = %s", ""));
+            MakeAttendanceDetails.put("action", "make_attendence");
+            String domainurl=SharedPrefereneceUtil.getDomainUrl((Activity)context);
+            String loginResult2 = ruc.sendPostRequest( domainurl+ServiceUrls.LOGIN_URL, MakeAttendanceDetails);
+
+            Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult2));
+            return loginResult2;
+        }
+    }
+    private void MakeAttendanceDetails(String jsonResponse) {
+
+        Log.v(TAG, String.format("loginServerResponse :: response = %s", jsonResponse));
+
+        JSONObject jsonObjLoginResponse = null;
+        try {
+            jsonObjLoginResponse = new JSONObject(jsonResponse);
+            String success = jsonObjLoginResponse.getString(context.getResources().getString(R.string.success));
+
+            if (success.equalsIgnoreCase(context.getResources().getString(R.string.two))) {
+                ToneGenerator toneG = new ToneGenerator(AudioManager.STREAM_ALARM, 100);
+                toneG.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD, 200);
+                Toast.makeText(context,"Your Attendance Marked Successfully",Toast.LENGTH_SHORT).show();
+                // finish();
+
+                // showCustomDialog();
+
+                //inputEmail, inputPhone,inputAdd,inputReq,inputFollowupdate;
+            }
+
+            else if (success.equalsIgnoreCase(context.getResources().getString(R.string.one)))
+            {
+                Toast.makeText(context,"Please try after 1 hour ,Your attendance is already marked",Toast.LENGTH_SHORT).show();
+                // inputContact.getText().clear();
+                //Toast.makeText(AttendanceActivity.this,"Please Enter New Mobile Number",Toast.LENGTH_SHORT).show();
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -64,33 +64,33 @@
                 android:src="@drawable/ic_search"
                 android:gravity="center"/>
         </LinearLayout>
-        <!--<LinearLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginLeft="10dp"-->
-            <!--android:layout_marginRight="10dp"-->
-            <!--android:padding="@dimen/spacing_medium"-->
-            <!--android:gravity="center">-->
-            <!--<TextView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_weight="5"-->
-                <!--android:textColor="@color/black"-->
-                <!--android:textStyle="bold"-->
-                <!--android:gravity="end"-->
-                <!--android:textAppearance="@style/TextAppearance.AppCompat.Small"-->
-                <!--android:text="Total Enquiries:"/>-->
-            <!--<TextView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_weight="1"-->
-                <!--android:id="@+id/ttl_enq"-->
-                <!--android:gravity="start"-->
-                <!--android:layout_marginLeft="@dimen/spacing_small"-->
-                <!--android:text="0"-->
-                <!--android:textAppearance="@style/TextAppearance.AppCompat.Subhead"-->
-                <!--/>-->
-        <!--</LinearLayout>-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:padding="@dimen/spacing_medium"
+            android:gravity="center">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:gravity="end"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:text="Total Present:"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:id="@+id/ttl_present"
+                android:gravity="start"
+                android:layout_marginLeft="@dimen/spacing_small"
+                android:text="0"
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                />
+        </LinearLayout>
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -113,15 +113,7 @@
                     android:isScrollContainer="false"
                     android:nestedScrollingEnabled="false" />
             </android.support.v4.widget.SwipeRefreshLayout>
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/fab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|end"
-                android:layout_margin="@dimen/fab_margin"
-                android:tint="@color/white"
-                app:backgroundTint="@color/colorPrimary"
-                app:srcCompat="@drawable/ic_add" />
+
             <include layout="@layout/no_data"/>
         </FrameLayout>
 

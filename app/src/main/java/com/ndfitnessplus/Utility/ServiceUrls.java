@@ -1,6 +1,5 @@
 package com.ndfitnessplus.Utility;
 
-import android.app.Activity;
 import android.content.Context;
 
 /**
@@ -20,6 +19,7 @@ public class ServiceUrls {
     //public static String site_path =  "http://gymtimenew.ndgymsoftware.com/";
     public static String site_path =  "/";
     public static String root_path =  site_path+"AndroidApi/sql_server_api.php";
+//    public static String root_path =  site_path+"/sql_server_api.php";
     public static String LOGIN_URL = root_path;
     // static String LOGIN_URL = site_path;
     public static final String UPLOAD_URL = site_path+"upload.php";

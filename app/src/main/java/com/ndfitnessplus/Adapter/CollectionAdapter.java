@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.ndfitnessplus.Activity.CourseDetailsActivity;
 import com.ndfitnessplus.Activity.FullImageActivity;
@@ -258,7 +259,7 @@ public class CollectionAdapter  extends RecyclerView.Adapter<CollectionAdapter.B
             // idTV.setText(enq.getID());
             nameTV.setText(enq.getName());
             //Log.d(TAG, "textview name: " + nameTV.getText().toString());
-            contactTV.setText(enq.getContact());
+            contactTV.setText(enq.getContactEncrypt());
             regdateTV.setText(enq.getReceiptDate());
             paymenttypeTv.setText(enq.getPaymentType());
             executiveNameTV.setText(enq.getExecutiveName());
@@ -271,8 +272,15 @@ public class CollectionAdapter  extends RecyclerView.Adapter<CollectionAdapter.B
             String domainurl= SharedPrefereneceUtil.getDomainUrl((Activity)context);
             String url= domainurl+ServiceUrls.IMAGES_URL + enq.getImage();
 
-            Glide.with(context).load(url).placeholder(R.drawable.nouser).into(imageView);
+           // Glide.with(context).load(url).placeholder(R.drawable.nouser).into(imageView);
+            RequestOptions requestOptions = new RequestOptions();
+            requestOptions.placeholder(R.drawable.nouser);
+            requestOptions.error(R.drawable.nouser);
 
+
+            Glide.with(context)
+                    .setDefaultRequestOptions(requestOptions)
+                    .load(url).into(imageView);
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -306,11 +314,19 @@ public class CollectionAdapter  extends RecyclerView.Adapter<CollectionAdapter.B
         TextView name = (TextView) dialog. findViewById(R.id.name);
         ImageButton phone=(ImageButton)dialog.findViewById(R.id.phone_call);
         ImageView whatsapp=(ImageView)dialog.findViewById(R.id.whatsapp);
-        String url= ServiceUrls.IMAGES_URL + enq.getImage();
+        String domainurl= SharedPrefereneceUtil.getDomainUrl((Activity) context);
+        String url= domainurl+ServiceUrls.IMAGES_URL + enq.getImage();
         Log.d(TAG, "image: "+enq.getImage());
         Log.d(TAG, "name: "+enq.getName());
-        Glide.with(context).load(url).placeholder(R.drawable.nouser).into(imageView);
+        //Glide.with(context).load(url).placeholder(R.drawable.nouser).into(imageView);
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.placeholder(R.drawable.nouser);
+        requestOptions.error(R.drawable.nouser);
 
+
+        Glide.with(context)
+                .setDefaultRequestOptions(requestOptions)
+                .load(url).into(imageView);
         name.setText(enq.getName());
         phone.setOnClickListener(new View.OnClickListener() {
             @Override

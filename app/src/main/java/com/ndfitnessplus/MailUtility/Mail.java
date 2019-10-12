@@ -1,9 +1,16 @@
 package com.ndfitnessplus.MailUtility;
 
+import android.graphics.Bitmap;
+
+import java.io.File;
 import java.util.Date;
 import java.util.Properties;
+import java.util.stream.Stream;
 
 import javax.activation.CommandMap;
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
 import javax.activation.MailcapCommandMap;
 import javax.mail.BodyPart;
 import javax.mail.MessagingException;
@@ -31,17 +38,20 @@ private String _host;
 
 private String _subject;
 private String _body;
+private String fileName;
+private String filePath;
 
 private boolean _auth;
 
 private boolean _debuggable;
 
 private Multipart _multipart;
+private File imagefile;
 
 public Mail() {
         _host = "smtp.gmail.com"; // default smtp server
-        _port = "465"; // default smtp port
-        _sport = "465"; // default socketfactory port
+        _port = "587"; // default smtp port
+        _sport = "587"; // default socketfactory port
 
        // _user = "tulsababar01@gmail.com"; // username
         //_pass = "Tulsa@2019"; // password
@@ -89,6 +99,8 @@ public boolean send() throws Exception {
                         msg.setSubject(_subject);
                         msg.setSentDate(new Date());
                         msg.setFrom(new InternetAddress(_from));
+                        msg.setText(_body);
+
                        // msg.addRecipient(Message.RecipientType.TO, new InternetAddress(_to));
                         InternetAddress[] addressTo = new InternetAddress[_to.length];
                         for (int i = 0; i < _to.length; i++) {
@@ -96,19 +108,32 @@ public boolean send() throws Exception {
                         }
                         msg.setRecipients(MimeMessage.RecipientType.TO, addressTo);
                        // String message = "<div style=\"color:red;\">BRIDGEYE</div>";
-                        msg.setContent(_body, "text/html; charset=utf-8");
+                        //msg.setContent(_body, "text/html; charset=utf-8");
                         msg.setSentDate(new Date());
                         // setup message body
-//                        BodyPart messageBodyPart = new MimeBodyPart();
-//                        messageBodyPart.setText(_body);
-//                        _multipart.addBodyPart(messageBodyPart);
+                        //Attachment of image file QR code
+                        if(imagefile !=null) {
+                                BodyPart messageBodyPart = new MimeBodyPart();
+                                messageBodyPart.setText(_body);
+//                                messageBodyPart.attachFile(imagefile);
+                                _multipart.addBodyPart(messageBodyPart);
+                                messageBodyPart = new MimeBodyPart();
+                                //String filename = "/home/manisha/file.txt";
+                                DataSource source = new FileDataSource(fileName);
+                                messageBodyPart.setDataHandler(new DataHandler(source));
+//                                long n  = System.currentTimeMillis() / 1000L;
+                                messageBodyPart.setFileName("BalanceDetails.pdf");
+                                _multipart.addBodyPart(messageBodyPart);
+                                //Put parts in message
+                                msg.setContent(_multipart);
 
-// Put parts in message
-                        //msg.setContent(_multipart);
-
-
-                        Transport transport = session.getTransport("smtps");
-                        transport.connect(_host, Integer.valueOf(_port), _user, _pass);
+                        }else{
+                                msg.setContent(_body, "text/html; charset=utf-8");
+                        }
+                        Transport transport = session.getTransport("smtp");
+                        //transport.connect(_host,Integer.valueOf(_port),_user,_pass);
+                        transport.connect(_host,_user,_pass);
+                        //transport.connect(_user,_pass);
                         transport.sendMessage(msg, msg.getAllRecipients());
                         transport.close();
 
@@ -167,8 +192,8 @@ public PasswordAuthentication getPasswordAuthentication() {
 private Properties _setProperties() {
         //Properties props = new Properties();
         Properties props = (Properties)System.getProperties().clone();
-        props.put("mail.smtp.host", "whatever");
-        //props.put("mail.smtp.host", _host);
+       // props.put("mail.smtp.host", "whatever");
+        props.put("mail.smtp.host", _host);
 
 
 
@@ -177,15 +202,17 @@ private Properties _setProperties() {
        // props.put("mail.smtp.host", _host);
         props.put("mail.smtp.port", _port);
         props.put("mail.smtp.starttls.enable","true");
+        //props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
+      //  props.put("mail.smtp.starttls.required", "true");
         props.put("mail.smtp.debug", "true");
        // props.put("mail.smtp.auth", "true");
        // props.setProperty("mail.host", _host);
         props.put("mail.smtp.auth", "true");
         //props.put("mail.smtp.port", "465");
-        props.put("mail.smtp.socketFactory.port", "465");
-        props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-        props.put("mail.smtp.socketFactory.fallback", "false");
-        props.setProperty("mail.smtp.quitwait", "false");
+//        props.put("mail.smtp.socketFactory.port", "587");
+//        props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+//        props.put("mail.smtp.socketFactory.fallback", "false");
+        //props.setProperty("mail.smtp.quitwait", "false");
 
         return props;
         }
@@ -207,4 +234,14 @@ public void setFrom(String from) {
 public void setSubject(String subject) {
         this._subject = subject;
         }
-        }
+  public  void setAttachment(File file){
+             this.imagefile=file;
+  }
+  public  void setAttachmentName(String file){
+             this.fileName=file;
+  }
+  public  void setAttachmentNamePath(String file){
+             this.filePath=file;
+  }
+
+}

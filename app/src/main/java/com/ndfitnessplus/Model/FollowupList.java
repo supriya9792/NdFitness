@@ -3,7 +3,7 @@ package com.ndfitnessplus.Model;
 import java.io.Serializable;
 
 public class FollowupList implements Serializable {
-    String ID,name,ExecutiveName, FollowupDate, Comment ,FollowupType, Rating, CallRespond, Contact, NextFollowupDate,Image;
+    String ID,name,ExecutiveName, FollowupDate, Comment ,FollowupType, Rating, CallRespond, Contact, NextFollowupDate,Image,ContactEncrypt;
 
     public FollowupList() {
     }
@@ -108,5 +108,13 @@ public class FollowupList implements Serializable {
 
     public void setImage(String image) {
         Image = image;
+    }
+
+    public String getContactEncrypt() {
+        return ContactEncrypt;
+    }
+
+    public void setContactEncrypt(String contactEncrypt) {
+        ContactEncrypt = contactEncrypt;
     }
 }

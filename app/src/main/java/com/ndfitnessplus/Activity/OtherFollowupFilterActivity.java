@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -67,6 +68,8 @@ public class OtherFollowupFilterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
+                WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_other_followup_filter);
         initToolbar();
     }
@@ -162,13 +165,13 @@ public class OtherFollowupFilterActivity extends AppCompatActivity {
                     TextView tv = (TextView) view.findViewById(R.id.tv_Name);
                     tv.setTextSize(10);
                     if(index==0){
-                        tv.setText(getResources().getString(R.string.prompt_enquiry_type));
+                        tv.setText(getResources().getString(R.string.hint_foll_type));
                     }
 
 //                tv.setTextColor(getResources().getColor(R.color.black));
                     followupType = tv.getText().toString();
 
-                    if((followupType.equals(getResources().getString(R.string.prompt_enquiry_type)))||
+                    if((followupType.equals(getResources().getString(R.string.hint_foll_type)))||
                             (followupType.equals(getResources().getString(R.string.all)))){
                         followupType="";
                     }
@@ -490,6 +493,7 @@ public class OtherFollowupFilterActivity extends AppCompatActivity {
                                 Log.d(TAG, "converted Followup date: " + foll_date);
                                 subList.setFollowupDate(foll_date);
                                 subList.setID(Member_ID);
+                                subList.setImage("");
 
                                 //Toast.makeText(EnquiryActivity.this, "followup date: "+next_foll_date, Toast.LENGTH_SHORT).show();
                                 subListArrayList.add(subList);
@@ -525,6 +529,14 @@ public class OtherFollowupFilterActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-
+    @Override
+    public boolean onSupportNavigateUp(){
+       finish();
+        return true;
+    }
+    @Override
+    public void onBackPressed() {
+       finish();
+    }
 
 }

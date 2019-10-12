@@ -2,61 +2,112 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.ndfitnessplus">
-
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <uses-permission android:name="android.permission.READ_PROFILE" />
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
-    <uses-permission android:name="android.permission.SEND_SMS" />
+    <!-- <uses-permission android:name="android.permission.GET_ACCOUNTS" /> -->
+    <!-- <uses-permission android:name="android.permission.READ_PROFILE" /> -->
+    <!-- <uses-permission android:name="android.permission.READ_CONTACTS" /> -->
+    <!-- <uses-permission android:name="android.permission.SEND_SMS" /> -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS"
+    <uses-permission
+        android:name="android.permission.INTERACT_ACROSS_USERS"
         tools:ignore="ProtectedPermissions" />
-    <uses-permission android:name="android.permission.MANAGE_USERS"
+    <uses-permission
+        android:name="android.permission.MANAGE_USERS"
         tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- <uses-permission android:name="android.permission.CALL_PHONE" /> -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /> <!-- Camera permissinos -->
     <uses-feature
         android:name="android.hardware.Camera"
-        android:required="true" />
+        android:required="false" />
 
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-
     <application
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:icon="@drawable/logo"
         android:label="@string/app_name"
         android:largeHeap="true"
-        android:usesCleartextTraffic="true"
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".Activity.AttendenceActivity"></activity>
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true"
+        tools:replace="android:allowBackup">
+        <activity android:name=".Activity.WorkoutDetailsDescriptionActivity"></activity>
+        <activity android:name=".Activity.WorkoutDetailsActivity" />
+        <activity android:name=".Activity.MemberWorkoutActivity" />
+        <activity android:name=".Activity.MemberDietActivity" />
+        <activity android:name=".Activity.MemberMeasurementActivity" />
+        <activity android:name=".Activity.MemberBeforeAfterActivity" />
+        <activity android:name=".Activity.PushNotificationActivity" />
+        <activity android:name=".Activity.CourseWiseAttendanceActivity" />
+        <activity android:name=".Activity.CourseCongratulationActivity" />
+        <activity android:name=".Activity.ImagePickerActivity" />
+        <activity android:name=".Activity.POSDetailsTrasactionActivity" />
+        <activity android:name=".Activity.DietActivity" />
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/logo" />
+
+        <activity android:name=".Activity.CartActivity" />
+        <activity android:name=".Activity.POSProductDetailsActivity" />
+        <activity android:name=".Activity.POSProductListActivity" />
+        <activity android:name=".Activity.GenerateQRActivity" />
+        <activity
+            android:name=".Activity.POSAddBillingActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity android:name=".Activity.POSShowItemActivity" />
+        <activity
+            android:name=".Activity.POSAddItemActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity android:name=".Activity.POSActivity" />
+        <activity android:name=".Activity.AttendenceFilterActivity" />
+        <activity android:name=".Activity.MeasurementFilterActivity" />
+        <activity
+            android:name=".Activity.AddMeasurementActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity android:name=".Activity.MeasurementActivity" />
+        <activity android:name=".Activity.AttendenceActivity" />
         <activity android:name=".Activity.MemberMoreDetailsActivity" />
         <activity android:name=".Activity.RenewFollowupDetailsActivity" />
-        <activity android:name=".Activity.OtherFollowupFilterActivity" />
+        <activity
+            android:name=".Activity.OtherFollowupFilterActivity"
+            android:screenOrientation="portrait" />
         <activity android:name=".Activity.Notification.StaffBirthdayFollowupActivity" />
         <activity android:name=".Activity.EnrollmentActivity" />
         <activity android:name=".Activity.FullImageActivity" />
         <activity android:name=".Activity.TermsAndConditionActivity" />
         <activity android:name=".Activity.ForgotPasswordActivity" />
-        <activity android:name=".Activity.CollectionFilterActivity" />
+        <activity
+            android:name=".Activity.CollectionFilterActivity"
+            android:screenOrientation="portrait" />
         <activity android:name=".Activity.CollectionActivity" />
-        <activity android:name=".Activity.BalanceReceiptFilterActivity" />
+        <activity
+            android:name=".Activity.BalanceReceiptFilterActivity"
+            android:screenOrientation="portrait" />
         <activity android:name=".Activity.BalanceReceiptDetailsActivity" />
-        <activity android:name=".Activity.CourseDetailsActivity" />
+        <activity
+            android:name=".Activity.CourseDetailsActivity"
+            android:noHistory="true" />
         <activity
             android:name=".Activity.BalanceReceiptActivity"
             android:configChanges="keyboard|orientation|screenSize"
             android:windowSoftInputMode="stateVisible|adjustResize" />
-        <activity android:name=".Activity.CourseFilterActivity" />
-        <activity android:name=".Activity.MemberFilterActivity" />
+        <activity
+            android:name=".Activity.CourseFilterActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.MemberFilterActivity"
+            android:screenOrientation="portrait" />
         <activity android:name=".Activity.MemberDetailsActivity" />
         <activity android:name=".Activity.CourseActivity" />
         <activity android:name=".Activity.MemberActivity" />
@@ -66,7 +117,7 @@
             android:configChanges="keyboard|orientation|screenSize"
             android:windowSoftInputMode="stateVisible|adjustResize" />
         <activity android:name=".Activity.NewAddEnquiryActivity" />
-        <activity android:name=".Activity.Notification.ExpenseFilterActivity" />
+        <activity android:name=".Activity.ExpenseFilterActivity" />
         <activity
             android:name=".Activity.AddExpensesActivity"
             android:configChanges="keyboard|orientation|screenSize"
@@ -74,7 +125,9 @@
         <activity android:name=".Activity.ExpensesActivity" />
         <activity android:name=".Activity.EnquiryFollowupDetailsActivity" />
         <activity android:name=".Activity.FollowupsActivity" />
-        <activity android:name=".Activity.EnquiryFilterActivity" />
+        <activity
+            android:name=".Activity.EnquiryFilterActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activity.AddMemberActivity"
             android:configChanges="keyboard|orientation|screenSize"
@@ -94,7 +147,6 @@
         <activity android:name=".Activity.Notification.EnquiryFollowupActivity" />
         <activity android:name=".Activity.Notification.TodaysEnrollmentActivity" />
         <activity android:name=".Activity.Notification.TodaysEnquiryActivity" />
-        <activity android:name=".Activity.Notification.AnniversaryActivity" />
         <activity android:name=".Activity.BranchSelectionActivity" />
         <activity android:name=".Activity.LoginActivity" />
         <activity android:name=".Activity.Notification.StaffBirthdayActivity" />
@@ -108,6 +160,7 @@
         <activity
             android:name=".Activity.MainActivity"
             android:label="@string/title_activity_main"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Activity.SplashActivity">
             <intent-filter>
@@ -115,13 +168,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <!-- Push Notification services-->
-        <meta-data
-            android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/logo" />
-
+        </activity> <!-- Push Notification services -->
         <service android:name=".Notification.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
@@ -131,7 +178,19 @@
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
-        </service>
+        </service> <!-- uCrop cropping activity -->
+        <activity
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar" /> <!-- cache directory file provider paths -->
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
     </application>
 
 </manifest>

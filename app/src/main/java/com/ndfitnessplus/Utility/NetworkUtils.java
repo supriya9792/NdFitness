@@ -3,18 +3,25 @@ package com.ndfitnessplus.Utility;
 /**
  * Created by admin on 7/11/2017.
  */
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.support.v4.app.ActivityCompat;
+import android.telephony.TelephonyManager;
 import android.text.format.Formatter;
+import android.util.Log;
 
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+
+import static com.ndfitnessplus.Activity.MemberDetailsActivity.TAG;
 
 
 public class NetworkUtils {
@@ -62,4 +69,20 @@ public class NetworkUtils {
         return 100000 + generator.nextInt(900000);
     }
 
+    public static String getIMEINo(Context context) {
+        TelephonyManager tm = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return "";
+        }
+        String device_id = tm.getDeviceId();
+        Log.v(TAG, "IMEI No: "+device_id);
+        return device_id;
+    }
 }

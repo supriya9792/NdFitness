@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <android.support.design.widget.AppBarLayout
+        android:theme="@style/AppTheme.AppBarOverlay"
+        android:id="@id/appbar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+        <include layout="@layout/toolbar" />
+    </android.support.design.widget.AppBarLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:background="@color/grey_10"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        <android.support.v7.widget.CardView
+            android:id="@+id/cardView"
+            android:focusable="true"
+            android:clickable="true"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:foreground="?android:selectableItemBackground"
+            app:cardElevation="2.0dip"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto">
+            <LinearLayout
+                android:orientation="vertical"
+                android:id="@+id/lyt_parent"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+                <View android:id="@id/Topline"
+                    android:background="@color/white"
+                    android:layout_width="fill_parent"
+                    android:layout_height="1.0dip" />
+                <LinearLayout
+                    android:padding="@dimen/spacing_small"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0.0dip"
+                    android:layout_weight="1.0">
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:background="@color/white"
+                        android:padding="5.0dip"
+                        android:layout_width="0.0dip"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.0">
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content">
+                            <TextView
+                                android:textSize="9.0sp"
+                                android:gravity="left"
+                                android:layout_gravity="left"
+                                android:id="@+id/invoicedateTV"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="4.0dip"
+                                android:text="@string/hint_register" />
+                            <TextView
+                                android:textSize="9.0sp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/invoice_id" />
+                            <TextView android:textSize="9.0sp"
+                                android:id="@+id/invoice_idTV"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="2.0dip"
+                                android:text="@string/hint_register" />
+                            <TextView
+                                android:textSize="10.0sp"
+                                android:gravity="right"
+                                android:layout_gravity="right"
+                                android:id="@+id/contactTV"
+                                android:visibility="visible"
+                                android:layout_width="0.0dip"
+                                android:layout_height="wrap_content"
+                                android:text="\ 7028259696"
+                                android:layout_weight="1.0" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content">
+                            <TextView
+                                android:textSize="14.0sp"
+                                android:textStyle="bold"
+                                android:textColor="@android:color/black"
+                                android:gravity="left"
+                                android:layout_gravity="left"
+                                android:id="@+id/nameTV"
+                                android:layout_width="0.0dip"
+                                android:layout_height="wrap_content"
+                                android:text="Atul Patil"
+                                android:layout_weight="2.5" />
+                            <TextView
+                                android:textSize="12.0sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/black"
+                                android:gravity="bottom|center|right"
+                                android:layout_gravity="bottom|center|right"
+                                android:id="@+id/invoic_ttlTV"
+                                android:layout_width="0.0dip"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="2.0dip"
+                                android:text="@string/balance"
+                                android:layout_weight="1.0" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content">
+                            <LinearLayout
+                                android:gravity="right"
+                                android:layout_gravity="right"
+                                android:layout_width="0.0dip"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1.0">
+                                <TextView android:textSize="10.0sp"
+                                    android:gravity="right"
+                                    android:layout_gravity="right"
+                                    android:id="@+id/excecutive_nameTV"
+                                    android:layout_width="0.0dip"
+                                    android:layout_height="wrap_content"
+                                    android:text="excecutive"
+                                    android:layout_weight="1.0" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+                <View android:id="@id/leftline"
+                    android:background="#ffeceff1"
+                    android:layout_width="fill_parent"
+                    android:layout_height="1.0dip" />
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+        <LinearLayout
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:background="@color/white"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+            <ImageButton
+                android:id="@+id/phone_call"
+                android:background="?selectableItemBackgroundBorderless"
+                android:layout_width="?actionBarSize"
+                android:layout_height="?actionBarSize"
+                android:tint="@color/colorPrimaryWeb"
+                app:srcCompat="@drawable/ic_local_phone" />
+            <View
+                android:layout_width="@dimen/spacing_xlarge"
+                android:layout_height="0.0dip" />
+            <ImageView
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:id="@+id/whatsapp"
+                android:background="?selectableItemBackgroundBorderless"
+                android:layout_width="24.0dip"
+                android:layout_height="?actionBarSize"
+                android:layout_marginLeft="@dimen/spacing_large"
+                android:adjustViewBounds="true"
+                app:srcCompat="@drawable/whatsappcolor" />
+        </LinearLayout>
+        <View
+            android:background="#ffeceff1"
+            android:layout_width="fill_parent"
+            android:layout_height="1.0dip" />
+        <ProgressBar
+            android:layout_gravity="center|top"
+            android:id="@+id/progressBar"
+            android:visibility="visible"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:foregroundGravity="top"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:background="@color/white"
+            android:padding="@dimen/spacing_medium"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" android:textColor="@color/black" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="Sale Details:" />
+            <View android:background="#ffeceff1"
+                android:layout_width="fill_parent"
+                android:layout_height="1.0dip" />
+            <LinearLayout android:padding="@dimen/spacing_medium"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:textSize="10.0sp"
+                    android:textColor="@android:color/black"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:layout_width="0.0dip"
+                    android:layout_height="wrap_content"
+                    android:text="Product Code"
+                    android:layout_weight="1.0" />
+                <TextView
+                    android:textSize="10.0sp"
+                    android:textColor="@android:color/black"
+                    android:gravity="center"
+                    android:autoLink="phone"
+                    android:layout_gravity="center"
+                    android:visibility="visible"
+                    android:layout_width="0.0dip"
+                    android:layout_height="wrap_content"
+                    android:text="Product Name"
+                    android:layout_weight="1.0" />
+                <TextView android:textSize="10.0sp"
+                    android:textColor="@android:color/black"
+                    android:gravity="center"
+                    android:autoLink="phone"
+                    android:layout_gravity="center"
+                    android:visibility="visible"
+                    android:layout_width="0.0dip"
+                    android:layout_height="wrap_content"
+                    android:text="Rate"
+                    android:layout_weight="1.0" />
+                <TextView
+                    android:textSize="10.0sp"
+                    android:textColor="@android:color/black"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:layout_width="0.0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2.0dip"
+                    android:text="@string/hint_qty"
+                    android:layout_weight="1.0" />
+                <TextView
+                    android:textSize="10.0sp"
+                    android:textColor="@android:color/black"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:layout_width="0.0dip"
+                    android:layout_height="wrap_content"
+                    android:text="Total"
+                    android:layout_weight="1.0" />
+            </LinearLayout>
+        </LinearLayout>
+        <android.support.v7.widget.RecyclerView
+            android:id="@id/recycler_view"
+            android:background="@android:color/white"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0"
+            android:isScrollContainer="false" />
+        <include layout="@layout/no_data" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead" android:textStyle="bold"
+                android:textColor="@color/white"
+                android:gravity="end"
+                android:layout_gravity="bottom"
+                android:background="@color/colorPrimary"
+                android:layout_width="0.0dip"
+                android:layout_height="40.0dip"
+                android:text="Total: "
+                android:layout_weight="1.0"
+                android:textAllCaps="false" />
+
+            <TextView
+                android:id="@+id/total"
+                android:layout_width="0.0dip"
+                android:layout_height="40.0dip"
+                android:layout_gravity="bottom"
+                android:layout_marginRight="@dimen/spacing_medium"
+                android:layout_weight="1.0"
+                android:background="@color/colorPrimary"
+                android:gravity="start"
+                android:text="Total"
+                android:textAllCaps="false"
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

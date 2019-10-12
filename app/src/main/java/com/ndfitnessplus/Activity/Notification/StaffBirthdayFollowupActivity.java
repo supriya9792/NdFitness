@@ -21,6 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -33,7 +34,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.mikhaellopez.circularimageview.CircularImageView;
+import com.ndfitnessplus.Activity.EnquiryFollowupDetailsActivity;
 import com.ndfitnessplus.Activity.FullImageActivity;
 import com.ndfitnessplus.Activity.MainActivity;
 
@@ -93,6 +96,8 @@ public class StaffBirthdayFollowupActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
+                WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_staff_birthday_followup);
         initToolbar();
         initComponent();
@@ -157,7 +162,7 @@ public class StaffBirthdayFollowupActivity extends AppCompatActivity {
         message.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showFollowupDialog();
+                showCustomDialog();
             }
         });
 
@@ -239,75 +244,330 @@ public class StaffBirthdayFollowupActivity extends AppCompatActivity {
 
         return true;
     }
-    private void showFollowupDialog() {
-        final Dialog dialog = new Dialog(StaffBirthdayFollowupActivity.this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE); // before
-        dialog.setContentView(R.layout.take_all_followup_popup);
-        dialog.setCancelable(true);
+//    private void showFollowupDialog() {
+//        final Dialog dialog = new Dialog(StaffBirthdayFollowupActivity.this);
+//        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE); // before
+//        dialog.setContentView(R.layout.take_all_followup_popup);
+//        dialog.setCancelable(true);
+//
+////        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+////        lp.copyFrom(dialog.getWindow().getAttributes());
+////        lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
+////        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+//        spinCallResponce = (Spinner)dialog. findViewById(R.id.spinner_call_res);
+//        spinRating = (Spinner)dialog. findViewById(R.id.spinner_rating);
+//        spinFollType= (Spinner)dialog. findViewById(R.id.spinner_folltype);
+//        txtcallres=(TextView)dialog.findViewById(R.id.txt_callres);
+//        txtrating=(TextView)dialog.findViewById(R.id.txt_rating);
+//        txtFollType=(TextView)dialog.findViewById(R.id.txt_folltype);
+//
+//        inputfollComment = (EditText)dialog. findViewById(R.id.input_enquiry_comment);
+//        //final EditText veri_otp=(EditText)dialog.findViewById(R.id.et_otp);
+//        inputNextFollowupdate=(EditText)dialog.findViewById(R.id.input_next_foll_date);
+//
+//        ((ImageButton) dialog.findViewById(R.id.bt_close)).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                dialog.dismiss();
+//            }
+//        });
+//        //  if(i==0){
+//        SetFollowupSpinner();
+//        //i++;
+//        //}
+//        callResponseClass();
+//        follTypeClass();
+//        inputNextFollowupdate.setText(NextFollowupDate);
+//        inputNextFollowupdate.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                // Get Current Date
+//                final Calendar c = Calendar.getInstance();
+//                mYear = c.get(Calendar.YEAR);
+//                mMonth = c.get(Calendar.MONTH);
+//                mDay = c.get(Calendar.DAY_OF_MONTH);
+//
+//
+//                DatePickerDialog datePickerDialog = new DatePickerDialog(StaffBirthdayFollowupActivity.this,
+//                        new DatePickerDialog.OnDateSetListener() {
+//
+//                            @Override
+//                            public void onDateSet(DatePicker view, int year,
+//                                                  int monthOfYear, int dayOfMonth) {
+//
+//                                inputNextFollowupdate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+//                                //tiemPicker();
+//                            }
+//                        }, mYear, mMonth, mDay);
+//                datePickerDialog.getDatePicker().setMinDate(c.getTimeInMillis());
+//                datePickerDialog.show();
+//            }
+//        });
+//
+//        ((Button) dialog.findViewById(R.id.btn_submit)).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if( callResponce.equals(getResources().getString(R.string.call_res)) || Rating.equals(getResources().getString(R.string.rating))){
+//                    Toast.makeText(getApplicationContext(), "Please select Call Response or Rating", Toast.LENGTH_SHORT).show();
+//                }else{
+//                    if(inputNextFollowupdate.getText().length()==0) {
+//                        if (!(Rating.equals("Not Interested") || Rating.equals("Converted")||FollowupType.equals("Staff BirthDay"))) {
+//                            Toast.makeText(getApplicationContext(), "Please select Next Followup Date", Toast.LENGTH_SHORT).show();
+//                        }else{
+//                            takefollowupclass();
+//                            dialog.dismiss();
+//                        }
+//                    }else{
+//                        takefollowupclass();
+//                        dialog.dismiss();
+//                    }
+//                }
+//
+//                //  Toast.makeText(StaffBirthdayFollowupActivity.this, "Mobile number verified successully", Toast.LENGTH_SHORT).show();
+//
+//
+//                //Toast.makeText(getApplicationContext(), "Subcribe Clicked", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//
+//        dialog.show();
+//        //dialog.getWindow().setAttributes(lp);
+//    }
+//    public  void SetFollowupSpinner(){
+//
+//        spinCallResponce.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//
+//                int index = parent.getSelectedItemPosition();
+//                if (view != null) {
+//                    TextView tv = (TextView) view.findViewById(R.id.tv_Name);
+//                    view.setPadding(0, 0, 0,0);
+//                    tv.setTextColor(getResources().getColor(R.color.black));
+//                    if(!(callResponce==null)) {
+//                        if (callResponce.equals(tv.getText().toString())) {
+//                            spinCallResponce.setSelection(index);
+//                        }
+//                        callResponce = tv.getText().toString();
+//                    }
+//                    if(index==0){
+//                        txtcallres.setVisibility(View.VISIBLE);
+//                        tv.setText(callResponce);
+//                    }
+//                    // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.black));
+//                    // Showing selected spinner item
+//                    //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+//                }
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//
+//            }
+//        });
+//        spinFollType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//
+//                int index = parent.getSelectedItemPosition();
+//                if (view != null) {
+//                    TextView tv = (TextView) view.findViewById(R.id.tv_Name);
+//                    view.setPadding(0, 0, 0, 0);
+//                    tv.setTextColor(getResources().getColor(R.color.black));
+//                    if(!(FollowupType==null)) {
+//                        if (FollowupType.equals(tv.getText().toString())) {
+//                            spinFollType.setSelection(index);
+//                            txtFollType.setVisibility(View.VISIBLE);
+//                        }
+//                        FollowupType = tv.getText().toString();
+//                    }
+//                    if(index==0){
+//                        txtFollType.setVisibility(View.VISIBLE);
+//                        tv.setText(FollowupType);
+//                    }
+//                    if (!(FollowupType == null)) {
+//                        if(FollowupType.equals("Staff BirthDay")) {
+//                            //Toast.makeText(parent.getContext(), "no interetsed: ", Toast.LENGTH_LONG).show();
+//                            inputNextFollowupdate.setText("");
+//                            inputNextFollowupdate.setEnabled(false);
+//                            inputNextFollowupdate.setKeyListener(null);
+//                        } else {
+//                            inputNextFollowupdate.setEnabled(true);
+//                        }
+//                    }
+//                    // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.black));
+//                    // Showing selected spinner item
+//                    //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+//                }
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//
+//            }
+//        });
+//        //Call Responce spinner adapter setting
+//        final  String[] ratingarray = getResources().getStringArray(R.array.rating_array);
+//        ArrayAdapter<String> spinnerArrayAdapter1 = new ArrayAdapter<String>(
+//                this,R.layout.spinner_item,ratingarray ){
+//            @Override
+//            public boolean isEnabled(int position){
+//                if(position == 0)
+//                {
+//                    // Disable the first item from Spinner
+//                    // First item will be use for hint
+//                    return false;
+//                }
+//                else
+//                {
+//                    return true;
+//                }
+//            }
+//            @Override
+//            public View getDropDownView(int position, View convertView,
+//                                        ViewGroup parent) {
+//                View view = super.getDropDownView(position, convertView, parent);
+//                if(view !=null){
+//                    TextView tv = (TextView) view.findViewById(R.id.tv_Name);
+////                    View layView = super.getView(position, convertView, parent);
+////                    layView.setPadding(0, 0, layView.getPaddingRight(), 0);
+//                    if(position == 0){
+//                        // Set the hint text color gray
+//                        tv.setTextColor(Color.GRAY);
+//                        tv.setText(getResources().getString(R.string.rating));
+//                        // tv.setTextColor(Color.GRAY);
+//                    }
+//                    else {
+//                        tv.setTextColor(Color.BLACK);
+//                    }
+//                }
+//
+//                return view;
+//            }
+//        };
+//        spinnerArrayAdapter1.setDropDownViewResource(R.layout.spinner_item);
+//        spinRating.setAdapter(spinnerArrayAdapter1);
+//        int spinnerPositionrating = spinnerArrayAdapter1.getPosition(Rating);
+//        //Toast.makeText(this, "position: " + spinnerPositionrating, Toast.LENGTH_LONG).show();
+//        spinRating.setSelection(spinnerPositionrating);
+//        ArrayList<Spinner_List> ratingArrayList = new ArrayList<Spinner_List>();
+////
+//        spinRating.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//
+//                int index = parent.getSelectedItemPosition();
+//                if (view != null) {
+//                    TextView tv = (TextView) view.findViewById(R.id.tv_Name);
+//                    //View layView = super.getView(position, convertView, parent);
+//                    view.setPadding(0, 0, 0, 0);
+//                    tv.setTextColor(getResources().getColor(R.color.black));
+//                    if (!(Rating == null)) {
+//                        if (Rating.equals(tv.getText().toString())) {
+//                            spinRating.setSelection(index);
+//                            txtrating.setVisibility(View.VISIBLE);
+//                        }
+//                        Rating = tv.getText().toString();
+//                    }
+////                    if (!(Rating == null)) {
+////                        if (Rating.equals("Not Interested") || Rating.equals("Converted")) {
+////                            //Toast.makeText(parent.getContext(), "no interetsed: ", Toast.LENGTH_LONG).show();
+////                            inputNextFollowupdate.setText("");
+////                            inputNextFollowupdate.setEnabled(false);
+////                            inputNextFollowupdate.setKeyListener(null);
+////                        } else {
+////                            inputNextFollowupdate.setEnabled(true);
+////                        }
+////                    }
+//                    if(index==0){
+//                        txtrating.setVisibility(View.VISIBLE);
+//                        tv.setText(Rating);
+//                    }
+//                }
+//
+//                // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.black));
+//                // Showing selected spinner item
+//                //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//
+//            }
+//        });
+//
+//    }
+private void showCustomDialog() {
+    final Dialog dialog = new Dialog(StaffBirthdayFollowupActivity.this);
+    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE); // before
+    dialog.setContentView(R.layout.take_followup_popup);
+    dialog.setCancelable(true);
 
 //        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
 //        lp.copyFrom(dialog.getWindow().getAttributes());
 //        lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
 //        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
-        spinCallResponce = (Spinner)dialog. findViewById(R.id.spinner_call_res);
-        spinRating = (Spinner)dialog. findViewById(R.id.spinner_rating);
-        spinFollType= (Spinner)dialog. findViewById(R.id.spinner_folltype);
-        txtcallres=(TextView)dialog.findViewById(R.id.txt_callres);
-        txtrating=(TextView)dialog.findViewById(R.id.txt_rating);
-        txtFollType=(TextView)dialog.findViewById(R.id.txt_folltype);
+    spinCallResponce = (Spinner)dialog. findViewById(R.id.spinner_call_res);
+    spinRating = (Spinner)dialog. findViewById(R.id.spinner_rating);
+    txtcallres=(TextView)dialog.findViewById(R.id.txt_callres);
+    txtrating=(TextView)dialog.findViewById(R.id.txt_rating);
 
-        inputfollComment = (EditText)dialog. findViewById(R.id.input_enquiry_comment);
-        //final EditText veri_otp=(EditText)dialog.findViewById(R.id.et_otp);
-        inputNextFollowupdate=(EditText)dialog.findViewById(R.id.input_next_foll_date);
+    inputfollComment = (EditText)dialog. findViewById(R.id.input_enquiry_comment);
+    //final EditText veri_otp=(EditText)dialog.findViewById(R.id.et_otp);
+    inputNextFollowupdate=(EditText)dialog.findViewById(R.id.input_next_foll_date);
 
-        ((ImageButton) dialog.findViewById(R.id.bt_close)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        //  if(i==0){
-        SetFollowupSpinner();
-        //i++;
-        //}
-        callResponseClass();
-        follTypeClass();
-        inputNextFollowupdate.setText(NextFollowupDate);
-        inputNextFollowupdate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Get Current Date
-                final Calendar c = Calendar.getInstance();
-                mYear = c.get(Calendar.YEAR);
-                mMonth = c.get(Calendar.MONTH);
-                mDay = c.get(Calendar.DAY_OF_MONTH);
+    ((ImageButton) dialog.findViewById(R.id.bt_close)).setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            dialog.dismiss();
+        }
+    });
+    //  if(i==0){
+    SetSpinner();
+    //i++;
+    //}
+    callResponseClass();
+    String curr_date = Utility.getCurrentDate();
+    inputNextFollowupdate.setText(curr_date);
+
+    inputNextFollowupdate.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            // Get Current Date
+            final Calendar c = Calendar.getInstance();
+            mYear = c.get(Calendar.YEAR);
+            mMonth = c.get(Calendar.MONTH);
+            mDay = c.get(Calendar.DAY_OF_MONTH);
 
 
-                DatePickerDialog datePickerDialog = new DatePickerDialog(StaffBirthdayFollowupActivity.this,
-                        new DatePickerDialog.OnDateSetListener() {
+            DatePickerDialog datePickerDialog = new DatePickerDialog(StaffBirthdayFollowupActivity.this,
+                    new DatePickerDialog.OnDateSetListener() {
 
-                            @Override
-                            public void onDateSet(DatePicker view, int year,
-                                                  int monthOfYear, int dayOfMonth) {
+                        @Override
+                        public void onDateSet(DatePicker view, int year,
+                                              int monthOfYear, int dayOfMonth) {
 
-                                inputNextFollowupdate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
-                                //tiemPicker();
-                            }
-                        }, mYear, mMonth, mDay);
-                datePickerDialog.getDatePicker().setMinDate(c.getTimeInMillis());
-                datePickerDialog.show();
-            }
-        });
+                            inputNextFollowupdate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                            //tiemPicker();
+                        }
+                    }, mYear, mMonth, mDay);
+            datePickerDialog.getDatePicker().setMinDate(c.getTimeInMillis());
+            datePickerDialog.show();
+        }
+    });
 
-        ((Button) dialog.findViewById(R.id.btn_submit)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if( callResponce.equals(getResources().getString(R.string.call_res)) || Rating.equals(getResources().getString(R.string.rating))){
-                    Toast.makeText(getApplicationContext(), "Please select Call Response or Rating", Toast.LENGTH_SHORT).show();
+    ((Button) dialog.findViewById(R.id.btn_submit)).setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if( callResponce.equals(getResources().getString(R.string.call_res)) || Rating.equals(getResources().getString(R.string.rating)) ){
+                Toast.makeText(getApplicationContext(), "Please select Call Response or Rating", Toast.LENGTH_SHORT).show();
+            }else{
+                if(inputfollComment.getText().length()==0){
+                    Toast.makeText(getApplicationContext(), "Please enter Comment", Toast.LENGTH_SHORT).show();
                 }else{
                     if(inputNextFollowupdate.getText().length()==0) {
-                        if (!(Rating.equals("Not Interested") || Rating.equals("Converted")||FollowupType.equals("Staff BirthDay"))) {
-                            Toast.makeText(getApplicationContext(), "Please select Next Followup Date", Toast.LENGTH_SHORT).show();
+                        if (!(Rating.equals("Not Interested") || Rating.equals("Converted"))) {
+                            Toast.makeText(getApplicationContext(), "Please select Next Followup Date " , Toast.LENGTH_SHORT).show();
                         }else{
                             takefollowupclass();
                             dialog.dismiss();
@@ -317,18 +577,19 @@ public class StaffBirthdayFollowupActivity extends AppCompatActivity {
                         dialog.dismiss();
                     }
                 }
-
-                //  Toast.makeText(StaffBirthdayFollowupActivity.this, "Mobile number verified successully", Toast.LENGTH_SHORT).show();
-
-
-                //Toast.makeText(getApplicationContext(), "Subcribe Clicked", Toast.LENGTH_SHORT).show();
             }
-        });
 
-        dialog.show();
-        //dialog.getWindow().setAttributes(lp);
-    }
-    public  void SetFollowupSpinner(){
+            //  Toast.makeText(EnquiryFollowupDetailsActivity.this, "Mobile number verified successully", Toast.LENGTH_SHORT).show();
+
+
+            //Toast.makeText(getApplicationContext(), "Subcribe Clicked", Toast.LENGTH_SHORT).show();
+        }
+    });
+
+    dialog.show();
+    //dialog.getWindow().setAttributes(lp);
+}
+    public  void SetSpinner(){
 
         spinCallResponce.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -337,58 +598,18 @@ public class StaffBirthdayFollowupActivity extends AppCompatActivity {
                 int index = parent.getSelectedItemPosition();
                 if (view != null) {
                     TextView tv = (TextView) view.findViewById(R.id.tv_Name);
-                    view.setPadding(0, 0, 0,0);
+                    view.setPadding(0, 0, 0, 0);
                     tv.setTextColor(getResources().getColor(R.color.black));
                     if(!(callResponce==null)) {
                         if (callResponce.equals(tv.getText().toString())) {
                             spinCallResponce.setSelection(index);
+                            txtcallres.setVisibility(View.VISIBLE);
                         }
                         callResponce = tv.getText().toString();
                     }
                     if(index==0){
                         txtcallres.setVisibility(View.VISIBLE);
                         tv.setText(callResponce);
-                    }
-                    // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.black));
-                    // Showing selected spinner item
-                    //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-        spinFollType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                int index = parent.getSelectedItemPosition();
-                if (view != null) {
-                    TextView tv = (TextView) view.findViewById(R.id.tv_Name);
-                    view.setPadding(0, 0, 0, 0);
-                    tv.setTextColor(getResources().getColor(R.color.black));
-                    if(!(FollowupType==null)) {
-                        if (FollowupType.equals(tv.getText().toString())) {
-                            spinFollType.setSelection(index);
-                            txtFollType.setVisibility(View.VISIBLE);
-                        }
-                        FollowupType = tv.getText().toString();
-                    }
-                    if(index==0){
-                        txtFollType.setVisibility(View.VISIBLE);
-                        tv.setText(FollowupType);
-                    }
-                    if (!(FollowupType == null)) {
-                        if(FollowupType.equals("Staff BirthDay")) {
-                            //Toast.makeText(parent.getContext(), "no interetsed: ", Toast.LENGTH_LONG).show();
-                            inputNextFollowupdate.setText("");
-                            inputNextFollowupdate.setEnabled(false);
-                            inputNextFollowupdate.setKeyListener(null);
-                        } else {
-                            inputNextFollowupdate.setEnabled(true);
-                        }
                     }
                     // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.black));
                     // Showing selected spinner item
@@ -424,8 +645,6 @@ public class StaffBirthdayFollowupActivity extends AppCompatActivity {
                 View view = super.getDropDownView(position, convertView, parent);
                 if(view !=null){
                     TextView tv = (TextView) view.findViewById(R.id.tv_Name);
-//                    View layView = super.getView(position, convertView, parent);
-//                    layView.setPadding(0, 0, layView.getPaddingRight(), 0);
                     if(position == 0){
                         // Set the hint text color gray
                         tv.setTextColor(Color.GRAY);
@@ -454,7 +673,6 @@ public class StaffBirthdayFollowupActivity extends AppCompatActivity {
                 int index = parent.getSelectedItemPosition();
                 if (view != null) {
                     TextView tv = (TextView) view.findViewById(R.id.tv_Name);
-                    //View layView = super.getView(position, convertView, parent);
                     view.setPadding(0, 0, 0, 0);
                     tv.setTextColor(getResources().getColor(R.color.black));
                     if (!(Rating == null)) {
@@ -464,16 +682,16 @@ public class StaffBirthdayFollowupActivity extends AppCompatActivity {
                         }
                         Rating = tv.getText().toString();
                     }
-//                    if (!(Rating == null)) {
-//                        if (Rating.equals("Not Interested") || Rating.equals("Converted")) {
-//                            //Toast.makeText(parent.getContext(), "no interetsed: ", Toast.LENGTH_LONG).show();
-//                            inputNextFollowupdate.setText("");
-//                            inputNextFollowupdate.setEnabled(false);
-//                            inputNextFollowupdate.setKeyListener(null);
-//                        } else {
-//                            inputNextFollowupdate.setEnabled(true);
-//                        }
-//                    }
+                    if (!(Rating == null)) {
+                        if (Rating.equals("Not Interested") || Rating.equals("Converted")) {
+                            //Toast.makeText(parent.getContext(), "no interetsed: ", Toast.LENGTH_LONG).show();
+                            inputNextFollowupdate.setText("");
+                            inputNextFollowupdate.setEnabled(false);
+                            inputNextFollowupdate.setKeyListener(null);
+                        } else {
+                            inputNextFollowupdate.setEnabled(true);
+                        }
+                    }
                     if(index==0){
                         txtrating.setVisibility(View.VISIBLE);
                         tv.setText(Rating);
@@ -832,7 +1050,7 @@ public class StaffBirthdayFollowupActivity extends AppCompatActivity {
             Log.v(TAG, String.format("doInBackground :: Name = %s", name));
             TakeFollowupDetails.put("contact",Contact);
             Log.v(TAG, String.format("doInBackground :: Contact = %s", Contact));
-            TakeFollowupDetails.put("foll_type",FollowupType);
+            TakeFollowupDetails.put("foll_type","Staff Birthday");
             Log.v(TAG, String.format("doInBackground :: Folltype = %s", FollowupType));
             TakeFollowupDetails.put("invoice_id","");
             //Log.v(TAG, String.format("doInBackground :: invoice_id = %s", invoice_id));
@@ -980,7 +1198,15 @@ public class StaffBirthdayFollowupActivity extends AppCompatActivity {
                                     String domainurl= SharedPrefereneceUtil.getDomainUrl(StaffBirthdayFollowupActivity.this);
                                     String url= domainurl+ServiceUrls.IMAGES_URL + Image;
 
-                                    Glide.with(this).load(url).placeholder(R.drawable.nouser).into(imageView);
+                                   // Glide.with(this).load(url).placeholder(R.drawable.nouser).into(imageView);
+                                    RequestOptions requestOptions = new RequestOptions();
+                                    requestOptions.placeholder(R.drawable.nouser);
+                                    requestOptions.error(R.drawable.nouser);
+
+
+                                    Glide.with(this)
+                                            .setDefaultRequestOptions(requestOptions)
+                                            .load(url).into(imageView);
                                     Email.setText(email);
                                     Gender.setText(gender);
                                     Address.setText(address);

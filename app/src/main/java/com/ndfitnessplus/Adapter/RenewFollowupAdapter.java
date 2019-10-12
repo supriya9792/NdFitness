@@ -154,7 +154,7 @@ public class RenewFollowupAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                     // UI code goes here
                     for (final FollowupList wp : subList) {
                         if (wp.getName().toLowerCase(Locale.getDefault())
-                                .contains(charText) ||wp.getExecutiveName().toLowerCase(Locale.getDefault()).contains(charText)
+                                .contains(charText) ||wp.getContact().toLowerCase(Locale.getDefault()).contains(charText)
                                 ||wp.getComment().toLowerCase(Locale.getDefault()).contains(charText)) {
                             arrayList.add(wp);
 
@@ -211,7 +211,7 @@ public class RenewFollowupAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             super.onBind(position);
             final FollowupList enq = arrayList.get(position);
             nameTV.setText(enq.getName());
-            contactTV.setText(arrayList.get(position).getContact());
+            contactTV.setText(arrayList.get(position).getContactEncrypt());
             followup_dateTV.setText(enq.getFollowupDate());
             nextfollowupdate.setText(enq.getNextFollowupDate());
             commentTV.setText(enq.getComment());
@@ -256,7 +256,7 @@ public class RenewFollowupAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     }
 
     //filter for search
-    public void filter(String charText) {
+    public int filter(String charText) {
         // subList=arrayList;
 
         charText = charText.toLowerCase(Locale.getDefault());
@@ -277,6 +277,7 @@ public class RenewFollowupAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         }
         Log.d(TAG, "sublist size filter: "+String.valueOf(subList.size()) );
         notifyDataSetChanged();
+        return arrayList.size();
     }
 
 }

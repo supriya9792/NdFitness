@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -65,6 +66,8 @@ public class NotificationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
+                WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_notification);
         initToolbar();
         initComponent();
@@ -285,6 +288,8 @@ public class NotificationActivity extends AppCompatActivity {
             //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> CountDetails = new HashMap<String, String>();
             CountDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(NotificationActivity.this));
+            CountDetails.put("authority", SharedPrefereneceUtil.getAuthority(NotificationActivity.this));
+            CountDetails.put("exe_name", SharedPrefereneceUtil.getName(NotificationActivity.this));
             Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(NotificationActivity.this)));
             CountDetails.put("action","show_notification_count");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(NotificationActivity.this);

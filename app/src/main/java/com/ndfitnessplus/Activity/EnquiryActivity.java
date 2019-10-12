@@ -21,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -49,6 +50,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 
 import static com.ndfitnessplus.Utility.HTTPRequestQueue.isOnline;
 
@@ -82,12 +84,15 @@ public class EnquiryActivity extends AppCompatActivity implements SwipeRefreshLa
     //search
     private EditText inputsearch;
     ImageView search;
-    TextView total_enquiry;
+    TextView total_enquiry,ttl_budget;
     //Loading gif
     ViewDialog viewDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
+                WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_enquiry);
         initToolbar();
     }
@@ -109,6 +114,7 @@ public class EnquiryActivity extends AppCompatActivity implements SwipeRefreshLa
         viewDialog = new ViewDialog(this);
 
         total_enquiry=findViewById(R.id.ttl_enq);
+        ttl_budget=findViewById(R.id.ttl_budget);
         nodata=findViewById(R.id.nodata);
         frame=findViewById(R.id.main_frame);
         noInternet=findViewById(R.id.no_internet);
@@ -124,10 +130,13 @@ public class EnquiryActivity extends AppCompatActivity implements SwipeRefreshLa
         Intent intent = getIntent();
         Bundle args = intent.getBundleExtra("BUNDLE");
         if (args != null) {
+            String tt_budget=intent.getStringExtra("ttl_budget");
             ArrayList<EnquiryList> filterArrayList = (ArrayList<EnquiryList>) args.getSerializable("filter_array_list");
             progressBar.setVisibility(View.GONE);
             int length=filterArrayList.size();
             total_enquiry.setText(String.valueOf(length));
+            String totalbug="₹ "+tt_budget;
+            ttl_budget.setText(totalbug);
             adapter = new EnquiryAdapter( filterArrayList,EnquiryActivity.this);
             recyclerView.setAdapter(adapter);
         }else{
@@ -213,9 +222,23 @@ public class EnquiryActivity extends AppCompatActivity implements SwipeRefreshLa
                 else
                 {
                     isLoading = false;
-                    int count=EnquiryActivity.this.adapter.filter(String.valueOf(arg0));
-                    total_enquiry.setText(String.valueOf(count));
+//                    int count=EnquiryActivity.this.adapter.filter(String.valueOf(arg0));
+//                    total_enquiry.setText(String.valueOf(count));
+//                    ttl_budget.setText(String.valueOf(count));
+                    ArrayList<EnquiryList> filterlist=EnquiryActivity.this.adapter.filter(String.valueOf(arg0));
+                    double totalBudget=0;
+                    for (final EnquiryList wp : filterlist) {
+                        String bugdet=wp.getBudget();
+                        if(!(bugdet.equals("")||bugdet.equals("null"))){
+                            double budge=Double.parseDouble(bugdet);
+                            totalBudget+=budge;
+                            Log.d(TAG, "budget: " + bugdet);
+                            Log.d(TAG, "totalBudget: " + totalBudget);
+                            ttl_budget.setText(String.valueOf(totalBudget));
+                        }
 
+                    }
+                    total_enquiry.setText(String.valueOf(filterlist.size()));
 
                 }
             }
@@ -245,10 +268,10 @@ public class EnquiryActivity extends AppCompatActivity implements SwipeRefreshLa
             @Override
             protected void loadMoreItems() {
                 isLoading = true;
-                currentPage++;
+
                 Log.d(TAG, "prepare called current item: " + currentPage+"Total page"+totalPage);
                 if(currentPage<=totalPage){
-                    //currentPage = PAGE_START;
+                   // currentPage = PAGE_START;
                     Log.d(TAG, "currentPage: " + currentPage);
                     isLastPage = false;
                     preparedListItem();
@@ -384,6 +407,8 @@ public class EnquiryActivity extends AppCompatActivity implements SwipeRefreshLa
             HashMap<String, String> EnquiryDetails = new HashMap<String, String>();
             EnquiryDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(EnquiryActivity.this));
             EnquiryDetails.put("offset", String.valueOf(offset));
+            EnquiryDetails.put("authority", SharedPrefereneceUtil.getAuthority(EnquiryActivity.this));
+            EnquiryDetails.put("exe_name", SharedPrefereneceUtil.getName(EnquiryActivity.this));
             Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(EnquiryActivity.this)));
             EnquiryDetails.put("action","show_enquiry_list");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(EnquiryActivity.this);
@@ -407,8 +432,13 @@ public class EnquiryActivity extends AppCompatActivity implements SwipeRefreshLa
                 String success = object.getString(getResources().getString(R.string.success));
 
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
+//                    nodata.setVisibility(View.GONE);
+//                    swipeRefresh.setVisibility(View.VISIBLE);
                     String ttl_enq = object.getString("total_enquiry_count");
+                    String tt_budget = object.getString("ttl_budget");
+                    String totalbug="₹ "+tt_budget;
                     total_enquiry.setText(ttl_enq);
+                    ttl_budget.setText(totalbug);
                     progressBar.setVisibility(View.GONE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
@@ -445,6 +475,7 @@ public class EnquiryActivity extends AppCompatActivity implements SwipeRefreshLa
                                     String CallResponse = jsonObj.getString("CallResponse");
                                     String Rating = jsonObj.getString("Rating");
                                     String Followup_Date = jsonObj.getString("FollowupDate");
+                                    String Budget = jsonObj.getString("Budget");
 
 
                                     //  for (int j = 0; j < 5; j++) {
@@ -452,7 +483,9 @@ public class EnquiryActivity extends AppCompatActivity implements SwipeRefreshLa
                                         Log.d(TAG, "run: " + itemCount);
                                     subList.setName(name);
                                     subList.setGender(gender);
+                                    String cont=Utility.lastFour(Contact);
                                     subList.setContact(Contact);
+                                    subList.setContactEncrypt(cont);
                                     subList.setAddress(address);
                                     subList.setExecutiveName(ExecutiveName);
                                     subList.setComment(Comment);
@@ -466,6 +499,10 @@ public class EnquiryActivity extends AppCompatActivity implements SwipeRefreshLa
                                     String foll_date= Utility.formatDate(Followup_Date);
                                     Log.d(TAG, "converted Followup date: " + foll_date);
                                     subList.setFollowupdate(foll_date);
+                                    if(Budget.equals(".00")){
+                                        Budget="0.00";
+                                    }
+                                    subList.setBudget(Budget);
                                     //Toast.makeText(EnquiryActivity.this, "followup date: "+next_foll_date, Toast.LENGTH_SHORT).show();
 
                                     //Toast.makeText(MainActivity.this, "j "+j, Toast.LENGTH_SHORT).show();
@@ -532,6 +569,8 @@ public class EnquiryActivity extends AppCompatActivity implements SwipeRefreshLa
             HashMap<String, String> EnquiryOffsetDetails = new HashMap<String, String>();
             EnquiryOffsetDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(EnquiryActivity.this));
             EnquiryOffsetDetails.put("offset", String.valueOf(offset));
+            EnquiryOffsetDetails.put("authority", SharedPrefereneceUtil.getAuthority(EnquiryActivity.this));
+            EnquiryOffsetDetails.put("exe_name", SharedPrefereneceUtil.getName(EnquiryActivity.this));
             Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(EnquiryActivity.this)));
             EnquiryOffsetDetails.put("action","show_enquiry_list");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(EnquiryActivity.this);
@@ -555,8 +594,11 @@ public class EnquiryActivity extends AppCompatActivity implements SwipeRefreshLa
                 JSONObject object = new JSONObject(jsonResponse);
                 ArrayList<EnquiryList> subListArrayList = new ArrayList<EnquiryList>();
                 String success = object.getString(getResources().getString(R.string.success));
+
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
+                    String tt_budget = object.getString("ttl_budget");
                     totalPage++;
+                    currentPage++;
                     //currentPage = PAGE_START;
                     progressBar.setVisibility(View.GONE);
                     if (object != null) {
@@ -588,12 +630,15 @@ public class EnquiryActivity extends AppCompatActivity implements SwipeRefreshLa
                                     String CallResponse = jsonObj.getString("CallResponse");
                                     String Rating = jsonObj.getString("Rating");
                                     String Followup_Date = jsonObj.getString("FollowupDate");
+                                    String Budget = jsonObj.getString("Budget");
                                     //  for (int j = 0; j < 5; j++) {
                                     itemCount++;
                                     Log.d(TAG, "run offset: " + itemCount);
                                     subList.setName(name);
                                     subList.setGender(gender);
+                                    String cont=Utility.lastFour(Contact);
                                     subList.setContact(Contact);
+                                    subList.setContactEncrypt(cont);
                                     subList.setAddress(address);
                                     subList.setExecutiveName(ExecutiveName);
                                     subList.setComment(Comment);
@@ -606,6 +651,10 @@ public class EnquiryActivity extends AppCompatActivity implements SwipeRefreshLa
                                     subList.setCallResponse(CallResponse);
                                     String foll_date= Utility.formatDate(Followup_Date);
                                     subList.setFollowupdate(foll_date);
+                                    if(Budget.equals(".00")){
+                                        Budget="0.00";
+                                    }
+                                    subList.setBudget(Budget);
                                     //Toast.makeText(EnquiryActivity.this, "followup date: "+next_foll_date, Toast.LENGTH_SHORT).show();
                                     subListArrayList.add(subList);
 
@@ -632,6 +681,7 @@ public class EnquiryActivity extends AppCompatActivity implements SwipeRefreshLa
                     Log.d(TAG, "PAGE_START: " + PAGE_START);
                     if (currentPage != PAGE_START)
                        adapter.removeblank();
+                    currentPage = PAGE_START;
                     //adapter.addAll(subListArrayList);
                     swipeRefresh.setRefreshing(false);
                     isLoading = false;
@@ -670,7 +720,6 @@ public class EnquiryActivity extends AppCompatActivity implements SwipeRefreshLa
             viewDialog.hideDialog();
             //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             EnquirySearchDetails(response);
-
         }
 
         @Override
@@ -702,6 +751,8 @@ public class EnquiryActivity extends AppCompatActivity implements SwipeRefreshLa
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
+                    nodata.setVisibility(View.GONE);
+                    swipeRefresh.setVisibility(View.VISIBLE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
 //                        if(jsonArrayResult.length() >10){
@@ -733,12 +784,15 @@ public class EnquiryActivity extends AppCompatActivity implements SwipeRefreshLa
                                     String CallResponse = jsonObj.getString("CallResponse");
                                     String Rating = jsonObj.getString("Rating");
                                     String Followup_Date = jsonObj.getString("FollowupDate");
+                                    String Budget = jsonObj.getString("Budget");
                                     //  for (int j = 0; j < 5; j++) {
                                     itemCount++;
                                     Log.d(TAG, "run offset: " + itemCount);
                                     subList.setName(name);
                                     subList.setGender(gender);
+                                    String cont=Utility.lastFour(Contact);
                                     subList.setContact(Contact);
+                                    subList.setContactEncrypt(cont);
                                     subList.setAddress(address);
                                     subList.setExecutiveName(ExecutiveName);
                                     subList.setComment(Comment);
@@ -751,6 +805,10 @@ public class EnquiryActivity extends AppCompatActivity implements SwipeRefreshLa
                                     subList.setCallResponse(CallResponse);
                                     String foll_date= Utility.formatDate(Followup_Date);
                                     subList.setFollowupdate(foll_date);
+                                    if(Budget.equals(".00")){
+                                        Budget="0.00";
+                                    }
+                                    subList.setBudget(Budget);
 
                                     subListArrayList.add(subList);
 
@@ -766,10 +824,11 @@ public class EnquiryActivity extends AppCompatActivity implements SwipeRefreshLa
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
                     // nodata.setVisibility(View.VISIBLE);
-
+//                    nodata.setVisibility(View.VISIBLE);
+//                    swipeRefresh.setVisibility(View.GONE);
                     progressBar.setVisibility(View.GONE);
-
-                    //recyclerView.setVisibility(View.GONE);
+                    Toast.makeText(EnquiryActivity.this, "NO Record Found", Toast.LENGTH_SHORT).show();
+                    //frame.setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");

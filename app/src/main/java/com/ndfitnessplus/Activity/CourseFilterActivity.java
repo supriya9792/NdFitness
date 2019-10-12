@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -78,6 +79,8 @@ public class CourseFilterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
+                WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_course_filter);
         initToolbar();
     }
@@ -202,6 +205,7 @@ public class CourseFilterActivity extends AppCompatActivity {
             };
             spinDateWise.setAdapter(datewiseadapter);
         }
+        spinDateWise.setSelection(1);
         //Toast.makeText(MainActivity.this,genderradioButton.getText(), Toast.LENGTH_SHORT).show();
         spinDateWise.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -214,7 +218,7 @@ public class CourseFilterActivity extends AppCompatActivity {
                     if (index == 0) {
                         tv.setText(getResources().getString(R.string.prompt_mem_date));
                     }
-                    spinDateWise.setSelection(1);
+
 //                tv.setTextColor(getResources().getColor(R.color.black));
                     Datewise = tv.getText().toString();
                     if ((Datewise.equals(getResources().getString(R.string.prompt_mem_date))) ||
@@ -934,7 +938,45 @@ public class CourseFilterActivity extends AppCompatActivity {
                         }
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
+                    instructorArrayList.clear();
+                    instructorList = new Spinner_List();
+                    instructorList.setName(getResources().getString(R.string.hint_instructor));
+                    instructorArrayList.add(0,instructorList);
+                    instructorList.setName(getResources().getString(R.string.all));
+                    instructorArrayList.add(1,instructorList);
+                    instructoradapter = new SpinnerAdapter(CourseFilterActivity.this, instructorArrayList){
+                        @Override
+                        public boolean isEnabled(int position){
+                            if(position == 0)
+                            {
+                                // Disable the first item from Spinner
+                                // First item will be use for hint
+                                return false;
+                            }
+                            else
+                            {
+                                return true;
+                            }
+                        }
+                        @Override
+                        public View getDropDownView(int position, View convertView,
+                                                    ViewGroup parent) {
+                            View view = super.getDropDownView(position, convertView, parent);
+                            TextView tv = (TextView) view.findViewById(R.id.tv_Name);
+                            if(position == 0){
+                                // Set the hint text color gray
+                                tv.setTextColor(Color.GRAY);
+                                tv.setText(getResources().getString(R.string.prompt_instructor));
+                                // tv.setTextColor(Color.GRAY);
+                            }
+                            else {
+                                tv.setTextColor(Color.BLACK);
+                            }
+                            return view;
+                        }
 
+                    };
+                    spinInstructor.setAdapter(instructoradapter);
                     //forumCount.setVisibility(View.INVISBLE);
                     // queCount.setVisibility(View.INVISIBLE);
                 }
@@ -960,7 +1002,7 @@ public class CourseFilterActivity extends AppCompatActivity {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
          //   showProgressDialog();
-            viewDialog.showDialog();
+           // viewDialog.showDialog();
         }
 
         @Override
@@ -968,7 +1010,7 @@ public class CourseFilterActivity extends AppCompatActivity {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
            // dismissProgressDialog();
-            viewDialog.hideDialog();
+          //  viewDialog.hideDialog();
             //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
             //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
             SearchEnquiryDetails(response);
@@ -999,7 +1041,7 @@ public class CourseFilterActivity extends AppCompatActivity {
             String domainurl=SharedPrefereneceUtil.getDomainUrl(CourseFilterActivity.this);
             String loginResult2 = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, SearchEnquiryDetails);
 
-            Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult2));
+            Log.v(TAG, String.format("doInBackground :: search_course_filter= %s", loginResult2));
             return loginResult2;
         }
     }
@@ -1007,7 +1049,7 @@ public class CourseFilterActivity extends AppCompatActivity {
 
     private void SearchEnquiryDetails(String jsonResponse) {
 
-        Log.v(TAG, String.format("loginServerResponse :: response = %s", jsonResponse));
+        Log.v(TAG, String.format("search_course_filter :: response = %s", jsonResponse));
 
         JSONObject object = null;
         try {
@@ -1041,40 +1083,75 @@ public class CourseFilterActivity extends AppCompatActivity {
                                 String Duration_Days = jsonObj.getString("Duration_Days");
                                 String Session = jsonObj.getString("Session");
                                 String Member_ID = jsonObj.getString("Member_ID");
-                                String Image = jsonObj.getString("Image");
                                 String Start_Date = jsonObj.getString("Start_Date");
                                 String End_Date = jsonObj.getString("End_Date");
                                 String Rate = jsonObj.getString("Rate");
                                 String Final_paid = jsonObj.getString("Final_paid");
                                 String Final_Balance = jsonObj.getString("Final_Balance");
+                                String Image = jsonObj.getString("Image");
+                                String Invoice_ID = jsonObj.getString("Invoice_ID");
+                                String Tax = jsonObj.getString("Tax");
+                                String Member_Email_ID = jsonObj.getString("Member_Email_ID");
+                                String Financial_Year = jsonObj.getString("Financial_Year");
 
 
                                 //  for (int j = 0; j < 5; j++) {
-
+                                //itemCount++;
+                               // Log.d(TAG, "run: " + itemCount);
                                 subList.setName(name);
                                 String sdate=Utility.formatDate(Start_Date);
                                 String edate=Utility.formatDate(End_Date);
                                 String todate=sdate+" to "+edate;
                                 subList.setStartToEndDate(todate);
-                                subList.setContact(Contact);
-                                String pack=Package_Name+"(d:"+Duration_Days+","+"s:"+Session+")";
-                                subList.setPackageName(pack);
-                                subList.setExecutiveName(ExecutiveName);
 
+                                SimpleDateFormat dateFormat = new SimpleDateFormat(
+                                        "dd-MM-yyyy");
+                                Date endDate = new Date();
+                                Date currentdate = new Date();
+                                String endc=Utility.formatDateDB(End_Date);
+                                try {
+                                    endDate = dateFormat.parse(endc);
+                                    currentdate = dateFormat.parse(Utility.getCurrentDate());
+                                    Log.v(TAG, String.format(" ::endDate = %s", endDate));
+                                    Log.v(TAG, String.format(" :: currentdate = %s",currentdate));
+                                    if (currentdate.before(endDate)|| currentdate.equals(endDate) ) {
+                                        subList.setStatus("Active");
+                                    } else {
+                                        subList.setStatus("Inactive");
+                                    }
+                                } catch (ParseException e) {
+                                    // TODO Auto-generated catch block
+                                    e.printStackTrace();
+                                }
+
+                                String cont=Utility.lastFour(Contact);
+                                subList.setContact(Contact);
+                                subList.setContactEncrypt(cont);
+//                                    String pack=Package_Name;
+                                subList.setPackageName(Package_Name);
+                                subList.setExecutiveName(ExecutiveName);
+                                subList.setTax(Tax);
+                                String dur_sess="Duration:"+Duration_Days+","+"Session:"+Session;
+                                subList.setPackageNameWithDS(dur_sess);
                                 String reg_date= Utility.formatDate(RegistrationDate);
                                 subList.setRegistrationDate(reg_date);
                                 subList.setID(Member_ID);
-                                Image.replace("\"", "");
-                                subList.setImage(Image);
+                                subList.setInvoiceID(Invoice_ID);
+
                                 subList.setRate(Rate);
+                                // String fpaid="₹ "+Final_paid;
                                 subList.setPaid(Final_paid);
+                                if(Final_Balance.equals(".00")){
+                                    Final_Balance="0.00";
+                                }
+                                //String fbalance="₹ "+Final_Balance;
                                 subList.setBalance(Final_Balance);
                                 Image.replace("\"", "");
                                 subList.setImage(Image);
-                                //Toast.makeText(EnquiryActivity.this, "followup date: "+next_foll_date, Toast.LENGTH_SHORT).show();
+                                subList.setEmail(Member_Email_ID);
+                                subList.setFinancialYear(Financial_Year);
+
                                 subListArrayList.add(subList);
-
-
                             }
                         }
                         Intent intent=new Intent(CourseFilterActivity.this,CourseActivity.class);

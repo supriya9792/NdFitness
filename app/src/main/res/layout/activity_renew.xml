@@ -823,7 +823,7 @@
                         android:inputType="text"
                         android:maxLines="5"
                         android:minLines="3"
-                        android:hint="@string/hint_comment" />
+                        android:hint="@string/hint_c_comment" />
                 </android.support.design.widget.TextInputLayout>
 
             </LinearLayout>

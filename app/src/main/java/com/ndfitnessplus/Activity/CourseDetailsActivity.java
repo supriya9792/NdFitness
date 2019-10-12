@@ -8,19 +8,26 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
+import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -37,6 +44,32 @@ import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
 import com.basgeekball.awesomevalidation.utility.RegexTemplate;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.html.simpleparser.HTMLWorker;
+import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.tool.xml.XMLWorker;
+import com.itextpdf.tool.xml.XMLWorkerHelper;
+import com.itextpdf.tool.xml.html.Tags;
+import com.itextpdf.tool.xml.net.FileRetrieve;
+import com.itextpdf.tool.xml.net.FileRetrieveImpl;
+import com.itextpdf.tool.xml.parser.XMLParser;
+import com.itextpdf.tool.xml.pipeline.css.CSSResolver;
+import com.itextpdf.tool.xml.pipeline.css.CssResolverPipeline;
+import com.itextpdf.tool.xml.pipeline.end.PdfWriterPipeline;
+import com.itextpdf.tool.xml.pipeline.html.HtmlPipeline;
+import com.itextpdf.tool.xml.pipeline.html.HtmlPipelineContext;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.ndfitnessplus.Activity.Notification.TodaysEnrollmentActivity;
 import com.ndfitnessplus.Adapter.AddEnquirySpinnerAdapter;
@@ -59,11 +92,22 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringReader;
+import java.net.URL;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
 public class CourseDetailsActivity extends AppCompatActivity {
+    public static final String CSS_DIR = "D:\\Tulsa\\NDFitness_final\\NDFitness_14_9_2019\\NDFitness_2_10_2019Final\\NDFitness\\app\\src\\main\\res\\css";
 
     public static String TAG = CourseDetailsActivity.class.getName();
     private ProgressDialog pd;
@@ -98,15 +142,15 @@ public class CourseDetailsActivity extends AppCompatActivity {
     String paymentType;
     TextView txtPaymentType;
     CourseList filterArrayList;
-    ImageButton phone,message;
-    ImageView whatsapp;
+    ImageButton phone;
+    ImageView whatsapp,message;
 
     //setting followup popup
     EditText inputNextFollowupdate,inputfollComment;
     Spinner spinCallResponce,spinRating,spinFollType;
     Spinner_List spinCallReslist,ratingList,spinFollTypeList;
 
-
+    private static final int PERMISSION_REQUEST_CODE = 1;
     AddEnquirySpinnerAdapter callresponceadapter,ratingadapter;
     String callResponce="";
     String Rating="";
@@ -114,13 +158,59 @@ public class CourseDetailsActivity extends AppCompatActivity {
     TextView txtcallres,txtrating,txtFollType;
     String[] callresponce ;
     String[] folltype ;
+    String start_date;
     //Loading gif
     ViewDialog viewDialog;
+    private BaseFont bfBold;
+    private static final String LOG_TAG = "GeneratePDF";
+
+    private EditText preparedBy;
+    private File pdfFile;
+    private String filename = "Sample.pdf";
+    private String filepath = "MyInvoices";
+    String FilePath;
+    String fname ="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
+                WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_course_details);
         initToolbar();
+        requestPermission();
+        if (!isExternalStorageAvailable() || isExternalStorageReadOnly()) {
+            Log.v(LOG_TAG, "External Storage not available or you don't have permission to write");
+        }
+        else {
+            //path for the PDF file in the external storage
+            // pdfFile = new File(getExternalFilesDir(filepath), filename);
+//            String root = Environment.getExternalStoragePublicDirectory().getAbsolutePath();
+            String root = Environment.getExternalStorageDirectory().getPath();
+            File myDir = new File(root + "/MyInvoices");
+            myDir.mkdirs();
+            long n = System.currentTimeMillis() / 1000L;
+            fname = "Invoice" + n + ".pdf";
+            FilePath = root + "/MyInvoices/" + fname;
+            pdfFile = new File(myDir, fname);
+            if (pdfFile.exists())
+                pdfFile.delete();
+
+            try {
+                pdfFile.createNewFile();
+                FileOutputStream out = new FileOutputStream(pdfFile);
+                out.flush();
+                out.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            MediaScannerConnection.scanFile(this, new String[]{pdfFile.toString()}, null,
+                    new MediaScannerConnection.OnScanCompletedListener() {
+                        public void onScanCompleted(String path, Uri uri) {
+                            Log.i("ExternalStorage", "Scanned " + path + ":");
+                            Log.i("ExternalStorage", "-> uri=" + uri);
+                        }
+                    });
+        }
     }
     private void initToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -130,6 +220,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
         initComponent();
     }
     private void initComponent(){
+
 
         contactTV = (TextView) findViewById(R.id.contactTV);
         rateTV = (TextView) findViewById(R.id.rateTV);
@@ -189,19 +280,32 @@ public class CourseDetailsActivity extends AppCompatActivity {
             member_id=filterArrayList.getID();
             Tax=filterArrayList.getTax();
             Email=filterArrayList.getEmail();
+
             FollowupType=filterArrayList.getFollowuptype();
             if(FollowupType ==null){
                 FollowupType="";
             }
 
             Log.v(TAG, String.format("Selected  ::invoice_id= %s", invoice_id));
+            Log.v(TAG, String.format("Email= %s", Email));
             Log.v(TAG, String.format("Selected  ::Paid= %s", fpaid));
             Log.v(TAG, String.format("Selected  ::Balance= %s", filterArrayList.getBalance()));
             String domainurl= SharedPrefereneceUtil.getDomainUrl(CourseDetailsActivity.this);
             String url= domainurl+ServiceUrls.IMAGES_URL + filterArrayList.getImage();
 
-            Glide.with(this).load(url).placeholder(R.drawable.nouser).into(imageView);
+           // Glide.with(this).load(url).placeholder(R.drawable.nouser).into(imageView);
+            RequestOptions requestOptions = new RequestOptions();
+            requestOptions.placeholder(R.drawable.nouser);
+            requestOptions.error(R.drawable.nouser);
+
+
+            Glide.with(this)
+                    .setDefaultRequestOptions(requestOptions)
+                    .load(url).into(imageView);
+
            folldetailsclass();
+            balanceTrasactionclass();
+            coursedetailsclass();
         }
         phone.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -262,8 +366,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
             }
         });
 
-        balanceTrasactionclass();
-        coursedetailsclass();
+
         if(!(balanceTV.getText().toString().equals("0.00"))){
             balance.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -277,7 +380,11 @@ public class CourseDetailsActivity extends AppCompatActivity {
         attendence.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(CourseDetailsActivity.this,AttendenceActivity.class);
+                Intent intent=new Intent(CourseDetailsActivity.this,CourseWiseAttendanceActivity.class);
+                intent.putExtra("invoice_id",invoice_id);
+                intent.putExtra("financial_yr",FinancialYear);
+                intent.putExtra("member_id",member_id);
+                intent.putExtra("start_date",start_date);
                 startActivity(intent);
             }
         });
@@ -305,6 +412,8 @@ public class CourseDetailsActivity extends AppCompatActivity {
         inputBalance = (EditText)dialog. findViewById(R.id.input_balance);
         txtPaymentType=dialog.findViewById(R.id.txt_payment_type);
         inputBalance.setText("0");
+        String curr_date = Utility.getCurrentDate();
+        inputNextFollDate.setText(curr_date);
         // *********** validation *************
         //awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
 
@@ -351,11 +460,16 @@ public class CourseDetailsActivity extends AppCompatActivity {
                     if(paid>rate){
                         Toast.makeText(CourseDetailsActivity.this,"Your paying more than your fees",Toast
                                 .LENGTH_SHORT).show();
+                        inputBalance.setText(balanceTV.getText().toString());
+                        inputPaid.setText("");
                         //awesomeValidation.clear();
                         inputNextFollDate.getText().clear();
                         inputNextFollDate.setEnabled(false);
                         inputNextFollDate.setKeyListener(null);
+                    }else {
+                       // inputBalance.setText(balanceTV.getText().toString());
                     }
+
                 }else{
                     inputBalance.setText(balanceTV.getText().toString());
                 }
@@ -402,13 +516,16 @@ public class CourseDetailsActivity extends AppCompatActivity {
                         Toast.makeText(CourseDetailsActivity.this,"Your paying more than your fees",Toast
                                 .LENGTH_SHORT).show();
                        // awesomeValidation.clear();
+                        inputBalance.setText(balanceTV.getText().toString());
+                        inputPaid.setText("");
                         inputNextFollDate.getText().clear();
                         inputNextFollDate.setEnabled(false);
                         inputNextFollDate.setKeyListener(null);
                     }
-                }else{
-                    inputBalance.setText("");
+                }else {
+                    inputBalance.setText(balanceTV.getText().toString());
                 }
+
 
             }
         });
@@ -446,7 +563,11 @@ public class CourseDetailsActivity extends AppCompatActivity {
                     //awesomeValidation.addValidation(CourseDetailsActivity.this,R.id.input_nextfollDate,RegexTemplate.NOT_EMPTY,R.string.err_msg_next_payment_date);
                     if (inputNextFollDate.getText().length()>0) {
                         // Log.v(TAG, String.format("Remaining balance= %s", inputBalance.getText().toString()));
-                        double paid = Double.parseDouble(inputPaid.getText().toString());
+                        double paid =0;
+                        if(inputPaid.getText().length()>0){
+                             paid = Double.parseDouble(inputPaid.getText().toString());
+                        }
+
                         if(paymentType.equals(getResources().getString(R.string.payment_type)) ){
                             Toast.makeText(CourseDetailsActivity.this, "Please fill Payment type or Package type", Toast.LENGTH_LONG).show();
                         }else{
@@ -564,7 +685,10 @@ public class CourseDetailsActivity extends AppCompatActivity {
         //}
         callResponseClass();
         follTypeClass();
-        inputNextFollowupdate.setText(NextFollowupDate);
+       // inputNextFollowupdate.setText(NextFollowupDate);
+        String curr_date = Utility.getCurrentDate();
+        inputNextFollowupdate.setText(curr_date);
+
         inputNextFollowupdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -594,8 +718,8 @@ public class CourseDetailsActivity extends AppCompatActivity {
         ((Button) dialog.findViewById(R.id.btn_submit)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if( callResponce.equals(getResources().getString(R.string.call_res)) || Rating.equals(getResources().getString(R.string.rating))){
-                    Toast.makeText(getApplicationContext(), "Please select Call Response or Rating", Toast.LENGTH_SHORT).show();
+                if( callResponce.equals(getResources().getString(R.string.call_res)) || Rating.equals(getResources().getString(R.string.rating)) ||FollowupType.equals(getResources().getString(R.string.hint_foll_type))){
+                    Toast.makeText(getApplicationContext(), "Please select Call Response or Rating or Followup Type", Toast.LENGTH_SHORT).show();
                 }else{
                     if(inputNextFollowupdate.getText().length()==0) {
                         if (!(Rating.equals("Not Interested") || Rating.equals("Converted")||FollowupType.equals("Member BirthDay"))) {
@@ -684,7 +808,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                         tv.setText(FollowupType);
                     }
                     if (!(FollowupType == null)) {
-                        if (FollowupType.equals("Member BirthDay")) {
+                        if (FollowupType.equals("Member BirthDay")||FollowupType.equals("Staff BirthDay")) {
                             //Toast.makeText(parent.getContext(), "no interetsed: ", Toast.LENGTH_LONG).show();
                             inputNextFollowupdate.setText("");
                             inputNextFollowupdate.setEnabled(false);
@@ -1246,7 +1370,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
         protected String doInBackground(String... params) {
             Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> FollTypeDetails = new HashMap<String, String>();
-            FollTypeDetails.put("action", "show_master_followup_type_list");
+            FollTypeDetails.put("action", "show_master_followup_type_list_for_course");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(CourseDetailsActivity.this);
             //FollTypeloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(FollTypeloyee.this));
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, FollTypeDetails);
@@ -1422,7 +1546,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
             jsonObjLoginResponse = new JSONObject(jsonResponse);
             String success = jsonObjLoginResponse.getString(getResources().getString(R.string.success));
 
-            if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
+            if (success.equalsIgnoreCase(getResources().getString(R.string.two))||success.equalsIgnoreCase(getResources().getString(R.string.one))) {
                 Toast.makeText(CourseDetailsActivity.this,"Followup added succesfully",Toast.LENGTH_SHORT).show();
                 finish();
                 overridePendingTransition(0, 0);
@@ -1441,6 +1565,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
             else if (success.equalsIgnoreCase(getResources().getString(R.string.zero)))
             {
                 Toast.makeText(CourseDetailsActivity.this,"Something went wrong",Toast.LENGTH_SHORT).show();
+
                 // inputContact.getText().clear();
                 //Toast.makeText(CourseDetailsActivity.this,"Please Enter New Mobile Number",Toast.LENGTH_SHORT).show();
             }
@@ -1540,9 +1665,14 @@ public class CourseDetailsActivity extends AppCompatActivity {
             }
 
 
-            else if (success.equalsIgnoreCase(getResources().getString(R.string.one)))
+            else if (success.equalsIgnoreCase(getResources().getString(R.string.zero)))
             {
-                Toast.makeText(CourseDetailsActivity.this,"Mobile Number Already Exits ,Please Enter New Mobile Number",Toast.LENGTH_SHORT).show();
+                Toast.makeText(CourseDetailsActivity.this,"Your Balance is Already Paid",Toast.LENGTH_SHORT).show();
+                Intent intent=new Intent(CourseDetailsActivity.this,CourseDetailsActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("filter_array_list", filterArrayList);
+                intent.putExtra("BUNDLE",bundle);
+                startActivity(intent);
                // inputContact.getText().clear();
             }
 
@@ -1601,7 +1731,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
 
     private void ReceiptDataDetails(String jsonResponse) {
 
-        Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
+        Log.v(TAG, String.format("show_receipt_data :: jsonResponse = %s", jsonResponse));
 //        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
@@ -1629,7 +1759,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                     String Duration_Days =jsonObj.getString("Duration_Days");
                                     String Session = jsonObj.getString("Session");
                                     String Start_Date = jsonObj.getString("Start_Date");
-                                    String start_date=Utility.formatDateDB(Start_Date);
+                                    String s_date=Utility.formatDateDB(Start_Date);
                                     String End_Date = jsonObj.getString("End_Date");
                                     String end_date=Utility.formatDateDB(End_Date);
                                     String Rate = jsonObj.getString("Rate");
@@ -1643,6 +1773,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
 //                                    if(tax.equals(".00")){
 //                                        tax="0.00";
 //                                    }
+                                    start_date=Start_Date;
                                     String Member_Email_ID = Email;
                                     String Time =  jsonObj.getString("Time");;
                                     String Instructor_Name = jsonObj.getString("Instructor_Name");;
@@ -1665,22 +1796,11 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                     String l=Logo.replaceAll("\\s+","%20");
                                     // Logo.replace(" ","%20");
                                     String domainurl=SharedPrefereneceUtil.getDomainUrl(CourseDetailsActivity.this);
-                                    String imgurl=domainurl+ServiceUrls.IMAGES_URL+l;
+                                   final String imgurl=domainurl+ServiceUrls.IMAGES_URL+l;
                                     Log.d(TAG, "imgurl: " +imgurl);
-                                    // String Auto_Id = jsonObj.getString("Auto_Id");
-                                    //String Receipt_Id =  jsonObj.getString("Receipt_Id");;
-                                   // String ReceiptDate = Utility.getCurrentDate();
-                                   // String receipt_date=Utility.formatDateDB(ReceiptDate);
-//                                    String Taxamount = TaxAmount;
-//                                    if(Taxamount.equals(".00")){
-//                                        Taxamount="0.00";
-//                                    }
-                                    //String Paid = inputPaid.getText().toString();
-                                    //String PaymentType = paymentType;
-                                   // String PaymentDetails = inputPaymentDtl.getText().toString();
-                                    //String ReceiptOwnerExecutive = SharedPrefereneceUtil.getName(CourseDetailsActivity.this);
-                                    String textBody = "";
 
+                                    String textBody = "";
+//
                                     JSONArray jsonArrayPayTrasa = jsonObj.getJSONArray("payment_transa");
                                     if (jsonArrayPayTrasa != null && jsonArrayPayTrasa.length() > 0) {
                                         for (int loopCount = 0; loopCount < jsonArrayPayTrasa.length(); loopCount++)
@@ -1705,371 +1825,140 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                                 String PaymentDetails =  jsonObj1.getString("PaymentDetails");
                                                 String ReceiptOwnerExecutive =  jsonObj1.getString("ReceiptOwnerExecutive");
 
-                                            textBody += "  <tr style\"display: table-row; \n \n" +
-                                                    "            vertical-align: inherit;border-spacing: 0px; \n\n" +
-                                                    "             border-color: grey;border: thick;border: 1px solid #ddd;" +
-                                                    "            border-color: black;\">\n \n" +
-                                                    "    <td style=\"padding: 8px;\n\n" +
-                                                    "     line-height: 1.428571429;\n\n" +
-                                                    "     vertical-align: top;\n\n" +
-                                                    "     border: 1px solid #ddd; display: table-cell; \n \n\n" +
-                                                    "        text-align: center;\">"+Receipt_Id+"</td>\n \n" +
-                                                    "     <td style=\"padding: 8px;\n" +
-                                                    "    line-height: 1.428571429;\n" +
-                                                    "    vertical-align: top;\n" +
-                                                    "    border: 1px solid #ddd; display: table-cell; \n \n" +
-                                                    "       text-align: center;\">"+receipt_date+"</td>\n\n" +
-                                                    "    <td style=\"padding: 8px;\n\n" +
-                                                    "     line-height: 1.428571429;\n\n" +
-                                                    "     vertical-align: top;\n\n" +
-                                                    "     border: 1px solid #ddd; display: table-cell; \n \n\n" +
-                                                    "        text-align: center;\">"+Tax+"</td> \n\n" +
-                                                    "    <td style=\"padding: 8px;\n\n" +
-                                                    "    line-height: 1.428571429;\n\n" +
-                                                    "    vertical-align: top;\n\n" +
-                                                    "    border: 1px solid #ddd; display: table-cell; \n \n" +
-                                                    "       text-align: center;\">"+TaxAmount+"</td>\n\n" +
-                                                    "    <td style=\"padding: 8px;\n\n" +
-                                                    "    line-height: 1.428571429;\n\n" +
-                                                    "    vertical-align: top;\n\n" +
-                                                    "    border: 1px solid #ddd; display: table-cell; \n \n\n" +
-                                                    "       text-align: center;\">"+Paid+"</td>\n\n" +
-                                                    "    <td style=\"padding: 8px;\n\n" +
-                                                    "    line-height: 1.428571429;\n\n" +
-                                                    "    vertical-align: top;\n\n" +
-                                                    "    border: 1px solid #ddd; display: table-cell; \n \n" +
-                                                    "       text-align: center;\">"+PaymentType+"</td>\n\n" +
-                                                    "    <td style=\" padding: 8px;\n \n" +
-                                                    "     line-height: 1.428571429;\n \n" +
-                                                    "     vertical-align: top;\n \n" +
-                                                    "     border: 1px solid #ddd; display: table-cell; \n\n" +
-                                                    "        text-align: center;\">"+PaymentDetails+"</td>\n\n" +
-                                                    "    <td style=\" padding: 5px;\n\n" +
-                                                    "    line-height: 1.428571429;\n\n" +
-                                                    "    vertical-align: top;\n\n" +
-                                                    "    border: 1px solid #ddd; display: table-cell; \n\n" +
-                                                    "       text-align: center;\">"+ReceiptOwnerExecutive+"</td>\n\n" +
+                                                // set table width a percentage of the page width
+
+//                                        PdfPCell[] cells = table.getRow(0).getCells();
+//                                        cells[0].setBackgroundColor(BaseColor.GRAY);
+
+//                                                for(int j=0; j < jsonArrayPayTrasa.length(); j++ ){
+//                                                    cellp.setMinimumHeight(30f);
+//                                                    tablePayTrasa.addCell(Receipt_Id);
+//                                                    tablePayTrasa.addCell(receipt_date);
+//                                                    tablePayTrasa.addCell(Tax);
+//                                                    tablePayTrasa.addCell(TaxAmount);
+//                                                    tablePayTrasa.addCell(Paid);
+//                                                    tablePayTrasa.addCell(PaymentType);
+//                                                    tablePayTrasa.addCell(PaymentDetails);
+//                                                    tablePayTrasa.addCell(ReceiptOwnerExecutive);
+
+//                                                }
+                                            textBody += "  <tr >\n \n" +
+                                                    "    <td >"+Receipt_Id+"</td>\n \n" +
+                                                    "     <td >"+receipt_date+"</td>\n\n" +
+                                                    "    <td >"+Tax+"</td> \n\n" +
+                                                    "    <td >"+TaxAmount+"</td>\n\n" +
+                                                    "    <td >"+Paid+"</td>\n\n" +
+                                                    "    <td >"+PaymentType+"</td>\n\n" +
+                                                    "    <td >"+PaymentDetails+"</td>\n\n" +
+                                                    "    <td >"+ReceiptOwnerExecutive+"</td>\n\n" +
                                                     "    </tr>\n";
                                         }
                                     }
 
                                     }
-
-
-
-
-
-                                    final String message = "<!DOCTYPE html>\n" +
+                               final String messagehtml = "<!DOCTYPE html>\n" +
                                             "\n" +
                                             "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n" +
                                             "<head runat=\"server\">\n" +
                                             "    <title></title>\n" +
                                             "</head>\n" +
-                                            "\n" +
-//                                            "<link href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css\" rel=\"stylesheet\" id=\"bootstrap-css\">\n" +
-//                                            "<script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js\"></script>\n" +
-////                                            "<script src=\"//code.jquery.com/jquery-1.11.1.min.js\"></script>\n" +
-                                            "\n" +
-                                            "\n" +
-                                            "\n" +
-                                            "\n" +
-                                            "\n" +
-                                            "\n" +
-                                            "<!------ Include the above in your HEAD tag ---------->\n" +
                                             "<body>\n" +
                                             "    <form runat=\"server\">\n" +
                                             "\n" +
-                                            "    <div id=\"divprint\" style=\"  width: 990;\n" +
-                                            "       margin-right: auto;\n" +
-                                            "       margin-left: auto;\n" +
-                                            "       padding-left: 15px;\n" +
-                                            "       padding-right: 15px;\">\n" +
-                                            "\n" +
-                                            " <div style=\" margin-left: -15px;margin-right: -15px;\">\n"  +
-                                            " <div style=\"   width: 100%;\n" +
-                                            "   min-width: 992px;\n" +
-                                            "   position: relative;  margin-bottom:15px;\n" +
-                                            "   min-height: 1px;\n" +
-                                            "   padding-left: 15px;\n" +
-                                            "   padding-right: 15px;\">\n" +
-                                            "\n" +
-                                            "                <div style=\"width: 100%;display: flex; margin-left: -15px;margin-right: -15px;\">\n" +
-                                            "                    <div style=\" flex: 50%;  \">\n" +
+                                            " <div class=\"row\">\n" +
+                                            "                <div class=\"column\" >\n" +
+                                            "                    <div >\n" +
                                             "                        <address>\n" +
-                                            "                            <strong style=\"font: 700;\">\n" +Company_Name+
-                                            "                               </strong><br />" +Address+
-                                            "                           <br />" +Contact+
-                                            "                            <br />" +
+                                            "                            <strong style=\"font: 700;\">\n" +
+                                            "                               </strong><br></br>" +
+                                            "                          <br></br>" +
+                                            "                           <br></br>" +
                                             "                        </address>" +
                                             "                    </div>" +
-                                            "                    <div style=\"  flex: 50%; width: 100%;  text-align: right;\">" +
+                                            "                    <div >" +
                                             "                        <address>" +
                                             "                        " +
-                                            "                            <img src="+ imgurl +">" +
+//                                            "                            <img src="+ imgurl +">" +
                                             "                        </address>\n" +
                                             "                    </div>" +
                                             "                </div>" +
-                                            "                <div style=\" display: flex; margin-left: -15px;margin-right: -15px;\">\n" +
-                                            "                    <div  style=\" flex: 50%;  \">\n" +
+                                            "                <div class=\"column\" >\n" +
+                                            "                    <div  >\n" +
                                             "                        <address>\n" +
-                                            "                            <strong>Bill To:</strong><br />\n" +
-                                            "                            <strong style=\"font: 900;\">"+Name +"</strong><br>\n" + Member_Email_ID+
-                                            "                           <br>\n" +Member_Contact+
+                                            "                            <strong></strong><br></br>\n" +
+                                            "                            <strong style=\"font: 900;\">"+"</strong><br></br>\n" +
+                                            "                           <br></br>\n" +
                                             "                        </address>\n" +
                                             "                    </div>" +
-                                            "                    <div style=\" flex: 50%;  width: 100%;  text-align: right;\">" +
+                                            "                    <div >" +
                                             "                        <address>" +
-                                            "                            <strong>Invoice Date :"+invoice_date+"</strong><br>\n" +
+                                            "                            <strong>"+"</strong><br></br>\n" +
                                             "\n" +
-                                            "                            <strong>Invoice No : "+Invoice_ID+"</strong>\n" +
-                                            "\n" +
+                                            "                            <strong> "+"</strong><br></br>\n" +
+                                            "                            <strong>  "+"</strong>\n" +
                                             "                        </address>\n" +
                                             "                    </div>\n" +
                                             "                </div>\n" +
-                                            "            </div>\n" +
-                                            "        </div>\n" +
+                                            "      </div>\n" +
                                             "\n" +
-                                            "        <div  style=\" margin-left: -15px;margin-right: -15px;\">\n" +
+                                            "        <div  >\n" +
                                             "\n" +
-                                            "            <div style=\"   width: 100%;\n" +
-                                            "   min-width: 992px;\n" +
-                                            "   position: relative;\n" +
-                                            "   min-height: 1px;\n" +
-                                            "   padding-left: 15px;\n" +
-                                            "   padding-right: 15px; \">\n" +
-                                            "                <div style=\"  margin-bottom: 20px;\n" +
-                                            "   background-color: #fff;\n" +
-                                            "   border: 1px solid transparent;\n" +
-                                            "   border-radius: 4px;\n" +
-                                            "   -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.05);\n" +
-                                            "   box-shadow: 0 1px 1px rgba(0,0,0,.05); border-color: #ddd;\">\n" +
-                                            "                    <div  style=\" padding: 10px 15px;\n" +
-                                            "   border-bottom: 1px solid transparent;\n" +
-                                            "   border-top-right-radius: 3px;\n" +
-                                            "   border-top-left-radius: 3px; background-color: darkgrey; border-color: black;\">\n" +
-                                            "                        <h3 style=\"  margin-top: 0;\n" +
-                                            "   margin-bottom: 0;\n" +
-                                            "   font-size: 16px;\n" +
-                                            "   color: inherit; \"><strong>Package Summary</strong></h3>\n" +
+                                            "            <div >\n" +
+                                            "                <div >\n" +
+                                            "                    <div  >\n" +
+                                            "                        <h3 ><strong>Package Summary</strong></h3>\n" +
                                             "                    </div>\n" +
-                                            "                    <div  style=\" padding: 15px;\n" +
-                                            "   content: \" \";\n" +
-                                            "      display: table;\n" +
-                                            "      clear: both;padding: 0px; border-color: black;\">\n" +
-                                            "                        <div  style=\"min-height:.01%;overflow-x:auto; width:100%;" +
-                                            "overflow-y:hidden;-ms-overflow-style:-ms-autohiding-scrollbar;border:1px solid #ddd;" +
-                                            "overflow: hidden;\">\n" +
-                                            "                            <table  style=\"margin-bottom: 0px; border: thick; width: 100%;  max-width: 100%;\n" +
-                                            "   background-color: transparent;\n" +
-                                            "   border-collapse: collapse;\n" +
-                                            "   border-spacing: 0;\">\n" +
-                                            "                                <thead style=\"  display: table-header-group;\n" +
-                                            "   vertical-align: middle;\n" +
-                                            "   border-color: inherit;\">\n" +
-                                            "                                    <tr style=\"display: table-row;\n" +
-                                            "   vertical-align: inherit;\n" +
-                                            "   border-color: inherit;border: thick; border-color: black;\">\n" +
-                                            "                                      <td style=\"display: table-cell;\n" +
-                                            "                                                vertical-align: inherit;\n" +
-                                            "                                                border: 1px solid #ddd;\n" +
-                                            "                                                padding: 8px;\n" +
-                                            "                                                line-height: 1.428571429;\n" +
-                                                                                            "    vertical-align: top; \"><strong>Package</strong></td>\n" +
-                                            "                                       <td style=\" display: table-cell;\n" +
-                                            "                                                   vertical-align: inherit;\n" +
-                                            "                                                   border: 1px solid #ddd;\n" +
-                                            "                                                   padding: 8px;\n" +
-                                            "                                                   line-height: 1.428571429;\n" +
-                                            "                                                   vertical-align: top;  text-align: center;\" ><strong>Duration</strong></td>\n" +
-                                            "                                        <td style=\" display: table-cell;\n " +
-                                            "                                                vertical-align: inherit;\n" +
-                                            "                                              border: 1px solid #ddd;\n" +
-                                            "                                                padding: 8px; \n" +
-                                            "                                               line-height: 1.428571429;\n \n" +
-                                            "                                              vertical-align: top;  text-align: center;\"><strong>Session</strong></td>                                    \n" +
-                                            "                                        <td style=\" display: table-cell;\n \n" +
-                                            "                                               vertical-align: inherit;\n \n" +
-                                            "                                              border: 1px solid #ddd;\n" +
-                                            "                                               padding: 8px;\n" +
-                                            "                                               line-height: 1.428571429; \n" +
-                                            "                                               vertical-align: top;  text-align: center;\"><strong>StartDate</strong></td>\n" +
-                                            "                                        <td style=\" display: table-cell; \n" +
-                                            "                                               vertical-align: inherit; \n" +
-                                            "                                              border: 1px solid #ddd;\n" +
-                                            "                                               padding: 8px;\n" +
-                                            "                                               line-height: 1.428571429; \n" +
-                                            "                                                vertical-align: top;  text-align: center;\"><strong>EndDate</strong></td>\n" +
-                                            "                                        <td style=\" display: table-cell;\n \n" +
-                                            "                                               vertical-align: inherit;\n \n" +
-                                            "                                               border: 1px solid #ddd;\n \n" +
-                                            "                                               padding: 8px;\n \n" +
-                                            "                                               line-height: 1.428571429;\n \n" +
-                                            "                                            vertical-align: top;  text-align: center;\"><strong>Time</strong></td>\n" +
-                                            "                                        <td style=\" display: table-cell;\n \n" +
-                                            "                                               vertical-align: inherit;\n \n" +
-                                            "                                              border: 1px solid #ddd;\n \n" +
-                                            "                                               padding: 8px;\n \n" +
-                                            "                                               line-height: 1.428571429;\n \n" +
-                                            "                                                vertical-align: top;  text-align: center;\"><strong>Instructor</strong></td>\n" +
-                                            "                                        <td style=\" display: table-cell;\n \n" +
-                                            "                                               vertical-align: inherit;\n \n" +
-                                            "                                              border: 1px solid #ddd;\n" +
-                                            "                                               padding: 8px; \n" +
-                                            "                                               line-height: 1.428571429;\n \n" +
-                                            "                                                vertical-align: top;  text-align: right;\"><strong>Package Fees</strong></td>\n" +
-                                            "\n" +
+                                            "                    <div  >\n" +
+                                            "                        <div  >\n" +
+                                            "   <table border = '1' cellpadding=\"6\"  width=\"100%\" >\n" +
+                                            "                             <thead height=\"100\" >\n" +
+                                            "                                    <tr height=\"100\" >\n" +
+                                            "                                      <th ><strong>Package</strong></th>\n" +
+                                            "                                       <th ><strong>Duration</strong></th>\n" +
+                                            "                                       <th ><strong>Session</strong></th>                                    \n" +
+                                            "                                       <th ><strong>StartDate</strong></th>\n" +
+                                            "                                       <th ><strong>EndDate</strong></th>\n" +
+                                            "                                       <th ><strong>Time</strong></th>\n" +
+                                            "                                       <th ><strong>Instructor</strong></th>\n" +
+                                            "                                       <th ><strong>Package Fees</strong></th>\n" +
                                             "                                    </tr>\n" +
                                             "                                </thead>\n" +
-                                            "                                <tbody style=\"     display: table-row-group;\n\n" +
-                                            "                                              vertical-align: middle;\n\n" +
-                                            "                                              border-color: inherit;\">\n" +
-                                            "                                    <!-- foreach ($order->lineItems as $line) or some such thing here -->\n" +
-                                            "                                    <tr style=\"display: table-row; \n" +
-                                            "                                               vertical-align: inherit; \n" +
-                                            "                                               border-color: inherit;border: thick; border-color: black;\">\n" +
-                                            "                                        <td style=\"display: table-cell; \n" +
-                                            "                                               vertical-align: inherit;\n \n" +
-                                            "                                              border: 1px solid #ddd;\n" +
-                                            "                                               padding: 8px; \n" +
-                                            "                                               line-height: 1.428571429; \n" +
-                                            "                                                vertical-align: top; \">"+Package_Name+"</td>\n" +
-                                            "                                         <td style=\" display: table-cell;\n \n" +
-                                            "                                               vertical-align: inherit;\n \n" +
-                                            "                                               border: 1px solid #ddd;\n" +
-                                            "                                               padding: 8px; \n" +
-                                            "                                               line-height: 1.428571429;\n \n" +
-                                            "                                                vertical-align: top;  text-align: center;\">"+Duration_Days+"</td>\n" +
-                                            "                                        <td style=\" display: table-cell; \n" +
-                                            "                                               vertical-align: inherit; \n" +
-                                            "                                              border: 1px solid #ddd;\n" +
-                                            "                                               padding: 8px; \n" +
-                                            "                                               line-height: 1.428571429;\n" +
-                                            "                                                vertical-align: top;  text-align: center;\">"+Session+"</td>                                       \n" +
-                                            "                                        <td style=\" display: table-cell; \n" +
-                                            "                                               vertical-align: inherit; \n" +
-                                            "                                              border: 1px solid #ddd;\n" +
-                                            "                                               padding: 8px; \n" +
-                                            "                                               line-height: 1.428571429; \n" +
-                                            "                                                vertical-align: top;  text-align: center;\">"+start_date+"</td>\n" +
-                                            "                                        <td style=\" display: table-cell; \n" +
-                                            "                                               vertical-align: inherit; \n" +
-                                            "                                              border: 1px solid #ddd;\n" +
-                                            "                                               padding: 8px; \n" +
-                                            "                                               line-height: 1.428571429; \n" +
-                                            "                                                vertical-align: top;  text-align: center;\">"+end_date+"</td>\n" +
-                                            "                                        <td style=\" display: table-cell; \n" +
-                                            "                                               vertical-align: inherit; \n" +
-                                            "                                              border: 1px solid #ddd;\n" +
-                                            "                                               padding: 8px; \n" +
-                                            "                                               line-height: 1.428571429; \n" +
-                                            "                                                vertical-align: top;  text-align: center;\">"+Time+"</td>\n" +
-                                            "                                        <td style=\" display: table-cell; \n" +
-                                            "                                               vertical-align: inherit; \n" +
-                                            "                                              border: 1px solid #ddd;\n" +
-                                            "                                               padding: 8px; \n" +
-                                            "                                               line-height: 1.428571429; \n" +
-                                            "                                                vertical-align: top;  text-align: center;\">"+Instructor_Name+"</td>\n" +
-                                            "                                        <td style=\" display: table-cell; \n\n" +
-                                            "                                            vertical-align: inherit; \n\n" +
-                                            "                                           border: 1px solid #ddd;\n" +
-                                            "                                            padding: 8px; \n\n" +
-                                            "                                            line-height: 1.428571429; \n\n" +
-                                            "                                             vertical-align: top; text-align: right;\">"+Package_Fees+"</td>\n" +
+                                            "                               <tbody height=\"100\" >\n" +
+                                            "                                    <tr height=\"100\" >\n" +
+                                            "                                        <td >"+Package_Name+"</td>\n" +
+                                            "                                         <td >"+Duration_Days+"</td>\n" +
+                                            "                                        <td >"+Session+"</td>                                       \n" +
+                                            "                                        <td >"+start_date+"</td>\n" +
+                                            "                                        <td >"+end_date+"</td>\n" +
+                                            "                                        <td >"+Time+"</td>\n" +
+                                            "                                        <td >"+Instructor_Name+"</td>\n" +
+                                            "                                        <td >"+Package_Fees+"</td>\n" +
                                             "                                    </tr>\n" +
-                                            "\n" +
                                             "                                </tbody>\n" +
                                             "                            </table>\n" +
                                             "                        </div>\n" +
                                             "                    </div>\n" +
-                                            "\n" +
-                                            "                    <div style=\""+
-                                            "      display: table;\n" +
-                                            "      clear: both; padding: 15px;\n" +
-                                            "   content: \" \";\n" +
-                                            "      display: table;\n" +
-                                            "      \" >\n" +
-                                            "                        <div  style=\"min-height:.01%;overflow-x:auto; width:100%;\" \n" +
-                                            "                                            overflow-y:hidden;-ms-overflow-style:-ms-autohiding-scrollbar;border:1px solid #ddd;\n" +
-                                            "                                            overflow: hidden;\">\n" +
-                                            "                            <table  style=\" width: 100%;   max-width: 100%;\n" +
-                                            "   background-color: transparent;\n" +
-                                            "   border-collapse: collapse;\n" +
-                                            "   border-spacing: 0;margin-bottom: 0px;\">\n" +
-                                            "                                <thead>\n" +
-                                            "                                    <tr style=\"display: table-row; \n" +
-                                            "                                              vertical-align: inherit; \n" +
-                                            "                                            \t    border-color: inherit;border: thick; border-color: black;\">\n" +
-                                            "                                        <td style=\"display: table-cell; \n" +
-                                            "                                            \t    vertical-align: inherit; \n" +
-                                            "                                            \t     border: 1px solid #ddd; \n" +
-                                            "                                            \t    padding:8px; \n" +
-                                            "                                            \t    line-height: 1.428571429; \n" +
-                                            "                                             vertical-align: top; \"><strong>Discount</strong></td>\n" +
-                                            "                                        <td style=\" display: table-cell; \n" +
-                                            "                                            \t    vertical-align: inherit; \n" +
-                                            "                                                border: 1px solid #ddd; \n" +
-                                            "                                               padding:8px; \n" +
-                                            "                                               line-height: 1.428571429; \n" +
-                                            "                                                vertical-align: top;  text-align: center;\"><strong>Reg Fees</strong></td>\n" +
-                                            "                                        <td style=\" display: table-cell; \n" +
-                                            "                                               vertical-align: inherit; \n" +
-                                            "                                                border: 1px solid #ddd; \n" +
-                                            "                                               padding:8px; \n" +
-                                            "                                               line-height: 1.428571429; \n" +
-                                            "                                                vertical-align: top;  text-align: center;\"><strong>Total Amount</strong></td>\n" +
-                                            "                                        <td style=\" display: table-cell; \n" +
-                                            "                                              vertical-align: inherit; \n" +
-                                            "                                               border: 1px solid #ddd; \n" +
-                                            "                                              padding:8px; \n" +
-                                            "                                              line-height: 1.428571429; \n" +
-                                            "                                                vertical-align: top;  text-align: center;\"><strong>Paid Amount</strong></td>\n" +
-                                            "                                        <td style=\" display: table-cell; \n\n \n" +
-                                            "                                           vertical-align: inherit; \n\n" +
-                                            "                                            border: 1px solid #ddd; \n" +
-                                            "                                           padding:8px; \n\n\n" +
-                                            "                                           line-height: 1.428571429; \n\n\n" +
-                                            "                                             vertical-align: top; text-align: right;\"><strong>Balance</strong></td>\n" +
-                                            "\n" +
+                                            "                    <div >\n" +
+                                            "                        <div  >\n" +
+                                            "                            <table border = '1' cellpadding=\"6\"  width=\"100%\" >\n" +
+                                            "                                <thead height=\"100\">\n" +
+                                            "                                    <tr height=\"100\" >\n" +
+                                            "                                        <th ><strong>Discount</strong></th>\n" +
+                                            "                                        <th ><strong>Reg Fees</strong></th>\n" +
+                                            "                                        <th ><strong>Total Amount</strong></th>\n" +
+                                            "                                        <th ><strong>Paid Amount</strong></th>\n" +
+                                            "                                        <th ><strong>Balance</strong></th>\n" +
                                             "                                    </tr>\n" +
                                             "                                </thead>\n" +
-                                            "                                <tbody style=\"     display: table-row-group;\n\n" +
-                                            "                                              vertical-align: middle;\n" +
-                                            "                                              border-color: inherit;\">\n" +
-                                            "                                    <!-- foreach ($order->lineItems as $line) or some such thing here -->\n" +
+                                            "                                <tbody >\n" +
                                             "                                    <tr>\n" +
-                                            "                                        <td style=\" display: table-cell; \n\n" +
-                                            "                                            vertical-align: inherit; \n \n" +
-                                            "                                             border: 1px solid #ddd;\n \n" +
-                                            "                                            padding:8px; \n\n" +
-                                            "                                            line-height: 1.428571429; \n\n" +
-                                            "                                            vertical-align: top;  \">"+Discount+"</td>\n" +
-                                            "                                        <td style=\" display: table-cell; \n" +
-                                            "                                              vertical-align: inherit; \n" +
-                                            "                                               border: 1px solid #ddd;\n" +
-                                            "                                              padding:8px; \n" +
-                                            "                                              line-height: 1.428571429; \n" +
-                                            "                                              vertical-align: top;  text-align: center;\">"+Registration_Fees+"</td>\n" +
+                                            "                                        <td >"+Discount+"</td>\n" +
+                                            "                                        <td >"+Registration_Fees+"</td>\n" +
                                             "                                       \n" +
-                                            "                                        <td style=\" display: table-cell; \n" +
-                                            "                                              vertical-align: inherit; \n" +
-                                            "                                               border: 1px solid #ddd;\n" +
-                                            "                                              padding:8px; \n" +
-                                            "                                              line-height: 1.428571429; \n" +
-                                            "                                               vertical-align: top;  text-align: center;\">"+Rate+"</td>\n" +
-                                            "                                        <td style=\" display: table-cell; \n" +
-                                            "                                              vertical-align: inherit; \n" +
-                                            "                                               border: 1px solid #ddd;\n" +
-                                            "                                              padding:8px; \n" +
-                                            "                                              line-height: 1.428571429; \n" +
-                                            "                                                vertical-align: top;  text-align: center;\">"+Final_paid+"</td>\n" +
-                                            "                                        <td style=\" display: table-cell; \n\n" +
-                                            "                                             vertical-align: inherit; \n" +
-                                            "                                              border: 1px solid #ddd;\n" +
-                                            "                                             padding:8px; \n\n" +
-                                            "                                             line-height: 1.428571429; \n\n" +
-                                            "                                               vertical-align: top; text-align: right;\">"+Final_Balance+"</td>\n" +
+                                            "                                        <td >"+Rate+"</td>\n" +
+                                            "                                        <td >"+Final_paid+"</td>\n" +
+                                            "                                        <td >"+Final_Balance+"</td>\n" +
                                             "                                    </tr>\n" +
-                                            "\n" +
                                             "                                </tbody>\n" +
                                             "                            </table>\n" +
                                             "                        </div>\n" +
@@ -2080,123 +1969,47 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                             "        </div>\n" +
                                             "\n" +
                                             "       \n" +
-                                            " <div  style=\" margin-left: -15px;margin-right: -15px;\">\n" +
+                                            " <div  >\n" +
                                             "\n" +
-                                            "    <div style=\"   width: 100%;\n" +
-                                            "   min-width: 992px;\n" +
-                                            "   position: relative;\n" +
-                                            "   min-height: 1px;\n" +
-                                            "   padding-left: 15px;\n" +
-                                            "   padding-right: 15px; \">\n" +
+                                            "    <div >\n" +
 
-                                            "            <div style=\" \n" +
-                                            "    background-color: #fff;\n" +
-                                            "    border: 1px solid transparent; \n" +
-                                            "    border-radius: 4px;\n" +
-                                            "    -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.05);\n" +
-                                            "    box-shadow: 0 1px 1px rgba(0,0,0,.05);\n" +
-                                            "    border-color: #ddd;\">\n" +
-                                            "                <div  style=\"  padding: 10px 15px;\n" +
-                                            "    border-bottom: 1px solid transparent;\n" +
-                                            "   border-top-right-radius: 3px;\n" +
-                                            "    border-top-left-radius: 3px; background-color: darkgrey; border-color: black;\">\n" +
-                                            "                        <h3 style=\"  margin-top: 0;\n" +
-                                            "    margin-bottom: 0;\n" +
-                                            "    font-size: 16px;\n" +
-                                            "    color: inherit;\"><strong>Payment Transaction</strong></h3>\n" +
+                                            "            <div >\n" +
+                                            "                <div  >\n" +
+                                            "                        <h3 ><strong>Payment Transaction</strong></h3>\n" +
                                             "                    </div>\n" +
-                                            "                <div style=\""+
-                                            "                   content: \" \";\n" +
-                                            "                   display: table;\n" +
-                                            "                   padding: 15px;\n" +
-                                            "                   display: table;\n" +
-                                            "                   clear: both;\" >\n" +
-                                            "                        <div style=\"min-height:.01%;overflow-x:auto; width:100%; \n" +
-                                            "                                           overflow-y:hidden;-ms-overflow-style:-ms-autohiding-scrollbar;border:1px solid #ddd;\n" +
-                                            "                                            overflow: hidden;\">\n" +
-                                            "                            <table  style=\"margin-bottom: 0px; border: thick;width: 100%;  max-width: 100%;\n\n" +
-                                            "                                            background-color: transparent;\n\n" +
-                                            "                                            border-collapse: collapse;\n\n" +
-                                            "                                            border-spacing: 0;\">\n" +
-                                            "                                <thead>\n" +
-                                            "                                    <tr style=\"display: table-row; \n" +
-                                            "                                                vertical-align: inherit; \n" +
-                                            "                                               border-color: inherit;border: thick; border-color: black;\">\n" +
-                                            "                                        <td style=\" padding: 5px;\n\n" +
-                                            "                                            line-height: 1.428571429;\n\n" +
-                                            "                                            vertical-align: top;\n\n" +
-                                            "                                            border: 1px solid #ddd; display: table-cell; \n\n" +
-                                            "                                               text-align: center;\"><strong>#RNo</strong></td>\n" +
-                                            "                                        <td style=\"padding: 5px;\n\n" +
-                                            "                                                    line-height: 1.428571429;\n\n\n" +
-                                            "                                                    vertical-align: top;\n\n\n" +
-                                            "                                                    border: 1px solid #ddd; display: table-cell; \n\n" +
-                                            "                                                       text-align: center;\"><strong>Date</strong></td>\n" +
-                                            "                                        <td style=\"padding: 8px;\n\n \n" +
-                                            "                                                    line-height: 1.428571429;\n\n\n" +
-                                            "                                                    vertical-align: top;\n\n \n" +
-                                            "                                                    border: 1px solid #ddd; display: table-cell; \n \n" +
-                                            "                                                       text-align: center;\"><strong>Tax</strong></td>                                    \n" +
-                                            "                                        <td style=\"padding: 8px;\n\n\n" +
-                                            "                                                    line-height: 1.428571429;\n\n" +
-                                            "                                                    vertical-align: top;\n\n" +
-                                            "                                                    border: 1px solid #ddd; display: table-cell; \n \n" +
-                                            "                                                       text-align: center;\"><strong>Tax Amount</strong></td>\n" +
-                                            "                                        <td style=\"padding: 8px;\n\n" +
-                                            "                                                    line-height: 1.428571429;\n\n" +
-                                            "                                                    vertical-align: top;\n\n" +
-                                            "                                                    border: 1px solid #ddd; display: table-cell; \n\n" +
-                                            "                                                       text-align: center;\"><strong>Paid Amount</strong></td>\n" +
-                                            "                                        <td style=\"padding: 8px;\n \n" +
-                                            "                                                    line-height: 1.428571429;\n\n" +
-                                            "                                                    vertical-align: top;\n\n" +
-                                            "                                                    border: 1px solid #ddd; display: table-cell; \n\n" +
-                                            "                                                       text-align: center;\"><strong>Payment Mode</strong></td>\n" +
-                                            "                                        <td style=\"padding: 8px;\n \n" +
-                                            "                                                    line-height: 1.428571429;\n \n" +
-                                            "                                                    vertical-align: top;\n\n \n" +
-                                            "                                                    border: 1px solid #ddd; display: table-cell; \n\n" +
-                                            "                                                       text-align: center;\"><strong>Payment Details</strong></td>\n" +
-                                            "                                        <td style=\"padding: 5px;\n\n" +
-                                            "                                                    line-height: 1.428571429;\n\n" +
-                                            "                                                    vertical-align: top;\n \n" +
-                                            "                                                    border: 1px solid #ddd; display: table-cell; \n\n" +
-                                            "                                                       text-align: center;\"><strong>Executive</strong></td>\n" +
-                                            "                                    </tr>\n" +
-                                            "                                </thead>\n" +
-                                            "                                <tbody style=\"display: table-row-group;\n" +
-                                            "                                                 vertical-align: middle;\n" +
-                                        "                                                     border-color: inherit;\">\n" +
-                                            "                                    <!-- foreach ($order->lineItems as $line) or some such thing here -->\n" +
-                                                                                        textBody+
-                                            "\n" +
-                                            "                                </tbody>\n" +
-                                            "                            </table>\n" +
-                                            "                        </div>\n" +
-                                            "                    </div>\n" +
+                                            "                <div >\n" +
+                                            "              <div >\n" +
+                                            "             <table border = '1' cellpadding=\"6\"  width=\"100%\" >\n" +
+                                            "             <thead height=\"100\">\n" +
+                                            "                   <tr height=\"100\" >\n" +
+                                            "                      <th ><strong>#RNo</strong></th>\n" +
+                                            "                      <th ><strong>Date</strong></th>\n" +
+                                            "                      <th ><strong>Tax</strong></th>                                    \n" +
+                                            "                      <th ><strong>Tax Amount</strong></th>\n" +
+                                            "                      <th ><strong>Paid Amount</strong></th>\n" +
+                                            "                       <th ><strong>Payment Mode</strong></th>\n" +
+                                            "                       <th ><strong>Payment Details</strong></th>\n" +
+                                            "                       <th ><strong>Executive</strong></th>\n" +
+                                            "                    </tr>\n" +
+                                            "             </thead>\n" +
+                                            "           <tbody >\n" +
+                                                            textBody+
+                                            "          </tbody>\n" +
+                                            "       </table>\n" +
+                                            "       </div>\n" +
+                                            "       </div>\n" +
                                             "                     \n" +
-                                            "            </div>\n" +
-                                            "           </div>\n" +
-                                            "        </div>\n" +
+                                            "      </div>\n" +
+                                            "     </div>\n" +
+                                            "  </div>\n" +
                                             "\n" +
                                             "      \n" +
                                             "\n" +
-                                            "        <div  style=\" margin-left: -15px;margin-right: -15px;\">\n" +
-                                            "            <div style=\"   width: 100%;\n" +
-                                            "   min-width: 992px;\n" +
-                                            "   position: relative;\n" +
-                                            "   min-height: 1px;\n" +
-                                            "   padding-left: 15px;\n" +
-                                            "   padding-right: 15px;\">\n" +
-                                            "                                 <div  style=\"  padding: 10px 15px;\n" +
-                                            "   border-bottom: 1px solid transparent;\n" +
-                                            "   border-top-right-radius: 3px;\n" +
-                                            "   border-top-left-radius: 3px; background-color: darkgray; border-color: black;\">\n" +
-                                            "                        <h3 style=\"  margin-top: 0;\n" +
-                                            "   margin-bottom: 0;\n" +
-                                            "   font-size: 16px;\n" +
-                                            "   color: inherit;\"><strong>Terms And Conditions</strong></h3>\n" +
-                                            "                    </div>\n" +
+                                            "  <div  >\n" +
+                                            "    <div >\n" +
+                                            "       <div  >\n" +
+                                            "          <h3 ><strong>Terms And Conditions</strong></h3>\n" +
+                                            "       </div>\n" +
                                             "                  \n" +
                                             "                           "+TermsAndConditions+"\n" +
                                             "                     \n" +
@@ -2209,7 +2022,252 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                             "        </form>\n" +
                                             "</body>\n" +
                                             "</html>";
+                                    final Document document = new Document(PageSize.A4);
+
+                                    try {
+
+                                        PdfWriter docWriter = PdfWriter.getInstance(document, new FileOutputStream(pdfFile));
+                                        document.open();
+//
+
+                                        PdfContentByte cb = docWriter.getDirectContent();
+                                        //initialize fonts for text printing
+                                        initializeFonts();
+
+                                        //the company logo is stored in the assets which is read only
+                                        //get the logo and print on the document
+                                        String urlOfImage = "https://lh5.googleusercontent.com/E3eX_"
+                                                + "hgl-eK9cX6j6XMyM6eOkCPvYs9Us5ySKIu60_fYFGlKywKP9pGfNcTj"
+                                                + "7WDSnDb4zrHubFRLHGK4DqBiLBa4HzRAWx728iHpDrL21HxzsEXSHAa"
+                                                + "lK49-rBzvU3DlmGURrwg";
+
+                                        //Add Image from some URL
+                                        Thread thread = new Thread(new Runnable() {
+                                            //
+                                            @Override
+                                            public void run() {
+                                                try  {
+                                                    Image image = Image.getInstance(new URL(imgurl));
+                                                    image.setAbsolutePosition(510,750);
+                                                    image.scalePercent(50);
+//                                                    //Set absolute position for image in PDF (or fixed)
+//                                                    image.setAbsolutePosition(100, 500);
+//                                                    //Scale image's width and height
+//                                                    image.scaleAbsolute(200, 200);
+//                                                    //Scale image's height
+//                                                    image.scaleAbsoluteWidth(200);
+//                                                    //Scale image's width
+//                                                    image.scaleAbsoluteHeight(200);
+                                                    document.add(image);
+                                                    //Your code goes here
+                                                } catch (Exception e) {
+                                                    e.printStackTrace();
+                                                }
+                                            }
+                                        });
+
+                                        thread.start();
+//
+                                        // creating a sample invoice with some customer data
+                                        createHeadings(cb,50,780,Company_Name);
+                                        createHeadings(cb,50,765,Address);
+                                        createHeadings(cb,50,750,Contact);
+                                        createHeadings(cb,50,735,"Bill To");
+                                        createHeadings(cb,50,720,Name);
+                                        createHeadings(cb,50,705,Email);
+                                        createHeadings(cb,50,690,Member_Contact);
+
+                                        createHeadings(cb,455,735,"Invoice Date :"+invoice_date);
+                                        createHeadings(cb,455,720,"Invoice No : "+Invoice_ID);
+                                        createHeadings(cb,455,705,"Member Id : "+member_id);
+//
+//                                        cb.beginText();
+//                                        cb.setFontAndSize(bfBold, 16);
+//                                        cb.setTextMatrix(50,640);
+//                                        cb.showText("Package Summary".trim());
+//                                        cb.endText();
+//                                        //createHeadings(cb,500,640,"Package Summary");
+//                                        //list all the products sold to the customer
+//                                        float[] columnWidths = {2f, 1.7f, 1.7f,2.2f, 2.2f,1.2f,2f};
+//                                        //create PDF table with the given widths
+//                                        PdfPTable table = new PdfPTable(columnWidths);
+//                                        // set table width a percentage of the page width
+//                                        table.setTotalWidth(550f);
+//                                        table.getDefaultCell().setMinimumHeight(30f);
+//                                        table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
+//                                        table.getDefaultCell().setVerticalAlignment(Element.ALIGN_MIDDLE);
+//                                        //Font boldFont = new Font(Font.FontFamily.UNDEFINED, 13, Font.BOLD);
+//                                        PdfPCell cell = new PdfPCell(new Phrase("Package",boldFont));
+//                                        cell.setMinimumHeight(30f);
+//                                        // cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+//                                        table.addCell(cell);
+//
+//                                        cell = new PdfPCell(new Phrase("Duration",boldFont));
+//                                        // cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+//                                        table.addCell(cell);
+//                                        cell = new PdfPCell(new Phrase("Session",boldFont));
+//                                        //cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+//                                        table.addCell(cell);
+//                                        cell = new PdfPCell(new Phrase("Start Date",boldFont));
+//                                        // cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+//                                        table.addCell(cell);
+//                                        cell = new PdfPCell(new Phrase("End Date",boldFont));
+//                                        // cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+//                                        table.addCell(cell);
+//                                        cell = new PdfPCell(new Phrase("Time",boldFont));
+//                                        // cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+//                                        table.addCell(cell);
+//                                        cell = new PdfPCell(new Phrase("Instructor",boldFont));
+//                                        // cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+//                                        table.addCell(cell);
+//
+//                                        table.setHeaderRows(1);
+//
+//                                        // PdfPCell[] cells = table.getRow(0).getCells();
+//                                        // cells[0].setBackgroundColor(BaseColor.GRAY);
+//
+//                                        DecimalFormat df = new DecimalFormat("0.00");
+//                                        for(int j=0; j < 1; j++ ){
+//                                            cell.setMinimumHeight(30f);
+//                                            table.addCell(Package_Name);
+//                                            table.addCell(Duration_Days);
+//                                            table.addCell(Session);
+//                                            table.addCell(s_date);
+//                                            table.addCell(end_date);
+//                                            table.addCell(Time);
+//                                            table.addCell(Instructor_Name);
+//                                        }
+//
+//                                        //absolute location to print the PDF table from
+//                                        table.writeSelectedRows(0, -1, document.leftMargin(), 620, docWriter.getDirectContent());
+//                                     //  document.add(table);
+//                                        float[] columnWidths1 = {2f, 1.7f, 1.7f,2.2f, 2.2f,1.2f};
+//                                        //create PDF table with the given widths
+//                                        PdfPTable table1 = new PdfPTable(columnWidths1);
+//                                        // set table width a percentage of the page width
+//                                        table1.setTotalWidth(550f);
+//                                        table1.getDefaultCell().setMinimumHeight(30f);
+//                                        table1.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
+//                                        table1.getDefaultCell().setVerticalAlignment(Element.ALIGN_MIDDLE);
+//                                        table1.getDefaultCell().setPadding(5f);
+//
+//                                        PdfPCell cell1 = new PdfPCell(new Phrase("Package Fees",boldFont));
+//                                        cell1.setMinimumHeight(30f);
+//                                        // cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
+//                                        table1.addCell(cell1);
+//                                        cell1 = new PdfPCell(new Phrase("Discount",boldFont));
+//                                        // cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
+//                                        table1.addCell(cell1);
+//                                        cell1 = new PdfPCell(new Phrase("Reg Fees",boldFont));
+//                                        // cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
+//                                        table1.addCell(cell1);
+//                                        cell1 = new PdfPCell(new Phrase("Total Amount",boldFont));
+//                                        //cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
+//                                        table1.addCell(cell1);
+//                                        cell1 = new PdfPCell(new Phrase("Paid Amount",boldFont));
+//                                        // cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
+//                                        table1.addCell(cell1);
+//                                        cell1 = new PdfPCell(new Phrase("Balance",boldFont));
+//                                        // cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
+//                                        table1.addCell(cell1);
+//                                        table1.setHeaderRows(1);
+////                                        PdfPCell[] cells = table.getRow(0).getCells();
+////                                        cells[0].setBackgroundColor(BaseColor.GRAY);
+//
+//                                        for(int j=0; j < 1; j++ ){
+//                                            cell1.setMinimumHeight(30f);
+//                                            table1.addCell(Package_Fees);
+//                                            table1.addCell(Discount);
+//                                            table1.addCell(Registration_Fees);
+//                                            table1.addCell(Rate);
+//                                            table1.addCell(Final_paid);
+//                                            table1.addCell(Final_Balance);
+//
+//                                        }
+//
+//                                        //absolute location to print the PDF table from
+//                                        table1.writeSelectedRows(0, -1, document.leftMargin(), 560, docWriter.getDirectContent());
+//                                         //   document.add(table1);
+//                                        cb.beginText();
+//                                        cb.setFontAndSize(bfBold, 16);
+//                                        cb.setTextMatrix(50,475);
+//                                        cb.showText("Payment Transaction".trim());
+//                                        cb.endText();
+////
+//
+//                                        //document.add(tablePayTrasa);
+//                                        tablePayTrasa.writeSelectedRows(0, -1, document.leftMargin(), 450, docWriter.getDirectContent());
+//                                        document.newPage();
+//                                        cb.beginText();
+//                                        cb.setFontAndSize(bfBold, 16);
+//                                        cb.setTextMatrix(50,750);
+//                                        cb.showText("Terms And Conditions".trim());
+//                                        cb.endText();
+//
+////                                        float[] columnWidthstandc = {10f};
+////                                        //create PDF table with the given widths
+////                                        PdfPTable tabletandc = new PdfPTable(columnWidthstandc);
+////                                        // set table width a percentage of the page width
+////                                        tabletandc.setTotalWidth(550f);
+////                                        tabletandc.getDefaultCell().setMinimumHeight(500f);
+////                                        tabletandc.getDefaultCell().setHorizontalAlignment(Element.ALIGN_JUSTIFIED);
+////                                        tabletandc.getDefaultCell().setVerticalAlignment(Element.ALIGN_MIDDLE);
+////                                        tabletandc.getDefaultCell().setPadding(5f);
+////                                        tabletandc.getDefaultCell().setBorder(Rectangle.NO_BORDER);
+////                                        PdfPCell celltandc = new PdfPCell(new Phrase("Terms And Conditions",boldFont));
+////                                        tabletandc.addCell(celltandc);
+////                                        //document.add(tabletandc);
+////                                        tabletandc.writeSelectedRows(0, -1, document.leftMargin(), 780, docWriter.getDirectContent());
+//
+//                                        float[] columnWidthst = {10f};
+//                                        //create PDF table with the given widths
+//                                        PdfPTable tablet = new PdfPTable(columnWidthst);
+//                                        // set table width a percentage of the page width
+//                                        tablet.setTotalWidth(550f);
+//                                        tablet.getDefaultCell().setMinimumHeight(500f);
+//                                        tablet.getDefaultCell().setHorizontalAlignment(Element.ALIGN_JUSTIFIED);
+//                                        tablet.getDefaultCell().setVerticalAlignment(Element.ALIGN_MIDDLE);
+//                                        tablet.getDefaultCell().setPadding(5f);
+//                                        tablet.getDefaultCell().setBorder(Rectangle.NO_BORDER);
+////
+//                                        tablet.addCell(Html.fromHtml(message).toString());
+//                                        //document.add(tablet);
+//                                        tablet.writeSelectedRows(0, -1, document.leftMargin(), 950, docWriter.getDirectContent());
+//
+//                                        CSSResolver cssResolver =
+//                                                XMLWorkerHelper.getInstance().getDefaultCssResolver(false);
+////                                        FileRetrieve retrieve = new FileRetrieveImpl(CSS_DIR);
+//////                                        cssResolver.setFileRetrieve(retrieve);
+//                                        HtmlPipelineContext htmlContext = new HtmlPipelineContext(null);
+//                                        htmlContext.setTagFactory(Tags.getHtmlTagProcessorFactory());
+//                                        //htmlContext.setImageProvider(new Base64ImageProvider());
+//
+//                                        // Pipelines
+//                                        PdfWriterPipeline pdf = new PdfWriterPipeline(document, docWriter);
+//                                       // CustomPipeline custom = new CustomPipeline(pdf);
+//                                        HtmlPipeline html = new HtmlPipeline(htmlContext, pdf);
+//                                        CssResolverPipeline css = new CssResolverPipeline(cssResolver, html);
+//                                       // HTMLWorker htmlWorker = new HTMLWorker(document);
+//                                        XMLWorker worker = new XMLWorker(css, true);
+//                                        XMLParser p = new XMLParser(worker);
+//                                        p.parse(new StringReader(message));
+//
+//                                       XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
+//                                        InputStream is = new ByteArrayInputStream(message.getBytes(StandardCharsets.UTF_8));
+//                                        worker.parseXHtml(docWriter, document, is, Charset.forName("UTF-8"));
+
+                                        HTMLWorker htmlWorker = new HTMLWorker(document);
+                                        htmlWorker.parse(new StringReader(messagehtml));
+                                        document.close();
+                                       // document.close();
+                                    }
+                                    catch(Exception e){
+                                        e.printStackTrace();
+                                    }
+
                                     final String subject=Company_Name+" Receipt";
+                                    final String message="Dear Gym Member  Please find the attachment of Your Balance Details";
+
 
                                     CourseDetailsActivity.this.runOnUiThread(new Runnable() {
 
@@ -2229,7 +2287,22 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                                     m.setFrom("tulsababar.ndsoft@gmail.com");
                                                     m.setSubject(subject);
                                                     m.setBody(message);
-
+                                                    if (Build.VERSION.SDK_INT >= 23)
+                                                    {
+                                                        if (checkPermission())
+                                                        {
+                                                            // final File  file = BitmapSaver.saveImageToExternalStorage(RenewActivity.this, bmpqr);
+                                                            m.setAttachment(pdfFile);
+                                                            m.setAttachmentName(FilePath);
+                                                            // Code for above or equal 23 API Oriented Device
+                                                            // Your Permission granted already .Do next code
+                                                        } else {
+                                                            requestPermission(); // Code for permission
+                                                        }
+                                                    }else{
+                                                        // final File  file = BitmapSaver.saveImageToExternalStorage(RenewActivity.this, bmpqr);
+                                                        m.setAttachment(pdfFile);
+                                                    }
                                                     try {
                                                         if(m.send()) {
                                                             runOnUiThread(new Runnable() {
@@ -2329,10 +2402,10 @@ public class CourseDetailsActivity extends AppCompatActivity {
             String success = object.getString(getResources().getString(R.string.success));
 
             if (success.equalsIgnoreCase(getResources().getString(R.string.zero))) {
-
-                // showCustomDialog();
-
-                //inputEmail, inputPhone,inputAdd,inputReq,inputFollowupdate;
+                coursedetailsclass();
+                finish();
+                startActivity(getIntent());
+                overridePendingTransition(0, 0);
             }
             else if (success.equalsIgnoreCase(getResources().getString(R.string.two)))
             {
@@ -2386,6 +2459,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                                     Bundle bundle = new Bundle();
                                                     bundle.putSerializable("filter_array_list", filterArrayList);
                                                     intent.putExtra("BUNDLE",bundle);
+                                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                                     startActivity(intent);
                                                     overridePendingTransition(0, 0);
                                                    // moveTaskToBack(false);
@@ -2398,14 +2472,9 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                     coursedetailsclass();
                                     finish();
                                     startActivity(getIntent());
-                                    //Intent intent=new Intent(CourseDetailsActivity.this, CourseDetailsActivity.class);
-//                                    Bundle bundle = new Bundle();
-//                                    bundle.putSerializable("filter_array_list", filterArrayList);
-//                                    intent.putExtra("BUNDLE",bundle);
-                                    //startActivity(intent);
                                     overridePendingTransition(0, 0);
-                                   // moveTaskToBack(false);
-                                }
+
+                            }
                             }
                         }
                     }
@@ -2515,6 +2584,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                     String Financial_Year = jsonObj.getString("Financial_Year");
 
                                     //  for (int j = 0; j < 5; j++) {
+                                    start_date=Start_Date;
                                     filterArrayList.setName(name);
                                     String sdate=Utility.formatDate(Start_Date);
                                     String edate=Utility.formatDate(End_Date);
@@ -2712,6 +2782,34 @@ public class CourseDetailsActivity extends AppCompatActivity {
             }
         }
     }
+    private void createHeadings(PdfContentByte cb, float x, float y, String text){
+
+        cb.beginText();
+        cb.setFontAndSize(bfBold, 11);
+        cb.setTextMatrix(x,y);
+        cb.showText(text.trim());
+        cb.endText();
+
+    }
+    private void initializeFonts(){
+
+
+        try {
+            bfBold = BaseFont.createFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
+
+        } catch (DocumentException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
+
+
     @Override
     public boolean onSupportNavigateUp(){
         finish();
@@ -2722,5 +2820,37 @@ public class CourseDetailsActivity extends AppCompatActivity {
     public void onBackPressed() {
         //dismissProgressDialog();
         finish();
+    }
+    private static boolean isExternalStorageReadOnly() {
+        String extStorageState = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(extStorageState)) {
+            return true;
+        }
+        return false;
+    }
+
+    private static boolean isExternalStorageAvailable() {
+        String extStorageState = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(extStorageState)) {
+            return true;
+        }
+        return false;
+    }
+    private boolean checkPermission() {
+        int result = ContextCompat.checkSelfPermission(CourseDetailsActivity.this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if (result == PackageManager.PERMISSION_GRANTED) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private void requestPermission() {
+
+        if (ActivityCompat.shouldShowRequestPermissionRationale(CourseDetailsActivity.this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            Toast.makeText(CourseDetailsActivity.this, "Write External Storage permission allows us to do store images. Please allow this permission in App Settings.", Toast.LENGTH_LONG).show();
+        } else {
+            ActivityCompat.requestPermissions(CourseDetailsActivity.this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
+        }
     }
 }

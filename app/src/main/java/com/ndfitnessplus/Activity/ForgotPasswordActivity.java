@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,6 +42,8 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
+                WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_forgot_password);
 
 
@@ -55,6 +58,14 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 userForgotPassword();
+            }
+        });
+
+        backtologin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ForgotPasswordActivity.this, LoginActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -169,7 +180,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                                 String Company_Id = jsonObj.getString("Company_Id");
                                 String Contact = jsonObj.getString("Contact");
                                 forgotPassMsg="Hi "+name+",\n"+"your Login details\n\n"+"Username:"+username.getText().toString()+"\nPassword:"+password
-                                +"\n\nThanks\nNavkar Dreamsoft";
+                                +"\n\nThanks\nGymTime";
 
                                 if(!password.equals("")) {
                                     ForgotPasswordActivity.this.runOnUiThread(new Runnable() {
@@ -183,10 +194,10 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                                                 @Override
                                                 protected String doInBackground(String... params) {
                                                     String loginResult2 = ruc.SendSMS(contact.getText().toString(), forgotPassMsg,
-                                                            SharedPrefereneceUtil.getSmsUsername(ForgotPasswordActivity.this),
-                                                            SharedPrefereneceUtil.getSmsPassword(ForgotPasswordActivity.this),
-                                                            SharedPrefereneceUtil.getSmsRoute(ForgotPasswordActivity.this),
-                                                            SharedPrefereneceUtil.getSmsSenderid(ForgotPasswordActivity.this));
+                                                           "aaa1",
+                                                            "Navkaraaa1",
+                                                            "trans1",
+                                                            "Gymmmm");
                                                     Log.v(TAG, String.format("doInBackground :: Send Sms after enquiry= %s", loginResult2));
                                                     return loginResult2;
                                                 }

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Activity.GenerateQRActivity">
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <include layout="@layout/toolbar"/>
+
+    </android.support.design.widget.AppBarLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        <ImageView
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/qrcode"
+            android:layout_width="400.0dip"
+            android:layout_height="400.0dip"
+            android:src="@drawable/default_qrcode"
+            android:scaleType="fitXY" />
+
+        <Button
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/btn_send_mail"
+            android:background="@drawable/btn_rounded"
+            android:layout_width="200.0dip"
+            android:layout_height="45.0dip"
+            android:layout_marginLeft="14.0dip"
+            android:layout_marginTop="@dimen/spacing_middle"
+            android:layout_marginRight="14.0dip"
+            android:text="@string/send_on_mail"
+            android:textAllCaps="false" />
+    </LinearLayout>
+</LinearLayout>

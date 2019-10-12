@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -43,10 +44,12 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
+                WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_login);
-        intiComponent();
-    }
-    private  void intiComponent(){
+           intiComponent();
+}
+private  void intiComponent(){
 
         domain= SharedPrefereneceUtil.getDomainUrl(LoginActivity.this);
 
@@ -59,88 +62,88 @@ public class LoginActivity extends AppCompatActivity {
         viewDialog = new ViewDialog(this);
 
         login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                userLogin();
-            }
+@Override
+public void onClick(View v) {
+        userLogin();
+        }
         });
         login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isValidUsername()) {
-                    if (validatePassword()) {
-                        if (isOnline(LoginActivity.this)) {
-                            userLogin();// check login details are valid or not from server
-                        }
-                        else {
-                            android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(LoginActivity.this);
-                            builder.setMessage(R.string.internet_unavailable);
-                            builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    dialog.dismiss();
-                                }
-                            });
-                            android.app.AlertDialog dialog = builder.create();
-                            dialog.setCancelable(false);
-                            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                            dialog.show();
-                        }
-                    } else
-                        password.setError(getString(R.string.password_error));
-                } else
-                    username.setError(getString(R.string.invalid_username_error));
-            }
+@Override
+public void onClick(View v) {
+        if (isValidUsername()) {
+        if (validatePassword()) {
+        if (isOnline(LoginActivity.this)) {
+        userLogin();// check login details are valid or not from server
+        }
+        else {
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(LoginActivity.this);
+        builder.setMessage(R.string.internet_unavailable);
+        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+public void onClick(DialogInterface dialog, int id) {
+        dialog.dismiss();
+        }
+        });
+        android.app.AlertDialog dialog = builder.create();
+        dialog.setCancelable(false);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.show();
+        }
+        } else
+        password.setError(getString(R.string.password_error));
+        } else
+        username.setError(getString(R.string.invalid_username_error));
+        }
         });
         forgetpwd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent(LoginActivity.this,ForgotPasswordActivity.class);
-                startActivity(intent);
-            }
+@Override
+public void onClick(View v) {
+        Intent intent=new Intent(LoginActivity.this,ForgotPasswordActivity.class);
+        startActivity(intent);
+        }
         });
-    }
-    //  ************  Validation of username and password **********
-    private boolean isValidUsername() {
+        }
+//  ************  Validation of username and password **********
+private boolean isValidUsername() {
         if (username.getText().length() < 4) {
-            return false;
+        return false;
         }
         return true;
-    }
-    private boolean validatePassword() {
+        }
+private boolean validatePassword() {
         if (password.getText().length() < 4) {
-            return false;
+        return false;
         }
         return true;
-    }
+        }
 
-    private void showProgressDialog() {
+private void showProgressDialog() {
         Log.v(TAG, String.format("showProgressDialog"));
         Utility.showProgressDialog(this);
 
-    }
+        }
 
-    /**
-     * Dismiss the Progress dialog.
-     */
+/**
+ * Dismiss the Progress dialog.
+ */
 
-    private void dismissProgressDialog() {
+private void dismissProgressDialog() {
         Log.v(TAG, String.format("dismissProgressDialog"));
         Utility.hideProgressBar();
 
-    }
-    private void userLogin() {
+        }
+private void userLogin() {
 
         if(InternetConnection.checkConnection(LoginActivity.this)) {
-            UserLoginClass ulc = new UserLoginClass();
-            Log.v(TAG, String.format("userLogin :: username,password = %s,%s", username.getText().toString(), password.getText().toString()));
-            ulc.execute();
+        UserLoginClass ulc = new UserLoginClass();
+        Log.v(TAG, String.format("userLogin :: username,password = %s,%s", username.getText().toString(), password.getText().toString()));
+        ulc.execute();
         }
         else
         {
 
-            Toast.makeText(LoginActivity.this,"Please Connect to Internet",Toast.LENGTH_SHORT).show();
+        Toast.makeText(LoginActivity.this,"Please Connect to Internet",Toast.LENGTH_SHORT).show();
         }
-    }
+        }
 
 /**
  * Perform the asyncTask sends data to server and gets response.
@@ -177,14 +180,19 @@ class UserLoginClass extends AsyncTask<String, Void, String> {
 
         HashMap<String, String> loginData = new HashMap<>();
         loginData.put("username",username.getText().toString());
+        Log.v(TAG, String.format("doInBackground :: username= %s",username.getText().toString()));
         loginData.put("password",password.getText().toString());
+        Log.v(TAG, String.format("doInBackground :: password= %s", password.getText().toString()));
         SharedPrefereneceUtil.setUserNm(LoginActivity.this, username.getText().toString());
-        loginData.put(ServerClass.ACTION,"login");
+        loginData.put("action","login");
+
         ServerClass ruc = new ServerClass();
         String domainurl=SharedPrefereneceUtil.getDomainUrl(LoginActivity.this);
+        Log.v(TAG, String.format("doInBackground :: loginResult= %s", domainurl+ServiceUrls.LOGIN_URL));
         String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, loginData);
 
         Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
+
         return loginResult;
 
     }

@@ -3,7 +3,7 @@ package com.ndfitnessplus.Model;
 import java.io.Serializable;
 
 public class MemberDataList implements Serializable {
-    String ID , name ,Gender ,BirthDate ,Contact ,Occupation , Status, ExecutiveName,image, blodGroup,Email,FollowupType,RegistrationDate;
+    String ID , name ,Gender ,BirthDate ,Contact ,Occupation , Status, ExecutiveName,image, blodGroup,Email,FollowupType,RegistrationDate,ContactEncrypt;
 
     public MemberDataList() {
     }
@@ -124,5 +124,13 @@ public class MemberDataList implements Serializable {
 
     public void setRegistrationDate(String registrationDate) {
         RegistrationDate = registrationDate;
+    }
+
+    public String getContactEncrypt() {
+        return ContactEncrypt;
+    }
+
+    public void setContactEncrypt(String contactEncrypt) {
+        ContactEncrypt = contactEncrypt;
     }
 }

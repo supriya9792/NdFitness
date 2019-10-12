@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class CourseList implements Serializable {
     String  ID , name ,Contact,registrationDate ,PackageNameWithDS , StartToEndDate ,  ExecutiveName,image, Rate,Paid, Balance,Email,
-            InvoiceID,PackageName,Tax,NextPaymentdate,financialYear,followuptype,Status;
+            InvoiceID,PackageName,Tax,NextPaymentdate,financialYear,followuptype,Status,ContactEncrypt;
 
     public CourseList() {
     }
@@ -173,5 +173,13 @@ public class CourseList implements Serializable {
 
     public void setStatus(String status) {
         Status = status;
+    }
+
+    public String getContactEncrypt() {
+        return ContactEncrypt;
+    }
+
+    public void setContactEncrypt(String contactEncrypt) {
+        ContactEncrypt = contactEncrypt;
     }
 }

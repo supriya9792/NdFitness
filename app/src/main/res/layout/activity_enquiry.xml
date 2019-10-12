@@ -71,25 +71,52 @@
             android:layout_marginRight="10dp"
             android:padding="@dimen/spacing_medium"
             android:gravity="center">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="5"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:gravity="end"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:text="Total Enquiries:"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_weight="1"
-                android:id="@+id/ttl_enq"
-                android:gravity="start"
-                android:layout_marginLeft="@dimen/spacing_small"
-                android:text="0"
-                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                />
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:gravity="start"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:text="Total Budget:"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:id="@+id/ttl_budget"
+                    android:gravity="start"
+                    android:layout_marginLeft="@dimen/spacing_small"
+                    android:text="0"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="5"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:gravity="end"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:text="Total Enquiries:"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/ttl_enq"
+                    android:gravity="start"
+                    android:layout_marginLeft="@dimen/spacing_small"
+                    android:text="0"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                    />
+            </LinearLayout>
         </LinearLayout>
 
         <FrameLayout

@@ -15,25 +15,18 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.ndfitnessplus.Activity.Notification.ExpenseFilterActivity;
-import com.ndfitnessplus.Activity.Notification.TodaysEnrollmentActivity;
-import com.ndfitnessplus.Adapter.CourseAdapter;
-import com.ndfitnessplus.Adapter.EnquiryAdapter;
 import com.ndfitnessplus.Adapter.ExpensesAdapter;
 import com.ndfitnessplus.Listeners.PaginationScrollListener;
-import com.ndfitnessplus.Model.CourseList;
-import com.ndfitnessplus.Model.EnquiryList;
 import com.ndfitnessplus.Model.ExpensesList;
 import com.ndfitnessplus.R;
 import com.ndfitnessplus.Utility.ServerClass;
@@ -86,6 +79,8 @@ public class ExpensesActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
+                WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_expenses);
         initToolbar();
     }

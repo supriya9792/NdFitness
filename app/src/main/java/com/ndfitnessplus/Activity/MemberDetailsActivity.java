@@ -24,6 +24,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -37,6 +38,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.ndfitnessplus.Activity.Notification.TodaysEnrollmentActivity;
 import com.ndfitnessplus.Adapter.AddEnquirySpinnerAdapter;
@@ -96,22 +98,25 @@ public class MemberDetailsActivity extends AppCompatActivity {
     String NextFollowupDate;
 
     String Image="";
-
+    String Before_Photo="";
+    String After_Photo="";
 
     public static String TAG = MemberDetailsActivity.class.getName();
     private ProgressDialog pd;
     TextView username,mobilenumber;
     CircularImageView imageView;
-    ImageButton phone,message;
-    ImageView whatsapp;
+    ImageButton phone;
+    ImageView whatsapp,message;
     String Contact="";
     String name;
-    Button  renew,followup,attendence;
+    Button  renew,followup,before_after;
     //Loading gif
     ViewDialog viewDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
+                WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_member_details);
         initToolbar();
         initComponent();
@@ -139,7 +144,7 @@ public class MemberDetailsActivity extends AppCompatActivity {
         viewDialog = new ViewDialog(this);
         renew=findViewById(R.id.btn_renew);
         followup=findViewById(R.id.btn_followup);
-        attendence=findViewById(R.id.btn_attendence);
+        before_after=findViewById(R.id.btn_before_after);
 //        adapter = new EnquiryAdapter( new ArrayList<EnquiryList>(),EnquiryFollowupDetailsActivity.this);
 //        recyclerView.setAdapter(adapter);
         Intent intent = getIntent();
@@ -163,8 +168,17 @@ public class MemberDetailsActivity extends AppCompatActivity {
             String url= domainurl+ServiceUrls.IMAGES_URL + Image;
             username.setText(name);
             mobilenumber.setText(Contact);
-            Glide.with(this).load(url).placeholder(R.drawable.nouser).into(imageView);
+           // Glide.with(this).load(url).placeholder(R.drawable.nouser).into(imageView);
+            RequestOptions requestOptions = new RequestOptions();
+            requestOptions.placeholder(R.drawable.nouser);
+            requestOptions.error(R.drawable.nouser);
+
+
+            Glide.with(this)
+                    .setDefaultRequestOptions(requestOptions)
+                    .load(url).into(imageView);
             folldetailsclass();
+            memberdetailsclass();
         }
 
         renew.setOnClickListener(new View.OnClickListener() {
@@ -236,7 +250,7 @@ public class MemberDetailsActivity extends AppCompatActivity {
                 PackageManager pm=getPackageManager();
                 try {
                     // Uri uri = Uri.parse("smsto:" + Contact);
-                    Uri uri = Uri.parse("whatsapp://send?phone=+" + Contact);
+                    Uri uri = Uri.parse("whatsapp://send?phone=+91" + Contact);
                     Intent waIntent = new Intent(Intent.ACTION_VIEW,uri);
                     //waIntent.setType("text/plain");
                     String text = "YOUR TEXT HERE";
@@ -254,11 +268,24 @@ public class MemberDetailsActivity extends AppCompatActivity {
                 }
             }
         });
+        before_after.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(MemberDetailsActivity.this,MemberBeforeAfterActivity.class);
+                intent.putExtra("member_id",member_id);
+                intent.putExtra("name",name);
+                intent.putExtra("contact",Contact);
+                intent.putExtra("image",Image);
+                intent.putExtra("After_Photo",After_Photo);
+                intent.putExtra("Before_Photo",Before_Photo);
+                startActivity(intent);
+            }
+        });
 
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.home_action_menu, menu);
+        getMenuInflater().inflate(R.menu.member_info_menu, menu);
         return true;
     }
     @Override
@@ -272,6 +299,20 @@ public class MemberDetailsActivity extends AppCompatActivity {
             //Toast.makeText(this,"Navigation back pressed",Toast.LENGTH_SHORT).show();
             // NavUtils.navigateUpFromSameTask(this);
             finish();
+        }else if(id== R.id.action_measurement) {
+            Intent intent = new Intent(MemberDetailsActivity.this, MemberMeasurementActivity.class);
+            intent.putExtra("member_id",member_id);
+            intent.putExtra("contact",Contact);
+            startActivity(intent);
+        }else if(id== R.id.action_diet){
+            Intent intent = new Intent(MemberDetailsActivity.this, MemberDietActivity.class);
+            intent.putExtra("member_id",member_id);
+            startActivity(intent);
+//            finish();
+        }else if(id== R.id.action_workout){
+                Intent intent = new Intent(MemberDetailsActivity.this, MemberWorkoutActivity.class);
+                intent.putExtra("member_id",member_id);
+                startActivity(intent);
         }
 
         return true;
@@ -309,7 +350,10 @@ public class MemberDetailsActivity extends AppCompatActivity {
         //}
         callResponseClass();
         follTypeClass();
-        inputNextFollowupdate.setText(NextFollowupDate);
+     //   inputNextFollowupdate.setText(NextFollowupDate);
+        String curr_date = Utility.getCurrentDate();
+        inputNextFollowupdate.setText(curr_date);
+
         inputNextFollowupdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -339,8 +383,8 @@ public class MemberDetailsActivity extends AppCompatActivity {
         ((Button) dialog.findViewById(R.id.btn_submit)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if( callResponce.equals(getResources().getString(R.string.call_res)) || Rating.equals(getResources().getString(R.string.rating))){
-                    Toast.makeText(getApplicationContext(), "Please select Call Response or Rating", Toast.LENGTH_SHORT).show();
+                if( callResponce.equals(getResources().getString(R.string.call_res)) || Rating.equals(getResources().getString(R.string.rating))||FollowupType.equals(getResources().getString(R.string.hint_foll_type))){
+                    Toast.makeText(getApplicationContext(), "Please select Call Response or Rating or Follwup Type", Toast.LENGTH_SHORT).show();
                 }else{
                     if(inputNextFollowupdate.getText().length()==0) {
                         if (!(Rating.equals("Not Interested") || Rating.equals("Converted")||FollowupType.equals("Member BirthDay"))) {
@@ -355,7 +399,7 @@ public class MemberDetailsActivity extends AppCompatActivity {
                             }
                         }
                     }else{
-                        takefollowupclass();
+                        ///takefollowupclass();
                         if(inputfollComment.getText().length()>0) {
                             takefollowupclass();
                             dialog.dismiss();
@@ -575,7 +619,7 @@ public class MemberDetailsActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-          //  showProgressDialog();
+            //  showProgressDialog();
             viewDialog.showDialog();
         }
 
@@ -583,7 +627,7 @@ public class MemberDetailsActivity extends AppCompatActivity {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-          //  dismissProgressDialog();
+            //  dismissProgressDialog();
             viewDialog.hideDialog();
             //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             FollowupDetails(response);
@@ -601,7 +645,7 @@ public class MemberDetailsActivity extends AppCompatActivity {
             FollowupDetails.put("action","show_member_details");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(MemberDetailsActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, FollowupDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
+            Log.v(TAG, String.format("doInBackground :: show_member_details= %s", loginResult));
             return loginResult;
         }
 
@@ -641,7 +685,7 @@ public class MemberDetailsActivity extends AppCompatActivity {
 
                                     String name = jsonObj.getString("Name");
                                     String RegistrationDate = jsonObj.getString("RegistrationDate");
-                                    String Contact = jsonObj.getString("Contact");
+                                    Contact = jsonObj.getString("Contact");
                                     String Package_Name = jsonObj.getString("Package_Name");
                                     String ExecutiveName = jsonObj.getString("ExecutiveName");
                                     String Duration_Days = jsonObj.getString("Duration_Days");
@@ -677,7 +721,7 @@ public class MemberDetailsActivity extends AppCompatActivity {
                                         Log.v(TAG, String.format(" ::endDate = %s", endDate));
                                         Log.v(TAG, String.format(" :: currentdate = %s",currentdate));
                                         if (currentdate.before(endDate)|| currentdate.equals(endDate) ) {
-                                           subList.setStatus("Active");
+                                            subList.setStatus("Active");
                                         } else {
                                             subList.setStatus("Inactive");
                                         }
@@ -687,6 +731,7 @@ public class MemberDetailsActivity extends AppCompatActivity {
                                     }
 
                                     subList.setContact(Contact);
+
                                     String pack=Package_Name+"(Duration:"+Duration_Days+","+"Session:"+Session+")";
                                     subList.setPackageNameWithDS(pack);
                                     subList.setPackageName(Package_Name);
@@ -706,7 +751,7 @@ public class MemberDetailsActivity extends AppCompatActivity {
                                     subList.setInvoiceID(Invoice_ID);
                                     subList.setTax(Tax);
                                     subList.setFinancialYear(Financial_Year);
-
+                                    mobilenumber.setText(Contact);
                                     invoice_id=Invoice_ID;
                                     FinancialYear=Financial_Year;
                                     item.add(subList);
@@ -721,7 +766,7 @@ public class MemberDetailsActivity extends AppCompatActivity {
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
                     //nodata.setVisibility(View.VISIBLE);
-                   // recyclerView.setVisibility(View.GONE);
+                    // recyclerView.setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");
@@ -1076,7 +1121,7 @@ public class MemberDetailsActivity extends AppCompatActivity {
             String domainurl=SharedPrefereneceUtil.getDomainUrl(MemberDetailsActivity.this);
             String loginResult2 = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, TakeFollowupDetails);
 
-            Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult2));
+            Log.v(TAG, String.format("doInBackground :: add_other_followup= %s", loginResult2));
             return loginResult2;
         }
     }
@@ -1089,9 +1134,9 @@ public class MemberDetailsActivity extends AppCompatActivity {
             jsonObjLoginResponse = new JSONObject(jsonResponse);
             String success = jsonObjLoginResponse.getString(getResources().getString(R.string.success));
 
-            if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
-                Toast.makeText(MemberDetailsActivity.this,"Followup added succesfully",Toast.LENGTH_SHORT).show();
-                finish();
+            if (success.equalsIgnoreCase(getResources().getString(R.string.two))||success.equalsIgnoreCase(getResources().getString(R.string.one))) {
+                Toast.makeText(MemberDetailsActivity.this,"Followup added succesfully",Toast.LENGTH_LONG).show();
+                //finish();
                 overridePendingTransition(0, 0);
                 Intent intent=new Intent(this, MemberDetailsActivity.class);
                 Bundle bundle = new Bundle();
@@ -1228,5 +1273,129 @@ public class MemberDetailsActivity extends AppCompatActivity {
                 dialog.show();
             }
         }
+    }
+    private void memberdetailsclass() {
+        MemberDetailsActivity.MemberDetailsTrackclass ru = new MemberDetailsActivity. MemberDetailsTrackclass();
+        ru.execute("5");
+    }
+
+    class  MemberDetailsTrackclass extends AsyncTask<String, Void, String> {
+
+
+        ServerClass ruc = new ServerClass();
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Log.v(TAG, "onPreExecute");
+            //showProgressDialog();
+        }
+
+        @Override
+        protected void onPostExecute(String response) {
+            super.onPostExecute(response);
+            Log.v(TAG, String.format("onPostExecute :: response = %s", response));
+            //dismissProgressDialog();
+            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
+            MemberDetailsDetails(response);
+
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+            HashMap<String, String> MemberDetailsDetails = new HashMap<String, String>();
+            MemberDetailsDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(MemberDetailsActivity.this));
+            MemberDetailsDetails.put("member_id",member_id );
+            Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(MemberDetailsActivity.this)));
+            Log.v(TAG, String.format("doInBackground :: member_id = %s", member_id));
+            String domainurl=SharedPrefereneceUtil.getDomainUrl(MemberDetailsActivity.this);
+            MemberDetailsDetails.put("action","show_before_after_photo_by_member_id");
+            String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, MemberDetailsDetails);
+            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
+            return loginResult;
+        }
+
+
+    }
+
+    private void MemberDetailsDetails(String jsonResponse) {
+
+        Log.v(TAG, String.format("JsonResponseOperation :: show_before_after_photo_by_member_id = %s", jsonResponse));
+//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
+        if (jsonResponse != null) {
+
+
+            try {
+                Log.v(TAG, "JsonResponseOpeartion :: test");
+                JSONObject object = new JSONObject(jsonResponse);
+                String success = object.getString(getResources().getString(R.string.success));
+                if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
+
+                    if (object != null) {
+                        JSONArray jsonArrayResult = object.getJSONArray("result");
+//                        if(jsonArrayResult.length() >10){
+//                            totalPage=jsonArrayResult.length()/10;
+//                        }
+                        if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
+
+                            for (int i = 0; i < jsonArrayResult.length(); i++) {
+
+
+                                Log.v(TAG, "JsonResponseOpeartion ::");
+                                JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
+                                if (jsonObj != null) {
+
+                                    After_Photo = jsonObj.getString("After_Photo");
+                                    Before_Photo = jsonObj.getString("Before_Photo");
+
+                                }
+                            }
+                        } else if (jsonArrayResult.length() == 0) {
+                            System.out.println("No records found");
+                        }
+                    }
+                }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
+                    //nodata.setVisibility(View.VISIBLE);
+                    // recyclerView.setVisibility(View.GONE);
+                }
+            } catch (JSONException e) {
+                Log.v(TAG, "JsonResponseOpeartion :: catch");
+                e.printStackTrace();
+                android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(MemberDetailsActivity.this);
+                builder.setMessage(R.string.server_exception);
+                builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                });
+                android.app.AlertDialog dialog = builder.create();
+                dialog.setCancelable(false);
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.show();
+            }
+        }
+    }
+    @Override
+
+    protected void onRestart() {
+        super.onRestart();
+        Intent intent=new Intent(MemberDetailsActivity.this,MemberDetailsActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("filter_array_list", filterArrayList);
+        intent.putExtra("BUNDLE",bundle);
+        startActivity(intent);
+    }
+    @Override
+    public boolean onSupportNavigateUp(){
+        Intent intent=new Intent(MemberDetailsActivity.this,MemberActivity.class);
+        startActivity(intent);
+        return true;
+    }
+    @Override
+    public void onBackPressed() {
+        Intent intent=new Intent(MemberDetailsActivity.this,MemberActivity.class);
+        startActivity(intent);
     }
 }

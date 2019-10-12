@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    android:id="@+id/cardView"
+    android:focusable="true"
+    android:clickable="true"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:foreground="?android:selectableItemBackground"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/lyt_parent"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+        <View android:id="@id/Topline"
+            android:background="#ffeceff1"
+            android:layout_width="fill_parent"
+            android:layout_height="1.0dip" />
+        <LinearLayout android:layout_width="fill_parent"
+            android:layout_height="0.0dip"
+            android:layout_weight="1.0">
+            <LinearLayout android:orientation="vertical"
+                android:background="#fffafafa"
+                android:padding="5.0dip"
+                android:layout_width="0.0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0">
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
+                    <TextView android:textSize="10.0sp"
+                        android:gravity="center"
+                        android:layout_gravity="center"
+                        android:id="@+id/prod_code"
+                        android:layout_width="0.0dip"
+                        android:layout_height="wrap_content"
+                        android:text="@string/hint_prod_code"
+                        android:layout_weight="1.0" />
+                    <TextView android:textSize="10.0sp"
+                        android:gravity="center"
+                        android:layout_gravity="center"
+                        android:id="@+id/prod_name"
+                        android:visibility="visible"
+                        android:layout_width="0.0dip"
+                        android:layout_height="wrap_content"
+                        android:text="@string/hint_prod_name"
+                        android:layout_weight="1.0" />
+                    <TextView android:textSize="10.0sp"
+                        android:gravity="center"
+                        android:layout_gravity="center"
+                        android:id="@+id/rate"
+                        android:visibility="visible"
+                        android:layout_width="0.0dip"
+                        android:layout_height="wrap_content"
+                        android:text="0.00"
+                        android:layout_weight="1.0" />
+                    <TextView android:textSize="10.0sp"
+                        android:gravity="center"
+                        android:layout_gravity="center"
+                        android:id="@id/quantityTV"
+                        android:layout_width="0.0dip"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="2.0dip"
+                        android:text="@string/hint_qty"
+                        android:layout_weight="1.0" />
+                    <TextView android:textSize="10.0sp"
+                        android:gravity="center"
+                        android:layout_gravity="center"
+                        android:id="@+id/prod_total"
+                        android:layout_width="0.0dip"
+                        android:layout_height="wrap_content"
+                        android:text="0.00"
+                        android:layout_weight="1.0" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+        <View android:id="@id/leftline"
+            android:background="#ffeceff1"
+            android:layout_width="fill_parent"
+            android:layout_height="1.0dip" />
+    </LinearLayout>
+</android.support.v7.widget.CardView>

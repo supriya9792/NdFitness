@@ -1,14 +1,19 @@
 package com.ndfitnessplus.Activity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.provider.MediaStore;
+import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.ActivityCompat;
@@ -26,12 +31,19 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 import com.ndfitnessplus.Activity.Notification.TodaysEnrollmentActivity;
 import com.ndfitnessplus.R;
 import com.ndfitnessplus.Utility.ServerClass;
 import com.ndfitnessplus.Utility.ServiceUrls;
 import com.ndfitnessplus.Utility.SharedPrefereneceUtil;
 import com.ndfitnessplus.Utility.ViewDialog;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -43,7 +55,7 @@ import java.util.HashMap;
 import static com.ndfitnessplus.Activity.EnquiryActivity.TAG;
 
 public class FullImageActivity extends AppCompatActivity {
-
+    private Uri mCropImageUri;
     String imageurl,contact,id,user;
     ImageView imageView;
     private BottomSheetBehavior mBehavior;
@@ -64,6 +76,8 @@ public class FullImageActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
+                WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_full_image);
         initToolbar();
     }
@@ -101,8 +115,32 @@ public class FullImageActivity extends AppCompatActivity {
             Log.d(TAG, "user: "+user);
             String domainurl= SharedPrefereneceUtil.getDomainUrl(FullImageActivity.this);
             String url= domainurl+ServiceUrls.IMAGES_URL + imageurl;
-            Glide.with(FullImageActivity.this).load(url).placeholder(R.drawable.nouser).into(imageView);
+            if(!(imageurl.equals("null")||imageurl.equals(""))) {
+                //Glide.with(FullImageActivity.this).load(url).placeholder(R.drawable.nouser).into(imageView);
+                RequestOptions requestOptions = new RequestOptions();
+                requestOptions.placeholder(R.drawable.nouser);
+                requestOptions.error(R.drawable.nouser);
 
+                Glide.with(this)
+                        .setDefaultRequestOptions(requestOptions)
+                        .load(url)
+                        .listener(new RequestListener<Drawable>() {
+                            @Override
+                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                if(bitmap!=null){
+
+                                    imageView.setImageBitmap(bitmap);
+                                    return  true;
+                                }
+                                return false;
+                            }
+
+                            @Override
+                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                return false;
+                            }
+                        }).into(imageView);
+            }
 
         }
         cancel.setOnClickListener(new View.OnClickListener() {
@@ -165,83 +203,83 @@ public class FullImageActivity extends AppCompatActivity {
             }
         });
     }
-    @Override
-    protected void onActivityResult(int RC, int RQC, Intent I) {
-
-        super.onActivityResult(RC, RQC, I);
-
-        if (RC == 7 && RQC == RESULT_OK && I != null && I.getData() != null) {
-
-            uri = I.getData();
-            Log.v(TAG, String.format("doInBackground :: uri= %s", uri));
-                try {
-
-
-                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-                    Intent intent = getIntent();
-                    // Bundle args = intent.getBundleExtra("BUNDLE");
-                    if (intent != null) {
-                        imageurl=intent.getStringExtra("image");
-                        contact=intent.getStringExtra("contact");
-                        id=intent.getStringExtra("id");
-                        user=intent.getStringExtra("user");
-                        Log.d(TAG, "result image: "+imageurl);
-                        Log.d(TAG, "result contact: "+contact);
-                        Log.d(TAG, "result id: "+id);
-                        Log.d(TAG, "result user: "+user);
-
-                    }
-                imageView.setImageBitmap(bitmap);
-                toolbar.setVisibility(View.GONE);
-                bottomView.setVisibility(View.VISIBLE);
-
-            } catch (IOException e) {
-
-                e.printStackTrace();
-            }
-        }else  if (RC == REQUEST_IMAGE_CAPTURE ) {
-
-
-           if(I !=null){
-            Bundle extras = I.getExtras();
-            if (extras != null) {
-                Bitmap bitmap1 = (Bitmap) extras.get("data");
-
-                Intent intent = getIntent();
-                // Bundle args = intent.getBundleExtra("BUNDLE");
-                if (intent != null) {
-                    imageurl=intent.getStringExtra("image");
-                    contact=intent.getStringExtra("contact");
-                    id=intent.getStringExtra("id");
-                    user=intent.getStringExtra("user");
-                    Log.d(TAG, "result image: "+imageurl);
-                    Log.d(TAG, "result contact: "+contact);
-                    Log.d(TAG, "result id: "+id);
-                    Log.d(TAG, "result user: "+user);
-
-                }
-                Log.v(TAG, String.format("doInBackground :: bitmap= %s", bitmap1));
-
-                bitmap = Bitmap.createScaledBitmap(bitmap1, 200,
-                        200, true);
-                //return newBitmap;
-                imageView.setImageBitmap(bitmap);
-                toolbar.setVisibility(View.GONE);
-                bottomView.setVisibility(View.VISIBLE);
-
-//                String timeStamp =
-//                        new SimpleDateFormat("yyyyMMdd_HHmmss",
-//                                Locale.getDefault()).format(new Date());
-//                String imageFileName = "IMG_" + timeStamp;
-
-               // bitmap=Utility.resizeAndCompressImageBeforeSend(AddEnquiryActivity.this,bitmap1,imageFileName);
-                Log.v(TAG, String.format(" Bitmap= %s", bitmap));
-               // uploadimageClass();
-            }
-             }
-
-        }
-    }
+//    @Override
+//    protected void onActivityResult(int RC, int RQC, Intent I) {
+//
+//        super.onActivityResult(RC, RQC, I);
+//
+//        if (RC == 7 && RQC == RESULT_OK && I != null && I.getData() != null) {
+//
+//            uri = I.getData();
+//            Log.v(TAG, String.format("doInBackground :: uri= %s", uri));
+//                try {
+//
+//
+//                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+//                    Intent intent = getIntent();
+//                    // Bundle args = intent.getBundleExtra("BUNDLE");
+//                    if (intent != null) {
+//                        imageurl=intent.getStringExtra("image");
+//                        contact=intent.getStringExtra("contact");
+//                        id=intent.getStringExtra("id");
+//                        user=intent.getStringExtra("user");
+//                        Log.d(TAG, "result image: "+imageurl);
+//                        Log.d(TAG, "result contact: "+contact);
+//                        Log.d(TAG, "result id: "+id);
+//                        Log.d(TAG, "result user: "+user);
+//
+//                    }
+//                imageView.setImageBitmap(bitmap);
+//                toolbar.setVisibility(View.GONE);
+//                bottomView.setVisibility(View.VISIBLE);
+//
+//            } catch (IOException e) {
+//
+//                e.printStackTrace();
+//            }
+//        }else  if (RC == REQUEST_IMAGE_CAPTURE ) {
+//
+//
+//           if(I !=null){
+//            Bundle extras = I.getExtras();
+//            if (extras != null) {
+//                Bitmap bitmap1 = (Bitmap) extras.get("data");
+//
+//                Intent intent = getIntent();
+//                // Bundle args = intent.getBundleExtra("BUNDLE");
+//                if (intent != null) {
+//                    imageurl=intent.getStringExtra("image");
+//                    contact=intent.getStringExtra("contact");
+//                    id=intent.getStringExtra("id");
+//                    user=intent.getStringExtra("user");
+//                    Log.d(TAG, "result image: "+imageurl);
+//                    Log.d(TAG, "result contact: "+contact);
+//                    Log.d(TAG, "result id: "+id);
+//                    Log.d(TAG, "result user: "+user);
+//
+//                }
+//                Log.v(TAG, String.format("doInBackground :: bitmap= %s", bitmap1));
+//
+//                bitmap = Bitmap.createScaledBitmap(bitmap1, 200,
+//                        200, true);
+//                //return newBitmap;
+//                imageView.setImageBitmap(bitmap);
+//                toolbar.setVisibility(View.GONE);
+//                bottomView.setVisibility(View.VISIBLE);
+//
+////                String timeStamp =
+////                        new SimpleDateFormat("yyyyMMdd_HHmmss",
+////                                Locale.getDefault()).format(new Date());
+////                String imageFileName = "IMG_" + timeStamp;
+//
+//               // bitmap=Utility.resizeAndCompressImageBeforeSend(AddEnquiryActivity.this,bitmap1,imageFileName);
+//                Log.v(TAG, String.format(" Bitmap= %s", bitmap));
+//               // uploadimageClass();
+//            }
+//             }
+//
+//        }
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -256,7 +294,8 @@ public class FullImageActivity extends AppCompatActivity {
             Intent intent = new Intent(FullImageActivity.this, MainActivity.class);
             startActivity(intent);
         }else if(id ==R.id.action_edit){
-           showBottomSheetDialog();
+           //showBottomSheetDialog();
+            CropImage.startPickImageActivity(FullImageActivity.this);
         }else if(id== android.R.id.home){
             //Toast.makeText(this,"Navigation back pressed",Toast.LENGTH_SHORT).show();
             // NavUtils.navigateUpFromSameTask(this);
@@ -279,6 +318,79 @@ public class FullImageActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(FullImageActivity.this,new String[]{Manifest.permission.CAMERA}, RequestPermissionCode);
 
         }
+    }
+    @Override
+    @SuppressLint("NewApi")
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        // handle result of pick image chooser
+        if (requestCode == CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            Uri imageUri = CropImage.getPickImageResultUri(this, data);
+
+            // For API >= 23 we need to check specifically that we have permissions to read external storage.
+            if (CropImage.isReadExternalStoragePermissionsRequired(this, imageUri)) {
+                // request permissions and handle the result in onRequestPermissionsResult()
+                mCropImageUri = imageUri;
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
+            } else {
+                // no permissions required or already grunted, can start crop image activity
+                startCropImageActivity(imageUri);
+            }
+        }
+
+        // handle result of CropImageActivity
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                Intent intent = getIntent();
+                // Bundle args = intent.getBundleExtra("BUNDLE");
+                if (intent != null) {
+                    imageurl=intent.getStringExtra("image");
+                    contact=intent.getStringExtra("contact");
+                    id=intent.getStringExtra("id");
+                    user=intent.getStringExtra("user");
+                    Log.d(TAG, "result image: "+imageurl);
+                    Log.d(TAG, "result contact: "+contact);
+                    Log.d(TAG, "result id: "+id);
+                    Log.d(TAG, "result user: "+user);
+
+                }
+              //  imageView.setVisibility(View.VISIBLE);
+                // ((ImageButton) findViewById(R.id.quick_start_cropped_image)).setImageURI(result.getUri());
+                imageView.setImageURI(result.getUri());
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), result.getUri());
+                    imageView.setImageURI(result.getUri());
+                  //  imageView.setImageBitmap(bitmap);
+                    toolbar.setVisibility(View.GONE);
+                    bottomView.setVisibility(View.VISIBLE);
+                   // uploadimageClass();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+               // Toast.makeText(this, "Cropping successful, Sample: " + result.getSampleSize(), Toast.LENGTH_LONG).show();
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Toast.makeText(this, "Cropping failed: " + result.getError(), Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        if (mCropImageUri != null && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            // required permissions granted, start crop image activity
+            startCropImageActivity(mCropImageUri);
+        } else {
+            //  Toast.makeText(this, "Cancelling, required permissions are not granted", Toast.LENGTH_LONG).show();
+        }
+    }
+    private void startCropImageActivity(Uri imageUri) {
+        CropImage.activity(imageUri)
+                .setGuidelines(CropImageView.Guidelines.ON)
+                .setMultiTouchEnabled(true)
+                .setAspectRatio(1,1)
+                .setFixAspectRatio(true)
+                .start(this);
     }
     private void showProgressDialog() {
         Log.v(TAG, String.format("showProgressDialog"));

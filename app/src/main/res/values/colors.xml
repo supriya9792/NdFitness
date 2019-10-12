@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#DA1414</color>
-    <color name="colorAccent">#D81B60</color>
-    <color name="colorPrimaryDark">#CF0516</color>
+    <color name="colorPrimary">#084E94</color>
+    <color name="colorAccent">#398EE2</color>
+    <color name="colorPrimaryDark">#003366</color>
     <color name="colorPrimaryWeb">#3c8dbc</color>
 
     <color name="bg_gradient_start">#b21331</color>
     <color name="bg_gradient_end">#820d2a</color>
     <color name="bg_button_login">#380813</color>
+    <color name="QRCodeWhiteColor">#ffffff</color>
 
+    <color name="QRCodeBlackColor">#000000</color>
     <color name="colorPrimary1">#130c35</color>
     <color name="colorPrimary2">#fda032</color>
     <color name="colorPrimaryDark2">#fa8802</color>
@@ -28,13 +30,15 @@
     <color name="membership_end_dt_bg">#30658d</color>
     <color name="paymennt_dt_bg">#f74d4d</color>
     <color name="post_dated_chk_bg">#aab521</color>
-    <color name="other_followup">#6b4174</color>
+    <color name="other_followup">#9027A7</color>
     <color name="done_foll_bg">#4161f0</color>
-
+    <color name="diet_bg">#ff962a07</color>
     <color name="anniversary_bg">#ffb848</color>
+
     <color name="theme">#4161f0</color>
     <color name="theme1">#f34721</color>
     <color name="theme2">#cd3615</color>
+
     <color name="white">#ffffff</color>
     <color name="black">#000</color>
     <color name="black_80">#3f3f3f</color>
