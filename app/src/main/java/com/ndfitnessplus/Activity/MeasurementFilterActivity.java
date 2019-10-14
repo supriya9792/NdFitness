@@ -309,7 +309,7 @@ public class MeasurementFilterActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> ExecutiveNameDetails = new HashMap<String, String>();
             String comp_name=SharedPrefereneceUtil.getCompanyName(MeasurementFilterActivity.this);
             String location=SharedPrefereneceUtil.getSelectedBranch(MeasurementFilterActivity.this);
@@ -459,7 +459,7 @@ public class MeasurementFilterActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+          //  Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> SearchEnquiryDetails = new HashMap<String, String>();
             SearchEnquiryDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(MeasurementFilterActivity.this));
             Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(MeasurementFilterActivity.this)));

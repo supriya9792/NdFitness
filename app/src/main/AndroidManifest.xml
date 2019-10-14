@@ -116,7 +116,6 @@
             android:name=".Activity.RenewActivity"
             android:configChanges="keyboard|orientation|screenSize"
             android:windowSoftInputMode="stateVisible|adjustResize" />
-        <activity android:name=".Activity.NewAddEnquiryActivity" />
         <activity android:name=".Activity.ExpenseFilterActivity" />
         <activity
             android:name=".Activity.AddExpensesActivity"
@@ -152,7 +151,6 @@
         <activity android:name=".Activity.Notification.StaffBirthdayActivity" />
         <activity android:name=".Activity.Notification.MemberBirthdayActivity" />
         <activity android:name=".Activity.NotificationActivity" />
-        <activity android:name=".Main2Activity" />
         <activity
             android:name=".Activity.SelectDomainActivity"
             android:configChanges="keyboard|orientation|screenSize"

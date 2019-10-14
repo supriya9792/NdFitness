@@ -758,7 +758,7 @@ public class RenewFollowupDetailsActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+          //  Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> CallResponseDetails = new HashMap<String, String>();
             CallResponseDetails.put("action", "show_call_response_list");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(RenewFollowupDetailsActivity.this);
@@ -895,7 +895,7 @@ public class RenewFollowupDetailsActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> FollTypeDetails = new HashMap<String, String>();
             FollTypeDetails.put("action", "show_master_followup_type_list");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(RenewFollowupDetailsActivity.this);
@@ -1035,7 +1035,7 @@ public class RenewFollowupDetailsActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+          //  Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> TakeFollowupDetails = new HashMap<String, String>();
             TakeFollowupDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(RenewFollowupDetailsActivity.this));
             Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(RenewFollowupDetailsActivity.this)));

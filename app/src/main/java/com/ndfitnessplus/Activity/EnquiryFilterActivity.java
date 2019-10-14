@@ -691,7 +691,7 @@ public class EnquiryFilterActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EnquiryForDetails = new HashMap<String, String>();
             EnquiryForDetails.put("action", "show_enq_for_list");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(EnquiryFilterActivity.this);
@@ -826,7 +826,7 @@ public class EnquiryFilterActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+          //  Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EnquiryTypeDetails = new HashMap<String, String>();
             EnquiryTypeDetails.put("action", "show_enq_type_list");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(EnquiryFilterActivity.this);
@@ -960,7 +960,7 @@ public class EnquiryFilterActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EnquirySourceDetails = new HashMap<String, String>();
             EnquirySourceDetails.put("action", "show_enq_source_list");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(EnquiryFilterActivity.this);
@@ -1094,7 +1094,7 @@ public class EnquiryFilterActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> OccupationDetails = new HashMap<String, String>();
             OccupationDetails.put("action", "show_occupation_list");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(EnquiryFilterActivity.this);
@@ -1236,7 +1236,7 @@ public class EnquiryFilterActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> LocationDetails = new HashMap<String, String>();
             LocationDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(EnquiryFilterActivity.this));
             LocationDetails.put("action", "show_location_list");
@@ -1377,7 +1377,7 @@ public class EnquiryFilterActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+          //  Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> ExecutiveNameDetails = new HashMap<String, String>();
             String comp_name=SharedPrefereneceUtil.getCompanyName(EnquiryFilterActivity.this);
             String location=SharedPrefereneceUtil.getSelectedBranch(EnquiryFilterActivity.this);
@@ -1522,7 +1522,7 @@ public class EnquiryFilterActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> CallResponseDetails = new HashMap<String, String>();
             CallResponseDetails.put("action", "show_call_response_list");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(EnquiryFilterActivity.this);
@@ -1660,7 +1660,7 @@ public class EnquiryFilterActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+          //  Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> SearchEnquiryDetails = new HashMap<String, String>();
             SearchEnquiryDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(EnquiryFilterActivity.this));
             Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(EnquiryFilterActivity.this)));

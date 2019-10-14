@@ -624,7 +624,7 @@ public class MemberFilterActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> OccupationDetails = new HashMap<String, String>();
             OccupationDetails.put("action", "show_occupation_list");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(MemberFilterActivity.this);
@@ -766,7 +766,7 @@ public class MemberFilterActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+          //  Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EnqExecutiveDetails = new HashMap<String, String>();
             EnqExecutiveDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(MemberFilterActivity.this));
             EnqExecutiveDetails.put("action", "show_enquiry_executive_list_for_member");
@@ -909,7 +909,7 @@ public class MemberFilterActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> MemberExecutiveDetails = new HashMap<String, String>();
             MemberExecutiveDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(MemberFilterActivity.this));
             MemberExecutiveDetails.put("action", "show_member_executive_list_for_member");
@@ -1057,7 +1057,7 @@ public class MemberFilterActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> SearchEnquiryDetails = new HashMap<String, String>();
             SearchEnquiryDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(MemberFilterActivity.this));
             Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(MemberFilterActivity.this)));

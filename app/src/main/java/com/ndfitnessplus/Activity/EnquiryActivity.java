@@ -407,8 +407,8 @@ public class EnquiryActivity extends AppCompatActivity implements SwipeRefreshLa
             HashMap<String, String> EnquiryDetails = new HashMap<String, String>();
             EnquiryDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(EnquiryActivity.this));
             EnquiryDetails.put("offset", String.valueOf(offset));
-            EnquiryDetails.put("authority", SharedPrefereneceUtil.getAuthority(EnquiryActivity.this));
-            EnquiryDetails.put("exe_name", SharedPrefereneceUtil.getName(EnquiryActivity.this));
+//            EnquiryDetails.put("authority", SharedPrefereneceUtil.getAuthority(EnquiryActivity.this));
+//            EnquiryDetails.put("exe_name", SharedPrefereneceUtil.getName(EnquiryActivity.this));
             Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(EnquiryActivity.this)));
             EnquiryDetails.put("action","show_enquiry_list");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(EnquiryActivity.this);
@@ -569,8 +569,8 @@ public class EnquiryActivity extends AppCompatActivity implements SwipeRefreshLa
             HashMap<String, String> EnquiryOffsetDetails = new HashMap<String, String>();
             EnquiryOffsetDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(EnquiryActivity.this));
             EnquiryOffsetDetails.put("offset", String.valueOf(offset));
-            EnquiryOffsetDetails.put("authority", SharedPrefereneceUtil.getAuthority(EnquiryActivity.this));
-            EnquiryOffsetDetails.put("exe_name", SharedPrefereneceUtil.getName(EnquiryActivity.this));
+//            EnquiryOffsetDetails.put("authority", SharedPrefereneceUtil.getAuthority(EnquiryActivity.this));
+//            EnquiryOffsetDetails.put("exe_name", SharedPrefereneceUtil.getName(EnquiryActivity.this));
             Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(EnquiryActivity.this)));
             EnquiryOffsetDetails.put("action","show_enquiry_list");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(EnquiryActivity.this);

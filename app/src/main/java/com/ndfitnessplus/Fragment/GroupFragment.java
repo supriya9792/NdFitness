@@ -242,7 +242,7 @@ public class GroupFragment extends Fragment {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> SendNotiDetails = new HashMap<String, String>();
             SendNotiDetails.put("status", status);
             SendNotiDetails.put("message", Message.getText().toString() );

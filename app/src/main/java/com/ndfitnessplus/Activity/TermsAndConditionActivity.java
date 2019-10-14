@@ -113,7 +113,7 @@ public class TermsAndConditionActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+          //  Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> CheckCompanyDetails = new HashMap<String, String>();
             CheckCompanyDetails.put("comp_id",SharedPrefereneceUtil.getSelectedBranchId(TermsAndConditionActivity.this) );
             CheckCompanyDetails.put("action", "show_terms_and_coditions_by_company_id");

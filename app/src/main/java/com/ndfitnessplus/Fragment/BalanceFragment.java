@@ -84,7 +84,7 @@ public class BalanceFragment extends Fragment {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> SendNotiDetails = new HashMap<String, String>();
             SendNotiDetails.put("message", Message.getText().toString() );
             SendNotiDetails.put("user", "Member" );

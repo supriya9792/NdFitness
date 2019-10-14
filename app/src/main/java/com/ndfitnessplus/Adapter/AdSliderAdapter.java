@@ -40,13 +40,13 @@ public class AdSliderAdapter extends PagerAdapter implements LoopingPagerAdapter
     final AdSliderList enq = signalList.get(position);
 
     ImageView placeholder  =(ImageView) view.findViewById(R.id.ad_img) ;
-    TextView title=(TextView)view.findViewById(R.id.ad_title);
-    TextView disc=(TextView)view.findViewById(R.id.ad_disc);
+//    TextView title=(TextView)view.findViewById(R.id.ad_title);
+//    TextView disc=(TextView)view.findViewById(R.id.ad_disc);
 
 
 
-    title.setText(arraylist.get(position).getAdTitle());
-    disc.setText(arraylist.get(position).getAdDisc());
+//    title.setText(arraylist.get(position).getAdTitle());
+//    disc.setText(arraylist.get(position).getAdDisc());
     placeholder.setImageResource(arraylist.get(position).getImage());
     container.addView(view);
     return view;

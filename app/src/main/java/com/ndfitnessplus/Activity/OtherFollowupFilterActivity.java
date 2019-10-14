@@ -277,7 +277,7 @@ public class OtherFollowupFilterActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> FollTypeDetails = new HashMap<String, String>();
             FollTypeDetails.put("action", "show_master_followup_type_list");
             String domainurl= SharedPrefereneceUtil.getDomainUrl(OtherFollowupFilterActivity.this);
@@ -413,7 +413,7 @@ public class OtherFollowupFilterActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+          //  Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> SearchOtherFollowupDetails = new HashMap<String, String>();
             SearchOtherFollowupDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(OtherFollowupFilterActivity.this));
             Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(OtherFollowupFilterActivity.this)));

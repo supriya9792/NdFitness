@@ -237,7 +237,7 @@ public class PackageWiseFragment extends Fragment {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> PackageTypeDetails = new HashMap<String, String>();
             PackageTypeDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(getActivity()));
             PackageTypeDetails.put("action", "show_package_type");
@@ -372,7 +372,7 @@ public class PackageWiseFragment extends Fragment {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+          //  Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> PackageNameDetails = new HashMap<String, String>();
             PackageNameDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(getActivity()));
             PackageNameDetails.put("pack_type", packageType);
@@ -544,7 +544,7 @@ public class PackageWiseFragment extends Fragment {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> SendNotiDetails = new HashMap<String, String>();
             SendNotiDetails.put("status", status);
             SendNotiDetails.put("message", Message.getText().toString() );

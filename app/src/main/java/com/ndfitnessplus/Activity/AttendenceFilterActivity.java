@@ -350,7 +350,7 @@ public class AttendenceFilterActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+          //  Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> SearchAttendanceDetails = new HashMap<String, String>();
             SearchAttendanceDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(AttendenceFilterActivity.this));
             Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(AttendenceFilterActivity.this)));

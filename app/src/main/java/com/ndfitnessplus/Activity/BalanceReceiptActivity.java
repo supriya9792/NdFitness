@@ -608,7 +608,7 @@ public class BalanceReceiptActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+          //  Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EnquiryForDetails = new HashMap<String, String>();
 
             EnquiryForDetails.put("mobileno",inputContact.getText().toString() );
@@ -703,7 +703,7 @@ public class BalanceReceiptActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+          //  Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> InvoiceRefDetails = new HashMap<String, String>();
             InvoiceRefDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(BalanceReceiptActivity.this));
             InvoiceRefDetails.put("member_id", MemberID);
@@ -961,7 +961,7 @@ public class BalanceReceiptActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> PaymentTypeDetails = new HashMap<String, String>();
             PaymentTypeDetails.put("action", "show_payment_type_list");
             //PaymentTypeloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(PaymentTypeloyee.this));
@@ -1096,7 +1096,7 @@ public class BalanceReceiptActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
 
 
             HashMap<String, String> AddBalanceReceiptDetails = new HashMap<String, String>();
@@ -1586,7 +1586,7 @@ public class BalanceReceiptActivity extends AppCompatActivity {
                                                     Mail m = new Mail("tulsababar.ndsoft@gmail.com", "Tulsa@2019");
 
                                                     String[] toArr = { Email, "tulsababar01@gmail.com"};
-                                                    Log.v(TAG, String.format(" Email array to send = %s", toArr));
+                                                   // Log.v(TAG, String.format(" Email array to send = %s", toArr));
                                                     m.setTo(toArr);
                                                     m.setFrom("tulsababar.ndsoft@gmail.com");
                                                     m.setSubject(subject);
@@ -1726,7 +1726,7 @@ public class BalanceReceiptActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+          //  Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EnquiryForDetails = new HashMap<String, String>();
 
             EnquiryForDetails.put("type","balancepaid" );

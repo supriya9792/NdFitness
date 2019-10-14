@@ -1,14 +1,12 @@
 package com.ndfitnessplus.Activity;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -39,9 +37,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.ndfitnessplus.Activity.Notification.TodaysEnquiryActivity;
 import com.ndfitnessplus.Adapter.AdSliderAdapter;
-import com.ndfitnessplus.Adapter.EnquiryAdapter;
 import com.ndfitnessplus.CustomData.AdSliderData;
-import com.ndfitnessplus.Main2Activity;
 import com.ndfitnessplus.Model.AdSliderList;
 import com.ndfitnessplus.Model.EnquiryList;
 import com.ndfitnessplus.Notification.NotificationUtils;
@@ -63,9 +59,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import static com.ndfitnessplus.Utility.Constants.EMAIL;
-import static com.ndfitnessplus.Utility.Constants.NAME;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -486,7 +479,7 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> CheckCompanyDetails = new HashMap<String, String>();
             CheckCompanyDetails.put("comp_id",SharedPrefereneceUtil.getSelectedBranchId(MainActivity.this) );
             CheckCompanyDetails.put("action", "check_company_is_inactive_or_not");
@@ -562,7 +555,7 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> SmsLoginDetails = new HashMap<String, String>();
             SmsLoginDetails.put("comp_id",SharedPrefereneceUtil.getSelectedBranchId(MainActivity.this) );
             SmsLoginDetails.put("action", "sms_login_creadetials");
@@ -667,7 +660,7 @@ public class MainActivity extends AppCompatActivity
         @Override
         protected String doInBackground(String... params) {
             String device_id = NetworkUtils.getIMEINo(MainActivity.this);
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+          //  Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> registerDeviceDetails = new HashMap<String, String>();
             registerDeviceDetails.put("token",token);
             registerDeviceDetails.put("imei_no",device_id);
@@ -739,7 +732,7 @@ public class MainActivity extends AppCompatActivity
         @Override
         protected String doInBackground(String... params) {
             String device_id = NetworkUtils.getIMEINo(MainActivity.this);
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> checkDeviceDetails = new HashMap<String, String>();
             checkDeviceDetails.put("username",SharedPrefereneceUtil.getUserNm(MainActivity.this));
             checkDeviceDetails.put("imei_no",device_id);

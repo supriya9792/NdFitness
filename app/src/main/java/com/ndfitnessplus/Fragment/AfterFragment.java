@@ -266,7 +266,7 @@ public class AfterFragment extends Fragment {
             }
             @Override
             protected String doInBackground(String... params) {
-                Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+               // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
                 HashMap<String, String> ProfileDetails = new HashMap<String, String>();
                 // ProfileDetails.put("image_name", GetImageNameEditText);
                 ProfileDetails.put("image_data", ConvertImage);

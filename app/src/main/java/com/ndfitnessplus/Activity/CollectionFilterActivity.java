@@ -356,7 +356,7 @@ public class CollectionFilterActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+          //  Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> PaymentTypeDetails = new HashMap<String, String>();
             PaymentTypeDetails.put("action", "show_payment_type_list");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(CollectionFilterActivity.this);
@@ -491,7 +491,7 @@ public class CollectionFilterActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> ExecutiveNameDetails = new HashMap<String, String>();
             String comp_name= SharedPrefereneceUtil.getCompanyName(CollectionFilterActivity.this);
             String location=SharedPrefereneceUtil.getSelectedBranch(CollectionFilterActivity.this);
@@ -640,7 +640,7 @@ public class CollectionFilterActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> SearchCollectionDetails = new HashMap<String, String>();
             SearchCollectionDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(CollectionFilterActivity.this));
             Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(CollectionFilterActivity.this)));

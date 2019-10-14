@@ -751,7 +751,7 @@ public class EnquiryFollowupDetailsActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> TakeFollowupDetails = new HashMap<String, String>();
             TakeFollowupDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(EnquiryFollowupDetailsActivity.this));
             Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(EnquiryFollowupDetailsActivity.this)));
@@ -840,7 +840,7 @@ public class EnquiryFollowupDetailsActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> CallResponseDetails = new HashMap<String, String>();
             CallResponseDetails.put("action", "show_call_response_list");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(EnquiryFollowupDetailsActivity.this);

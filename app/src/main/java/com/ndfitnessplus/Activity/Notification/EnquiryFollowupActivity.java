@@ -409,8 +409,8 @@ public class EnquiryFollowupActivity extends AppCompatActivity implements SwipeR
             HashMap<String, String> FollowupDetails = new HashMap<String, String>();
             FollowupDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(EnquiryFollowupActivity.this));
             FollowupDetails.put("offset", String.valueOf(offset));
-            FollowupDetails.put("authority", SharedPrefereneceUtil.getAuthority(EnquiryFollowupActivity.this));
-            FollowupDetails.put("exe_name", SharedPrefereneceUtil.getName(EnquiryFollowupActivity.this));
+//            FollowupDetails.put("authority", SharedPrefereneceUtil.getAuthority(EnquiryFollowupActivity.this));
+//            FollowupDetails.put("exe_name", SharedPrefereneceUtil.getName(EnquiryFollowupActivity.this));
             Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(EnquiryFollowupActivity.this)));
             Log.v(TAG, String.format("doInBackground :: offset  = %s",offset ));
             FollowupDetails.put("action","show_enquiry_followup");
@@ -557,8 +557,8 @@ public class EnquiryFollowupActivity extends AppCompatActivity implements SwipeR
             HashMap<String, String> FollowupOffsetDetails = new HashMap<String, String>();
             FollowupOffsetDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(EnquiryFollowupActivity.this));
             FollowupOffsetDetails.put("offset", String.valueOf(offset));
-            FollowupOffsetDetails.put("authority", SharedPrefereneceUtil.getAuthority(EnquiryFollowupActivity.this));
-            FollowupOffsetDetails.put("exe_name", SharedPrefereneceUtil.getName(EnquiryFollowupActivity.this));
+//            FollowupOffsetDetails.put("authority", SharedPrefereneceUtil.getAuthority(EnquiryFollowupActivity.this));
+//            FollowupOffsetDetails.put("exe_name", SharedPrefereneceUtil.getName(EnquiryFollowupActivity.this));
             Log.v(TAG, String.format("doInBackground :: offset  = %s",offset ));
             Log.v(TAG, String.format("doInBackground :: offset company id = %s", SharedPrefereneceUtil.getSelectedBranchId(EnquiryFollowupActivity.this)));
             FollowupOffsetDetails.put("action","show_enquiry_followup");
@@ -714,8 +714,8 @@ public class EnquiryFollowupActivity extends AppCompatActivity implements SwipeR
             Log.v(TAG, String.format("doInBackground :: to_date = %s",todate.getText().toString() ));
             SearchActiveMemberDetails.put("from_date",fromdate.getText().toString());
             Log.v(TAG, String.format("doInBackground :: from_date = %s", fromdate.getText().toString()));
-            SearchActiveMemberDetails.put("authority", SharedPrefereneceUtil.getAuthority(EnquiryFollowupActivity.this));
-            SearchActiveMemberDetails.put("exe_name", SharedPrefereneceUtil.getName(EnquiryFollowupActivity.this));
+//            SearchActiveMemberDetails.put("authority", SharedPrefereneceUtil.getAuthority(EnquiryFollowupActivity.this));
+//            SearchActiveMemberDetails.put("exe_name", SharedPrefereneceUtil.getName(EnquiryFollowupActivity.this));
             SearchActiveMemberDetails.put("action","search_enquiry_followup_filter");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(EnquiryFollowupActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL,  SearchActiveMemberDetails);

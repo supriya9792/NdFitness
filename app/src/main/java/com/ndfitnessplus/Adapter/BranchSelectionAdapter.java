@@ -208,7 +208,7 @@ public class MyView extends RecyclerView.ViewHolder   {
         @Override
         protected String doInBackground(String... params) {
             String device_id = NetworkUtils.getIMEINo(mContext);
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> LoginDetails = new HashMap<String, String>();
             LoginDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId((Activity)mContext));
             Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId((Activity)mContext)));

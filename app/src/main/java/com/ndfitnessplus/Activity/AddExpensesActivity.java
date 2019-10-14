@@ -298,7 +298,7 @@ public class AddExpensesActivity extends AppCompatActivity  {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> ExpenseGroupDetails = new HashMap<String, String>();
             ExpenseGroupDetails.put("action", "show_expense_group_list");
             //ExpenseGrouployeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(ExpenseGrouployee.this));
@@ -430,7 +430,7 @@ public class AddExpensesActivity extends AppCompatActivity  {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> PaymentTypeDetails = new HashMap<String, String>();
             PaymentTypeDetails.put("action", "show_payment_type_list");
             //PaymentTypeloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(PaymentTypeloyee.this));
@@ -571,7 +571,7 @@ public class AddExpensesActivity extends AppCompatActivity  {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> AddExpenseDetails = new HashMap<String, String>();
             AddExpenseDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(AddExpensesActivity.this));
             AddExpenseDetails.put("expense_date",inputExepnseDate.getText().toString());

@@ -1098,7 +1098,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> PaymentTypeDetails = new HashMap<String, String>();
             PaymentTypeDetails.put("action", "show_payment_type_list");
             //PaymentTypeloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(PaymentTypeloyee.this));
@@ -1231,7 +1231,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> CallResponseDetails = new HashMap<String, String>();
             CallResponseDetails.put("action", "show_call_response_list");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(CourseDetailsActivity.this);
@@ -1368,7 +1368,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> FollTypeDetails = new HashMap<String, String>();
             FollTypeDetails.put("action", "show_master_followup_type_list_for_course");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(CourseDetailsActivity.this);
@@ -1508,7 +1508,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> TakeFollowupDetails = new HashMap<String, String>();
             TakeFollowupDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(CourseDetailsActivity.this));
             Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(CourseDetailsActivity.this)));
@@ -1605,7 +1605,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+          //  Log.v(TAG, String.format("doInBackground ::  params= %s", params));
 
 
             HashMap<String, String> AddBalanceReceiptDetails = new HashMap<String, String>();
@@ -1790,6 +1790,8 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                     String Company_Name = SharedPrefereneceUtil.getCompanyName(CourseDetailsActivity.this)+"-"+SharedPrefereneceUtil.getSelectedBranch(CourseDetailsActivity.this);
                                     String Address = jsonObj.getString("Address");
                                     String Contact = jsonObj.getString("Contact");
+                                    String MemberGST_No = jsonObj.getString("MemberGST_No");
+                                    String GST_No = jsonObj.getString("GST_No");
                                     String TermsAndConditions = jsonObj.getString("TermsAndConditions");
                                     TermsAndConditions = TermsAndConditions.replace("\r\n", "<br />");
                                     String Logo = jsonObj.getString("Logo");
@@ -2072,11 +2074,12 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                         createHeadings(cb,50,780,Company_Name);
                                         createHeadings(cb,50,765,Address);
                                         createHeadings(cb,50,750,Contact);
-                                        createHeadings(cb,50,735,"Bill To");
-                                        createHeadings(cb,50,720,Name);
-                                        createHeadings(cb,50,705,Email);
-                                        createHeadings(cb,50,690,Member_Contact);
-
+                                        createHeadings(cb,50,735,GST_No);
+                                        createHeadings(cb,50,720,"Bill To");
+                                        createHeadings(cb,50,705,Name);
+                                        createHeadings(cb,50,690,Email);
+                                        createHeadings(cb,50,680,Member_Contact);
+                                        createHeadings(cb,50,660,MemberGST_No);
                                         createHeadings(cb,455,735,"Invoice Date :"+invoice_date);
                                         createHeadings(cb,455,720,"Invoice No : "+Invoice_ID);
                                         createHeadings(cb,455,705,"Member Id : "+member_id);
@@ -2282,7 +2285,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                                     Mail m = new Mail("tulsababar.ndsoft@gmail.com", "Tulsa@2019");
 
                                                     String[] toArr = { Email, "tulsababar01@gmail.com"};
-                                                    Log.v(TAG, String.format(" Email array to send = %s", toArr));
+                                                   // Log.v(TAG, String.format(" Email array to send = %s", toArr));
                                                     m.setTo(toArr);
                                                     m.setFrom("tulsababar.ndsoft@gmail.com");
                                                     m.setSubject(subject);
@@ -2379,7 +2382,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EnquiryForDetails = new HashMap<String, String>();
 
             EnquiryForDetails.put("type","balancepaid" );

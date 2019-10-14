@@ -301,7 +301,7 @@ public class POSAddBillingActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> PaymentTypeDetails = new HashMap<String, String>();
             PaymentTypeDetails.put("action", "show_payment_type_list");
             String domainurl= SharedPrefereneceUtil.getDomainUrl(POSAddBillingActivity.this);
@@ -476,7 +476,7 @@ public class POSAddBillingActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+          //  Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> AddPosBillingDetails = new HashMap<String, String>();
             AddPosBillingDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(POSAddBillingActivity.this));
             AddPosBillingDetails.put("cust_name", inputName.getText().toString());
@@ -563,7 +563,7 @@ public class POSAddBillingActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+          //  Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EnquiryForDetails = new HashMap<String, String>();
 
             EnquiryForDetails.put("contact",inputContact.getText().toString() );

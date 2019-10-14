@@ -480,7 +480,7 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.BaseViewHo
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> MakeAttendanceDetails = new HashMap<String, String>();
             MakeAttendanceDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId((Activity)context));
             Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId((Activity)context)));

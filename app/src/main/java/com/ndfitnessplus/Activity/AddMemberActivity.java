@@ -694,7 +694,7 @@ public class AddMemberActivity extends AppCompatActivity implements View.OnClick
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> OccupationDetails = new HashMap<String, String>();
             OccupationDetails.put("action", "show_occupation_list");
             //OccupationloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(Occupationloyee.this));
@@ -832,7 +832,7 @@ public class AddMemberActivity extends AppCompatActivity implements View.OnClick
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+          //  Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EnquiryForDetails = new HashMap<String, String>();
 
             EnquiryForDetails.put("mobileno",inputContact.getText().toString() );
@@ -905,7 +905,7 @@ public class AddMemberActivity extends AppCompatActivity implements View.OnClick
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EnquiryForDetails = new HashMap<String, String>();
 
             EnquiryForDetails.put("email",inputEmail.getText().toString() );
@@ -978,7 +978,7 @@ public class AddMemberActivity extends AppCompatActivity implements View.OnClick
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EnquiryForDetails = new HashMap<String, String>();
 
             EnquiryForDetails.put("mobileno",inputContact.getText().toString() );
@@ -1143,7 +1143,7 @@ public class AddMemberActivity extends AppCompatActivity implements View.OnClick
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> AddMemberDetails = new HashMap<String, String>();
             AddMemberDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(AddMemberActivity.this));
             Log.v(TAG, String.format("doInBackground :: Comp_id= %s", SharedPrefereneceUtil.getSelectedBranchId(AddMemberActivity.this)));

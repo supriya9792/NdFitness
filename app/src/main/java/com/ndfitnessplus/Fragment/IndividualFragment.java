@@ -176,7 +176,7 @@ public class IndividualFragment extends Fragment {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> SearchDetails = new HashMap<String, String>();
 
             SearchDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(getActivity()) );
@@ -283,7 +283,7 @@ public class IndividualFragment extends Fragment {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> SendNotiDetails = new HashMap<String, String>();
             SendNotiDetails.put("title", "Gymtime Message" );
             SendNotiDetails.put("message", Message.getText().toString() );

@@ -1174,7 +1174,7 @@ public class RenewActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EnquiryForDetails = new HashMap<String, String>();
 
             EnquiryForDetails.put("mobileno",inputContact.getText().toString() );
@@ -1287,7 +1287,7 @@ public class RenewActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> PackageTypeDetails = new HashMap<String, String>();
             PackageTypeDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(RenewActivity.this));
             PackageTypeDetails.put("action", "show_package_type");
@@ -1429,7 +1429,7 @@ public class RenewActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> PackageNameDetails = new HashMap<String, String>();
             PackageNameDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(RenewActivity.this));
             PackageNameDetails.put("pack_type", packageType);
@@ -1691,7 +1691,7 @@ public class RenewActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+          //  Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> InstructorNameDetails = new HashMap<String, String>();
             InstructorNameDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(RenewActivity.this));
             InstructorNameDetails.put("action", "show_instructor_name_list");
@@ -1874,7 +1874,7 @@ public class RenewActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> TimeDetails = new HashMap<String, String>();
            // TimeDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(RenewActivity.this));
             TimeDetails.put("action", "show_master_time");
@@ -2043,7 +2043,7 @@ public class RenewActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> PaymentTypeDetails = new HashMap<String, String>();
             PaymentTypeDetails.put("action", "show_payment_type_list");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(RenewActivity.this);
@@ -2178,7 +2178,7 @@ public class RenewActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
 
             if(inputStartDate.getText().length()>0 && inputDuration.getText().length()>0){
                 int duration =Integer.parseInt(inputDuration.getText().toString());
@@ -2404,14 +2404,16 @@ public class RenewActivity extends AppCompatActivity {
                                     String Address = jsonObj.getString("Address");
                                     String Contact = jsonObj.getString("Contact");
                                     String TermsAndConditions = jsonObj.getString("TermsAndConditions");
+                                    String MemberGST_No = jsonObj.getString("MemberGST_No");
+                                    String GST_No = jsonObj.getString("GST_No");
                                     TermsAndConditions = TermsAndConditions.replace("\r\n", "<br />");
                                     String Logo = jsonObj.getString("Logo");
                                     String l=Logo.replaceAll("\\s+","%20");
                                    // Logo.replace(" ","%20");
                                     String domainurl=SharedPrefereneceUtil.getDomainUrl(RenewActivity.this);
                                   final  String imgurl=domainurl+ServiceUrls.IMAGES_URL+l;
-                                    Log.d(TAG, "imgurl: " +imgurl);
-                                    Log.d(TAG, "pdf file path: " +FilePath);
+                                    Log.d(TAG, "GST_No: " +GST_No);
+                                    Log.d(TAG, "MemberGST_No: " +MemberGST_No);
 
                                     String textBody = "";
                                     PdfPTable tablePayTrasa=null;
@@ -2488,507 +2490,188 @@ public class RenewActivity extends AppCompatActivity {
                                                     tablePayTrasa.addCell(ReceiptOwnerExecutive);
 
                                                 }
-
-//                                                textBody += "  <tr style\"display: table-row; \n \n" +
-//                                                        "            vertical-align: inherit;border-spacing: 0px; \n\n" +
-//                                                        "             border-color: grey;border: thick;border: 1px solid #ddd;" +
-//                                                        "            border-color: black;\">\n \n" +
-//                                                        "    <td style=\"padding: 8px;\n\n" +
-//                                                        "     line-height: 1.428571429;\n\n" +
-//                                                        "     vertical-align: top;\n\n" +
-//                                                        "     border: 1px solid #ddd; display: table-cell; \n \n\n" +
-//                                                        "        text-align: center;\">"+Receipt_Id+"</td>\n \n" +
-//                                                        "     <td style=\"padding: 8px;\n" +
-//                                                        "    line-height: 1.428571429;\n" +
-//                                                        "    vertical-align: top;\n" +
-//                                                        "    border: 1px solid #ddd; display: table-cell; \n \n" +
-//                                                        "       text-align: center;\">"+receipt_date+"</td>\n\n" +
-//                                                        "    <td style=\"padding: 8px;\n\n" +
-//                                                        "     line-height: 1.428571429;\n\n" +
-//                                                        "     vertical-align: top;\n\n" +
-//                                                        "     border: 1px solid #ddd; display: table-cell; \n \n\n" +
-//                                                        "        text-align: center;\">"+Tax+"</td> \n\n" +
-//                                                        "    <td style=\"padding: 8px;\n\n" +
-//                                                        "    line-height: 1.428571429;\n\n" +
-//                                                        "    vertical-align: top;\n\n" +
-//                                                        "    border: 1px solid #ddd; display: table-cell; \n \n" +
-//                                                        "       text-align: center;\">"+TaxAmount+"</td>\n\n" +
-//                                                        "    <td style=\"padding: 8px;\n\n" +
-//                                                        "    line-height: 1.428571429;\n\n" +
-//                                                        "    vertical-align: top;\n\n" +
-//                                                        "    border: 1px solid #ddd; display: table-cell; \n \n\n" +
-//                                                        "       text-align: center;\">"+Paid+"</td>\n\n" +
-//                                                        "    <td style=\"padding: 8px;\n\n" +
-//                                                        "    line-height: 1.428571429;\n\n" +
-//                                                        "    vertical-align: top;\n\n" +
-//                                                        "    border: 1px solid #ddd; display: table-cell; \n \n" +
-//                                                        "       text-align: center;\">"+PaymentType+"</td>\n\n" +
-//                                                        "    <td style=\" padding: 8px;\n \n" +
-//                                                        "     line-height: 1.428571429;\n \n" +
-//                                                        "     vertical-align: top;\n \n" +
-//                                                        "     border: 1px solid #ddd; display: table-cell; \n\n" +
-//                                                        "        text-align: center;\">"+PaymentDetails+"</td>\n\n" +
-//                                                        "    <td style=\" padding: 5px;\n\n" +
-//                                                        "    line-height: 1.428571429;\n\n" +
-//                                                        "    vertical-align: top;\n\n" +
-//                                                        "    border: 1px solid #ddd; display: table-cell; \n\n" +
-//                                                        "       text-align: center;\">"+ReceiptOwnerExecutive+"</td>\n\n" +
-//                                                        "    </tr>\n";
+                                                textBody += "  <tr >\n \n" +
+                                                        "    <td >"+Receipt_Id+"</td>\n \n" +
+                                                        "     <td >"+receipt_date+"</td>\n\n" +
+                                                        "    <td >"+Tax+"</td> \n\n" +
+                                                        "    <td >"+TaxAmount+"</td>\n\n" +
+                                                        "    <td >"+Paid+"</td>\n\n" +
+                                                        "    <td >"+PaymentType+"</td>\n\n" +
+                                                        "    <td >"+PaymentDetails+"</td>\n\n" +
+                                                        "    <td >"+ReceiptOwnerExecutive+"</td>\n\n" +
+                                                        "    </tr>\n";
+//
                                             }
                                         }
 
                                     }
-//                                                                        final String message = "<!DOCTYPE html>\n" +
-//                                            "\n" +
-//                                            "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n" +
-//                                            "<head runat=\"server\">\n" +
-//                                            "    <title></title>\n" +
-//                                            "</head>\n" +
-//                                            "\n" +
-////                                            "<link href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css\" rel=\"stylesheet\" id=\"bootstrap-css\">\n" +
-////                                            "<script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js\"></script>\n" +
-//////                                            "<script src=\"//code.jquery.com/jquery-1.11.1.min.js\"></script>\n" +
-//                                            "\n" +
-//                                            "\n" +
-//                                            "\n" +
-//                                            "\n" +
-//                                            "\n" +
-//                                            "\n" +
-//                                            "<!------ Include the above in your HEAD tag ---------->\n" +
-//                                            "<body>\n" +
-//                                            "    <form runat=\"server\">\n" +
-//                                            "\n" +
-//                                            "    <div id=\"divprint\" style=\"  width: 990;\n" +
-//                                            "       margin-right: auto;\n" +
-//                                            "       margin-left: auto;\n" +
-//                                            "       padding-left: 15px;\n" +
-//                                            "       padding-right: 15px;\">\n" +
-//                                            "\n" +
-//                                            " <div style=\" margin-left: -15px;margin-right: -15px;\">\n"  +
-//                                            " <div style=\"   width: 100%;\n" +
-//                                            "   min-width: 992px;\n" +
-//                                            "   position: relative;  margin-bottom:15px;\n" +
-//                                            "   min-height: 1px;\n" +
-//                                            "   padding-left: 15px;\n" +
-//                                            "   padding-right: 15px;\">\n" +
-//                                            "\n" +
-//                                            "                <div style=\"width: 100%;display: flex; margin-left: -15px;margin-right: -15px;\">\n" +
-//                                            "                    <div style=\" flex: 50%;  \">\n" +
-//                                            "                        <address>\n" +
-//                                            "                            <strong style=\"font: 700;\">\n" +Company_Name+
-//                                            "                               </strong><br />" +Address+
-//                                            "                           <br />" +Contact+
-//                                            "                            <br />" +
-//                                            "                        </address>" +
-//                                            "                    </div>" +
-//                                            "                    <div style=\"  flex: 50%; width: 100%;  text-align: right;\">" +
-//                                            "                        <address>" +
-//                                            "                        " +
-//                                            "                            <img src="+ imgurl +">" +
-//                                            "                        </address>\n" +
-//                                            "                    </div>" +
-//                                            "                </div>" +
-//                                            "                <div style=\" display: flex; margin-left: -15px;margin-right: -15px;\">\n" +
-//                                            "                    <div  style=\" flex: 50%;  \">\n" +
-//                                            "                        <address>\n" +
-//                                            "                            <strong>Bill To:</strong><br />\n" +
-//                                            "                            <strong style=\"font: 900;\">"+Name +"</strong><br>\n" + Member_Email_ID+
-//                                            "                           <br>\n" +Member_Contact+
-//                                            "                        </address>\n" +
-//                                            "                    </div>" +
-//                                            "                    <div style=\" flex: 50%;  width: 100%;  text-align: right;\">" +
-//                                            "                        <address>" +
-//                                            "                            <strong>Invoice Date :"+invoice_date+"</strong><br>\n" +
-//                                            "\n" +
-//                                            "                            <strong>Invoice No : "+Invoice_ID+"</strong><br>\n" +
-//                                            "                            <strong>Member Id : "+MemberID+"</strong>\n" +
-//                                            "\n" +
-//                                            "                        </address>\n" +
-//                                            "                    </div>\n" +
-//                                            "                </div>\n" +
-//                                            "            </div>\n" +
-//                                            "        </div>\n" +
-//                                            "\n" +
-//                                            "        <div  style=\" margin-left: -15px;margin-right: -15px;\">\n" +
-//                                            "\n" +
-//                                            "            <div style=\"   width: 100%;\n" +
-//                                            "   min-width: 992px;\n" +
-//                                            "   position: relative;\n" +
-//                                            "   min-height: 1px;\n" +
-//                                            "   padding-left: 15px;\n" +
-//                                            "   padding-right: 15px; \">\n" +
-//                                            "                <div style=\"  margin-bottom: 20px;\n" +
-//                                            "   background-color: #fff;\n" +
-//                                            "   border: 1px solid transparent;\n" +
-//                                            "   border-radius: 4px;\n" +
-//                                            "   -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.05);\n" +
-//                                            "   box-shadow: 0 1px 1px rgba(0,0,0,.05); border-color: #ddd;\">\n" +
-//                                            "                    <div  style=\" padding: 10px 15px;\n" +
-//                                            "   border-bottom: 1px solid transparent;\n" +
-//                                            "   border-top-right-radius: 3px;\n" +
-//                                            "   border-top-left-radius: 3px; background-color: darkgrey; border-color: black;\">\n" +
-//                                            "                        <h3 style=\"  margin-top: 0;\n" +
-//                                            "   margin-bottom: 0;\n" +
-//                                            "   font-size: 16px;\n" +
-//                                            "   color: inherit; \"><strong>Package Summary</strong></h3>\n" +
-//                                            "                    </div>\n" +
-//                                            "                    <div  style=\" padding: 15px;\n" +
-//                                            "   content: \" \";\n" +
-//                                            "      display: table;\n" +
-//                                            "      clear: both;padding: 0px; border-color: black;\">\n" +
-//                                            "                        <div  style=\"min-height:.01%;overflow-x:auto; width:100%;" +
-//                                            "overflow-y:hidden;-ms-overflow-style:-ms-autohiding-scrollbar;border:1px solid #ddd;" +
-//                                            "overflow: hidden;\">\n" +
-//                                            "                            <table  style=\"margin-bottom: 0px; border: thick; width: 100%;  max-width: 100%;\n" +
-//                                            "   background-color: transparent;\n" +
-//                                            "   border-collapse: collapse;\n" +
-//                                            "   border-spacing: 0;\">\n" +
-//                                            "                                <thead style=\"  display: table-header-group;\n" +
-//                                            "   vertical-align: middle;\n" +
-//                                            "   border-color: inherit;\">\n" +
-//                                            "                                    <tr style=\"display: table-row;\n" +
-//                                            "   vertical-align: inherit;\n" +
-//                                            "   border-color: inherit;border: thick; border-color: black;\">\n" +
-//                                            "                                      <td style=\"display: table-cell;\n" +
-//                                            "                                                vertical-align: inherit;\n" +
-//                                            "                                                border: 1px solid #ddd;\n" +
-//                                            "                                                padding: 8px;\n" +
-//                                            "                                                line-height: 1.428571429;\n" +
-//                                            "    vertical-align: top; \"><strong>Package</strong></td>\n" +
-//                                            "                                       <td style=\" display: table-cell;\n" +
-//                                            "                                                   vertical-align: inherit;\n" +
-//                                            "                                                   border: 1px solid #ddd;\n" +
-//                                            "                                                   padding: 8px;\n" +
-//                                            "                                                   line-height: 1.428571429;\n" +
-//                                            "                                                   vertical-align: top;  text-align: center;\" ><strong>Duration</strong></td>\n" +
-//                                            "                                        <td style=\" display: table-cell;\n " +
-//                                            "                                                vertical-align: inherit;\n" +
-//                                            "                                              border: 1px solid #ddd;\n" +
-//                                            "                                                padding: 8px; \n" +
-//                                            "                                               line-height: 1.428571429;\n \n" +
-//                                            "                                              vertical-align: top;  text-align: center;\"><strong>Session</strong></td>                                    \n" +
-//                                            "                                        <td style=\" display: table-cell;\n \n" +
-//                                            "                                               vertical-align: inherit;\n \n" +
-//                                            "                                              border: 1px solid #ddd;\n" +
-//                                            "                                               padding: 8px;\n" +
-//                                            "                                               line-height: 1.428571429; \n" +
-//                                            "                                               vertical-align: top;  text-align: center;\"><strong>StartDate</strong></td>\n" +
-//                                            "                                        <td style=\" display: table-cell; \n" +
-//                                            "                                               vertical-align: inherit; \n" +
-//                                            "                                              border: 1px solid #ddd;\n" +
-//                                            "                                               padding: 8px;\n" +
-//                                            "                                               line-height: 1.428571429; \n" +
-//                                            "                                                vertical-align: top;  text-align: center;\"><strong>EndDate</strong></td>\n" +
-//                                            "                                        <td style=\" display: table-cell;\n \n" +
-//                                            "                                               vertical-align: inherit;\n \n" +
-//                                            "                                               border: 1px solid #ddd;\n \n" +
-//                                            "                                               padding: 8px;\n \n" +
-//                                            "                                               line-height: 1.428571429;\n \n" +
-//                                            "                                            vertical-align: top;  text-align: center;\"><strong>Time</strong></td>\n" +
-//                                            "                                        <td style=\" display: table-cell;\n \n" +
-//                                            "                                               vertical-align: inherit;\n \n" +
-//                                            "                                              border: 1px solid #ddd;\n \n" +
-//                                            "                                               padding: 8px;\n \n" +
-//                                            "                                               line-height: 1.428571429;\n \n" +
-//                                            "                                                vertical-align: top;  text-align: center;\"><strong>Instructor</strong></td>\n" +
-//                                            "                                        <td style=\" display: table-cell;\n \n" +
-//                                            "                                               vertical-align: inherit;\n \n" +
-//                                            "                                              border: 1px solid #ddd;\n" +
-//                                            "                                               padding: 8px; \n" +
-//                                            "                                               line-height: 1.428571429;\n \n" +
-//                                            "                                                vertical-align: top;  text-align: right;\"><strong>Package Fees</strong></td>\n" +
-//                                            "\n" +
-//                                            "                                    </tr>\n" +
-//                                            "                                </thead>\n" +
-//                                            "                                <tbody style=\"     display: table-row-group;\n\n" +
-//                                            "                                              vertical-align: middle;\n\n" +
-//                                            "                                              border-color: inherit;\">\n" +
-//                                            "                                    <!-- foreach ($order->lineItems as $line) or some such thing here -->\n" +
-//                                            "                                    <tr style=\"display: table-row; \n" +
-//                                            "                                               vertical-align: inherit; \n" +
-//                                            "                                               border-color: inherit;border: thick; border-color: black;\">\n" +
-//                                            "                                        <td style=\"display: table-cell; \n" +
-//                                            "                                               vertical-align: inherit;\n \n" +
-//                                            "                                              border: 1px solid #ddd;\n" +
-//                                            "                                               padding: 8px; \n" +
-//                                            "                                               line-height: 1.428571429; \n" +
-//                                            "                                                vertical-align: top; \">"+Package_Name+"</td>\n" +
-//                                            "                                         <td style=\" display: table-cell;\n \n" +
-//                                            "                                               vertical-align: inherit;\n \n" +
-//                                            "                                               border: 1px solid #ddd;\n" +
-//                                            "                                               padding: 8px; \n" +
-//                                            "                                               line-height: 1.428571429;\n \n" +
-//                                            "                                                vertical-align: top;  text-align: center;\">"+Duration_Days+"</td>\n" +
-//                                            "                                        <td style=\" display: table-cell; \n" +
-//                                            "                                               vertical-align: inherit; \n" +
-//                                            "                                              border: 1px solid #ddd;\n" +
-//                                            "                                               padding: 8px; \n" +
-//                                            "                                               line-height: 1.428571429;\n" +
-//                                            "                                                vertical-align: top;  text-align: center;\">"+Session+"</td>                                       \n" +
-//                                            "                                        <td style=\" display: table-cell; \n" +
-//                                            "                                               vertical-align: inherit; \n" +
-//                                            "                                              border: 1px solid #ddd;\n" +
-//                                            "                                               padding: 8px; \n" +
-//                                            "                                               line-height: 1.428571429; \n" +
-//                                            "                                                vertical-align: top;  text-align: center;\">"+start_date+"</td>\n" +
-//                                            "                                        <td style=\" display: table-cell; \n" +
-//                                            "                                               vertical-align: inherit; \n" +
-//                                            "                                              border: 1px solid #ddd;\n" +
-//                                            "                                               padding: 8px; \n" +
-//                                            "                                               line-height: 1.428571429; \n" +
-//                                            "                                                vertical-align: top;  text-align: center;\">"+end_date+"</td>\n" +
-//                                            "                                        <td style=\" display: table-cell; \n" +
-//                                            "                                               vertical-align: inherit; \n" +
-//                                            "                                              border: 1px solid #ddd;\n" +
-//                                            "                                               padding: 8px; \n" +
-//                                            "                                               line-height: 1.428571429; \n" +
-//                                            "                                                vertical-align: top;  text-align: center;\">"+Time+"</td>\n" +
-//                                            "                                        <td style=\" display: table-cell; \n" +
-//                                            "                                               vertical-align: inherit; \n" +
-//                                            "                                              border: 1px solid #ddd;\n" +
-//                                            "                                               padding: 8px; \n" +
-//                                            "                                               line-height: 1.428571429; \n" +
-//                                            "                                                vertical-align: top;  text-align: center;\">"+Instructor_Name+"</td>\n" +
-//                                            "                                        <td style=\" display: table-cell; \n\n" +
-//                                            "                                            vertical-align: inherit; \n\n" +
-//                                            "                                           border: 1px solid #ddd;\n" +
-//                                            "                                            padding: 8px; \n\n" +
-//                                            "                                            line-height: 1.428571429; \n\n" +
-//                                            "                                             vertical-align: top; text-align: right;\">"+Package_Fees+"</td>\n" +
-//                                            "                                    </tr>\n" +
-//                                            "\n" +
-//                                            "                                </tbody>\n" +
-//                                            "                            </table>\n" +
-//                                            "                        </div>\n" +
-//                                            "                    </div>\n" +
-//                                            "\n" +
-//                                            "                    <div style=\""+
-//                                            "      display: table;\n" +
-//                                            "      clear: both; padding: 15px;\n" +
-//                                            "   content: \" \";\n" +
-//                                            "      display: table;\n" +
-//                                            "      \" >\n" +
-//                                            "                        <div  style=\"min-height:.01%;overflow-x:auto; width:100%;\" \n" +
-//                                            "                                            overflow-y:hidden;-ms-overflow-style:-ms-autohiding-scrollbar;border:1px solid #ddd;\n" +
-//                                            "                                            overflow: hidden;\">\n" +
-//                                            "                            <table  style=\" width: 100%;   max-width: 100%;\n" +
-//                                            "   background-color: transparent;\n" +
-//                                            "   border-collapse: collapse;\n" +
-//                                            "   border-spacing: 0;margin-bottom: 0px;\">\n" +
-//                                            "                                <thead>\n" +
-//                                            "                                    <tr style=\"display: table-row; \n" +
-//                                            "                                              vertical-align: inherit; \n" +
-//                                            "                                            \t    border-color: inherit;border: thick; border-color: black;\">\n" +
-//                                            "                                        <td style=\"display: table-cell; \n" +
-//                                            "                                            \t    vertical-align: inherit; \n" +
-//                                            "                                            \t     border: 1px solid #ddd; \n" +
-//                                            "                                            \t    padding:8px; \n" +
-//                                            "                                            \t    line-height: 1.428571429; \n" +
-//                                            "                                             vertical-align: top; \"><strong>Discount</strong></td>\n" +
-//                                            "                                        <td style=\" display: table-cell; \n" +
-//                                            "                                            \t    vertical-align: inherit; \n" +
-//                                            "                                                border: 1px solid #ddd; \n" +
-//                                            "                                               padding:8px; \n" +
-//                                            "                                               line-height: 1.428571429; \n" +
-//                                            "                                                vertical-align: top;  text-align: center;\"><strong>Reg Fees</strong></td>\n" +
-//                                            "                                        <td style=\" display: table-cell; \n" +
-//                                            "                                               vertical-align: inherit; \n" +
-//                                            "                                                border: 1px solid #ddd; \n" +
-//                                            "                                               padding:8px; \n" +
-//                                            "                                               line-height: 1.428571429; \n" +
-//                                            "                                                vertical-align: top;  text-align: center;\"><strong>Total Amount</strong></td>\n" +
-//                                            "                                        <td style=\" display: table-cell; \n" +
-//                                            "                                              vertical-align: inherit; \n" +
-//                                            "                                               border: 1px solid #ddd; \n" +
-//                                            "                                              padding:8px; \n" +
-//                                            "                                              line-height: 1.428571429; \n" +
-//                                            "                                                vertical-align: top;  text-align: center;\"><strong>Paid Amount</strong></td>\n" +
-//                                            "                                        <td style=\" display: table-cell; \n\n \n" +
-//                                            "                                           vertical-align: inherit; \n\n" +
-//                                            "                                            border: 1px solid #ddd; \n" +
-//                                            "                                           padding:8px; \n\n\n" +
-//                                            "                                           line-height: 1.428571429; \n\n\n" +
-//                                            "                                             vertical-align: top; text-align: right;\"><strong>Balance</strong></td>\n" +
-//                                            "\n" +
-//                                            "                                    </tr>\n" +
-//                                            "                                </thead>\n" +
-//                                            "                                <tbody style=\"     display: table-row-group;\n\n" +
-//                                            "                                              vertical-align: middle;\n" +
-//                                            "                                              border-color: inherit;\">\n" +
-//                                            "                                    <!-- foreach ($order->lineItems as $line) or some such thing here -->\n" +
-//                                            "                                    <tr>\n" +
-//                                            "                                        <td style=\" display: table-cell; \n\n" +
-//                                            "                                            vertical-align: inherit; \n \n" +
-//                                            "                                             border: 1px solid #ddd;\n \n" +
-//                                            "                                            padding:8px; \n\n" +
-//                                            "                                            line-height: 1.428571429; \n\n" +
-//                                            "                                            vertical-align: top;  \">"+Discount+"</td>\n" +
-//                                            "                                        <td style=\" display: table-cell; \n" +
-//                                            "                                              vertical-align: inherit; \n" +
-//                                            "                                               border: 1px solid #ddd;\n" +
-//                                            "                                              padding:8px; \n" +
-//                                            "                                              line-height: 1.428571429; \n" +
-//                                            "                                              vertical-align: top;  text-align: center;\">"+Registration_Fees+"</td>\n" +
-//                                            "                                       \n" +
-//                                            "                                        <td style=\" display: table-cell; \n" +
-//                                            "                                              vertical-align: inherit; \n" +
-//                                            "                                               border: 1px solid #ddd;\n" +
-//                                            "                                              padding:8px; \n" +
-//                                            "                                              line-height: 1.428571429; \n" +
-//                                            "                                               vertical-align: top;  text-align: center;\">"+Rate+"</td>\n" +
-//                                            "                                        <td style=\" display: table-cell; \n" +
-//                                            "                                              vertical-align: inherit; \n" +
-//                                            "                                               border: 1px solid #ddd;\n" +
-//                                            "                                              padding:8px; \n" +
-//                                            "                                              line-height: 1.428571429; \n" +
-//                                            "                                                vertical-align: top;  text-align: center;\">"+Final_paid+"</td>\n" +
-//                                            "                                        <td style=\" display: table-cell; \n\n" +
-//                                            "                                             vertical-align: inherit; \n" +
-//                                            "                                              border: 1px solid #ddd;\n" +
-//                                            "                                             padding:8px; \n\n" +
-//                                            "                                             line-height: 1.428571429; \n\n" +
-//                                            "                                               vertical-align: top; text-align: right;\">"+Final_Balance+"</td>\n" +
-//                                            "                                    </tr>\n" +
-//                                            "\n" +
-//                                            "                                </tbody>\n" +
-//                                            "                            </table>\n" +
-//                                            "                        </div>\n" +
-//                                            "                    </div>\n" +
-//                                            "\n" +
-//                                            "                </div>\n" +
-//                                            "            </div>\n" +
-//                                            "        </div>\n" +
-//                                            "\n" +
-//                                            "       \n" +
-//                                            " <div  style=\" margin-left: -15px;margin-right: -15px;\">\n" +
-//                                            "\n" +
-//                                            "    <div style=\"   width: 100%;\n" +
-//                                            "   min-width: 992px;\n" +
-//                                            "   position: relative;\n" +
-//                                            "   min-height: 1px;\n" +
-//                                            "   padding-left: 15px;\n" +
-//                                            "   padding-right: 15px; \">\n" +
 //
-//                                            "            <div style=\" \n" +
-//                                            "    background-color: #fff;\n" +
-//                                            "    border: 1px solid transparent; \n" +
-//                                            "    border-radius: 4px;\n" +
-//                                            "    -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.05);\n" +
-//                                            "    box-shadow: 0 1px 1px rgba(0,0,0,.05);\n" +
-//                                            "    border-color: #ddd;\">\n" +
-//                                            "                <div  style=\"  padding: 10px 15px;\n" +
-//                                            "    border-bottom: 1px solid transparent;\n" +
-//                                            "   border-top-right-radius: 3px;\n" +
-//                                            "    border-top-left-radius: 3px; background-color: darkgrey; border-color: black;\">\n" +
-//                                            "                        <h3 style=\"  margin-top: 0;\n" +
-//                                            "    margin-bottom: 0;\n" +
-//                                            "    font-size: 16px;\n" +
-//                                            "    color: inherit;\"><strong>Payment Transaction</strong></h3>\n" +
-//                                            "                    </div>\n" +
-//                                            "                <div style=\""+
-//                                            "                   content: \" \";\n" +
-//                                            "                   display: table;\n" +
-//                                            "                   padding: 15px;\n" +
-//                                            "                   display: table;\n" +
-//                                            "                   clear: both;\" >\n" +
-//                                            "                        <div style=\"min-height:.01%;overflow-x:auto; width:100%; \n" +
-//                                            "                                           overflow-y:hidden;-ms-overflow-style:-ms-autohiding-scrollbar;border:1px solid #ddd;\n" +
-//                                            "                                            overflow: hidden;\">\n" +
-//                                            "                            <table  style=\"margin-bottom: 0px; border: thick;width: 100%;  max-width: 100%;\n\n" +
-//                                            "                                            background-color: transparent;\n\n" +
-//                                            "                                            border-collapse: collapse;\n\n" +
-//                                            "                                            border-spacing: 0;\">\n" +
-//                                            "                                <thead>\n" +
-//                                            "                                    <tr style=\"display: table-row; \n" +
-//                                            "                                                vertical-align: inherit; \n" +
-//                                            "                                               border-color: inherit;border: thick; border-color: black;\">\n" +
-//                                            "                                        <td style=\" padding: 5px;\n\n" +
-//                                            "                                            line-height: 1.428571429;\n\n" +
-//                                            "                                            vertical-align: top;\n\n" +
-//                                            "                                            border: 1px solid #ddd; display: table-cell; \n\n" +
-//                                            "                                               text-align: center;\"><strong>#RNo</strong></td>\n" +
-//                                            "                                        <td style=\"padding: 5px;\n\n" +
-//                                            "                                                    line-height: 1.428571429;\n\n\n" +
-//                                            "                                                    vertical-align: top;\n\n\n" +
-//                                            "                                                    border: 1px solid #ddd; display: table-cell; \n\n" +
-//                                            "                                                       text-align: center;\"><strong>Date</strong></td>\n" +
-//                                            "                                        <td style=\"padding: 8px;\n\n \n" +
-//                                            "                                                    line-height: 1.428571429;\n\n\n" +
-//                                            "                                                    vertical-align: top;\n\n \n" +
-//                                            "                                                    border: 1px solid #ddd; display: table-cell; \n \n" +
-//                                            "                                                       text-align: center;\"><strong>Tax</strong></td>                                    \n" +
-//                                            "                                        <td style=\"padding: 8px;\n\n\n" +
-//                                            "                                                    line-height: 1.428571429;\n\n" +
-//                                            "                                                    vertical-align: top;\n\n" +
-//                                            "                                                    border: 1px solid #ddd; display: table-cell; \n \n" +
-//                                            "                                                       text-align: center;\"><strong>Tax Amount</strong></td>\n" +
-//                                            "                                        <td style=\"padding: 8px;\n\n" +
-//                                            "                                                    line-height: 1.428571429;\n\n" +
-//                                            "                                                    vertical-align: top;\n\n" +
-//                                            "                                                    border: 1px solid #ddd; display: table-cell; \n\n" +
-//                                            "                                                       text-align: center;\"><strong>Paid Amount</strong></td>\n" +
-//                                            "                                        <td style=\"padding: 8px;\n \n" +
-//                                            "                                                    line-height: 1.428571429;\n\n" +
-//                                            "                                                    vertical-align: top;\n\n" +
-//                                            "                                                    border: 1px solid #ddd; display: table-cell; \n\n" +
-//                                            "                                                       text-align: center;\"><strong>Payment Mode</strong></td>\n" +
-//                                            "                                        <td style=\"padding: 8px;\n \n" +
-//                                            "                                                    line-height: 1.428571429;\n \n" +
-//                                            "                                                    vertical-align: top;\n\n \n" +
-//                                            "                                                    border: 1px solid #ddd; display: table-cell; \n\n" +
-//                                            "                                                       text-align: center;\"><strong>Payment Details</strong></td>\n" +
-//                                            "                                        <td style=\"padding: 5px;\n\n" +
-//                                            "                                                    line-height: 1.428571429;\n\n" +
-//                                            "                                                    vertical-align: top;\n \n" +
-//                                            "                                                    border: 1px solid #ddd; display: table-cell; \n\n" +
-//                                            "                                                       text-align: center;\"><strong>Executive</strong></td>\n" +
-//                                            "                                    </tr>\n" +
-//                                            "                                </thead>\n" +
-//                                            "                                <tbody style=\"display: table-row-group;\n" +
-//                                            "                                                 vertical-align: middle;\n" +
-//                                            "                                                     border-color: inherit;\">\n" +
-//                                            "                                    <!-- foreach ($order->lineItems as $line) or some such thing here -->\n" +
-//                                            textBody+
-//                                            "\n" +
-//                                            "                                </tbody>\n" +
-//                                            "                            </table>\n" +
-//                                            "                        </div>\n" +
-//                                            "                    </div>\n" +
-//                                            "                     \n" +
-//                                            "            </div>\n" +
-//                                            "           </div>\n" +
-//                                            "        </div>\n" +
-//                                            "\n" +
-//                                            "      \n" +
-//                                            "\n" +
-//                                            "        <div  style=\" margin-left: -15px;margin-right: -15px;\">\n" +
-//                                            "            <div style=\"   width: 100%;\n" +
-//                                            "   min-width: 992px;\n" +
-//                                            "   position: relative;\n" +
-//                                            "   min-height: 1px;\n" +
-//                                            "   padding-left: 15px;\n" +
-//                                            "   padding-right: 15px;\">\n" +
-//                                            "                                 <div  style=\"  padding: 10px 15px;\n" +
-//                                            "   border-bottom: 1px solid transparent;\n" +
-//                                            "   border-top-right-radius: 3px;\n" +
-//                                            "   border-top-left-radius: 3px; background-color: darkgray; border-color: black;\">\n" +
-//                                            "                        <h3 style=\"  margin-top: 0;\n" +
-//                                            "   margin-bottom: 0;\n" +
-//                                            "   font-size: 16px;\n" +
-//                                            "   color: inherit;\"><strong>Terms And Conditions</strong></h3>\n" +
-//                                            "                    </div>\n" +
-//                                            "                  \n" +
-//                                            "                           "+TermsAndConditions+"\n" +
-//                                            "                     \n" +
-//                                            "    \n" +
-//                                            "                \n" +
-//                                            "            </div>\n" +
-//                                            "        </div>\n" +
-//                                            "\n" +
-//                                            "    </div>\n" +
-//                                            "        </form>\n" +
-//                                            "</body>\n" +
-//                                            "</html>";
+                                    final String messagehtml = "<!DOCTYPE html>\n" +
+                                            "\n" +
+                                            "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n" +
+                                            "<head runat=\"server\">\n" +
+                                            "    <title></title>\n" +
+                                            "</head>\n" +
+                                            "<body>\n" +
+                                            "    <form runat=\"server\">\n" +
+                                            "\n" +
+                                            " <div class=\"row\">\n" +
+                                            "                <div class=\"column\" >\n" +
+                                            "                    <div >\n" +
+                                            "                        <address>\n" +
+                                            "                            <strong style=\"font: 700;\">\n" +
+                                            "                               </strong><br></br>" +
+                                            "                          <br></br>" +
+                                            "                           <br></br>" +
+                                            "                        </address>" +
+                                            "                    </div>" +
+                                            "                    <div >" +
+                                            "                        <address>" +
+                                            "                        " +
+//                                            "                            <img src="+ imgurl +">" +
+                                            "                        </address>\n" +
+                                            "                    </div>" +
+                                            "                </div>" +
+                                            "                <div class=\"column\" >\n" +
+                                            "                    <div  >\n" +
+                                            "                        <address>\n" +
+                                            "                            <strong></strong><br></br>\n" +
+                                            "                            <strong style=\"font: 900;\">"+"</strong><br></br>\n" +
+                                            "                           <br></br>\n" +
+                                            "                        </address>\n" +
+                                            "                    </div>" +
+                                            "                    <div >" +
+                                            "                        <address>" +
+                                            "                            <strong>"+"</strong><br></br>\n" +
+                                            "\n" +
+                                            "                            <strong> "+"</strong><br></br>\n" +
+                                            "                            <strong>  "+"</strong>\n" +
+                                            "                        </address>\n" +
+                                            "                    </div>\n" +
+                                            "                </div>\n" +
+                                            "      </div>\n" +
+                                            "\n" +
+                                            "        <div  >\n" +
+                                            "\n" +
+                                            "            <div >\n" +
+                                            "                <div >\n" +
+                                            "                    <div  >\n" +
+                                            "                        <h3 ><strong>Package Summary</strong></h3>\n" +
+                                            "                    </div>\n" +
+                                            "                    <div  >\n" +
+                                            "                        <div  >\n" +
+                                            "   <table border = '1' cellpadding=\"5\"  width=\"100%\" >\n" +
+                                            "                             <thead height=\"100\" >\n" +
+                                            "                                    <tr height=\"100\" >\n" +
+                                            "                                      <th ><strong>Package</strong></th>\n" +
+                                            "                                       <th ><strong>Duration</strong></th>\n" +
+                                            "                                       <th ><strong>Session</strong></th>                                    \n" +
+                                            "                                       <th ><strong>StartDate</strong></th>\n" +
+                                            "                                       <th ><strong>EndDate</strong></th>\n" +
+                                            "                                       <th ><strong>Time</strong></th>\n" +
+                                            "                                       <th ><strong>Instructor</strong></th>\n" +
+                                            "                                       <th ><strong>Package Fees</strong></th>\n" +
+                                            "                                    </tr>\n" +
+                                            "                                </thead>\n" +
+                                            "                               <tbody height=\"100\" >\n" +
+                                            "                                    <tr height=\"100\" >\n" +
+                                            "                                        <td >"+Package_Name+"</td>\n" +
+                                            "                                         <td >"+Duration_Days+"</td>\n" +
+                                            "                                        <td >"+Session+"</td>                                       \n" +
+                                            "                                        <td >"+start_date+"</td>\n" +
+                                            "                                        <td >"+end_date+"</td>\n" +
+                                            "                                        <td >"+Time+"</td>\n" +
+                                            "                                        <td >"+Instructor_Name+"</td>\n" +
+                                            "                                        <td >"+Package_Fees+"</td>\n" +
+                                            "                                    </tr>\n" +
+                                            "                                </tbody>\n" +
+                                            "                            </table>\n" +
+                                            "                        </div>\n" +
+                                            "                    </div>\n" +
+                                            "                    <div >\n" +
+                                            "                        <div  >\n" +
+                                            "                            <table border = '1' cellpadding=\"6\"  width=\"100%\" >\n" +
+                                            "                                <thead height=\"100\">\n" +
+                                            "                                    <tr height=\"100\" >\n" +
+                                            "                                        <th ><strong>Discount</strong></th>\n" +
+                                            "                                        <th ><strong>Reg Fees</strong></th>\n" +
+                                            "                                        <th ><strong>Total Amount</strong></th>\n" +
+                                            "                                        <th ><strong>Paid Amount</strong></th>\n" +
+                                            "                                        <th ><strong>Balance</strong></th>\n" +
+                                            "                                    </tr>\n" +
+                                            "                                </thead>\n" +
+                                            "                                <tbody >\n" +
+                                            "                                    <tr>\n" +
+                                            "                                        <td >"+Discount+"</td>\n" +
+                                            "                                        <td >"+Registration_Fees+"</td>\n" +
+                                            "                                       \n" +
+                                            "                                        <td >"+Rate+"</td>\n" +
+                                            "                                        <td >"+Final_paid+"</td>\n" +
+                                            "                                        <td >"+Final_Balance+"</td>\n" +
+                                            "                                    </tr>\n" +
+                                            "                                </tbody>\n" +
+                                            "                            </table>\n" +
+                                            "                        </div>\n" +
+                                            "                    </div>\n" +
+                                            "\n" +
+                                            "                </div>\n" +
+                                            "            </div>\n" +
+                                            "        </div>\n" +
+                                            "\n" +
+                                            "       \n" +
+                                            " <div  >\n" +
+                                            "\n" +
+                                            "    <div >\n" +
+
+                                            "            <div >\n" +
+                                            "                <div  >\n" +
+                                            "                        <h3 ><strong>Payment Transaction</strong></h3>\n" +
+                                            "                    </div>\n" +
+                                            "                <div >\n" +
+                                            "              <div >\n" +
+                                            "             <table border = '1' cellpadding=\"6\"  width=\"100%\" >\n" +
+                                            "             <thead height=\"100\">\n" +
+                                            "                   <tr height=\"100\" >\n" +
+                                            "                      <th ><strong>#RNo</strong></th>\n" +
+                                            "                      <th ><strong>Date</strong></th>\n" +
+                                            "                      <th ><strong>Tax</strong></th>                                    \n" +
+                                            "                      <th ><strong>Tax Amount</strong></th>\n" +
+                                            "                      <th ><strong>Paid Amount</strong></th>\n" +
+                                            "                       <th ><strong>Payment Mode</strong></th>\n" +
+                                            "                       <th ><strong>Payment Details</strong></th>\n" +
+                                            "                       <th ><strong>Executive</strong></th>\n" +
+                                            "                    </tr>\n" +
+                                            "             </thead>\n" +
+                                            "           <tbody >\n" +
+                                            textBody+
+                                            "          </tbody>\n" +
+                                            "       </table>\n" +
+                                            "       </div>\n" +
+                                            "       </div>\n" +
+                                            "                     \n" +
+                                            "      </div>\n" +
+                                            "     </div>\n" +
+                                            "  </div>\n" +
+                                            "\n" +
+                                            "      \n" +
+                                            "\n" +
+                                            "  <div  >\n" +
+                                            "    <div >\n" +
+                                            "       <div  >\n" +
+                                            "          <h3 ><strong>Terms And Conditions</strong></h3>\n" +
+                                            "       </div>\n" +
+                                            "                  \n" +
+                                            "                           "+TermsAndConditions+"\n" +
+                                            "                     \n" +
+                                            "    \n" +
+                                            "                \n" +
+                                            "            </div>\n" +
+                                            "        </div>\n" +
+                                            "\n" +
+                                            "    </div>\n" +
+                                            "        </form>\n" +
+                                            "</body>\n" +
+                                            "</html>";
                                   final  Document document = new Document();
 
                                     try {
@@ -3042,179 +2725,26 @@ public class RenewActivity extends AppCompatActivity {
                                         createHeadings(cb,50,780,Company_Name);
                                         createHeadings(cb,50,765,Address);
                                         createHeadings(cb,50,750,Contact);
+//                                        createHeadings(cb,50,740,GST_No);
                                         createHeadings(cb,50,735,"Bill To");
                                         createHeadings(cb,50,720,Name);
                                         createHeadings(cb,50,705,Email);
                                         createHeadings(cb,50,690,Member_Contact);
+//                                        createHeadings(cb,50,680,MemberGST_No);
+
 
                                         createHeadings(cb,465,735,"Invoice Date :"+invoice_date);
                                         createHeadings(cb,465,720,"Invoice No : "+Invoice_ID);
                                         createHeadings(cb,465,705,"Member Id : "+MemberID);
 
-                                        cb.beginText();
-                                        cb.setFontAndSize(bfBold, 16);
-                                        cb.setTextMatrix(50,640);
-                                        cb.showText("Package Summary".trim());
-                                        cb.endText();
-                                        //createHeadings(cb,500,640,"Package Summary");
-                                        //list all the products sold to the customer
-                                        float[] columnWidths = {2f, 1.7f, 1.7f,2.2f, 2.2f,1.2f,2f};
-                                        //create PDF table with the given widths
-                                        PdfPTable table = new PdfPTable(columnWidths);
-                                        // set table width a percentage of the page width
-                                        table.setTotalWidth(550f);
-                                        table.getDefaultCell().setMinimumHeight(30f);
-                                        table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
-                                        table.getDefaultCell().setVerticalAlignment(Element.ALIGN_MIDDLE);
-                                        Font boldFont = new Font(Font.FontFamily.UNDEFINED, 13, Font.BOLD);
-                                        PdfPCell cell = new PdfPCell(new Phrase("Package",boldFont));
-                                        cell.setMinimumHeight(30f);
-                                       // cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-                                        table.addCell(cell);
+                                        HTMLWorker htmlWorker = new HTMLWorker(document);
+                                        htmlWorker.parse(new StringReader(messagehtml));
 
-                                        cell = new PdfPCell(new Phrase("Duration",boldFont));
-                                       // cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-                                        table.addCell(cell);
-                                        cell = new PdfPCell(new Phrase("Session",boldFont));
-                                        //cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-                                        table.addCell(cell);
-                                        cell = new PdfPCell(new Phrase("Start Date",boldFont));
-                                       // cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-                                        table.addCell(cell);
-                                        cell = new PdfPCell(new Phrase("End Date",boldFont));
-                                       // cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-                                        table.addCell(cell);
-                                        cell = new PdfPCell(new Phrase("Time",boldFont));
-                                       // cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-                                        table.addCell(cell);
-                                        cell = new PdfPCell(new Phrase("Instructor",boldFont));
-                                       // cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-                                        table.addCell(cell);
-
-                                        table.setHeaderRows(1);
-
-                                       // PdfPCell[] cells = table.getRow(0).getCells();
-                                       // cells[0].setBackgroundColor(BaseColor.GRAY);
-
-                                        DecimalFormat df = new DecimalFormat("0.00");
-                                        for(int j=0; j < 1; j++ ){
-                                            cell.setMinimumHeight(30f);
-                                            table.addCell(Package_Name);
-                                            table.addCell(Duration_Days);
-                                            table.addCell(Session);
-                                            table.addCell(start_date);
-                                            table.addCell(end_date);
-                                            table.addCell(Time);
-                                            table.addCell(Instructor_Name);
-                                        }
-
-                                        //absolute location to print the PDF table from
-                                        table.writeSelectedRows(0, -1, document.leftMargin(), 620, docWriter.getDirectContent());
-                                        float[] columnWidths1 = {2f, 1.7f, 1.7f,2.2f, 2.2f,1.2f};
-                                        //create PDF table with the given widths
-                                        PdfPTable table1 = new PdfPTable(columnWidths1);
-                                        // set table width a percentage of the page width
-                                        table1.setTotalWidth(550f);
-                                        table1.getDefaultCell().setMinimumHeight(30f);
-                                        table1.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
-                                        table1.getDefaultCell().setVerticalAlignment(Element.ALIGN_MIDDLE);
-                                        table1.getDefaultCell().setPadding(5f);
-
-                                        PdfPCell cell1 = new PdfPCell(new Phrase("Package Fees",boldFont));
-                                        cell1.setMinimumHeight(30f);
-                                       // cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
-                                        table1.addCell(cell1);
-                                        cell1 = new PdfPCell(new Phrase("Discount",boldFont));
-                                       // cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
-                                        table1.addCell(cell1);
-                                        cell1 = new PdfPCell(new Phrase("Reg Fees",boldFont));
-                                       // cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
-                                        table1.addCell(cell1);
-                                        cell1 = new PdfPCell(new Phrase("Total Amount",boldFont));
-                                        //cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
-                                        table1.addCell(cell1);
-                                        cell1 = new PdfPCell(new Phrase("Paid Amount",boldFont));
-                                       // cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
-                                        table1.addCell(cell1);
-                                        cell1 = new PdfPCell(new Phrase("Balance",boldFont));
-                                       // cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
-                                        table1.addCell(cell1);
-                                        table1.setHeaderRows(1);
-//                                        PdfPCell[] cells = table.getRow(0).getCells();
-//                                        cells[0].setBackgroundColor(BaseColor.GRAY);
-
-                                        for(int j=0; j < 1; j++ ){
-                                            cell1.setMinimumHeight(30f);
-                                            table1.addCell(Package_Fees);
-                                            table1.addCell(Discount);
-                                            table1.addCell(Registration_Fees);
-                                            table1.addCell(Rate);
-                                            table1.addCell(Final_paid);
-                                            table1.addCell(Final_Balance);
-
-                                        }
-
-                                        //absolute location to print the PDF table from
-                                        table1.writeSelectedRows(0, -1, document.leftMargin(), 560, docWriter.getDirectContent());
-
-                                        cb.beginText();
-                                        cb.setFontAndSize(bfBold, 16);
-                                        cb.setTextMatrix(50,475);
-                                        cb.showText("Payment Transaction".trim());
-                                        cb.endText();
-//                                        String text = "Payment Transaction";
-//                                        Font font = FontFactory.getFont(FontFactory.COURIER, 10, Font.ITALIC, BaseColor.BLACK);
-//                                        Chunk textAsChunk = new Chunk(text, font);
-//                                        textAsChunk.setBackground(new BaseColor(120, 200, 50));
-//
-
-
-                                        tablePayTrasa.writeSelectedRows(0, -1, document.leftMargin(), 450, docWriter.getDirectContent());
-                                        cb.beginText();
-                                        cb.setFontAndSize(bfBold, 16);
-                                        cb.setTextMatrix(50,350);
-                                        cb.showText("Terms And Conditions".trim());
-                                        cb.endText();
-
-                                        float[] columnWidthst = {10f};
-                                        //create PDF table with the given widths
-                                        PdfPTable tablet = new PdfPTable(columnWidthst);
-                                        // set table width a percentage of the page width
-                                        tablet.setTotalWidth(550f);
-                                        tablet.getDefaultCell().setMinimumHeight(500f);
-                                        tablet.getDefaultCell().setHorizontalAlignment(Element.ALIGN_JUSTIFIED);
-                                        tablet.getDefaultCell().setVerticalAlignment(Element.ALIGN_MIDDLE);
-                                        tablet.getDefaultCell().setPadding(5f);
-                                        tablet.getDefaultCell().setBorder(Rectangle.NO_BORDER);
-//
-                                        tablet.addCell(Html.fromHtml(TermsAndConditions).toString());
-                                        tablet.writeSelectedRows(0, -1, document.leftMargin(), 550, docWriter.getDirectContent());
-
-                                        //InputStream is = new ByteArrayInputStream(TermsAndConditions.getBytes());
-                                      //  XMLWorkerHelper.getInstance().parseXHtml(docWriter, document, is);
-                                       // StringReader sr = new StringReader(TermsAndConditions);
-                                       // String k = "<html><body> This is my Project </body></html>";
-                                      //  OutputStream file = new FileOutputStream(pdfFile);
-//                                        PdfWriter.getInstance(document, file);
-//                                        document.open();
-//                                        HTMLWorker htmlWorker = new HTMLWorker(document);
-//                                        htmlWorker.parse(new StringReader(message));
-//                                        Paragraph p = new Paragraph(TermsAndConditions);
-//                                        document.add(p);
-//                                        Phrase phrase = new Phrase(TermsAndConditions, new Font());
-//                                        ColumnText.showTextAligned(cb, Element.ALIGN_LEFT,phrase, document.leftMargin(), 320, 0);
-
-
-
-//                                        document.close();
+                                        document.close();
                                     }
                                     catch(Exception e){
                                         e.printStackTrace();
                                     }
-
-
-
-
 
                                     final String subject=Company_Name+" Receipt";
                                    final String message="Dear Gym Member  Please find the attachment of Your Package Details";
@@ -3231,7 +2761,7 @@ public class RenewActivity extends AppCompatActivity {
                                                     Mail m = new Mail("tulsababar.ndsoft@gmail.com", "Tulsa@2019");
 
                                                     String[] toArr = { Email, "tulsababar01@gmail.com"};
-                                                    Log.v(TAG, String.format(" Email array to send = %s", toArr));
+                                                  //  Log.v(TAG, String.format(" Email array to send = %s", toArr));
                                                     m.setTo(toArr);
                                                     m.setFrom("tulsababar.ndsoft@gmail.com");
                                                     m.setSubject(subject);
@@ -3345,7 +2875,7 @@ public class RenewActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EnquiryForDetails = new HashMap<String, String>();
 
             EnquiryForDetails.put("package_name",packagename );
@@ -3436,7 +2966,7 @@ public class RenewActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EnquiryForDetails = new HashMap<String, String>();
 
             EnquiryForDetails.put("type","Renew" );

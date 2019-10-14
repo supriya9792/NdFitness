@@ -375,7 +375,7 @@ public class POSAddItemActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> AddProductDetails = new HashMap<String, String>();
             AddProductDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(POSAddItemActivity.this));
             AddProductDetails.put("prod_code",inputProdCode.getText().toString());
@@ -500,7 +500,7 @@ public class POSAddItemActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+          // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EnquiryForDetails = new HashMap<String, String>();
 
             EnquiryForDetails.put("prod_name",inputProdName.getText().toString() );
@@ -572,7 +572,7 @@ public class POSAddItemActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+          //  Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EnquiryForDetails = new HashMap<String, String>();
 
             EnquiryForDetails.put("prod_code",inputProdCode.getText().toString());

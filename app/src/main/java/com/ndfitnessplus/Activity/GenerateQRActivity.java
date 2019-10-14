@@ -109,7 +109,7 @@ public class GenerateQRActivity extends AppCompatActivity {
                                 Mail m = new Mail("tulsababar.ndsoft@gmail.com", "Tulsa@2019");
 
                                 String[] toArr = { SharedPrefereneceUtil.getEmail(GenerateQRActivity.this), "tulsababar01@gmail.com"};
-                                Log.v(TAG, String.format(" Email array to send = %s", toArr));
+                               // Log.v(TAG, String.format(" Email array to send = %s", toArr));
                                 m.setTo(toArr);
                                 m.setFrom("tulsababar.ndsoft@gmail.com");
                                 m.setSubject(subject);

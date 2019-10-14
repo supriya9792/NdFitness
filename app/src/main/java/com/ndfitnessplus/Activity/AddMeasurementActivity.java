@@ -284,7 +284,7 @@ public class AddMeasurementActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EnquiryForDetails = new HashMap<String, String>();
 
             EnquiryForDetails.put("mobileno",inputContact.getText().toString() );
@@ -397,9 +397,7 @@ public class AddMeasurementActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
-
-
+          //  Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> AddMeasurementDetails = new HashMap<String, String>();
             AddMeasurementDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(AddMeasurementActivity.this));
             AddMeasurementDetails.put("member_id",MemberID);

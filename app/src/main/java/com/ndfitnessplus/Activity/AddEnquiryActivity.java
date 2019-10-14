@@ -988,7 +988,7 @@ public class AddEnquiryActivity extends AppCompatActivity  {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> AddEnquiryDetails = new HashMap<String, String>();
             AddEnquiryDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(AddEnquiryActivity.this));
             AddEnquiryDetails.put("name",inputName.getText().toString());
@@ -1202,7 +1202,7 @@ public class AddEnquiryActivity extends AppCompatActivity  {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+          //  Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EnquiryForDetails = new HashMap<String, String>();
             EnquiryForDetails.put("action", "show_enq_for_list");
             //EnquiryForloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(EnquiryForloyee.this));
@@ -1340,7 +1340,7 @@ public class AddEnquiryActivity extends AppCompatActivity  {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EnquiryTypeDetails = new HashMap<String, String>();
             EnquiryTypeDetails.put("action", "show_enq_type_list");
             //EnquiryTypeloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(EnquiryTypeloyee.this));
@@ -1476,7 +1476,7 @@ public class AddEnquiryActivity extends AppCompatActivity  {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EnquirySourceDetails = new HashMap<String, String>();
             EnquirySourceDetails.put("action", "show_enq_source_list");
             //EnquirySourceloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(EnquirySourceloyee.this));
@@ -1611,7 +1611,7 @@ public class AddEnquiryActivity extends AppCompatActivity  {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+          //  Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> OccupationDetails = new HashMap<String, String>();
             OccupationDetails.put("action", "show_occupation_list");
             //OccupationloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(Occupationloyee.this));
@@ -1745,7 +1745,7 @@ public class AddEnquiryActivity extends AppCompatActivity  {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> CallResponseDetails = new HashMap<String, String>();
             CallResponseDetails.put("action", "show_call_response_list");
             //CallResponseloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(CallResponseloyee.this));
@@ -1884,7 +1884,7 @@ public class AddEnquiryActivity extends AppCompatActivity  {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
              otp= NetworkUtils.generateOtp();
             String msg="your OTP to verify contact number is :"+otp;
             String loginResult2 = ruc.SendSMS(inputContact.getText().toString(),msg,SharedPrefereneceUtil.getSmsUsername(AddEnquiryActivity.this),
@@ -1976,7 +1976,7 @@ public class AddEnquiryActivity extends AppCompatActivity  {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EnquiryForDetails = new HashMap<String, String>();
 
             EnquiryForDetails.put("mobileno",inputContact.getText().toString() );
@@ -2047,7 +2047,7 @@ public class AddEnquiryActivity extends AppCompatActivity  {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+          //  Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EnquiryForDetails = new HashMap<String, String>();
 
             EnquiryForDetails.put("type","Enquiry" );
@@ -2173,7 +2173,7 @@ public class AddEnquiryActivity extends AppCompatActivity  {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EnquiryForDetails = new HashMap<String, String>();
 
             EnquiryForDetails.put("mobileno",inputContact.getText().toString() );

@@ -344,7 +344,7 @@ public class ExpenseFilterActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> PaymentTypeDetails = new HashMap<String, String>();
             PaymentTypeDetails.put("action", "show_payment_type_list");
             //PaymentTypeloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(PaymentTypeloyee.this));
@@ -478,7 +478,7 @@ public class ExpenseFilterActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> ExecutiveNameDetails = new HashMap<String, String>();
             String comp_name= SharedPrefereneceUtil.getCompanyName(ExpenseFilterActivity.this);
             String location=SharedPrefereneceUtil.getSelectedBranch(ExpenseFilterActivity.this);
@@ -622,7 +622,7 @@ public class ExpenseFilterActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> ExpenseGroupDetails = new HashMap<String, String>();
             ExpenseGroupDetails.put("action", "show_expense_group_list");
             //ExpenseGrouployeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(ExpenseGrouployee.this));
@@ -757,7 +757,7 @@ public class ExpenseFilterActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> TitleExpenseDetails = new HashMap<String, String>();
             TitleExpenseDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(ExpenseFilterActivity.this));
             TitleExpenseDetails.put("action", "show_title_expense_list");
@@ -899,7 +899,7 @@ public class ExpenseFilterActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> SearchExpenseDetails = new HashMap<String, String>();
             SearchExpenseDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(ExpenseFilterActivity.this));
             Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(ExpenseFilterActivity.this)));
