@@ -163,18 +163,7 @@ public class CourseActivity extends AppCompatActivity implements SwipeRefreshLay
                         }, 1000);
                     }
                 });
-                //Toast.makeText(CourseActivity.this, R.string.internet_unavailable, Toast.LENGTH_LONG).show();
-//                android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(CourseActivity.this);
-//                builder.setMessage(R.string.internet_unavailable);
-//                builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int id) {
-//                        dialog.dismiss();
-//                    }
-//                });
-//                android.app.AlertDialog dialog = builder.create();
-//                dialog.setCancelable(false);
-//                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-//                dialog.show();
+
 
             }
         }
@@ -198,6 +187,7 @@ public class CourseActivity extends AppCompatActivity implements SwipeRefreshLay
                 if(inputsearch.getText().length()>0){
                     enquirysearchclass();
                 }else{
+
                     Toast.makeText(CourseActivity.this,"Please enter text to search", Toast.LENGTH_LONG).show();
                 }
 
@@ -225,17 +215,19 @@ public class CourseActivity extends AppCompatActivity implements SwipeRefreshLay
                 }
             }
             @Override
-            public void beforeTextChanged(CharSequence arg0, int arg1,
-                                          int arg2, int arg3) {
+            public void beforeTextChanged(CharSequence s, int start, int before,
+                                          int count) {
                 // TODO Auto-generated method stub
 
             }
 
             @Override
-            public void onTextChanged(CharSequence arg0, int arg1, int arg2,
-                                      int arg3) {
+            public void onTextChanged(CharSequence s, int start, int before,
+                                      int count) {
                 // TODO Auto-generated method stub
-
+                 if(count==0){
+                     enquiryclass();
+                 }
 
             }
         });
@@ -248,7 +240,8 @@ public class CourseActivity extends AppCompatActivity implements SwipeRefreshLay
                 isLoading = true;
 
                 Log.d(TAG, "prepare called current item: " + currentPage+"Total page"+totalPage);
-                if(currentPage<=totalPage){
+                int countc=Integer.parseInt(total_courses.getText().toString());
+                if(currentPage<=totalPage && countc >100){
                   //  currentPage = PAGE_START;
                     Log.d(TAG, "currentPage: " + currentPage);
                     isLastPage = false;
@@ -291,35 +284,6 @@ public class CourseActivity extends AppCompatActivity implements SwipeRefreshLay
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.show();
         }
-//        final ArrayList<CourseList> items = new ArrayList<>();
-//        new Handler().postDelayed(new Runnable() {
-//
-//            @Override
-//            public void run() {
-//
-//                for (int i = 0; i < 5; i++) {
-//                    itemCount++;
-//                    Log.d(TAG, "prepare called : " + itemCount);
-//
-//                    CourseList postItem = subListArrayList.get(i);
-//                    subList.setExecutiveName(postItem.getExecutiveName());
-//                    subList.setName(postItem.getName());
-//                    subList.setGender(postItem.getGender());
-//                    subList.setContact(postItem.getContact());
-//                    subList.setAddress(postItem.getAddress());
-//                    subList.setComment(postItem.getComment());
-//                    subList.setNextFollowUpDate(postItem.getNextFollowUpDate());
-//                    items.add(subList);
-//                }
-//                if (currentPage != PAGE_START) adapter.removeLoading();
-//                adapter.addAll(items);
-//                swipeRefresh.setRefreshing(false);
-//                if (currentPage < totalPage) adapter.addLoading();
-//                else isLastPage = true;
-//                isLoading = false;
-//
-//            }
-//        }, 2000);
     }
     //Showing progress dialog
     private void showProgressDialog() {

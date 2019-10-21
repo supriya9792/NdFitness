@@ -3,7 +3,7 @@ package com.ndfitnessplus.Model;
 import java.io.Serializable;
 
 public class AttendanceList implements Serializable {
-    String MemberID,Name,Contact,AttendanceDate,Time,Balance,PackageName,ExpiryDate,Status,ExecutiveName,AttendanceMode,ContactEncrypt;
+    String MemberID,Name,Contact,AttendanceDate,Time,Balance,PackageName,ExpiryDate,Status,ExecutiveName,AttendanceMode,ContactEncrypt,Image;
 
     public AttendanceList(String memberID, String name, String contact, String attendanceDate, String time, String balance, String packageName, String expiryDate, String status) {
         MemberID = memberID;
@@ -114,5 +114,13 @@ public class AttendanceList implements Serializable {
 
     public void setContactEncrypt(String contactEncrypt) {
         ContactEncrypt = contactEncrypt;
+    }
+
+    public String getImage() {
+        return Image;
+    }
+
+    public void setImage(String image) {
+        Image = image;
     }
 }

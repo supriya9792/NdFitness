@@ -1900,6 +1900,14 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                             "                            <strong>  "+"</strong>\n" +
                                             "                        </address>\n" +
                                             "                    </div>\n" +
+                                       "                    <div >" +
+                                       "                        <address>" +
+                                       "                            <strong>"+"</strong><br></br>\n" +
+                                       "\n" +
+                                       "                            <strong> "+"</strong><br></br>\n" +
+                                       "                            <strong>  "+"</strong>\n" +
+                                       "                        </address>\n" +
+                                       "                    </div>\n" +
                                             "                </div>\n" +
                                             "      </div>\n" +
                                             "\n" +
@@ -1930,7 +1938,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                             "                                        <td >"+Package_Name+"</td>\n" +
                                             "                                         <td >"+Duration_Days+"</td>\n" +
                                             "                                        <td >"+Session+"</td>                                       \n" +
-                                            "                                        <td >"+start_date+"</td>\n" +
+                                            "                                        <td >"+s_date+"</td>\n" +
                                             "                                        <td >"+end_date+"</td>\n" +
                                             "                                        <td >"+Time+"</td>\n" +
                                             "                                        <td >"+Instructor_Name+"</td>\n" +
@@ -2078,7 +2086,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                         createHeadings(cb,50,720,"Bill To");
                                         createHeadings(cb,50,705,Name);
                                         createHeadings(cb,50,690,Email);
-                                        createHeadings(cb,50,680,Member_Contact);
+                                        createHeadings(cb,50,675,Member_Contact);
                                         createHeadings(cb,50,660,MemberGST_No);
                                         createHeadings(cb,455,735,"Invoice Date :"+invoice_date);
                                         createHeadings(cb,455,720,"Invoice No : "+Invoice_ID);

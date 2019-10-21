@@ -1284,6 +1284,8 @@ public class BalanceReceiptActivity extends AppCompatActivity {
                                     String Company_Name = SharedPrefereneceUtil.getCompanyName(BalanceReceiptActivity.this)+"-"+SharedPrefereneceUtil.getSelectedBranch(BalanceReceiptActivity.this);
                                     String Address = jsonObj.getString("Address");
                                     String Contact = jsonObj.getString("Contact");
+                                    String MemberGST_No = jsonObj.getString("MemberGST_No");
+                                    String GST_No = jsonObj.getString("GST_No");
                                     String TermsAndConditions = jsonObj.getString("TermsAndConditions");
                                     TermsAndConditions = TermsAndConditions.replace("\r\n", "<br />");
                                     String Logo = jsonObj.getString("Logo");
@@ -1371,6 +1373,14 @@ public class BalanceReceiptActivity extends AppCompatActivity {
                                             "                           <br></br>\n" +
                                             "                        </address>\n" +
                                             "                    </div>" +
+                                            "                    <div >" +
+                                            "                        <address>" +
+                                            "                            <strong>"+"</strong><br></br>\n" +
+                                            "\n" +
+                                            "                            <strong> "+"</strong><br></br>\n" +
+                                            "                            <strong>  "+"</strong>\n" +
+                                            "                        </address>\n" +
+                                            "                    </div>\n" +
                                             "                    <div >" +
                                             "                        <address>" +
                                             "                            <strong>"+"</strong><br></br>\n" +
@@ -1553,11 +1563,12 @@ public class BalanceReceiptActivity extends AppCompatActivity {
                                         createHeadings(cb,50,780,Company_Name);
                                         createHeadings(cb,50,765,Address);
                                         createHeadings(cb,50,750,Contact);
-                                        createHeadings(cb,50,735,"Bill To");
-                                        createHeadings(cb,50,720,Name);
-                                        createHeadings(cb,50,705,Email);
-                                        createHeadings(cb,50,690,Member_Contact);
-
+                                        createHeadings(cb,50,735,GST_No);
+                                        createHeadings(cb,50,720,"Bill To");
+                                        createHeadings(cb,50,705,Name);
+                                        createHeadings(cb,50,690,Email);
+                                        createHeadings(cb,50,675,Member_Contact);
+                                        createHeadings(cb,50,660,MemberGST_No);
                                         createHeadings(cb,455,735,"Invoice Date :"+invoice_date);
                                         createHeadings(cb,455,720,"Invoice No : "+Invoice_ID);
                                         createHeadings(cb,455,705,"Member Id : "+MemberID);

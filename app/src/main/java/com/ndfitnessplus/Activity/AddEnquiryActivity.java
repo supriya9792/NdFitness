@@ -1928,16 +1928,21 @@ public class AddEnquiryActivity extends AppCompatActivity  {
         ((Button) dialog.findViewById(R.id.btn_verify)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 int verifyotp=Integer.parseInt(veri_otp.getText().toString());
-                if(otp== verifyotp){
-                    btn_verify.setText("Verified");
-                    Toast.makeText(getApplicationContext(), "Mobile number verified successully", Toast.LENGTH_SHORT).show();
+                if(veri_otp.getText().length()>0) {
+                    int verifyotp = Integer.parseInt(veri_otp.getText().toString());
+                    if (otp == verifyotp) {
+                        btn_verify.setText("Verified");
+                        Toast.makeText(getApplicationContext(), "Mobile number verified successully", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Mobile number verification failed", Toast.LENGTH_SHORT).show();
+                    }
+                    dialog.dismiss();
                 }else{
-                    Toast.makeText(getApplicationContext(), "Mobile number verification failed", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Please Enter OTP to Verify Mobile Number", Toast.LENGTH_SHORT).show();
                 }
-                dialog.dismiss();
-                //Toast.makeText(getApplicationContext(), "Subcribe Clicked", Toast.LENGTH_SHORT).show();
-            }
+
+
+        }
         });
 
         dialog.show();

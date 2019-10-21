@@ -463,14 +463,14 @@ public class AddMeasurementActivity extends AppCompatActivity {
     }
     @Override
     public boolean onSupportNavigateUp(){
-        Intent intent=new Intent(AddMeasurementActivity.this, MainActivity.class);
+        Intent intent=new Intent(AddMeasurementActivity.this, MeasurementActivity.class);
         startActivity(intent);
         return true;
     }
 
     @Override
     public void onBackPressed() {
-        Intent intent=new Intent(AddMeasurementActivity.this,MainActivity.class);
+        Intent intent=new Intent(AddMeasurementActivity.this,MeasurementActivity.class);
         startActivity(intent);
     }
 

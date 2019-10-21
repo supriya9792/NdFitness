@@ -128,12 +128,7 @@
             android:layout_marginTop="10dp"
             android:gravity="center"
             android:background="@drawable/layoutborder">
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:src="@drawable/ic_search"
-                android:gravity="center"/>
+
             <EditText
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -144,6 +139,12 @@
                 android:inputType="textVisiblePassword"
                 android:background="@android:color/transparent"
                 />
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                app:srcCompat="@drawable/ic_search"
+                android:gravity="center"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"

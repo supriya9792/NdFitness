@@ -338,7 +338,7 @@ class MeasurementTrackclass extends AsyncTask<String, Void, String> {
 
 
                                 subList = new AttendanceList();
-                                Log.d(TAG, "i: " + i);
+                              //  Log.d(TAG, "i: " + i);
 
                                 Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
@@ -354,8 +354,10 @@ class MeasurementTrackclass extends AsyncTask<String, Void, String> {
                                     String Start_Date = jsonObj.getString("Start_Date");
                                     String End_Date = jsonObj.getString("End_Date");
                                     String Attendance_Mode = jsonObj.getString("Attendance_Mode");
+                                    String Image = jsonObj.getString("Image");
+                                    String Status = jsonObj.getString("Status");
 
-
+                                    Log.d(TAG, "Status: " + Status);
                                     subList.setMemberID(MemberID);
                                     subList.setContact(Contact);
                                     String cont=Utility.lastFour(Contact);
@@ -383,6 +385,8 @@ class MeasurementTrackclass extends AsyncTask<String, Void, String> {
                                     String edate=Utility.formatDate(End_Date);
                                     subList.setExpiryDate(edate);
                                     subList.setAttendanceMode(Attendance_Mode);
+                                    subList.setImage(Image);
+                                    subList.setStatus(Status);
 
                                     item.add(subList);
                                     //Toast.makeText(AttendenceActivity.this, "followup date: "+next_foll_date, Toast.LENGTH_SHORT).show();

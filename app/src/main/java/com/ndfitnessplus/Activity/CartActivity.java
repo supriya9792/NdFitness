@@ -2,6 +2,7 @@ package com.ndfitnessplus.Activity;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -10,6 +11,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -281,39 +283,50 @@ public class CartActivity extends AppCompatActivity implements RecyclerItemTouch
     }
 
     @Override
-    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction,int position) {
-        if (viewHolder instanceof CartAdapter.ViewHolder) {
-            // get the removed item name to display it in snack bar
-            String name = subArrayList.get(position).getProductName();
+    public void onSwiped(final RecyclerView.ViewHolder viewHolder, int direction,final int position) {
+        final POSItemList deletedItem = subArrayList.get(position);
+        final int deletedIndex = viewHolder.getAdapterPosition();
+       // adapter.removeItem(deletedIndex);
 
-            // backup of removed item for undo purpose
-            final POSItemList deletedItem = subArrayList.get(position);
-            final int deletedIndex = position;
+//        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+//        alertDialogBuilder.setTitle("Exit Application?");
+//        alertDialogBuilder
+//                .setMessage("Click yes to exit!")
+//                .setCancelable(false)
+//                .setPositiveButton("Yes",
+//                        new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog, int id) {
+                                if (viewHolder instanceof CartAdapter.ViewHolder) {
+                                    // get the removed item name to display it in snack bar
+                                    String name = deletedItem.getProductName();
 
-
-          final  POSItemList data = subArrayList.get(position);
-
-            double total=0;
-            String sp=TotalTv.getText().toString();
-            String split[]=sp.split(" ");
-            double totalprice=Double.parseDouble(split[1]);
-            final  String ratesp[]=subArrayList.get(position).getRate().split(" ");
-            final  String quantitysp=subArrayList.get(position).getQuantity();
-            double rate=Double.parseDouble(ratesp[1]);
-            double quantity=Double.parseDouble(quantitysp);
-            total=totalprice-(rate*quantity);
-            String totlaprice="₹ "+total;
-            TotalTv.setText(totlaprice);
-            // remove the item from recycler view
-            db.remove_on_swipe(subArrayList.get(position).getProductCode());
-            adapter.removeItem(position);
-            //adapter.notifyDataSetChanged();
+                                    // backup of removed item for undo purpose
 
 
-            // showing snack bar with Undo option
-          final   String compid= SharedPrefereneceUtil.getSelectedBranchId(this);
-            Snackbar snackbar = Snackbar
-                    .make(linearLayout1, name + " removed from cart!", Snackbar.LENGTH_LONG);
+
+                                   // final  POSItemList data = subArrayList.get(position);
+
+                                    double total=0;
+                                    String sp=TotalTv.getText().toString();
+                                    String split[]=sp.split(" ");
+                                    double totalprice=Double.parseDouble(split[1]);
+                                    final  String ratesp[]=subArrayList.get(deletedIndex).getRate().split(" ");
+                                    final  String quantitysp=subArrayList.get(deletedIndex).getQuantity();
+                                    double rate=Double.parseDouble(ratesp[1]);
+                                    double quantity=Double.parseDouble(quantitysp);
+                                    total=totalprice-(rate*quantity);
+                                    String totlaprice="₹ "+total;
+                                    TotalTv.setText(totlaprice);
+                                    // remove the item from recycler view
+                                    db.remove_on_swipe(subArrayList.get(deletedIndex).getProductCode());
+                                    adapter.removeItem(position);
+                                    //adapter.notifyDataSetChanged();
+
+
+                                    // showing snack bar with Undo option
+                                    final   String compid= SharedPrefereneceUtil.getSelectedBranchId(CartActivity.this);
+                                    Snackbar snackbar = Snackbar
+                                            .make(linearLayout1, name + " removed from cart!", Snackbar.LENGTH_LONG);
 //            snackbar.setAction("UNDO", new View.OnClickListener() {
 //                @Override
 //                public void onClick(View view) {
@@ -343,24 +356,38 @@ public class CartActivity extends AppCompatActivity implements RecyclerItemTouch
 //
 //                }
 //            });
-            snackbar.setActionTextColor(Color.YELLOW);
-            snackbar.show();
+                                    snackbar.setActionTextColor(Color.YELLOW);
+                                    snackbar.show();
 
-            snackbar.addCallback(new Snackbar.Callback() {
+                                    snackbar.addCallback(new Snackbar.Callback() {
 
-                @Override
-                public void onDismissed(Snackbar snackbar, int event) {
-                    //see Snackbar.Callback docs for event details
+                                        @Override
+                                        public void onDismissed(Snackbar snackbar, int event) {
+                                            //see Snackbar.Callback docs for event details
 
-                }
+                                        }
 
-                @Override
-                public void onShown(Snackbar snackbar) {
+                                        @Override
+                                        public void onShown(Snackbar snackbar) {
 
-                }
-            });
+                                        }
+                                    });
 //            overridePendingTransition( 0, 0);
 //            startActivity(getIntent());
-        }
+                                }
+//                            }
+//                        })
+
+//                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int id) {
+//                        adapter.restoreItem(deletedItem, deletedIndex);
+//                        recyclerView.scrollToPosition(deletedIndex);
+//                        dialog.cancel();
+//                    }
+//                });
+//
+//        AlertDialog alertDialog = alertDialogBuilder.create();
+//        alertDialog.show();
+
     }
 }

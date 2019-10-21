@@ -197,7 +197,7 @@ public class AddExpensesActivity extends AppCompatActivity  {
                     if (index != 0) {
                         txtPaymentType.setVisibility(View.VISIBLE);
                     }
-                    if (!paymentType.equals(getResources().getString(R.string.payment_type))) {
+                    if (!paymentType.equals(getResources().getString(R.string.hint_pyment_mode))) {
                         //awesomeValidation.addValidation(AddEnquiryActivity.this, R.id.spinner_occupation,RegexTemplate.NOT_EMPTY, R.string.err_msg_next_foll_date);
                     }
                 }
@@ -258,7 +258,7 @@ public class AddExpensesActivity extends AppCompatActivity  {
         //if this becomes true that means validation is successfull
         //if(inputPassword.getText().toString().equals(inputCfmPassword.getText().toString())){
         if (awesomeValidation.validate()) {
-            if(expenseGroup.equals(getResources().getString(R.string.exepnses_group)) || paymentType.equals(getResources().getString(R.string.payment_type))
+            if(expenseGroup.equals(getResources().getString(R.string.exepnses_group)) || paymentType.equals(getResources().getString(R.string.hint_pyment_mode))
             ){           Toast.makeText(this, "Please fill all fields", Toast.LENGTH_LONG).show();
             }else{
                 AddExpenseClass();
@@ -461,7 +461,7 @@ public class AddExpensesActivity extends AppCompatActivity  {
                         JSONArray jsonArrayCountry = object.getJSONArray("result");
                         paymentTypeArrayList.clear();
                         paymentTypeList = new Spinner_List();
-                        paymentTypeList.setName(getResources().getString(R.string.payment_type));
+                        paymentTypeList.setName(getResources().getString(R.string.hint_pyment_mode));
                         paymentTypeArrayList.add(0,paymentTypeList);
                         if (jsonArrayCountry != null && jsonArrayCountry.length() > 0){
                             for (int i = 0; i < jsonArrayCountry.length(); i++) {

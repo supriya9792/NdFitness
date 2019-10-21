@@ -2548,6 +2548,14 @@ public class RenewActivity extends AppCompatActivity {
                                             "                            <strong>  "+"</strong>\n" +
                                             "                        </address>\n" +
                                             "                    </div>\n" +
+                                            "                    <div >" +
+                                            "                        <address>" +
+                                            "                            <strong>"+"</strong><br></br>\n" +
+                                            "\n" +
+                                            "                            <strong> "+"</strong><br></br>\n" +
+                                            "                            <strong>  "+"</strong>\n" +
+                                            "                        </address>\n" +
+                                            "                    </div>\n" +
                                             "                </div>\n" +
                                             "      </div>\n" +
                                             "\n" +
@@ -2725,17 +2733,16 @@ public class RenewActivity extends AppCompatActivity {
                                         createHeadings(cb,50,780,Company_Name);
                                         createHeadings(cb,50,765,Address);
                                         createHeadings(cb,50,750,Contact);
-//                                        createHeadings(cb,50,740,GST_No);
-                                        createHeadings(cb,50,735,"Bill To");
-                                        createHeadings(cb,50,720,Name);
-                                        createHeadings(cb,50,705,Email);
-                                        createHeadings(cb,50,690,Member_Contact);
-//                                        createHeadings(cb,50,680,MemberGST_No);
-
+                                        createHeadings(cb,50,735,GST_No);
+                                        createHeadings(cb,50,720,"Bill To");
+                                        createHeadings(cb,50,705,Name);
+                                        createHeadings(cb,50,690,Email);
+                                        createHeadings(cb,50,675,Member_Contact);
+                                        createHeadings(cb,50,660,MemberGST_No);
 
                                         createHeadings(cb,465,735,"Invoice Date :"+invoice_date);
                                         createHeadings(cb,465,720,"Invoice No : "+Invoice_ID);
-                                        createHeadings(cb,465,705,"Member Id : "+MemberID);
+                                        createHeadings(cb,465,700,"Member Id : "+MemberID);
 
                                         HTMLWorker htmlWorker = new HTMLWorker(document);
                                         htmlWorker.parse(new StringReader(messagehtml));

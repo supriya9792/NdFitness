@@ -76,7 +76,7 @@ public class EnquiryActivity extends AppCompatActivity implements SwipeRefreshLa
     public static final int PAGE_START = 1;
     private int currentPage = PAGE_START;
     private boolean isLastPage = false;
-    private int totalPage = 2;
+    private int totalPage = 1;
     private boolean isLoading = false;
     int itemCount = 0;
     int offset = 0;
@@ -313,35 +313,7 @@ public class EnquiryActivity extends AppCompatActivity implements SwipeRefreshLa
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.show();
         }
-//        final ArrayList<EnquiryList> items = new ArrayList<>();
-//        new Handler().postDelayed(new Runnable() {
-//
-//            @Override
-//            public void run() {
-//
-//                for (int i = 0; i < 5; i++) {
-//                    itemCount++;
-//                    Log.d(TAG, "prepare called : " + itemCount);
-//
-//                    EnquiryList postItem = subListArrayList.get(i);
-//                    subList.setExecutiveName(postItem.getExecutiveName());
-//                    subList.setName(postItem.getName());
-//                    subList.setGender(postItem.getGender());
-//                    subList.setContact(postItem.getContact());
-//                    subList.setAddress(postItem.getAddress());
-//                    subList.setComment(postItem.getComment());
-//                    subList.setNextFollowUpDate(postItem.getNextFollowUpDate());
-//                    items.add(subList);
-//                }
-//                if (currentPage != PAGE_START) adapter.removeLoading();
-//                adapter.addAll(items);
-//                swipeRefresh.setRefreshing(false);
-//                if (currentPage < totalPage) adapter.addLoading();
-//                else isLastPage = true;
-//                isLoading = false;
-//
-//            }
-//        }, 2000);
+
     }
 //Showing progress dialog
     private void showProgressDialog() {

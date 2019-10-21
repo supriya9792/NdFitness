@@ -61,7 +61,7 @@
                 android:id="@+id/search"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
-                android:src="@drawable/ic_search"
+                app:srcCompat="@drawable/ic_search"
                 android:gravity="center"/>
         </LinearLayout>
         <LinearLayout

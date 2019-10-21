@@ -313,12 +313,12 @@
     </string-array>
     <!--Expenses string-->
     <string name="add_exepnses">Add Expenses</string>
-    <string name="ttl_of_exepnses">Title Of Expenses</string>
+    <string name="ttl_of_exepnses">Title Of Expenses *</string>
     <string name="expense_date">Expense Date</string>
-    <string name="exepnses_group">Group Of Expense</string>
-    <string name="payment_details">Payment Details</string>
-    <string name="payment_amt">Payment Amount</string>
-    <string name="payment_discription">Description</string>
+    <string name="exepnses_group">Group Of Expense *</string>
+    <string name="payment_details">Payment Details *</string>
+    <string name="payment_amt">Payment Amount *</string>
+    <string name="payment_discription">Description *</string>
     <string name="expense_grp">Expenses Group</string>
     <string name="exe_name">Executive Name</string>
     <string name="payment_type">Payment Mode  </string>
@@ -336,8 +336,10 @@
     <string name="hint_id_proff_img">ID Proff Image</string>
     <string name="hint_mem_gst_no">GST No</string>
     <string name="hint_packagetype">Package Type *</string>
+    <string name="hint_packagetype_n">Package Type</string>
     <string name="prompt_packagetype">Select Package Type</string>
     <string name="hint_package_name">Package Name *</string>
+    <string name="hint_package_name_n">Package Name </string>
     <string name="hint_pyment_mode">Payment Mode *</string>
     <string name="prompt_package_name">Select Package Name</string>
     <string name="hint_duration">Duration</string>
@@ -415,6 +417,7 @@
     <string name="next_followup_date">NextFollowupDate</string>
     <string name="exi_measurement">Existing Measurement</string>
     <string name="add_measurement">Add Measurement</string>
+    <string name="measurement_filters">Measurement Filters</string>
 
     <string-array name="measurement_date_array">
         <item>Select Date </item>
@@ -439,7 +442,7 @@
         <item>MemberAppIos</item>
         <item>Biometric</item>
     </string-array>
-
+    <string name="attendance_filters">Attendance Filters</string>
 
     <!--Pos Activity-->
     <string name="pos_add_item">Add Item</string>

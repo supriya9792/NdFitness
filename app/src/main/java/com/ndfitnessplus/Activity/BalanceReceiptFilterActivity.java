@@ -243,10 +243,10 @@ public class BalanceReceiptFilterActivity extends AppCompatActivity {
                     TextView tv = (TextView) view.findViewById(R.id.tv_Name);
                     tv.setTextSize(10);
                     if(index==0){
-                        tv.setText(getResources().getString(R.string.hint_packagetype));
+                        tv.setText(getResources().getString(R.string.hint_packagetype_n));
                     }
                     packageType = tv.getText().toString();
-                    if ((packageType.equals(getResources().getString(R.string.hint_packagetype))) ||
+                    if ((packageType.equals(getResources().getString(R.string.hint_packagetype_n))) ||
                             (packageType.equals(getResources().getString(R.string.all)))) {
                         packageType = "";
                     }
@@ -272,10 +272,10 @@ public class BalanceReceiptFilterActivity extends AppCompatActivity {
                     tv.setTextSize(10);
 
                     if(index==0){
-                        tv.setText(getResources().getString(R.string.hint_package_name));
+                        tv.setText(getResources().getString(R.string.hint_package_name_n));
                     }
                     packagename = tv.getText().toString();
-                    if ((packagename.equals(getResources().getString(R.string.hint_package_name))) ||
+                    if ((packagename.equals(getResources().getString(R.string.hint_package_name_n))) ||
                             (packagename.equals(getResources().getString(R.string.all)))) {
                         packagename = "";
                     }
@@ -454,7 +454,7 @@ public class BalanceReceiptFilterActivity extends AppCompatActivity {
                         JSONArray jsonArrayCountry = object.getJSONArray("result");
                         packageTypeArrayList.clear();
                         packagetypelist = new Spinner_List();
-                        packagetypelist.setName(getResources().getString(R.string.hint_packagetype));
+                        packagetypelist.setName(getResources().getString(R.string.hint_packagetype_n));
                         packageTypeArrayList.add(0,packagetypelist);
                         if (jsonArrayCountry != null && jsonArrayCountry.length() > 0){
                             packagetypelist.setName(getResources().getString(R.string.all));
@@ -589,7 +589,7 @@ public class BalanceReceiptFilterActivity extends AppCompatActivity {
                         JSONArray jsonArrayCountry = object.getJSONArray("result");
                         packagenameArrayList.clear();
                         packageNamelist = new Spinner_List();
-                        packageNamelist.setName(getResources().getString(R.string.hint_package_name));
+                        packageNamelist.setName(getResources().getString(R.string.hint_package_name_n));
                         packagenameArrayList.add(0,packageNamelist);
                         if (jsonArrayCountry != null && jsonArrayCountry.length() > 0){
                             packageNamelist.setName(getResources().getString(R.string.all));

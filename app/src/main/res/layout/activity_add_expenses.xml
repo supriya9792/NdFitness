@@ -173,7 +173,7 @@
                     <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/payment_type"
+                    android:text="@string/hint_pyment_mode"
                     android:id="@+id/txt_payment_type"
                     android:visibility="gone"
                     android:textSize="11sp"

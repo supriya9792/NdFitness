@@ -81,6 +81,7 @@ public class BalanceReceiptDetailsActivity extends AppCompatActivity  implements
     TextView total_balance;
     //Loading gif
     ViewDialog viewDialog;
+    int count=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -201,7 +202,7 @@ public class BalanceReceiptDetailsActivity extends AppCompatActivity  implements
                 else
                 {
                     isLoading = false;
-                    BalanceReceiptDetailsActivity.this.adapter.filter(String.valueOf(arg0));
+                     count= BalanceReceiptDetailsActivity.this.adapter.filter(String.valueOf(arg0));
 
 
 
@@ -235,7 +236,7 @@ public class BalanceReceiptDetailsActivity extends AppCompatActivity  implements
                 isLoading = true;
 
                 Log.d(TAG, "prepare called current item: " + currentPage+"Total page"+totalPage);
-                if(currentPage<=totalPage){
+                if(currentPage<=totalPage && count >100){
                     //currentPage = PAGE_START;
                     Log.d(TAG, "currentPage: " + currentPage);
                     isLastPage = false;
