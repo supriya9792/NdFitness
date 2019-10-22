@@ -17,6 +17,8 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.ndfitnessplus.Adapter.WorkOutAdapter;
+import com.ndfitnessplus.Adapter.WorkoutLevelAdapter;
+import com.ndfitnessplus.Model.MemberDietList;
 import com.ndfitnessplus.Model.WorkOutDayList;
 import com.ndfitnessplus.R;
 import com.ndfitnessplus.Utility.ServerClass;
@@ -34,9 +36,10 @@ import java.util.HashMap;
 import static com.ndfitnessplus.Utility.HTTPRequestQueue.isOnline;
 
 public class MemberWorkoutActivity extends AppCompatActivity {
-    WorkOutAdapter adapter;
+    WorkoutLevelAdapter adapter;
     ArrayList<WorkOutDayList> subListArrayList = new ArrayList<WorkOutDayList>();
     WorkOutDayList subList;
+    WorkOutDayList subList1;
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     ProgressBar progressBar;
@@ -167,7 +170,7 @@ public class MemberWorkoutActivity extends AppCompatActivity {
             WorkoutDaysDetails.put("member_id", member_id);
             WorkoutDaysDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(MemberWorkoutActivity.this));
             Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getCompanyAutoId(MemberWorkoutActivity.this)));
-            WorkoutDaysDetails.put("action","show_workout_days");
+            WorkoutDaysDetails.put("action","show_workout_level_days");
              String domainurl=SharedPrefereneceUtil.getDomainUrl(MemberWorkoutActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, WorkoutDaysDetails);
             //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
@@ -194,21 +197,41 @@ public class MemberWorkoutActivity extends AppCompatActivity {
 
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
                             for (int i = 0; i < jsonArrayResult.length(); i++) {
-                                subList = new WorkOutDayList();
+                                subList1 = new WorkOutDayList();
                                 Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
-                                    String Days = jsonObj.getString("Days");
+                                    String LevelName = jsonObj.getString("LevelName");
 
-                                    subList.setDay(Days);
-                                    subList.setMemberId(member_id);
+                                    subList1.setLevel(LevelName);
+                                    subList1.setSection(true);
+                                    subListArrayList.add(subList1);
+                                    JSONArray jsonArrayday_info = jsonObj.getJSONArray("day_info");
+                                    if (jsonArrayday_info != null && jsonArrayday_info.length() > 0) {
 
-                                    //Toast.makeText(MainActivity.this, "j "+j, Toast.LENGTH_SHORT).show();
-                                    subListArrayList.add(subList);
-                                    adapter = new WorkOutAdapter(MemberWorkoutActivity.this, subListArrayList);
-                                    recyclerView.setAdapter(adapter);
+                                        for (int j = 0; j < jsonArrayday_info.length(); j++) {
+                                            subList = new WorkOutDayList();
+                                            Log.v(TAG, "JsonResponseOpeartion ::");
+                                            JSONObject jsonObjdiet = jsonArrayday_info.getJSONObject(j);
+                                            if (jsonObj != null) {
 
+                                                String Days = jsonObjdiet.getString("Days");
+
+                                                subList.setDay(Days);
+                                                subList.setMemberId(member_id);
+                                                subList.setSection(false);
+
+                                                //Toast.makeText(MainActivity.this, "j "+j, Toast.LENGTH_SHORT).show();
+                                                subListArrayList.add(subList);
+
+
+                                            }
+                                        }
+
+                                        adapter = new WorkoutLevelAdapter(MemberWorkoutActivity.this, subListArrayList);
+                                        recyclerView.setAdapter(adapter);
+                                    }
                                 }
                             }
                         } else if (jsonArrayResult.length() == 0) {

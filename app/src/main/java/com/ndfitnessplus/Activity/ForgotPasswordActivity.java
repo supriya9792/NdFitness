@@ -178,7 +178,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                                 String user_email = jsonObj.getString("user_email");
                                 String Authority = jsonObj.getString("Authority");
                                 String Company_Id = jsonObj.getString("Company_Id");
-                                String Contact = jsonObj.getString("Contact");
+                               final String Contact = jsonObj.getString("Contact");
                                 forgotPassMsg="Hi "+name+",\n"+"your Login details\n\n"+"Username:"+username.getText().toString()+"\nPassword:"+password
                                 +"\n\nThanks\nGymTime";
 
@@ -193,7 +193,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
                                                 @Override
                                                 protected String doInBackground(String... params) {
-                                                    String loginResult2 = ruc.SendSMS(contact.getText().toString(), forgotPassMsg,
+                                                    String loginResult2 = ruc.SendSMS(Contact, forgotPassMsg,
                                                            "aaa1",
                                                             "Navkaraaa1",
                                                             "trans1",

@@ -122,7 +122,7 @@ public boolean send() throws Exception {
                                 DataSource source = new FileDataSource(fileName);
                                 messageBodyPart.setDataHandler(new DataHandler(source));
 //                                long n  = System.currentTimeMillis() / 1000L;
-                                messageBodyPart.setFileName("BalanceDetails.pdf");
+                                messageBodyPart.setFileName(filePath);
                                 _multipart.addBodyPart(messageBodyPart);
                                 //Put parts in message
                                 msg.setContent(_multipart);

@@ -2780,6 +2780,7 @@ public class RenewActivity extends AppCompatActivity {
                                                            // final File  file = BitmapSaver.saveImageToExternalStorage(RenewActivity.this, bmpqr);
                                                             m.setAttachment(pdfFile);
                                                             m.setAttachmentName(FilePath);
+                                                            m.setAttachmentNamePath("PackageDetails.pdf");
                                                             // Code for above or equal 23 API Oriented Device
                                                             // Your Permission granted already .Do next code
                                                         } else {
@@ -2788,6 +2789,8 @@ public class RenewActivity extends AppCompatActivity {
                                                     }else{
                                                        // final File  file = BitmapSaver.saveImageToExternalStorage(RenewActivity.this, bmpqr);
                                                         m.setAttachment(pdfFile);
+                                                        m.setAttachmentName(FilePath);
+                                                        m.setAttachmentNamePath("PackageDetails.pdf");
                                                     }
 
                                                     try {

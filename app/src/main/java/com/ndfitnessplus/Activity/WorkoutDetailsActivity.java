@@ -203,18 +203,18 @@ public class WorkoutDetailsActivity extends AppCompatActivity {
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
-                                    String Musculargroup = jsonObj.getString("Musculargroup");
+                                    String Bodypart = jsonObj.getString("Bodypart");
                                     String Workoutname = jsonObj.getString("Workoutname");
                                     String Sets = jsonObj.getString("Sets");
-                                    String Repetation = jsonObj.getString("Repetation");
+                                    String Repetation = jsonObj.getString("Repetations");
                                     String Time = jsonObj.getString("Time");
-                                    String Weight = jsonObj.getString("Weight");
+                                   // String Weight = jsonObj.getString("Weight");
                                     String Description = jsonObj.getString("Description");
                                     String Image = jsonObj.getString("Image");
                                     String Vediolink = jsonObj.getString("Vediolink");
 
-                                    //String musclegrp="Muscular Group: "+Musculargroup;
-                                    subList.setBodyPart(Musculargroup);
+                                    //String musclegrp="Muscular Group: "+Bodypart;
+                                    subList.setBodyPart(Bodypart);
                                     subList.setWorkoutName(Workoutname);
                                     String sets="Sets : "+Sets;
                                     subList.setSet(sets);
@@ -222,7 +222,7 @@ public class WorkoutDetailsActivity extends AppCompatActivity {
                                     subList.setRepitation(rep);
                                     // String timee=Time+" mins";
                                     subList.setTime(Time);
-                                    subList.setWeight(Weight);
+                                   // subList.setWeight(Weight);
                                     subList.setDiscription(Description);
                                     subList.setWorkoutImage(Image);
                                     subList.setVideoLink(Vediolink);

@@ -288,8 +288,8 @@ public class NotificationActivity extends AppCompatActivity {
             //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> CountDetails = new HashMap<String, String>();
             CountDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(NotificationActivity.this));
-            CountDetails.put("authority", SharedPrefereneceUtil.getAuthority(NotificationActivity.this));
-            CountDetails.put("exe_name", SharedPrefereneceUtil.getName(NotificationActivity.this));
+//            CountDetails.put("authority", SharedPrefereneceUtil.getAuthority(NotificationActivity.this));
+//            CountDetails.put("exe_name", SharedPrefereneceUtil.getName(NotificationActivity.this));
             Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(NotificationActivity.this)));
             CountDetails.put("action","show_notification_count");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(NotificationActivity.this);

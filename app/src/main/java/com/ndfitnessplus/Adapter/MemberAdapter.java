@@ -486,7 +486,7 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.BaseViewHo
             Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId((Activity)context)));
             MakeAttendanceDetails.put("member_id",member_id);
             Log.v(TAG, String.format("doInBackground :: member_id = %s", member_id));
-            MakeAttendanceDetails.put("invoice_id","");
+            MakeAttendanceDetails.put("invoice_id","null");
             Log.v(TAG, String.format("doInBackground :: invoice_id = %s", ""));
             MakeAttendanceDetails.put("pack_name","");
             Log.v(TAG, String.format("doInBackground :: pack_name = %s", ""));

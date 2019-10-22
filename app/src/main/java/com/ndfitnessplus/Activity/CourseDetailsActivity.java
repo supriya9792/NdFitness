@@ -2305,6 +2305,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                                             // final File  file = BitmapSaver.saveImageToExternalStorage(RenewActivity.this, bmpqr);
                                                             m.setAttachment(pdfFile);
                                                             m.setAttachmentName(FilePath);
+                                                            m.setAttachmentNamePath("BalanceDetails.pdf");
                                                             // Code for above or equal 23 API Oriented Device
                                                             // Your Permission granted already .Do next code
                                                         } else {
@@ -2313,6 +2314,8 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                                     }else{
                                                         // final File  file = BitmapSaver.saveImageToExternalStorage(RenewActivity.this, bmpqr);
                                                         m.setAttachment(pdfFile);
+                                                        m.setAttachmentName(FilePath);
+                                                        m.setAttachmentNamePath("BalanceDetails.pdf");
                                                     }
                                                     try {
                                                         if(m.send()) {
@@ -2375,7 +2378,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
            // showProgressDialog();
-            viewDialog.showDialog();
+           // viewDialog.showDialog();
         }
 
         @Override
@@ -2383,7 +2386,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
            // dismissProgressDialog();
-            viewDialog.hideDialog();
+           // viewDialog.hideDialog();
             SendEnquirySmsDetails(response);
 
         }

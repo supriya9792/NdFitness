@@ -9,6 +9,7 @@ import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
@@ -45,6 +46,7 @@ import static com.ndfitnessplus.Utility.ServerClass.Email;
 public class GenerateQRActivity extends AppCompatActivity {
     Button send_mail;
     ImageView qrimage;
+    String FilePath;
     public final String TAG = GenerateQRActivity.class.getName();
     ViewDialog viewDialog;
     Bitmap bmpqr;
@@ -120,6 +122,11 @@ public class GenerateQRActivity extends AppCompatActivity {
                                     {
                                         final File  file = BitmapSaver.saveImageToExternalStorage(GenerateQRActivity.this, bmpqr);
                                         m.setAttachment(file);
+                                        long n  = System.currentTimeMillis() / 1000L;
+                                        String fname = "Image-" + n + ".jpg";
+                                        FilePath=Environment.getExternalStorageDirectory().getPath()+ "/Pictures/saved_images/"+fname;
+                                        m.setAttachmentName(FilePath);
+                                        m.setAttachmentNamePath(fname);
                                         // Code for above or equal 23 API Oriented Device
                                         // Your Permission granted already .Do next code
                                     } else {
@@ -128,6 +135,11 @@ public class GenerateQRActivity extends AppCompatActivity {
                                 }else{
                                     final File  file = BitmapSaver.saveImageToExternalStorage(GenerateQRActivity.this, bmpqr);
                                     m.setAttachment(file);
+                                    long n  = System.currentTimeMillis() / 1000L;
+                                    String fname = "Image-" + n + ".jpg";
+                                    FilePath=Environment.getExternalStorageDirectory().getPath()+ "/Pictures/saved_images/"+fname;
+                                    m.setAttachmentName(FilePath);
+                                    m.setAttachmentNamePath(fname);
                                 }
 
 
