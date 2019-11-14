@@ -789,7 +789,10 @@ public class AddEnquiryActivity extends AppCompatActivity  {
       btn_verify.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View v) {
-             SensSMSClass();
+              if(btn_verify.getText().equals("verify")){
+                  SensSMSClass();
+              }
+
                //SendSMS(inputContact.getText().toString(),msg);
           }
       });
@@ -1011,6 +1014,7 @@ public class AddEnquiryActivity extends AppCompatActivity  {
             AddEnquiryDetails.put("budget",inputBudget.getText().toString());
             AddEnquiryDetails.put("image_path",ConvertImage);
             AddEnquiryDetails.put("exe_name",SharedPrefereneceUtil.getName(AddEnquiryActivity.this));
+            AddEnquiryDetails.put("mode","AdminApp");
             Log.v(TAG, String.format("doInBackground :: executive name= %s", SharedPrefereneceUtil.getName(AddEnquiryActivity.this)));
             AddEnquiryDetails.put("action", "add_enquiry");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(AddEnquiryActivity.this);

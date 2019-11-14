@@ -81,7 +81,7 @@ public class ExpensesAdapter extends RecyclerView.Adapter<ExpensesAdapter.ViewHo
 
     }
     //filter for search
-    public void filter(String charText) {
+    public ArrayList<ExpensesList> filter(String charText) {
         // subList=arrayList;
 
         charText = charText.toLowerCase(Locale.getDefault());
@@ -93,7 +93,7 @@ public class ExpensesAdapter extends RecyclerView.Adapter<ExpensesAdapter.ViewHo
         } else {
             for (ExpensesList wp : subList) {
                 if (wp.getTtl_of_expenses().toLowerCase(Locale.getDefault())
-                        .contains(charText) || wp.getExpenses_group().toLowerCase(Locale.getDefault()).contains(charText)||
+                        .contains(charText) ||
                         wp.getExecutive_name().toLowerCase(Locale.getDefault()).contains(charText)||wp.getPayment_type().toLowerCase(Locale.getDefault()).contains(charText)
                         ||wp.getAmount().toLowerCase(Locale.getDefault()).contains(charText)) {
                     arrayList.add(wp);
@@ -102,5 +102,6 @@ public class ExpensesAdapter extends RecyclerView.Adapter<ExpensesAdapter.ViewHo
         }
         Log.d(TAG, "sublist size filter: "+String.valueOf(subList.size()) );
         notifyDataSetChanged();
+        return arrayList;
     }
 }

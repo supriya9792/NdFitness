@@ -147,7 +147,8 @@ public class TermsAndConditionActivity extends AppCompatActivity {
 
                                 String Logo = jsonObj.getString("Logo");
                                 String TermsAndConditions = jsonObj.getString("TermsAndConditions");
-                                String url= ServiceUrls.IMAGES_URL + Logo;
+                                String domainurl= SharedPrefereneceUtil.getDomainUrl(TermsAndConditionActivity.this);
+                                String url=domainurl+ ServiceUrls.IMAGES_URL + Logo;
                                 Log.d(TAG, "url: " +url);
                                // Glide.with(TermsAndConditionActivity.this).load(url).placeholder(R.drawable.nouser).into(logo);
                                 RequestOptions requestOptions = new RequestOptions();

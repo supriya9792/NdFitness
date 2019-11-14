@@ -50,21 +50,7 @@ public class ViewDialog {
                         gifImageView.setImageDrawable(resource);
                     }
                 });
-        //...now load that gif which we put inside the drawble folder here with the help of Glide
-//        RequestOptions requestOptions = new RequestOptions();
-////        requestOptions.placeholder(R.drawable.nouser);
-////        requestOptions.error(R.drawable.nouser);
-////
-////
-////        Glide.with(activity)
-////                .setDefaultRequestOptions(requestOptions)
-////                .load(R.drawable.ndgymtimegif).into(imageViewTarget);
-//        Glide.with(activity)
-//                .load(R.drawable.ndgymtimegif)
-//                .placeholder(R.drawable.ndgymtimegif)
-//                .into(imageViewTarget);
 
-        //...finaly show it
         dialog.show();
     }
 

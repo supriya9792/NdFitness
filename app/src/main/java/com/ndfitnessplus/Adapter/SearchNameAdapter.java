@@ -114,10 +114,15 @@ public class SearchNameAdapter extends ArrayAdapter implements Filterable {
                 if (results != null && results.count > 0) {
                     clear();
                     synchronized (filterList) {
-                        for (Search_list people : filterList) {
-                            add(people);
-                            notifyDataSetChanged();
+                        try {
+                            for (Search_list people : filterList) {
+                                add(people);
+                                notifyDataSetChanged();
+                            }
+                        }catch (Exception e){
+                            Log.d("HUS", "EXCEPTION " + e);
                         }
+
                     }
                 }
             }

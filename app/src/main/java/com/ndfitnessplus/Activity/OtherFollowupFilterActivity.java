@@ -209,7 +209,9 @@ public class OtherFollowupFilterActivity extends AppCompatActivity {
             if (convertedDate2.after(convertedDate) || convertedDate2.equals(convertedDate)) {
                 //.setText("true");
             } else {
-                Toast.makeText(this, "From date should be greater than to date: " , Toast.LENGTH_LONG).show();
+                String firstday= Utility.getFirstDayofMonth();
+                todate.setText(firstday);
+                Toast.makeText(this, "From date should not be greater than to date: " , Toast.LENGTH_LONG).show();
             }
         } catch (ParseException e) {
             // TODO Auto-generated catch block
@@ -352,7 +354,7 @@ public class OtherFollowupFilterActivity extends AppCompatActivity {
                                     if(position == 0){
                                         // Set the hint text color gray
                                         tv.setTextColor(Color.GRAY);
-                                        tv.setText(getResources().getString(R.string.prompt_enq_for));
+                                        tv.setText(getResources().getString(R.string.hint_foll_type));
                                         // tv.setTextColor(Color.GRAY);
                                     }
                                     else {

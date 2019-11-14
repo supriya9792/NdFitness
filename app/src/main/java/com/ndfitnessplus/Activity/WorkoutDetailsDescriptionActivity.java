@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -116,6 +117,7 @@ public class WorkoutDetailsDescriptionActivity extends AppCompatActivity impleme
 //                    .load(url).into(image);
 
             String vurl= filterArrayList.getVideoLink();
+            Log.e("Video Url", vurl);
             if((vurl.equals("")||vurl.equals("null"))) {
                 videoViewLyt.setVisibility(View.GONE);
             }
@@ -187,17 +189,18 @@ public class WorkoutDetailsDescriptionActivity extends AppCompatActivity impleme
                 if (vsp.length > 1)
                     player.cueVideo(vsp[1]);
                 else {
-                    android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(WorkoutDetailsDescriptionActivity.this);
-                    builder.setMessage("Invalid url to play video");
-                    builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.dismiss();
-                        }
-                    });
-                    android.app.AlertDialog dialog = builder.create();
-                    dialog.setCancelable(false);
-                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                    dialog.show();
+                    videoViewLyt.setVisibility(View.GONE);
+//                    android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(WorkoutDetailsDescriptionActivity.this);
+//                    builder.setMessage("Invalid url to play video");
+//                    builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+//                        public void onClick(DialogInterface dialog, int id) {
+//                            dialog.dismiss();
+//                        }
+//                    });
+//                    android.app.AlertDialog dialog = builder.create();
+//                    dialog.setCancelable(false);
+//                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//                    dialog.show();
                 }
             }
             // Plays https://www.youtube.com/watch?v=fhWaJi1Hsfo

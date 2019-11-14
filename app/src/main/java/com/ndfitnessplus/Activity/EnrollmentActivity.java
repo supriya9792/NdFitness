@@ -427,7 +427,8 @@ public class EnrollmentActivity extends AppCompatActivity implements SwipeRefres
                                     String Image = jsonObj.getString("Image");
                                     String status=jsonObj.getString("MemberStatus");
                                     String Email=jsonObj.getString("Email");
-
+                                    String End_Date=jsonObj.getString("End_Date");
+                                    String FinalBalance=jsonObj.getString("FinalBalance");
 
                                     //  for (int j = 0; j < 5; j++) {
                                     itemCount++;
@@ -435,7 +436,8 @@ public class EnrollmentActivity extends AppCompatActivity implements SwipeRefres
                                     subList.setName(name);
                                     subList.setGender(gender);
                                     String cont=Utility.lastFour(Contact);
-                                    subList.setContact(cont);
+                                    subList.setContact(Contact);
+                                    subList.setContactEncrypt(cont);
                                     String dob= Utility.formatDate(DOB);
                                     subList.setBirthDate(dob);
                                     subList.setExecutiveName(ExecutiveName);
@@ -446,7 +448,9 @@ public class EnrollmentActivity extends AppCompatActivity implements SwipeRefres
                                     subList.setImage(Image);
                                     subList.setStatus(status);
                                     subList.setEmail(Email);
-
+                                    String enddate= Utility.formatDateDB(End_Date);
+                                    subList.setEndDate(enddate);
+                                    subList.setFinalBalance(FinalBalance);
 
                                     //Toast.makeText(EnrollmentActivity.this, "followup date: "+next_foll_date, Toast.LENGTH_SHORT).show();
 
@@ -567,7 +571,8 @@ public class EnrollmentActivity extends AppCompatActivity implements SwipeRefres
                                     String Image = jsonObj.getString("Image");
                                     String status=jsonObj.getString("MemberStatus");
                                     String Email=jsonObj.getString("Email");
-
+                                    String End_Date=jsonObj.getString("End_Date");
+                                    String FinalBalance=jsonObj.getString("FinalBalance");
                                     //  for (int j = 0; j < 5; j++) {
                                     itemCount++;
                                     Log.d(TAG, "run: " + itemCount);
@@ -586,6 +591,9 @@ public class EnrollmentActivity extends AppCompatActivity implements SwipeRefres
                                     subList.setImage(Image);
                                     subList.setStatus(status);
                                     subList.setEmail(Email);
+                                    String enddate= Utility.formatDateDB(End_Date);
+                                    subList.setEndDate(enddate);
+                                    subList.setFinalBalance(FinalBalance);
                                     //Toast.makeText(EnrollmentActivity.this, "followup date: "+next_foll_date, Toast.LENGTH_SHORT).show();
                                     subListArrayList.add(subList);
 
@@ -708,7 +716,8 @@ public class EnrollmentActivity extends AppCompatActivity implements SwipeRefres
                                     String Image = jsonObj.getString("Image");
                                     String status=jsonObj.getString("MemberStatus");
                                     String Email=jsonObj.getString("Email");
-
+                                    String End_Date=jsonObj.getString("End_Date");
+                                    String FinalBalance=jsonObj.getString("FinalBalance");
                                     //  for (int j = 0; j < 5; j++) {
                                     itemCount++;
                                     Log.d(TAG, "run: " + itemCount);
@@ -727,7 +736,9 @@ public class EnrollmentActivity extends AppCompatActivity implements SwipeRefres
                                     subList.setImage(Image);
                                     subList.setStatus(status);
                                     subList.setEmail(Email);
-
+                                    String enddate= Utility.formatDateDB(End_Date);
+                                    subList.setEndDate(enddate);
+                                    subList.setFinalBalance(FinalBalance);
 
                                     subListArrayList.add(subList);
                                     adapter = new MemberAdapter( subListArrayList,EnrollmentActivity.this);

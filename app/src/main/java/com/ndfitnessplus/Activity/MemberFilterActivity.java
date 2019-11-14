@@ -557,7 +557,9 @@ public class MemberFilterActivity extends AppCompatActivity {
             if (convertedDate2.after(convertedDate) || convertedDate2.equals(convertedDate)) {
                 //.setText("true");
             } else {
-                Toast.makeText(this, "From date should be greater than to date: " , Toast.LENGTH_LONG).show();
+                String firstday= Utility.getFirstDayofMonth();
+                todate.setText(firstday);
+                Toast.makeText(this, "From date should not be greater than to date: " , Toast.LENGTH_LONG).show();
             }
         } catch (ParseException e) {
             // TODO Auto-generated catch block
@@ -1126,7 +1128,8 @@ public class MemberFilterActivity extends AppCompatActivity {
                                 String Image = jsonObj.getString("Image");
                                 String status=jsonObj.getString("MemberStatus");
                                 String Email=jsonObj.getString("Email");
-
+                                String End_Date=jsonObj.getString("End_Date");
+                                String FinalBalance=jsonObj.getString("FinalBalance");
                                 //  for (int j = 0; j < 5; j++) {
 
                                 subList.setName(name);
@@ -1144,7 +1147,9 @@ public class MemberFilterActivity extends AppCompatActivity {
                                 subList.setImage(Image);
                                 subList.setStatus(status);
                                 subList.setEmail(Email);
-
+                                String enddate= Utility.formatDateDB(End_Date);
+                                subList.setEndDate(enddate);
+                                subList.setFinalBalance(FinalBalance);
                                 //Toast.makeText(EnquiryActivity.this, "followup date: "+next_foll_date, Toast.LENGTH_SHORT).show();
                                 subListArrayList.add(subList);
 

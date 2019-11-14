@@ -82,30 +82,31 @@ public class MainActivity extends AppCompatActivity
     ViewDialog viewDialog;
     public  String ImeiNo;
     TelephonyManager telephonyManager;
+    AdSliderList subList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
-                WindowManager.LayoutParams.FLAG_SECURE);
+//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
+//                WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        data = new ArrayList<AdSliderList>();
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         viewDialog = new ViewDialog(this);
-        data = new ArrayList<AdSliderList>();
-        for (int i = 0; i < AdSliderData.nameArray.length; i++) {
-            data.add(new AdSliderList(
-                    AdSliderData.nameArray[i],
-                    AdSliderData.nameArray[i],
-                    AdSliderData.drawableArray[i],
-                    AdSliderData.id_[i]
-            ));
-        }
 
-        adapter = new AdSliderAdapter(MainActivity.this,data);
-        viewPager.setAdapter(adapter);
+//        for (int i = 0; i < AdSliderData.nameArray.length; i++) {
+//            data.add(new AdSliderList(
+//                    AdSliderData.nameArray[i],
+//                    AdSliderData.nameArray[i],
+//                    AdSliderData.drawableArray[i],
+//                    AdSliderData.id_[i]
+//            ));
+//        }
+//
+//        adapter = new AdSliderAdapter(MainActivity.this,data);
+//        viewPager.setAdapter(adapter);
         setupAutoPager();
         viewDialog = new ViewDialog(this);
 //intitlization
@@ -127,6 +128,7 @@ public class MainActivity extends AppCompatActivity
         UName=SharedPrefereneceUtil.getName(MainActivity.this);
 
         deviceId();
+        AdvertiseClass();
         String device_id = NetworkUtils.getIMEINo(this);
         Log.v(TAG, "IMEI No: "+device_id);
         token = SharedPrefManager.getInstance(this).getDeviceToken();
@@ -772,6 +774,106 @@ public class MainActivity extends AppCompatActivity
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 finish();
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+    public void  AdvertiseClass() {
+        MainActivity.AdvertisenTrackClass ru = new MainActivity.AdvertisenTrackClass();
+        ru.execute("5");
+    }
+
+    class AdvertisenTrackClass extends AsyncTask<String, Void, String> {
+
+        ServerClass ruc = new ServerClass();
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Log.v(TAG, "onPreExecute");
+            // showProgressDialog();
+        }
+
+        @Override
+        protected void onPostExecute(String response) {
+            super.onPostExecute(response);
+            Log.v(TAG, String.format("onPostExecute :: response = %s", response));
+            //  dismissProgressDialog();
+            //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
+            //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
+            AdvertisenDetails(response);
+
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+            HashMap<String, String> AdvertisenDetails = new HashMap<String, String>();
+            AdvertisenDetails.put("action", "show_advertise_banner");
+            //EnquiryForloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(EnquiryForloyee.this));
+            String domainurl=SharedPrefereneceUtil.getDomainUrl(MainActivity.this);
+            String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, AdvertisenDetails);
+            Log.v(TAG, String.format("doInBackground :: show_advertise_banner= %s", loginResult));
+            return loginResult;
+        }
+    }
+    private void AdvertisenDetails(String jsonResponse) {
+
+        Log.v(TAG, String.format("show_advertise_banner :: response = %s", jsonResponse));
+
+        JSONObject jsonObjLoginResponse = null;
+        try {
+            jsonObjLoginResponse = new JSONObject(jsonResponse);
+            String success = jsonObjLoginResponse.getString(getResources().getString(R.string.success));
+
+            if (success.equalsIgnoreCase(getResources().getString(R.string.zero))) {
+
+                // showCustomDialog();
+
+                //inputEmail, inputPhone,inputAdd,inputReq,inputFollowupdate;
+            }
+            else if (success.equalsIgnoreCase(getResources().getString(R.string.two)))
+            {
+                if (jsonObjLoginResponse != null) {
+                    JSONArray jsonArrayResult = jsonObjLoginResponse.getJSONArray("result");
+                    ArrayList<EnquiryList> item = new ArrayList<EnquiryList>();
+                    if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
+
+                        for (int i = 0; i < jsonArrayResult.length(); i++) {
+                            subList = new AdSliderList();
+
+                            Log.v(TAG, "JsonResponseOpeartion ::");
+                            JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
+                            if (jsonObj != null) {
+
+                                String Banner_Image = jsonObj.getString("Banner_Image");
+                                String Company_Name = jsonObj.getString("Company_Name");
+                                String Tagline = jsonObj.getString("Tagline");
+                                String Discription = jsonObj.getString("Discription");
+                                String Website_Url = jsonObj.getString("Website_Url");
+
+                                subList.setBannerImage(Banner_Image);
+                                subList.setAdTitle(Company_Name);
+                                subList.setAdDisc(Discription);
+                                subList.setUrl(Website_Url);
+                                //Toast.makeText(EnquiryActivity.this, "followup date: "+next_foll_date, Toast.LENGTH_SHORT).show();
+
+                                //Toast.makeText(MainActivity.this, "j "+j, Toast.LENGTH_SHORT).show();
+                                data.add(subList);
+
+                                adapter = new AdSliderAdapter(MainActivity.this,data);
+                                viewPager.setAdapter(adapter);
+
+
+                            }
+                        }
+                    } else if (jsonArrayResult.length() == 0) {
+                        System.out.println("No records found");
+                    }
+                }
             }
 
         } catch (JSONException e) {

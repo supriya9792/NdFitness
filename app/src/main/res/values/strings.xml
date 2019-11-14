@@ -21,7 +21,7 @@
     <string name="select_company">Select Company</string>
     <string name="wel_gymtime">Welcome To GymTime</string>
     <string name="enter_url">Please enter your domain url</string>
-    <string name="url_hint">http://</string>
+    <string name="url_hint">http://admin.gymtime.in</string>
     <string name="url_save_hint">Save</string>
     <string name="server_exception">server connection failed .</string>
     <string name="ok">OK</string>
@@ -96,7 +96,7 @@
     <string name="termsNConditions"><u><![CDATA[Terms & Conditions ]]></u></string>
     <string name="privacy_policy"><u>Privacy Policy</u></string>
     <string name="invalid_login">Invalid login details !</string>
-    <string name="invalid_username">Invalid username !</string>
+    <string name="invalid_username">Invalid username or Contact !</string>
     <string name="password_error">Enter Valid Password !</string>
     <string name="invalid_username_error">Enter Valid Username !</string>
     <string name="internet_unavailable">No Internet Connection !</string>
@@ -142,7 +142,7 @@
     <string name="coll_filters">Collection Filters</string>
     <string name="other_foll_filters">Other Followup Filters</string>
 
-    <string name = "required_asterisk"><font fgcolor='#cc0029'> *</font></string>
+    <string name="required_asterisk"><font fgcolor='#cc0029'> *</font></string>
     <string name="hint_name">Name <font fgcolor="#ff0000"><sup>*</sup></font></string>
     <string name="hints"><![CDATA[Name<font color=\'#cc0029\'>*</font>]]></string>
     <string name="hint_enquiry_date">Enquiry Date</string>
@@ -254,7 +254,6 @@
     <string name="enq_date">Enquiry Date</string>
     <string-array name="enq_date_array">
         <item>Select Date </item>
-        <item>All </item>
         <item>Enquiry Date  </item>
         <item>Next Followup Date </item>
     </string-array>
@@ -372,7 +371,7 @@
     <string name="hint_balance">Balance</string>
     <string name="hint_next_payment_date">Next Payment Date</string>
     <string name="hint_c_comment">Comment</string>
-
+    <string name="payment_details_n">Payment Details</string>
     <!-- Balance Receipt -->
     <string name="invoice_ref_id">Invoice Ref ID</string>
     <string name="pre_paid">PrePaid Fees</string>
@@ -513,8 +512,11 @@
     <!--<string name="time">15 min</string>-->
     <string name="body_part">Body Part : </string>
 
+<!--    Diet Activity -->
+    <string name="add_diet">Add Diet</string>
+
     <string name="hint_Name" style="color:grey;">Name<span style="color:red;">*</span></string>
-    <string  name="hint_Name_red" style="color:grey;">Name<span style="color:red;">*</span></string>
+    <string name="hint_Name_red" style="color:grey;">Name<span style="color:red;">*</span></string>
     <string name="asteriskred"><font color='#cc0029'>*</font></string>
     <string name="long_lorem_ipsum">
         Duis tellus metus, elementum a lectus id, aliquet interdum mauris. Nam bibendum efficitur sollicitudin. Proin eleifend libero velit, nec fringilla dolor finibus quis. nMorbi eu libero pellentesque, rutrum metus quis, blandit est. Fusce bibendum accumsan nisi vulputate feugiat. In fermentum laoreet euismod. Praesent sem nisl, facilisis eget odio at, rhoncus scelerisque ipsum. Nulla orci dui, dignissim a risus ut, lobortis porttitor velit.

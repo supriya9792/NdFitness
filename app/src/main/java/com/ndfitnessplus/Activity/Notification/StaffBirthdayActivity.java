@@ -195,8 +195,6 @@ public class StaffBirthdayActivity extends AppCompatActivity {
 
         }
 
-
-
     }
     public void CampareTwoDates(){
         //******************campare two dates****************
@@ -209,10 +207,12 @@ public class StaffBirthdayActivity extends AppCompatActivity {
         try {
             convertedDate = dateFormat.parse(todate.getText().toString());
             convertedDate2 = dateFormat.parse(fromdate.getText().toString());
-            if (convertedDate2.after(convertedDate) || convertedDate2.equals(convertedDate)) {
+            if(convertedDate2.after(convertedDate) || convertedDate2.equals(convertedDate)) {
                 //.setText("true");
             } else {
-                Toast.makeText(this, "From date should be greater than to date: " , Toast.LENGTH_LONG).show();
+                String firstday= Utility.getFirstDayofMonth();
+                todate.setText(firstday);
+                Toast.makeText(this, "From date should not be greater than to date: " , Toast.LENGTH_LONG).show();
             }
         } catch (ParseException e) {
             // TODO Auto-generated catch block

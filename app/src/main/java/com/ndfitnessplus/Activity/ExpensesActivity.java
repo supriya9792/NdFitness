@@ -27,6 +27,7 @@ import android.widget.TextView;
 
 import com.ndfitnessplus.Adapter.ExpensesAdapter;
 import com.ndfitnessplus.Listeners.PaginationScrollListener;
+import com.ndfitnessplus.Model.EnquiryList;
 import com.ndfitnessplus.Model.ExpensesList;
 import com.ndfitnessplus.R;
 import com.ndfitnessplus.Utility.ServerClass;
@@ -183,15 +184,23 @@ public class ExpensesActivity extends AppCompatActivity {
             public void afterTextChanged(Editable arg0) {
                 // TODO Auto-generated method stub
                 if (ExpensesActivity.this.adapter == null){
-                    // some print statement saying it is null
-//                    Toast toast = Toast.makeText(ExpensesActivity.this,"no record found", Toast.LENGTH_SHORT);
-//                    toast.setGravity(Gravity.CENTER, 0, 0);
-//                    toast.show();
+
                 }
                 else
                 {
-                    ExpensesActivity.this.adapter.filter(String.valueOf(arg0));
+                    ArrayList<ExpensesList> filterlist=ExpensesActivity.this.adapter.filter(String.valueOf(arg0));
+                    double totalBudget=0;
+                    for (final ExpensesList wp : filterlist) {
+                        String bugdet=wp.getAmount();
+                        if(!(bugdet.equals("")||bugdet.equals("null"))){
+                            double budge=Double.parseDouble(bugdet);
+                            totalBudget+=budge;
+                            Log.d(TAG, "budget: " + bugdet);
+                            Log.d(TAG, "totalBudget: " + totalBudget);
+                            expenses.setText(String.valueOf(totalBudget));
+                        }
 
+                    }
                 }
             }
             @Override

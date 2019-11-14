@@ -134,6 +134,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
             HashMap<String, String> loginData = new HashMap<>();
             loginData.put("username",username.getText().toString());
+            loginData.put("contact",contact.getText().toString());
             SharedPrefereneceUtil.setUserNm(ForgotPasswordActivity.this, username.getText().toString());
             loginData.put(ServerClass.ACTION,"forgot_password");
             ServerClass ruc = new ServerClass();

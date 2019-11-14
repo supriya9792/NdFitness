@@ -158,10 +158,10 @@ public class CourseDetailsActivity extends AppCompatActivity {
     TextView txtcallres,txtrating,txtFollType;
     String[] callresponce ;
     String[] folltype ;
-    String start_date;
+    String start_date,end_date,remSession;
     //Loading gif
     ViewDialog viewDialog;
-    private BaseFont bfBold;
+    private BaseFont bfBold,bfnormal;
     private static final String LOG_TAG = "GeneratePDF";
 
     private EditText preparedBy;
@@ -170,11 +170,12 @@ public class CourseDetailsActivity extends AppCompatActivity {
     private String filepath = "MyInvoices";
     String FilePath;
     String fname ="";
+    String Email_ID,Password,Header,Footer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
-                WindowManager.LayoutParams.FLAG_SECURE);
+//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
+//                WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_course_details);
         initToolbar();
         requestPermission();
@@ -268,8 +269,11 @@ public class CourseDetailsActivity extends AppCompatActivity {
             String regdate=Utility.formatDate(filterArrayList.getRegistrationDate());
             regdateTV.setText(regdate);
             packagenameTV.setText(filterArrayList.getPackageName());
-            String dur="Duration: "+filterArrayList.getPackageNameWithDS();
+            String dur=filterArrayList.getPackageNameWithDS();
             durationTv.setText(dur);
+             String rm[]=dur.split(",");
+             String rms[]=rm[1].split(":");
+             remSession=rms[1];
             start_to_end_dateTV.setText(filterArrayList.getStartToEndDate());
             paidTV.setText(fpaid);
             executiveNameTV.setText(filterArrayList.getExecutiveName());
@@ -385,6 +389,8 @@ public class CourseDetailsActivity extends AppCompatActivity {
                 intent.putExtra("financial_yr",FinancialYear);
                 intent.putExtra("member_id",member_id);
                 intent.putExtra("start_date",start_date);
+                intent.putExtra("end_date",end_date);
+                intent.putExtra("remaining_session",remSession);
                 startActivity(intent);
             }
         });
@@ -1628,6 +1634,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
             AddBalanceReceiptDetails.put("mem_own_exe",SharedPrefereneceUtil.getName(CourseDetailsActivity.this));
             Log.v(TAG, String.format("doInBackground :: executive name= %s", SharedPrefereneceUtil.getName(CourseDetailsActivity.this)));
             AddBalanceReceiptDetails.put("financial_year",FinancialYear);
+            AddBalanceReceiptDetails.put("mode","AdminApp");
             Log.v(TAG, String.format("doInBackground :: financial_year= %s", FinancialYear));
 
             AddBalanceReceiptDetails.put("action", "add_balance_receipt");
@@ -1654,9 +1661,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                // inputName.getText().clear();
                 //inputContact.getText().clear();
                 SendEnquirySmsClass();
-                if(!Email.equals("")){
-                    receiptdatalass();
-                }
+                EmailLoginClass();
                 // imageView.setImageResource(R.drawable.add_photo);
 
                 // showCustomDialog();
@@ -1677,6 +1682,99 @@ public class CourseDetailsActivity extends AppCompatActivity {
             }
 
         } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+    public void  EmailLoginClass() {
+        CourseDetailsActivity.EmailLoginTrackClass ru = new CourseDetailsActivity.EmailLoginTrackClass();
+        ru.execute("5");
+    }
+
+    class EmailLoginTrackClass extends AsyncTask<String, Void, String> {
+
+        ServerClass ruc = new ServerClass();
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Log.v(TAG, "onPreExecute");
+            //showProgressDialog();
+        }
+
+        @Override
+        protected void onPostExecute(String response) {
+            super.onPostExecute(response);
+            Log.v(TAG, String.format("onPostExecute :: response = %s", response));
+            // dismissProgressDialog();
+            //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
+            //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
+            EmailLoginDetails(response);
+
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+            HashMap<String, String> EmailLoginDetails = new HashMap<String, String>();
+            EmailLoginDetails.put("comp_id",SharedPrefereneceUtil.getSelectedBranchId(CourseDetailsActivity.this) );
+            EmailLoginDetails.put("action", "show_email_login");
+            String domainurl=SharedPrefereneceUtil.getDomainUrl(CourseDetailsActivity.this);
+            //EnquiryForloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(EnquiryForloyee.this));
+            String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EmailLoginDetails);
+
+            Log.v(TAG, String.format("doInBackground :: show_email_login= %s", loginResult));
+            return loginResult;
+        }
+    }
+    private void EmailLoginDetails(String jsonResponse) {
+
+        Log.v(TAG, String.format("loginServerResponse :: response = %s", jsonResponse));
+
+        JSONObject object = null;
+        try {
+            object = new JSONObject(jsonResponse);
+            String success = object.getString(getResources().getString(R.string.success));
+
+            if (success.equalsIgnoreCase(getResources().getString(R.string.zero))) {
+
+                // showCustomDialog();
+
+                //inputEmail, inputPhone,inputAdd,inputReq,inputFollowupdate;
+            }
+            else if (success.equalsIgnoreCase(getResources().getString(R.string.two)))
+            {
+                if (object != null) {
+                    JSONArray jsonArrayCountry = object.getJSONArray("result");
+
+                    if (jsonArrayCountry != null && jsonArrayCountry.length() > 0){
+                        for (int i = 0; i < jsonArrayCountry.length(); i++) {
+                            Log.v(TAG, "JsonResponseOpeartion ::");
+                            JSONObject jsonObj = jsonArrayCountry.getJSONObject(i);
+                            if (jsonObj != null) {
+
+                                Email_ID     = jsonObj.getString("Email_ID");
+                                Password=jsonObj.getString("Password");
+                                String Email_Status=jsonObj.getString("Email_Status");
+                                Header=jsonObj.getString("Header");
+                                Footer=jsonObj.getString("Footer");
+                                if(Email_Status.equals("ON")){
+                                    if(!Email.equals("")){
+                                        receiptdatalass();
+                                    }
+                                }else {
+                                    System.out.println("Email Status Is Off");
+                                }
+                            }
+                        }
+                    }else if(jsonArrayCountry.length()==0){
+                        System.out.println("No records found");
+                    }
+                }
+            }
+
+        }
+        catch (JSONException e) {
             e.printStackTrace();
         }
     }
@@ -1761,7 +1859,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                     String Start_Date = jsonObj.getString("Start_Date");
                                     String s_date=Utility.formatDateDB(Start_Date);
                                     String End_Date = jsonObj.getString("End_Date");
-                                    String end_date=Utility.formatDateDB(End_Date);
+                                    String edate=Utility.formatDateDB(End_Date);
                                     String Rate = jsonObj.getString("Rate");
                                     String Final_paid = jsonObj.getString("Final_paid");;
                                     String Final_Balance =  jsonObj.getString("Final_Balance");
@@ -1774,6 +1872,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
 //                                        tax="0.00";
 //                                    }
                                     start_date=Start_Date;
+                                    end_date=End_Date;
                                     String Member_Email_ID = Email;
                                     String Time =  jsonObj.getString("Time");;
                                     String Instructor_Name = jsonObj.getString("Instructor_Name");;
@@ -1939,7 +2038,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                             "                                         <td >"+Duration_Days+"</td>\n" +
                                             "                                        <td >"+Session+"</td>                                       \n" +
                                             "                                        <td >"+s_date+"</td>\n" +
-                                            "                                        <td >"+end_date+"</td>\n" +
+                                            "                                        <td >"+edate+"</td>\n" +
                                             "                                        <td >"+Time+"</td>\n" +
                                             "                                        <td >"+Instructor_Name+"</td>\n" +
                                             "                                        <td >"+Package_Fees+"</td>\n" +
@@ -2080,192 +2179,21 @@ public class CourseDetailsActivity extends AppCompatActivity {
 //
                                         // creating a sample invoice with some customer data
                                         createHeadings(cb,50,780,Company_Name);
-                                        createHeadings(cb,50,765,Address);
-                                        createHeadings(cb,50,750,Contact);
-                                        createHeadings(cb,50,735,GST_No);
-                                        createHeadings(cb,50,720,"Bill To");
-                                        createHeadings(cb,50,705,Name);
-                                        createHeadings(cb,50,690,Email);
-                                        createHeadings(cb,50,675,Member_Contact);
-                                        createHeadings(cb,50,660,MemberGST_No);
+                                        createText(cb,50,765,Address);
+                                        createText(cb,50,750,Contact);
+                                        createText(cb,50,735,GST_No);
+                                        createHeadings(cb,50,715,"Bill To");
+                                        createText(cb,50,700,Name);
+                                        createText(cb,50,685,Email);
+                                        createText(cb,50,670,Member_Contact);
+                                        createText(cb,50,655,MemberGST_No);
+
+
                                         createHeadings(cb,455,735,"Invoice Date :"+invoice_date);
                                         createHeadings(cb,455,720,"Invoice No : "+Invoice_ID);
                                         createHeadings(cb,455,705,"Member Id : "+member_id);
 //
-//                                        cb.beginText();
-//                                        cb.setFontAndSize(bfBold, 16);
-//                                        cb.setTextMatrix(50,640);
-//                                        cb.showText("Package Summary".trim());
-//                                        cb.endText();
-//                                        //createHeadings(cb,500,640,"Package Summary");
-//                                        //list all the products sold to the customer
-//                                        float[] columnWidths = {2f, 1.7f, 1.7f,2.2f, 2.2f,1.2f,2f};
-//                                        //create PDF table with the given widths
-//                                        PdfPTable table = new PdfPTable(columnWidths);
-//                                        // set table width a percentage of the page width
-//                                        table.setTotalWidth(550f);
-//                                        table.getDefaultCell().setMinimumHeight(30f);
-//                                        table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
-//                                        table.getDefaultCell().setVerticalAlignment(Element.ALIGN_MIDDLE);
-//                                        //Font boldFont = new Font(Font.FontFamily.UNDEFINED, 13, Font.BOLD);
-//                                        PdfPCell cell = new PdfPCell(new Phrase("Package",boldFont));
-//                                        cell.setMinimumHeight(30f);
-//                                        // cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-//                                        table.addCell(cell);
 //
-//                                        cell = new PdfPCell(new Phrase("Duration",boldFont));
-//                                        // cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-//                                        table.addCell(cell);
-//                                        cell = new PdfPCell(new Phrase("Session",boldFont));
-//                                        //cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-//                                        table.addCell(cell);
-//                                        cell = new PdfPCell(new Phrase("Start Date",boldFont));
-//                                        // cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-//                                        table.addCell(cell);
-//                                        cell = new PdfPCell(new Phrase("End Date",boldFont));
-//                                        // cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-//                                        table.addCell(cell);
-//                                        cell = new PdfPCell(new Phrase("Time",boldFont));
-//                                        // cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-//                                        table.addCell(cell);
-//                                        cell = new PdfPCell(new Phrase("Instructor",boldFont));
-//                                        // cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-//                                        table.addCell(cell);
-//
-//                                        table.setHeaderRows(1);
-//
-//                                        // PdfPCell[] cells = table.getRow(0).getCells();
-//                                        // cells[0].setBackgroundColor(BaseColor.GRAY);
-//
-//                                        DecimalFormat df = new DecimalFormat("0.00");
-//                                        for(int j=0; j < 1; j++ ){
-//                                            cell.setMinimumHeight(30f);
-//                                            table.addCell(Package_Name);
-//                                            table.addCell(Duration_Days);
-//                                            table.addCell(Session);
-//                                            table.addCell(s_date);
-//                                            table.addCell(end_date);
-//                                            table.addCell(Time);
-//                                            table.addCell(Instructor_Name);
-//                                        }
-//
-//                                        //absolute location to print the PDF table from
-//                                        table.writeSelectedRows(0, -1, document.leftMargin(), 620, docWriter.getDirectContent());
-//                                     //  document.add(table);
-//                                        float[] columnWidths1 = {2f, 1.7f, 1.7f,2.2f, 2.2f,1.2f};
-//                                        //create PDF table with the given widths
-//                                        PdfPTable table1 = new PdfPTable(columnWidths1);
-//                                        // set table width a percentage of the page width
-//                                        table1.setTotalWidth(550f);
-//                                        table1.getDefaultCell().setMinimumHeight(30f);
-//                                        table1.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
-//                                        table1.getDefaultCell().setVerticalAlignment(Element.ALIGN_MIDDLE);
-//                                        table1.getDefaultCell().setPadding(5f);
-//
-//                                        PdfPCell cell1 = new PdfPCell(new Phrase("Package Fees",boldFont));
-//                                        cell1.setMinimumHeight(30f);
-//                                        // cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
-//                                        table1.addCell(cell1);
-//                                        cell1 = new PdfPCell(new Phrase("Discount",boldFont));
-//                                        // cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
-//                                        table1.addCell(cell1);
-//                                        cell1 = new PdfPCell(new Phrase("Reg Fees",boldFont));
-//                                        // cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
-//                                        table1.addCell(cell1);
-//                                        cell1 = new PdfPCell(new Phrase("Total Amount",boldFont));
-//                                        //cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
-//                                        table1.addCell(cell1);
-//                                        cell1 = new PdfPCell(new Phrase("Paid Amount",boldFont));
-//                                        // cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
-//                                        table1.addCell(cell1);
-//                                        cell1 = new PdfPCell(new Phrase("Balance",boldFont));
-//                                        // cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
-//                                        table1.addCell(cell1);
-//                                        table1.setHeaderRows(1);
-////                                        PdfPCell[] cells = table.getRow(0).getCells();
-////                                        cells[0].setBackgroundColor(BaseColor.GRAY);
-//
-//                                        for(int j=0; j < 1; j++ ){
-//                                            cell1.setMinimumHeight(30f);
-//                                            table1.addCell(Package_Fees);
-//                                            table1.addCell(Discount);
-//                                            table1.addCell(Registration_Fees);
-//                                            table1.addCell(Rate);
-//                                            table1.addCell(Final_paid);
-//                                            table1.addCell(Final_Balance);
-//
-//                                        }
-//
-//                                        //absolute location to print the PDF table from
-//                                        table1.writeSelectedRows(0, -1, document.leftMargin(), 560, docWriter.getDirectContent());
-//                                         //   document.add(table1);
-//                                        cb.beginText();
-//                                        cb.setFontAndSize(bfBold, 16);
-//                                        cb.setTextMatrix(50,475);
-//                                        cb.showText("Payment Transaction".trim());
-//                                        cb.endText();
-////
-//
-//                                        //document.add(tablePayTrasa);
-//                                        tablePayTrasa.writeSelectedRows(0, -1, document.leftMargin(), 450, docWriter.getDirectContent());
-//                                        document.newPage();
-//                                        cb.beginText();
-//                                        cb.setFontAndSize(bfBold, 16);
-//                                        cb.setTextMatrix(50,750);
-//                                        cb.showText("Terms And Conditions".trim());
-//                                        cb.endText();
-//
-////                                        float[] columnWidthstandc = {10f};
-////                                        //create PDF table with the given widths
-////                                        PdfPTable tabletandc = new PdfPTable(columnWidthstandc);
-////                                        // set table width a percentage of the page width
-////                                        tabletandc.setTotalWidth(550f);
-////                                        tabletandc.getDefaultCell().setMinimumHeight(500f);
-////                                        tabletandc.getDefaultCell().setHorizontalAlignment(Element.ALIGN_JUSTIFIED);
-////                                        tabletandc.getDefaultCell().setVerticalAlignment(Element.ALIGN_MIDDLE);
-////                                        tabletandc.getDefaultCell().setPadding(5f);
-////                                        tabletandc.getDefaultCell().setBorder(Rectangle.NO_BORDER);
-////                                        PdfPCell celltandc = new PdfPCell(new Phrase("Terms And Conditions",boldFont));
-////                                        tabletandc.addCell(celltandc);
-////                                        //document.add(tabletandc);
-////                                        tabletandc.writeSelectedRows(0, -1, document.leftMargin(), 780, docWriter.getDirectContent());
-//
-//                                        float[] columnWidthst = {10f};
-//                                        //create PDF table with the given widths
-//                                        PdfPTable tablet = new PdfPTable(columnWidthst);
-//                                        // set table width a percentage of the page width
-//                                        tablet.setTotalWidth(550f);
-//                                        tablet.getDefaultCell().setMinimumHeight(500f);
-//                                        tablet.getDefaultCell().setHorizontalAlignment(Element.ALIGN_JUSTIFIED);
-//                                        tablet.getDefaultCell().setVerticalAlignment(Element.ALIGN_MIDDLE);
-//                                        tablet.getDefaultCell().setPadding(5f);
-//                                        tablet.getDefaultCell().setBorder(Rectangle.NO_BORDER);
-////
-//                                        tablet.addCell(Html.fromHtml(message).toString());
-//                                        //document.add(tablet);
-//                                        tablet.writeSelectedRows(0, -1, document.leftMargin(), 950, docWriter.getDirectContent());
-//
-//                                        CSSResolver cssResolver =
-//                                                XMLWorkerHelper.getInstance().getDefaultCssResolver(false);
-////                                        FileRetrieve retrieve = new FileRetrieveImpl(CSS_DIR);
-//////                                        cssResolver.setFileRetrieve(retrieve);
-//                                        HtmlPipelineContext htmlContext = new HtmlPipelineContext(null);
-//                                        htmlContext.setTagFactory(Tags.getHtmlTagProcessorFactory());
-//                                        //htmlContext.setImageProvider(new Base64ImageProvider());
-//
-//                                        // Pipelines
-//                                        PdfWriterPipeline pdf = new PdfWriterPipeline(document, docWriter);
-//                                       // CustomPipeline custom = new CustomPipeline(pdf);
-//                                        HtmlPipeline html = new HtmlPipeline(htmlContext, pdf);
-//                                        CssResolverPipeline css = new CssResolverPipeline(cssResolver, html);
-//                                       // HTMLWorker htmlWorker = new HTMLWorker(document);
-//                                        XMLWorker worker = new XMLWorker(css, true);
-//                                        XMLParser p = new XMLParser(worker);
-//                                        p.parse(new StringReader(message));
-//
-//                                       XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
-//                                        InputStream is = new ByteArrayInputStream(message.getBytes(StandardCharsets.UTF_8));
-//                                        worker.parseXHtml(docWriter, document, is, Charset.forName("UTF-8"));
 
                                         HTMLWorker htmlWorker = new HTMLWorker(document);
                                         htmlWorker.parse(new StringReader(messagehtml));
@@ -2277,7 +2205,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                     }
 
                                     final String subject=Company_Name+" Receipt";
-                                    final String message="Dear Gym Member  Please find the attachment of Your Balance Details";
+                                    final String message=Header+"\nPlease find the attachment of Your Package Details\n\n"+Footer;
 
 
                                     CourseDetailsActivity.this.runOnUiThread(new Runnable() {
@@ -2599,6 +2527,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
 
                                     //  for (int j = 0; j < 5; j++) {
                                     start_date=Start_Date;
+                                    end_date=End_Date;
                                     filterArrayList.setName(name);
                                     String sdate=Utility.formatDate(Start_Date);
                                     String edate=Utility.formatDate(End_Date);
@@ -2805,12 +2734,21 @@ public class CourseDetailsActivity extends AppCompatActivity {
         cb.endText();
 
     }
+    private void createText(PdfContentByte cb, float x, float y, String text){
+
+        cb.beginText();
+        cb.setFontAndSize(bfnormal, 8);
+        cb.setTextMatrix(x,y);
+        cb.showText(text.trim());
+        cb.endText();
+
+    }
     private void initializeFonts(){
 
 
         try {
             bfBold = BaseFont.createFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
-
+            bfnormal = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
         } catch (DocumentException e) {
             e.printStackTrace();
         } catch (IOException e) {

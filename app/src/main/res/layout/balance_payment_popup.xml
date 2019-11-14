@@ -170,7 +170,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/black"
-                    android:hint="@string/payment_details"
+                    android:hint="@string/payment_details_n"
                     android:inputType="text"
                     android:singleLine="true"
                     android:textColor="@color/black"

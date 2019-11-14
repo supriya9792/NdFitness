@@ -1,5 +1,6 @@
 package com.ndfitnessplus.Adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
@@ -10,11 +11,18 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.ndfitnessplus.Activity.MainActivity;
 import com.ndfitnessplus.Model.AdSliderList;
 import com.ndfitnessplus.R;
+import com.ndfitnessplus.Utility.ServiceUrls;
+import com.ndfitnessplus.Utility.SharedPrefereneceUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.pchmn.materialchips.R2.attr.logo;
 
 public class AdSliderAdapter extends PagerAdapter implements LoopingPagerAdapter {
   private LayoutInflater layoutInflater;
@@ -40,14 +48,16 @@ public class AdSliderAdapter extends PagerAdapter implements LoopingPagerAdapter
     final AdSliderList enq = signalList.get(position);
 
     ImageView placeholder  =(ImageView) view.findViewById(R.id.ad_img) ;
-//    TextView title=(TextView)view.findViewById(R.id.ad_title);
-//    TextView disc=(TextView)view.findViewById(R.id.ad_disc);
+    RequestOptions requestOptions = new RequestOptions();
+                requestOptions.placeholder(R.drawable.add_gymtime1);
+                requestOptions.error(R.drawable.add_gymtime1);
+                String domainurl= SharedPrefereneceUtil.getDomainUrl((Activity)mContext);
+                String url= domainurl+ ServiceUrls.IMAGES_URL + arraylist.get(position).getBannerImage();
 
-
-
-//    title.setText(arraylist.get(position).getAdTitle());
-//    disc.setText(arraylist.get(position).getAdDisc());
-    placeholder.setImageResource(arraylist.get(position).getImage());
+                Glide.with((Activity)mContext)
+                        .setDefaultRequestOptions(requestOptions)
+                        .load(url).into(placeholder);
+   // placeholder.setImageResource(arraylist.get(position).getImage());
     container.addView(view);
     return view;
   }

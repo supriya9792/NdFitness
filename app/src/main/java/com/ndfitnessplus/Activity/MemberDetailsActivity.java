@@ -115,8 +115,8 @@ public class MemberDetailsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
-                WindowManager.LayoutParams.FLAG_SECURE);
+//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
+//                WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_member_details);
         initToolbar();
         initComponent();
@@ -296,9 +296,7 @@ public class MemberDetailsActivity extends AppCompatActivity {
             Intent intent = new Intent(MemberDetailsActivity.this, MainActivity.class);
             startActivity(intent);
         }else if(id== android.R.id.home){
-            //Toast.makeText(this,"Navigation back pressed",Toast.LENGTH_SHORT).show();
-            // NavUtils.navigateUpFromSameTask(this);
-            finish();
+          finish();
         }else if(id== R.id.action_measurement) {
             Intent intent = new Intent(MemberDetailsActivity.this, MemberMeasurementActivity.class);
             intent.putExtra("member_id",member_id);
@@ -1381,6 +1379,7 @@ public class MemberDetailsActivity extends AppCompatActivity {
 
     protected void onRestart() {
         super.onRestart();
+        finish();
         Intent intent=new Intent(MemberDetailsActivity.this,MemberDetailsActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable("filter_array_list", filterArrayList);
@@ -1389,13 +1388,11 @@ public class MemberDetailsActivity extends AppCompatActivity {
     }
     @Override
     public boolean onSupportNavigateUp(){
-        Intent intent=new Intent(MemberDetailsActivity.this,MemberActivity.class);
-        startActivity(intent);
+       finish();
         return true;
     }
     @Override
     public void onBackPressed() {
-        Intent intent=new Intent(MemberDetailsActivity.this,MemberActivity.class);
-        startActivity(intent);
+      finish();
     }
 }

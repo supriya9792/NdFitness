@@ -163,7 +163,8 @@ public class RenewActivity extends AppCompatActivity {
     private String filepath = "MyInvoices";
     String FilePath;
     String fname ="";
-    private BaseFont bfBold;
+    private BaseFont bfBold,bfnormal;
+    String Email_ID,Password,Header,Footer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -2242,6 +2243,7 @@ public class RenewActivity extends AppCompatActivity {
             AddCourseDetails.put("next_payment_date",inputNextFollDate.getText().toString());
             Log.v(TAG, String.format("doInBackground :: discount = %s", inputDiscount.getText().toString()));
             AddCourseDetails.put("mem_own_exe",SharedPrefereneceUtil.getName(RenewActivity.this));
+            AddCourseDetails.put("mode","AdminApp");
             Log.v(TAG, String.format("doInBackground :: executive name= %s", SharedPrefereneceUtil.getName(RenewActivity.this)));
             AddCourseDetails.put("subtotal",subtotal);
             Log.v(TAG, String.format("doInBackground :: subtotal = %s", subtotal));
@@ -2274,9 +2276,8 @@ public class RenewActivity extends AppCompatActivity {
                 //inputContact.getText().clear();
                 SendEnquirySmsClass();
                 submitAction();
-                if(!Email.equals("")){
-                    receiptdatalass();
-                }
+                EmailLoginClass();
+
 
                 // imageView.setImageResource(R.drawable.add_photo);
 
@@ -2293,6 +2294,99 @@ public class RenewActivity extends AppCompatActivity {
             }
 
         } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+    public void  EmailLoginClass() {
+        RenewActivity.EmailLoginTrackClass ru = new RenewActivity.EmailLoginTrackClass();
+        ru.execute("5");
+    }
+
+    class EmailLoginTrackClass extends AsyncTask<String, Void, String> {
+
+        ServerClass ruc = new ServerClass();
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Log.v(TAG, "onPreExecute");
+            //showProgressDialog();
+        }
+
+        @Override
+        protected void onPostExecute(String response) {
+            super.onPostExecute(response);
+            Log.v(TAG, String.format("onPostExecute :: response = %s", response));
+            // dismissProgressDialog();
+            //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
+            //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
+            EmailLoginDetails(response);
+
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+            HashMap<String, String> EmailLoginDetails = new HashMap<String, String>();
+            EmailLoginDetails.put("comp_id",SharedPrefereneceUtil.getSelectedBranchId(RenewActivity.this) );
+            EmailLoginDetails.put("action", "show_email_login");
+            String domainurl=SharedPrefereneceUtil.getDomainUrl(RenewActivity.this);
+            //EnquiryForloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(EnquiryForloyee.this));
+            String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EmailLoginDetails);
+
+            Log.v(TAG, String.format("doInBackground :: show_email_login= %s", loginResult));
+            return loginResult;
+        }
+    }
+    private void EmailLoginDetails(String jsonResponse) {
+
+        Log.v(TAG, String.format("loginServerResponse :: response = %s", jsonResponse));
+
+        JSONObject object = null;
+        try {
+            object = new JSONObject(jsonResponse);
+            String success = object.getString(getResources().getString(R.string.success));
+
+            if (success.equalsIgnoreCase(getResources().getString(R.string.zero))) {
+
+                // showCustomDialog();
+
+                //inputEmail, inputPhone,inputAdd,inputReq,inputFollowupdate;
+            }
+            else if (success.equalsIgnoreCase(getResources().getString(R.string.two)))
+            {
+                if (object != null) {
+                    JSONArray jsonArrayCountry = object.getJSONArray("result");
+
+                    if (jsonArrayCountry != null && jsonArrayCountry.length() > 0){
+                        for (int i = 0; i < jsonArrayCountry.length(); i++) {
+                            Log.v(TAG, "JsonResponseOpeartion ::");
+                            JSONObject jsonObj = jsonArrayCountry.getJSONObject(i);
+                            if (jsonObj != null) {
+
+                                 Email_ID     = jsonObj.getString("Email_ID");
+                                 Password=jsonObj.getString("Password");
+                                String Email_Status=jsonObj.getString("Email_Status");
+                                 Header=jsonObj.getString("Header");
+                                 Footer=jsonObj.getString("Footer");
+                                if(Email_Status.equals("ON")){
+                                    if(!Email.equals("")){
+                                        receiptdatalass();
+                                    }
+                                }else {
+                                    System.out.println("Email Status Is Off");
+                                }
+                            }
+                        }
+                    }else if(jsonArrayCountry.length()==0){
+                        System.out.println("No records found");
+                    }
+                }
+            }
+
+        }
+        catch (JSONException e) {
             e.printStackTrace();
         }
     }
@@ -2708,14 +2802,7 @@ public class RenewActivity extends AppCompatActivity {
                                                     Image image = Image.getInstance(new URL(imgurl));
                                                     image.setAbsolutePosition(510,750);
                                                     image.scalePercent(50);
-//                                                    //Set absolute position for image in PDF (or fixed)
-//                                                    image.setAbsolutePosition(100, 500);
-//                                                    //Scale image's width and height
-//                                                    image.scaleAbsolute(200, 200);
-//                                                    //Scale image's height
-//                                                    image.scaleAbsoluteWidth(200);
-//                                                    //Scale image's width
-//                                                    image.scaleAbsoluteHeight(200);
+//
                                                     document.add(image);
                                                     //Your code goes here
                                                 } catch (Exception e) {
@@ -2725,24 +2812,20 @@ public class RenewActivity extends AppCompatActivity {
                                         });
 
                                         thread.start();
-//                                        Image image = Image.getInstance(new URL(imgurl));
-//                                        image.setAbsolutePosition(510,750);
-//                                        image.scalePercent(50);
-//                                        document.add(image);
-                                       // creating a sample invoice with some customer data
-                                        createHeadings(cb,50,780,Company_Name);
-                                        createHeadings(cb,50,765,Address);
-                                        createHeadings(cb,50,750,Contact);
-                                        createHeadings(cb,50,735,GST_No);
-                                        createHeadings(cb,50,720,"Bill To");
-                                        createHeadings(cb,50,705,Name);
-                                        createHeadings(cb,50,690,Email);
-                                        createHeadings(cb,50,675,Member_Contact);
-                                        createHeadings(cb,50,660,MemberGST_No);
+//
+                                                                               createHeadings(cb,50,780,Company_Name);
+                                        createText(cb,50,765,Address);
+                                        createText(cb,50,750,Contact);
+                                        createText(cb,50,735,GST_No);
+                                        createHeadings(cb,50,715,"Bill To");
+                                        createText(cb,50,700,Name);
+                                        createText(cb,50,685,Email);
+                                        createText(cb,50,670,Member_Contact);
+                                        createText(cb,50,655,MemberGST_No);
 
                                         createHeadings(cb,465,735,"Invoice Date :"+invoice_date);
                                         createHeadings(cb,465,720,"Invoice No : "+Invoice_ID);
-                                        createHeadings(cb,465,700,"Member Id : "+MemberID);
+                                        createHeadings(cb,465,705,"Member Id : "+MemberID);
 
                                         HTMLWorker htmlWorker = new HTMLWorker(document);
                                         htmlWorker.parse(new StringReader(messagehtml));
@@ -2754,7 +2837,7 @@ public class RenewActivity extends AppCompatActivity {
                                     }
 
                                     final String subject=Company_Name+" Receipt";
-                                   final String message="Dear Gym Member  Please find the attachment of Your Package Details";
+                                   final String message=Header+"\nPlease find the attachment of Your Package Details\n\n"+Footer;
                                     RenewActivity.this.runOnUiThread(new Runnable() {
 
                                         @Override
@@ -2765,12 +2848,12 @@ public class RenewActivity extends AppCompatActivity {
 
                                                 @Override
                                                 protected Void doInBackground(String... params) {
-                                                    Mail m = new Mail("tulsababar.ndsoft@gmail.com", "Tulsa@2019");
+                                                    Mail m = new Mail(Email_ID, Password);
 
                                                     String[] toArr = { Email, "tulsababar01@gmail.com"};
                                                   //  Log.v(TAG, String.format(" Email array to send = %s", toArr));
                                                     m.setTo(toArr);
-                                                    m.setFrom("tulsababar.ndsoft@gmail.com");
+                                                    m.setFrom(Email_ID);
                                                     m.setSubject(subject);
                                                     m.setBody(message);
                                                     if (Build.VERSION.SDK_INT >= 23)
@@ -3101,7 +3184,7 @@ public class RenewActivity extends AppCompatActivity {
         }
     }
     private void submitAction() {
-
+        finish();
         Intent intent=new Intent(RenewActivity.this,CourseCongratulationActivity.class);
         intent.putExtra("member_id",MemberID);
         intent.putExtra("invoice_id", invoice_id);
@@ -3115,20 +3198,8 @@ public class RenewActivity extends AppCompatActivity {
 //        }, 1000);
     }
 
-    private void showDialogPaymentSuccess() {
-        Bundle bundle = new Bundle();
-       // String myMessage = "Stackoverflow is cool!";
-        bundle.putString("member_id",MemberID);
-        bundle.putString("invoice_id", invoice_id);
-        bundle.putString("financial_yr",financial_yr);
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        CourseFragment newFragment = new CourseFragment();
-        newFragment.setArguments(bundle);
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        transaction.add(android.R.id.content, newFragment).addToBackStack(null).commit();
-    }
+
     @Override
     public boolean onSupportNavigateUp(){
        Intent intent=new Intent(RenewActivity.this,CourseActivity.class);
@@ -3141,128 +3212,20 @@ public class RenewActivity extends AppCompatActivity {
         Intent intent=new Intent(RenewActivity.this,CourseActivity.class);
         startActivity(intent);
     }
-    private void generatePDF(String personName){
 
-        //create a new document
-        Document document = new Document();
-
-        try {
-
-            PdfWriter docWriter = PdfWriter.getInstance(document, new FileOutputStream(pdfFile));
-            document.open();
-
-
-            PdfContentByte cb = docWriter.getDirectContent();
-            //initialize fonts for text printing
-            initializeFonts();
-
-            //the company logo is stored in the assets which is read only
-            //get the logo and print on the document
-            String urlOfImage = "https://lh5.googleusercontent.com/E3eX_"
-                    + "hgl-eK9cX6j6XMyM6eOkCPvYs9Us5ySKIu60_fYFGlKywKP9pGfNcTj"
-                    + "7WDSnDb4zrHubFRLHGK4DqBiLBa4HzRAWx728iHpDrL21HxzsEXSHAa"
-                    + "lK49-rBzvU3DlmGURrwg";
-
-            //Add Image from some URL
-            Image image = Image.getInstance(new URL(urlOfImage));
-
-
-            //Set absolute position for image in PDF (or fixed)
-            image.setAbsolutePosition(100f, 500f);
-
-            //Scale image's width and height
-            image.scaleAbsolute(200f, 200f);
-
-            //Scale image's height
-            image.scaleAbsoluteWidth(200f);
-            //Scale image's width
-            image.scaleAbsoluteHeight(200f);
-
-            document.add(image);
-
-//            InputStream inputStream = getAssets().open("gym.png");
-//            Bitmap bmp = BitmapFactory.decodeStream(inputStream);
-//            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//            bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
-//            Image companyLogo = Image.getInstance(stream.toByteArray());
-//            companyLogo.setAbsolutePosition(25,700);
-//            companyLogo.scalePercent(25);
-//            document.add(companyLogo);
-
-            //creating a sample invoice with some customer data
-            createHeadings(cb,400,780,"Company Name");
-            createHeadings(cb,400,765,"Address Line 1");
-            createHeadings(cb,400,750,"Address Line 2");
-            createHeadings(cb,400,735,"City, State - ZipCode");
-            createHeadings(cb,400,720,"Country");
-
-            //list all the products sold to the customer
-            float[] columnWidths = {1.5f, 2f, 5f, 2f,2f};
-            //create PDF table with the given widths
-            PdfPTable table = new PdfPTable(columnWidths);
-            // set table width a percentage of the page width
-            table.setTotalWidth(500f);
-
-            PdfPCell cell = new PdfPCell(new Phrase("Qty"));
-            cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
-            table.addCell(cell);
-            cell = new PdfPCell(new Phrase("Item Number"));
-            cell.setHorizontalAlignment(Element.ALIGN_LEFT);
-            table.addCell(cell);
-            cell = new PdfPCell(new Phrase("Item Description"));
-            cell.setHorizontalAlignment(Element.ALIGN_LEFT);
-            table.addCell(cell);
-            cell = new PdfPCell(new Phrase("Price"));
-            cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
-            table.addCell(cell);
-            cell = new PdfPCell(new Phrase("Ext Price"));
-            cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
-            table.addCell(cell);
-            table.setHeaderRows(1);
-
-            DecimalFormat df = new DecimalFormat("0.00");
-            for(int i=0; i < 15; i++ ){
-                double price = Double.valueOf(df.format(Math.random() * 10));
-                double extPrice = price * (i+1) ;
-                table.addCell(String.valueOf(i+1));
-                table.addCell("ITEM" + String.valueOf(i+1));
-                table.addCell("Product Description - SIZE " + String.valueOf(i+1));
-                table.addCell(df.format(price));
-                table.addCell(df.format(extPrice));
-            }
-
-            //absolute location to print the PDF table from
-            table.writeSelectedRows(0, -1, document.leftMargin(), 650, docWriter.getDirectContent());
-
-            //print the signature image along with the persons name
-//            inputStream = getAssets().open("gym.png");
-//            bmp = BitmapFactory.decodeStream(inputStream);
-//            stream = new ByteArrayOutputStream();
-//            bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
-//            Image signature = Image.getInstance(stream.toByteArray());
-//            signature.setAbsolutePosition(400f, 150f);
-//            signature.scalePercent(25f);
-//            document.add(signature);
-
-            createHeadings(cb,450,135,personName);
-
-            document.close();
-        }
-        catch(Exception e){
-            e.printStackTrace();
-        }
-
-        //PDF file is now ready to be sent to the bluetooth printer using PrintShare
-//        Intent i = new Intent(Intent.ACTION_VIEW);
-//        i.setPackage("com.ndfitnessplus");
-//        i.setDataAndType(Uri.fromFile(pdfFile),"application/pdf");
-//        startActivity(i);
-
-    }
     private void createHeadings(PdfContentByte cb, float x, float y, String text){
 
         cb.beginText();
         cb.setFontAndSize(bfBold, 8);
+        cb.setTextMatrix(x,y);
+        cb.showText(text.trim());
+        cb.endText();
+
+    }
+    private void createText(PdfContentByte cb, float x, float y, String text){
+
+        cb.beginText();
+        cb.setFontAndSize(bfnormal, 8);
         cb.setTextMatrix(x,y);
         cb.showText(text.trim());
         cb.endText();
@@ -3273,6 +3236,7 @@ public class RenewActivity extends AppCompatActivity {
 
         try {
             bfBold = BaseFont.createFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
+            bfnormal = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
 
         } catch (DocumentException e) {
             e.printStackTrace();

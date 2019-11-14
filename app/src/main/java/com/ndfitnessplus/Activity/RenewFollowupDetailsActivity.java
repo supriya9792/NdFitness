@@ -91,17 +91,18 @@ public class RenewFollowupDetailsActivity extends AppCompatActivity {
     String NextFollowupDate;
 
     String Image="";
-
+    String Before_Photo="";
+    String After_Photo="";
 
     public static String TAG = RenewFollowupDetailsActivity.class.getName();
     private ProgressDialog pd;
     TextView username,mobilenumber;
     CircularImageView imageView;
-    ImageButton phone,message;
-    ImageView whatsapp;
+    ImageButton phone;
+    ImageView whatsapp,message;
     String Contact;
     String name;
-    Button renew,followup,attendence;
+    Button renew,followup,before_after;
     //Loading gif
     ViewDialog viewDialog;
     @Override
@@ -138,7 +139,7 @@ public class RenewFollowupDetailsActivity extends AppCompatActivity {
 
         renew=findViewById(R.id.btn_renew);
         followup=findViewById(R.id.btn_followup);
-        attendence=findViewById(R.id.btn_attendence);
+        before_after=findViewById(R.id.btn_before_after);
 //        adapter = new EnquiryAdapter( new ArrayList<EnquiryList>(),EnquiryFollowupDetailsActivity.this);
 //        recyclerView.setAdapter(adapter);
         Intent intent = getIntent();
@@ -259,6 +260,19 @@ public class RenewFollowupDetailsActivity extends AppCompatActivity {
                     Toast.makeText(RenewFollowupDetailsActivity.this, "WhatsApp not Installed", Toast.LENGTH_SHORT)
                             .show();
                 }
+            }
+        });
+        before_after.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(RenewFollowupDetailsActivity.this,MemberBeforeAfterActivity.class);
+                intent.putExtra("member_id",member_id);
+                intent.putExtra("name",name);
+                intent.putExtra("contact",Contact);
+                intent.putExtra("image",Image);
+                intent.putExtra("After_Photo",After_Photo);
+                intent.putExtra("Before_Photo",Before_Photo);
+                startActivity(intent);
             }
         });
 
@@ -1190,6 +1204,109 @@ public class RenewFollowupDetailsActivity extends AppCompatActivity {
 
 //
 
+
+                                }
+                            }
+                        } else if (jsonArrayResult.length() == 0) {
+                            System.out.println("No records found");
+                        }
+                    }
+                }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
+                    //nodata.setVisibility(View.VISIBLE);
+                    // recyclerView.setVisibility(View.GONE);
+                }
+            } catch (JSONException e) {
+                Log.v(TAG, "JsonResponseOpeartion :: catch");
+                e.printStackTrace();
+                android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(RenewFollowupDetailsActivity.this);
+                builder.setMessage(R.string.server_exception);
+                builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                });
+                android.app.AlertDialog dialog = builder.create();
+                dialog.setCancelable(false);
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.show();
+            }
+        }
+    }
+    private void memberdetailsclass() {
+        RenewFollowupDetailsActivity.MemberDetailsTrackclass ru = new RenewFollowupDetailsActivity. MemberDetailsTrackclass();
+        ru.execute("5");
+    }
+
+    class  MemberDetailsTrackclass extends AsyncTask<String, Void, String> {
+
+
+        ServerClass ruc = new ServerClass();
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Log.v(TAG, "onPreExecute");
+            //showProgressDialog();
+        }
+
+        @Override
+        protected void onPostExecute(String response) {
+            super.onPostExecute(response);
+            Log.v(TAG, String.format("onPostExecute :: response = %s", response));
+            //dismissProgressDialog();
+            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
+            MemberDetailsDetails(response);
+
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+            HashMap<String, String> MemberDetailsDetails = new HashMap<String, String>();
+            MemberDetailsDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(RenewFollowupDetailsActivity.this));
+            MemberDetailsDetails.put("member_id",member_id );
+            Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(RenewFollowupDetailsActivity.this)));
+            Log.v(TAG, String.format("doInBackground :: member_id = %s", member_id));
+            String domainurl=SharedPrefereneceUtil.getDomainUrl(RenewFollowupDetailsActivity.this);
+            MemberDetailsDetails.put("action","show_before_after_photo_by_member_id");
+            String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, MemberDetailsDetails);
+            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
+            return loginResult;
+        }
+
+
+    }
+
+    private void MemberDetailsDetails(String jsonResponse) {
+
+        Log.v(TAG, String.format("JsonResponseOperation :: show_before_after_photo_by_member_id = %s", jsonResponse));
+//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
+        if (jsonResponse != null) {
+
+
+            try {
+                Log.v(TAG, "JsonResponseOpeartion :: test");
+                JSONObject object = new JSONObject(jsonResponse);
+                String success = object.getString(getResources().getString(R.string.success));
+                if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
+
+                    if (object != null) {
+                        JSONArray jsonArrayResult = object.getJSONArray("result");
+//                        if(jsonArrayResult.length() >10){
+//                            totalPage=jsonArrayResult.length()/10;
+//                        }
+                        if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
+
+                            for (int i = 0; i < jsonArrayResult.length(); i++) {
+
+
+                                Log.v(TAG, "JsonResponseOpeartion ::");
+                                JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
+                                if (jsonObj != null) {
+
+                                    After_Photo = jsonObj.getString("After_Photo");
+                                    Before_Photo = jsonObj.getString("Before_Photo");
 
                                 }
                             }

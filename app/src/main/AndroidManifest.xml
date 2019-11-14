@@ -38,63 +38,157 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
-        <activity android:name=".Activity.WorkoutDetailsDescriptionActivity"></activity>
-        <activity android:name=".Activity.WorkoutDetailsActivity" />
-        <activity android:name=".Activity.MemberWorkoutActivity" />
-        <activity android:name=".Activity.MemberDietActivity" />
-        <activity android:name=".Activity.MemberMeasurementActivity" />
-        <activity android:name=".Activity.MemberBeforeAfterActivity" />
-        <activity android:name=".Activity.PushNotificationActivity" />
-        <activity android:name=".Activity.CourseWiseAttendanceActivity" />
-        <activity android:name=".Activity.CourseCongratulationActivity" />
-        <activity android:name=".Activity.ImagePickerActivity" />
-        <activity android:name=".Activity.POSDetailsTrasactionActivity" />
-        <activity android:name=".Activity.DietActivity" />
+        <activity android:name=".Activity.AddDietActivity"></activity>
+        <activity
+            android:name=".Activity.WorkoutDetailsDescriptionActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name=".Activity.WorkoutDetailsActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name=".Activity.MemberWorkoutActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name=".Activity.MemberDietActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name=".Activity.MemberMeasurementActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name=".Activity.MemberBeforeAfterActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name=".Activity.PushNotificationActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name=".Activity.CourseWiseAttendanceActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name=".Activity.CourseCongratulationActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name=".Activity.ImagePickerActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name=".Activity.POSDetailsTrasactionActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name=".Activity.DietActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/logo" />
 
-        <activity android:name=".Activity.CartActivity" />
-        <activity android:name=".Activity.POSProductDetailsActivity" />
-        <activity android:name=".Activity.POSProductListActivity" />
-        <activity android:name=".Activity.GenerateQRActivity" />
+        <activity
+            android:name=".Activity.CartActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name=".Activity.POSProductDetailsActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name=".Activity.POSProductListActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name=".Activity.GenerateQRActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
         <activity
             android:name=".Activity.POSAddBillingActivity"
             android:configChanges="keyboard|orientation|screenSize"
             android:windowSoftInputMode="stateVisible|adjustResize" />
-        <activity android:name=".Activity.POSShowItemActivity" />
+        <activity
+            android:name=".Activity.POSShowItemActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
         <activity
             android:name=".Activity.POSAddItemActivity"
             android:configChanges="keyboard|orientation|screenSize"
             android:windowSoftInputMode="stateVisible|adjustResize" />
-        <activity android:name=".Activity.POSActivity" />
-        <activity android:name=".Activity.AttendenceFilterActivity" />
-        <activity android:name=".Activity.MeasurementFilterActivity" />
+        <activity
+            android:name=".Activity.POSActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name=".Activity.AttendenceFilterActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name=".Activity.MeasurementFilterActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
         <activity
             android:name=".Activity.AddMeasurementActivity"
             android:configChanges="keyboard|orientation|screenSize"
             android:windowSoftInputMode="stateVisible|adjustResize" />
-        <activity android:name=".Activity.MeasurementActivity" />
-        <activity android:name=".Activity.AttendenceActivity" />
-        <activity android:name=".Activity.MemberMoreDetailsActivity" />
-        <activity android:name=".Activity.RenewFollowupDetailsActivity" />
+        <activity
+            android:name=".Activity.MeasurementActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name=".Activity.AttendenceActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name=".Activity.MemberMoreDetailsActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name=".Activity.RenewFollowupDetailsActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
         <activity
             android:name=".Activity.OtherFollowupFilterActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".Activity.Notification.StaffBirthdayFollowupActivity" />
-        <activity android:name=".Activity.EnrollmentActivity" />
-        <activity android:name=".Activity.FullImageActivity" />
-        <activity android:name=".Activity.TermsAndConditionActivity" />
-        <activity android:name=".Activity.ForgotPasswordActivity" />
+        <activity
+            android:name=".Activity.Notification.StaffBirthdayFollowupActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name=".Activity.EnrollmentActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name=".Activity.FullImageActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name=".Activity.TermsAndConditionActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name=".Activity.ForgotPasswordActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
         <activity
             android:name=".Activity.CollectionFilterActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".Activity.CollectionActivity" />
+        <activity
+            android:name=".Activity.CollectionActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
         <activity
             android:name=".Activity.BalanceReceiptFilterActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".Activity.BalanceReceiptDetailsActivity" />
+        <activity
+            android:name=".Activity.BalanceReceiptDetailsActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
         <activity
             android:name=".Activity.CourseDetailsActivity"
             android:noHistory="true" />
@@ -108,22 +202,46 @@
         <activity
             android:name=".Activity.MemberFilterActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".Activity.MemberDetailsActivity" />
-        <activity android:name=".Activity.CourseActivity" />
-        <activity android:name=".Activity.MemberActivity" />
-        <activity android:name=".Activity.MoreInfoActivity" />
+        <activity
+            android:name=".Activity.MemberDetailsActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name=".Activity.CourseActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name=".Activity.MemberActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name=".Activity.MoreInfoActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
         <activity
             android:name=".Activity.RenewActivity"
             android:configChanges="keyboard|orientation|screenSize"
             android:windowSoftInputMode="stateVisible|adjustResize" />
-        <activity android:name=".Activity.ExpenseFilterActivity" />
+        <activity
+            android:name=".Activity.ExpenseFilterActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
         <activity
             android:name=".Activity.AddExpensesActivity"
             android:configChanges="keyboard|orientation|screenSize"
             android:windowSoftInputMode="stateVisible" />
-        <activity android:name=".Activity.ExpensesActivity" />
-        <activity android:name=".Activity.EnquiryFollowupDetailsActivity" />
-        <activity android:name=".Activity.FollowupsActivity" />
+        <activity
+            android:name=".Activity.ExpensesActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name=".Activity.EnquiryFollowupDetailsActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name=".Activity.FollowupsActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
         <activity
             android:name=".Activity.EnquiryFilterActivity"
             android:screenOrientation="portrait" />
@@ -135,22 +253,70 @@
             android:name=".Activity.AddEnquiryActivity"
             android:configChanges="keyboard|orientation|screenSize"
             android:windowSoftInputMode="stateVisible|adjustResize" />
-        <activity android:name=".Activity.EnquiryActivity" />
-        <activity android:name=".Activity.Notification.DoneFollowupActivity" />
-        <activity android:name=".Activity.Notification.OtherFollowupActivity" />
-        <activity android:name=".Activity.Notification.RenewFollowupActivity" />
-        <activity android:name=".Activity.Notification.PaymentDateActivity" />
-        <activity android:name=".Activity.Notification.MembershipEndDateActivity" />
-        <activity android:name=".Activity.Notification.DeactiveMemberActivity" />
-        <activity android:name=".Activity.Notification.ActiveMemberActivity" />
-        <activity android:name=".Activity.Notification.EnquiryFollowupActivity" />
-        <activity android:name=".Activity.Notification.TodaysEnrollmentActivity" />
-        <activity android:name=".Activity.Notification.TodaysEnquiryActivity" />
-        <activity android:name=".Activity.BranchSelectionActivity" />
-        <activity android:name=".Activity.LoginActivity" />
-        <activity android:name=".Activity.Notification.StaffBirthdayActivity" />
-        <activity android:name=".Activity.Notification.MemberBirthdayActivity" />
-        <activity android:name=".Activity.NotificationActivity" />
+        <activity
+            android:name=".Activity.EnquiryActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name=".Activity.Notification.DoneFollowupActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name=".Activity.Notification.OtherFollowupActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name=".Activity.Notification.RenewFollowupActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name=".Activity.Notification.PaymentDateActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name=".Activity.Notification.MembershipEndDateActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name=".Activity.Notification.DeactiveMemberActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name=".Activity.Notification.ActiveMemberActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name=".Activity.Notification.EnquiryFollowupActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name=".Activity.Notification.TodaysEnrollmentActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name=".Activity.Notification.TodaysEnquiryActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name=".Activity.BranchSelectionActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name=".Activity.LoginActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name=".Activity.Notification.StaffBirthdayActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name=".Activity.Notification.MemberBirthdayActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name=".Activity.NotificationActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
         <activity
             android:name=".Activity.SelectDomainActivity"
             android:configChanges="keyboard|orientation|screenSize"

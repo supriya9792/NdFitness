@@ -80,7 +80,7 @@ public class EnquiryActivity extends AppCompatActivity implements SwipeRefreshLa
     private boolean isLoading = false;
     int itemCount = 0;
     int offset = 0;
-
+    int count=0;
     //search
     private EditText inputsearch;
     ImageView search;
@@ -133,8 +133,8 @@ public class EnquiryActivity extends AppCompatActivity implements SwipeRefreshLa
             String tt_budget=intent.getStringExtra("ttl_budget");
             ArrayList<EnquiryList> filterArrayList = (ArrayList<EnquiryList>) args.getSerializable("filter_array_list");
             progressBar.setVisibility(View.GONE);
-            int length=filterArrayList.size();
-            total_enquiry.setText(String.valueOf(length));
+            count=filterArrayList.size();
+            total_enquiry.setText(String.valueOf(count));
             String totalbug="₹ "+tt_budget;
             ttl_budget.setText(totalbug);
             adapter = new EnquiryAdapter( filterArrayList,EnquiryActivity.this);
@@ -270,7 +270,7 @@ public class EnquiryActivity extends AppCompatActivity implements SwipeRefreshLa
                 isLoading = true;
 
                 Log.d(TAG, "prepare called current item: " + currentPage+"Total page"+totalPage);
-                if(currentPage<=totalPage){
+                if(currentPage<=totalPage && count >100){
                    // currentPage = PAGE_START;
                     Log.d(TAG, "currentPage: " + currentPage);
                     isLastPage = false;

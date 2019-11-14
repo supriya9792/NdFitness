@@ -49,6 +49,8 @@ public class CourseWiseAttendanceActivity extends AppCompatActivity {
     String member_id;
     String FinancialYear;
     String start_date="";
+    String end_date="";
+    String RemainingSession="";
     TextView missed,attended,remaining;
     public final String TAG = CourseWiseAttendanceActivity.class.getName();
     ImageButton backmonth, nextmonth;
@@ -67,6 +69,8 @@ public class CourseWiseAttendanceActivity extends AppCompatActivity {
             FinancialYear =intent.getStringExtra("financial_yr");
             member_id = intent.getStringExtra("member_id");
             start_date = intent.getStringExtra("start_date");
+            end_date = intent.getStringExtra("end_date");
+            RemainingSession = intent.getStringExtra("remaining_session");
         }
 
         this.viewDialog = new ViewDialog(this);
@@ -235,11 +239,31 @@ public class CourseWiseAttendanceActivity extends AppCompatActivity {
                                     String adate=Utility.formatDateDB(AttendanceDate);
                                     stringArrayListPresent.add(AttendanceDate);
                                     String today=Utility.getCurrentDate();
-                                    if(today.equals(adate)){
-                                        yest=AttendanceDate;
-                                    }else{
-                                        yest= Utility.getyesterdayDate();
+                                    SimpleDateFormat dateFormat = new SimpleDateFormat(
+                                            "dd-MM-yyyy");
+                                    Date endDate = new Date();
+                                    Date currentdate = new Date();
+                                    String endc=Utility.formatDateDB(End_Date);
+                                    try {
+                                        endDate = dateFormat.parse(endc);
+                                        currentdate = dateFormat.parse(Utility.getCurrentDate());
+                                        Log.v(TAG, String.format(" ::endDate = %s", endDate));
+                                        Log.v(TAG, String.format(" :: currentdate = %s",currentdate));
+                                        if (currentdate.before(endDate)|| currentdate.equals(endDate) ) {
+                                            if(today.equals(adate)){
+                                                yest=AttendanceDate;
+                                            }else{
+                                                yest= Utility.getyesterdayDate();
+                                            }
+                                        }
+                                        else {
+                                            yest= End_Date;
+                                        }
+                                    } catch (ParseException e) {
+                                        // TODO Auto-generated catch block
+                                        e.printStackTrace();
                                     }
+
 
                                     start_date=Start_Date;
                                     //  for (int j = 0; j < 5; j++) {
@@ -260,9 +284,35 @@ public class CourseWiseAttendanceActivity extends AppCompatActivity {
                         }
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
-                    String yest=Utility.getyesterdayDate();
+                    String today=Utility.getCurrentDate();
+                    String yest="";
+                    SimpleDateFormat dateFormat = new SimpleDateFormat(
+                            "dd-MM-yyyy");
+                    Date endDate = new Date();
+                    Date currentdate = new Date();
+                    String endc=Utility.formatDateDB(end_date);
+                    try {
+                        endDate = dateFormat.parse(endc);
+                        currentdate = dateFormat.parse(Utility.getCurrentDate());
+                        Log.v(TAG, String.format(" ::endDate = %s", endDate));
+                        Log.v(TAG, String.format(" :: currentdate = %s",currentdate));
+                        if (currentdate.before(endDate)|| currentdate.equals(endDate) ) {
+
+                                yest= Utility.getyesterdayDate();
+
+                        }
+                        else {
+                            yest= end_date;
+                        }
+                    } catch (ParseException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                    // yest=Utility.getyesterdayDate();
                     String sdate=start_date;
                     showAttendance(sdate,yest,stringArrayListPresent);
+                    String rem="Remaning:"+RemainingSession;
+                    remaining.setText(rem);
                     //nodata.setVisibility(View.VISIBLE);
                     // recyclerView.setVisibility(View.GONE);
                 }

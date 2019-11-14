@@ -152,11 +152,11 @@ public class PackageWiseFragment extends Fragment {
                     TextView tv = (TextView) view.findViewById(R.id.tv_Name);
                     tv.setTextSize(10);
                     if(index==0){
-                        tv.setText(getResources().getString(R.string.hint_packagetype));
+                        tv.setText(getResources().getString(R.string.hint_packagetype_n));
                     }
                     packageType = tv.getText().toString();
                     packageNameClass();
-                    if ((packageType.equals(getResources().getString(R.string.hint_packagetype))) ||
+                    if ((packageType.equals(getResources().getString(R.string.hint_packagetype_n))) ||
                             (packageType.equals(getResources().getString(R.string.all)))) {
                         packageType = "";
                     }
@@ -182,10 +182,10 @@ public class PackageWiseFragment extends Fragment {
                     tv.setTextSize(10);
 
                     if(index==0){
-                        tv.setText(getResources().getString(R.string.hint_package_name));
+                        tv.setText(getResources().getString(R.string.hint_package_name_n));
                     }
                     packageName = tv.getText().toString();
-                    if ((packageName.equals(getResources().getString(R.string.hint_package_name))) ||
+                    if ((packageName.equals(getResources().getString(R.string.hint_package_name_n))) ||
                             (packageName.equals(getResources().getString(R.string.all)))) {
                         packageName = "";
                     }
@@ -269,7 +269,7 @@ public class PackageWiseFragment extends Fragment {
                         JSONArray jsonArrayCountry = object.getJSONArray("result");
                         packageTypeArrayList.clear();
                         PackageTypeList = new Spinner_List();
-                        PackageTypeList.setName(getResources().getString(R.string.hint_packagetype));
+                        PackageTypeList.setName(getResources().getString(R.string.hint_packagetype_n));
                         packageTypeArrayList.add(0,PackageTypeList);
                         if (jsonArrayCountry != null && jsonArrayCountry.length() > 0){
                             PackageTypeList.setName(getResources().getString(R.string.all));
@@ -405,7 +405,7 @@ public class PackageWiseFragment extends Fragment {
                         JSONArray jsonArrayCountry = object.getJSONArray("result");
                         packagenameArrayList.clear();
                         PackageNameList = new Spinner_List();
-                        PackageNameList.setName(getResources().getString(R.string.hint_package_name));
+                        PackageNameList.setName(getResources().getString(R.string.hint_package_name_n));
                         packagenameArrayList.add(0,PackageNameList);
                         if (jsonArrayCountry != null && jsonArrayCountry.length() > 0){
                             PackageNameList.setName(getResources().getString(R.string.all));

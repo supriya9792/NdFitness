@@ -101,8 +101,8 @@ public class DietActivity extends AppCompatActivity implements SwipeRefreshLayou
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
-                WindowManager.LayoutParams.FLAG_SECURE);
+//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
+//                WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_diet);
         initToolbar();
     }
@@ -186,17 +186,17 @@ public class DietActivity extends AppCompatActivity implements SwipeRefreshLayou
         inputsearch=(EditText)findViewById(R.id.inputsearchid);
         search=findViewById(R.id.search);
 
-        search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(inputsearch.getText().length()>0){
-                    //enquirysearchclass();
-                }else{
-                    Toast.makeText(DietActivity.this,"Please enter text to search", Toast.LENGTH_LONG).show();
-                }
-
-            }
-        });
+//        search.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if(inputsearch.getText().length()>0){
+//                    //enquirysearchclass();
+//                }else{
+//                    Toast.makeText(DietActivity.this,"Please enter text to search", Toast.LENGTH_LONG).show();
+//                }
+//
+//            }
+//        });
 
         inputsearch.addTextChangedListener(new TextWatcher() {
 

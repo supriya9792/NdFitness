@@ -1166,6 +1166,7 @@ public class AddMemberActivity extends AppCompatActivity implements View.OnClick
             AddMemberDetails.put("member_gst_no",inputGstNo.getText().toString());
             AddMemberDetails.put("enq_own_exe",enq_owner_exe);
             AddMemberDetails.put("mem_own_exe",SharedPrefereneceUtil.getName(AddMemberActivity.this));
+            AddMemberDetails.put("mode","AdminApp");
             Log.v(TAG, String.format("doInBackground :: mem_own_exe= %s", SharedPrefereneceUtil.getName(AddMemberActivity.this)));
             AddMemberDetails.put("action", "add_member");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(AddMemberActivity.this);

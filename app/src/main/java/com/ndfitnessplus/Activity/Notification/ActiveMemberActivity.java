@@ -260,6 +260,8 @@ public class ActiveMemberActivity extends AppCompatActivity {
             if (convertedDate2.after(convertedDate) || convertedDate2.equals(convertedDate)) {
                 //.setText("true");
             } else {
+                String firstday= Utility.getFirstDayofMonth();
+                todate.setText(firstday);
                 Toast.makeText(this, "From date should be greater than to date: " , Toast.LENGTH_LONG).show();
             }
         } catch (ParseException e) {
@@ -391,7 +393,8 @@ public class ActiveMemberActivity extends AppCompatActivity {
                                     String Image = jsonObj.getString("Image");
                                     String status=jsonObj.getString("MemberStatus");
                                     String Email=jsonObj.getString("Email");
-
+                                    String End_Date=jsonObj.getString("End_Date");
+                                    String FinalBalance=jsonObj.getString("FinalBalance");
                                     //  for (int j = 0; j < 5; j++) {
 
                                     subList.setName(name);
@@ -409,7 +412,9 @@ public class ActiveMemberActivity extends AppCompatActivity {
                                     subList.setImage(Image);
                                     subList.setStatus(status);
                                     subList.setEmail(Email);
-
+                                    String enddate= Utility.formatDateDB(End_Date);
+                                    subList.setEndDate(enddate);
+                                    subList.setFinalBalance(FinalBalance);
                                     item.add(subList);
                                     adapter = new MemberAdapter( item,ActiveMemberActivity.this);
                                     recyclerView.setAdapter(adapter);
@@ -536,7 +541,8 @@ public class ActiveMemberActivity extends AppCompatActivity {
                                     String Image = jsonObj.getString("Image");
                                     String status=jsonObj.getString("MemberStatus");
                                     String Email=jsonObj.getString("Email");
-
+                                    String End_Date=jsonObj.getString("End_Date");
+                                    String FinalBalance=jsonObj.getString("FinalBalance");
                                     //  for (int j = 0; j < 5; j++) {
 
                                     subList.setName(name);
@@ -554,7 +560,9 @@ public class ActiveMemberActivity extends AppCompatActivity {
                                     subList.setImage(Image);
                                     subList.setStatus(status);
                                     subList.setEmail(Email);
-
+                                    String enddate= Utility.formatDateDB(End_Date);
+                                    subList.setEndDate(enddate);
+                                    subList.setFinalBalance(FinalBalance);
                                     item.add(subList);
                                     adapter = new MemberAdapter( item,ActiveMemberActivity.this);
                                     recyclerView.setAdapter(adapter);

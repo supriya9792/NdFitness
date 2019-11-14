@@ -61,7 +61,7 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.BaseViewHo
     private static final int VIEW_TYPE_LOADING = 0;
     private static final int VIEW_TYPE_NORMAL = 1;
     private boolean isLoaderVisible = false;
-    String member_id,name,contact,status;
+    String member_id,name,contact,status,End_Date,FinalBalance;
     //Loading gif
     ViewDialog viewDialog;
     public MemberAdapter(ArrayList<MemberDataList> enquiryList, Context context) {
@@ -291,6 +291,8 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.BaseViewHo
                         name = enq.getName();
                         status = enq.getStatus();
                         contact = enq.getContact();
+                        End_Date=enq.getEndDate();
+                        FinalBalance=enq.getFinalBalance();
                         makeattendanceclass();
                         }else{
                             Toast.makeText(context,"Your An Inactive Member",Toast.LENGTH_SHORT).show();
@@ -486,7 +488,7 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.BaseViewHo
             Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId((Activity)context)));
             MakeAttendanceDetails.put("member_id",member_id);
             Log.v(TAG, String.format("doInBackground :: member_id = %s", member_id));
-            MakeAttendanceDetails.put("invoice_id","null");
+            MakeAttendanceDetails.put("invoice_id","");
             Log.v(TAG, String.format("doInBackground :: invoice_id = %s", ""));
             MakeAttendanceDetails.put("pack_name","");
             Log.v(TAG, String.format("doInBackground :: pack_name = %s", ""));
@@ -494,12 +496,12 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.BaseViewHo
             Log.v(TAG, String.format("doInBackground :: name = %s", name));
             MakeAttendanceDetails.put("contact",contact);
             Log.v(TAG, String.format("doInBackground :: contact = %s", contact));
-            MakeAttendanceDetails.put("balance","");
-            MakeAttendanceDetails.put("expiry_date","");
+            MakeAttendanceDetails.put("balance",FinalBalance);
+            MakeAttendanceDetails.put("expiry_date",End_Date);
             MakeAttendanceDetails.put("status",status);
             MakeAttendanceDetails.put("mode", "AdminApp");
             MakeAttendanceDetails.put("financial_yr", "");
-            Log.v(TAG, String.format("doInBackground :: expiry_date = %s", ""));
+            Log.v(TAG, String.format("doInBackground :: expiry_date = %s", End_Date));
             MakeAttendanceDetails.put("action", "make_attendence");
             String domainurl=SharedPrefereneceUtil.getDomainUrl((Activity)context);
             String loginResult2 = ruc.sendPostRequest( domainurl+ServiceUrls.LOGIN_URL, MakeAttendanceDetails);

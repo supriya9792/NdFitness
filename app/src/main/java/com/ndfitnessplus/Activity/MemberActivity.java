@@ -157,18 +157,7 @@ public class MemberActivity extends AppCompatActivity implements SwipeRefreshLay
                         }, 1000);
                     }
                 });
-                //Toast.makeText(MemberActivity.this, R.string.internet_unavailable, Toast.LENGTH_LONG).show();
-//                android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(MemberActivity.this);
-//                builder.setMessage(R.string.internet_unavailable);
-//                builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int id) {
-//                        dialog.dismiss();
-//                    }
-//                });
-//                android.app.AlertDialog dialog = builder.create();
-//                dialog.setCancelable(false);
-//                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-//                dialog.show();
+
 
             }
         }
@@ -417,6 +406,8 @@ public class MemberActivity extends AppCompatActivity implements SwipeRefreshLay
                                     String Image = jsonObj.getString("Image");
                                     String status=jsonObj.getString("MemberStatus");
                                     String Email=jsonObj.getString("Email");
+                                    String End_Date=jsonObj.getString("End_Date");
+                                    String FinalBalance=jsonObj.getString("FinalBalance");
 
 
                                     //  for (int j = 0; j < 5; j++) {
@@ -438,6 +429,9 @@ public class MemberActivity extends AppCompatActivity implements SwipeRefreshLay
                                     subList.setImage(Image);
                                     subList.setStatus(status);
                                     subList.setEmail(Email);
+                                    String enddate= Utility.formatDateDB(End_Date);
+                                    subList.setEndDate(enddate);
+                                    subList.setFinalBalance(FinalBalance);
 
 
                                     //Toast.makeText(MemberActivity.this, "followup date: "+next_foll_date, Toast.LENGTH_SHORT).show();
@@ -562,7 +556,8 @@ public class MemberActivity extends AppCompatActivity implements SwipeRefreshLay
                                     String Image = jsonObj.getString("Image");
                                     String status=jsonObj.getString("MemberStatus");
                                     String Email=jsonObj.getString("Email");
-
+                                    String End_Date=jsonObj.getString("End_Date");
+                                    String FinalBalance=jsonObj.getString("FinalBalance");
                                     //  for (int j = 0; j < 5; j++) {
                                     itemCount++;
                                     Log.d(TAG, "run: " + itemCount);
@@ -582,6 +577,9 @@ public class MemberActivity extends AppCompatActivity implements SwipeRefreshLay
                                     subList.setImage(Image);
                                     subList.setStatus(status);
                                     subList.setEmail(Email);
+                                    String enddate= Utility.formatDateDB(End_Date);
+                                    subList.setEndDate(enddate);
+                                    subList.setFinalBalance(FinalBalance);
                                     //Toast.makeText(MemberActivity.this, "followup date: "+next_foll_date, Toast.LENGTH_SHORT).show();
                                     subListArrayList.add(subList);
 
@@ -705,7 +703,8 @@ public class MemberActivity extends AppCompatActivity implements SwipeRefreshLay
                                     String Image = jsonObj.getString("Image");
                                     String status=jsonObj.getString("MemberStatus");
                                     String Email=jsonObj.getString("Email");
-
+                                    String End_Date=jsonObj.getString("End_Date");
+                                    String FinalBalance=jsonObj.getString("FinalBalance");
                                     //  for (int j = 0; j < 5; j++) {
                                     itemCount++;
                                     Log.d(TAG, "run: " + itemCount);
@@ -725,6 +724,9 @@ public class MemberActivity extends AppCompatActivity implements SwipeRefreshLay
                                     subList.setImage(replace);
                                     subList.setStatus(status);
                                     subList.setEmail(Email);
+                                    String enddate= Utility.formatDateDB(End_Date);
+                                    subList.setEndDate(enddate);
+                                    subList.setFinalBalance(FinalBalance);
 
 
                                     subListArrayList.add(subList);

@@ -1,7 +1,7 @@
 package com.ndfitnessplus.Model;
 
 public class AdSliderList {
-    String adTitle,adDisc;
+    String adTitle,adDisc,bannerImage,Url;
     int image;
     int id;
 
@@ -37,5 +37,29 @@ public class AdSliderList {
 
     public void setImage(int image) {
         this.image = image;
+    }
+
+    public String getBannerImage() {
+        return bannerImage;
+    }
+
+    public void setBannerImage(String bannerImage) {
+        this.bannerImage = bannerImage;
+    }
+
+    public String getUrl() {
+        return Url;
+    }
+
+    public void setUrl(String url) {
+        Url = url;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

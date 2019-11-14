@@ -127,7 +127,7 @@ public class BalanceReceiptDetailsActivity extends AppCompatActivity  implements
             ArrayList<CourseList> filterArrayList = (ArrayList<CourseList>) args.getSerializable("filter_array_list");
             String bal=intent.getStringExtra("balance");
             progressBar.setVisibility(View.GONE);
-            int length=filterArrayList.size();
+            count=filterArrayList.size();
             total_balance.setText(String.valueOf(bal));
             adapter = new BalanceReceiptAdapter( filterArrayList,BalanceReceiptDetailsActivity.this);
             recyclerView.setAdapter(adapter);

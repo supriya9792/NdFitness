@@ -314,7 +314,9 @@ public class TodaysEnquiryActivity extends AppCompatActivity implements SwipeRef
             if (convertedDate2.after(convertedDate) || convertedDate2.equals(convertedDate)) {
                 //.setText("true");
             } else {
-                Toast.makeText(this, "From date should be greater than to date: " , Toast.LENGTH_LONG).show();
+                String firstday= Utility.getFirstDayofMonth();
+                todate.setText(firstday);
+                Toast.makeText(this, "From date should not be greater than to date: " , Toast.LENGTH_LONG).show();
             }
         } catch (ParseException e) {
             // TODO Auto-generated catch block
@@ -386,9 +388,7 @@ public class TodaysEnquiryActivity extends AppCompatActivity implements SwipeRef
         itemCount = 0;
         currentPage = PAGE_START;
         isLastPage = false;
-        //adapter.clear();
-        preparedListItem();
-
+        swipeRefresh.setRefreshing(false);
     }
 
     class EnquiryTrackclass extends AsyncTask<String, Void, String> {
@@ -487,7 +487,8 @@ public class TodaysEnquiryActivity extends AppCompatActivity implements SwipeRef
                                     subList.setName(name);
                                     subList.setGender(gender);
                                     String cont=Utility.lastFour(Contact);
-                                    subList.setContact(cont);
+                                    subList.setContactEncrypt(cont);
+                                    subList.setContact(Contact);
                                     subList.setAddress(address);
                                     subList.setExecutiveName(ExecutiveName);
                                     subList.setComment(Comment);

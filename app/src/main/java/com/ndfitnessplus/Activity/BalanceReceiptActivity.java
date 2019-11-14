@@ -110,7 +110,7 @@ public class BalanceReceiptActivity extends AppCompatActivity {
     String pack_name=" ";
     //Loading gif
     ViewDialog viewDialog;
-    private BaseFont bfBold;
+    private BaseFont bfBold,bfnormal;
     private File pdfFile;
     private String filename = "Sample.pdf";
     private String filepath = "MyInvoices";
@@ -118,6 +118,7 @@ public class BalanceReceiptActivity extends AppCompatActivity {
     String fname ="";
     private static final int PERMISSION_REQUEST_CODE = 1;
     private static final String LOG_TAG = "GeneratePDF";
+    String Email_ID,Password,Header,Footer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -1127,6 +1128,7 @@ public class BalanceReceiptActivity extends AppCompatActivity {
             AddBalanceReceiptDetails.put("financial_year",FinancialYear);
             Log.v(TAG, String.format("doInBackground :: financial_year= %s", FinancialYear));
             Log.v(TAG, String.format("doInBackground :: executive name= %s", SharedPrefereneceUtil.getName(BalanceReceiptActivity.this)));
+            AddBalanceReceiptDetails.put("mode", "AdminApp");
             AddBalanceReceiptDetails.put("action", "add_balance_receipt");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(BalanceReceiptActivity.this);
             String loginResult2 = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, AddBalanceReceiptDetails);
@@ -1150,7 +1152,7 @@ public class BalanceReceiptActivity extends AppCompatActivity {
                 Toast.makeText(BalanceReceiptActivity.this,"Balance Paid succesfully",Toast.LENGTH_SHORT).show();
                 //inputName.getText().clear();
                 //inputContact.getText().clear();
-                receiptdatalass();
+                EmailLoginClass();
                 SendEnquirySmsClass();
                 //if(!Email.equals("")){
 
@@ -1173,6 +1175,98 @@ public class BalanceReceiptActivity extends AppCompatActivity {
             }
 
         } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+    public void  EmailLoginClass() { BalanceReceiptActivity.EmailLoginTrackClass ru = new BalanceReceiptActivity.EmailLoginTrackClass();
+        ru.execute("5");
+    }
+
+    class EmailLoginTrackClass extends AsyncTask<String, Void, String> {
+
+        ServerClass ruc = new ServerClass();
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Log.v(TAG, "onPreExecute");
+            //showProgressDialog();
+        }
+
+        @Override
+        protected void onPostExecute(String response) {
+            super.onPostExecute(response);
+            Log.v(TAG, String.format("onPostExecute :: response = %s", response));
+            // dismissProgressDialog();
+            //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
+            //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
+            EmailLoginDetails(response);
+
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+            HashMap<String, String> EmailLoginDetails = new HashMap<String, String>();
+            EmailLoginDetails.put("comp_id",SharedPrefereneceUtil.getSelectedBranchId(BalanceReceiptActivity.this) );
+            EmailLoginDetails.put("action", "show_email_login");
+            String domainurl=SharedPrefereneceUtil.getDomainUrl(BalanceReceiptActivity.this);
+            //EnquiryForloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(EnquiryForloyee.this));
+            String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EmailLoginDetails);
+
+            Log.v(TAG, String.format("doInBackground :: show_email_login= %s", loginResult));
+            return loginResult;
+        }
+    }
+    private void EmailLoginDetails(String jsonResponse) {
+
+        Log.v(TAG, String.format("loginServerResponse :: response = %s", jsonResponse));
+
+        JSONObject object = null;
+        try {
+            object = new JSONObject(jsonResponse);
+            String success = object.getString(getResources().getString(R.string.success));
+
+            if (success.equalsIgnoreCase(getResources().getString(R.string.zero))) {
+
+                // showCustomDialog();
+
+                //inputEmail, inputPhone,inputAdd,inputReq,inputFollowupdate;
+            }
+            else if (success.equalsIgnoreCase(getResources().getString(R.string.two)))
+            {
+                if (object != null) {
+                    JSONArray jsonArrayCountry = object.getJSONArray("result");
+
+                    if (jsonArrayCountry != null && jsonArrayCountry.length() > 0){
+                        for (int i = 0; i < jsonArrayCountry.length(); i++) {
+                            Log.v(TAG, "JsonResponseOpeartion ::");
+                            JSONObject jsonObj = jsonArrayCountry.getJSONObject(i);
+                            if (jsonObj != null) {
+
+                                Email_ID     = jsonObj.getString("Email_ID");
+                                Password=jsonObj.getString("Password");
+                                String Email_Status=jsonObj.getString("Email_Status");
+                                Header=jsonObj.getString("Header");
+                                Footer=jsonObj.getString("Footer");
+                                if(Email_Status.equals("ON")){
+                                    if(!Email.equals("")){
+                                        receiptdatalass();
+                                    }
+                                }else {
+                                    System.out.println("Email Status Is Off");
+                                }
+                            }
+                        }
+                    }else if(jsonArrayCountry.length()==0){
+                        System.out.println("No records found");
+                    }
+                }
+            }
+
+        }
+        catch (JSONException e) {
             e.printStackTrace();
         }
     }
@@ -1561,14 +1655,14 @@ public class BalanceReceiptActivity extends AppCompatActivity {
 //
                                         // creating a sample invoice with some customer data
                                         createHeadings(cb,50,780,Company_Name);
-                                        createHeadings(cb,50,765,Address);
-                                        createHeadings(cb,50,750,Contact);
-                                        createHeadings(cb,50,735,GST_No);
-                                        createHeadings(cb,50,720,"Bill To");
-                                        createHeadings(cb,50,705,Name);
-                                        createHeadings(cb,50,690,Email);
-                                        createHeadings(cb,50,675,Member_Contact);
-                                        createHeadings(cb,50,660,MemberGST_No);
+                                        createText(cb,50,765,Address);
+                                        createText(cb,50,750,Contact);
+                                        createText(cb,50,735,GST_No);
+                                        createHeadings(cb,50,715,"Bill To");
+                                        createText(cb,50,700,Name);
+                                        createText(cb,50,685,Email);
+                                        createText(cb,50,670,Member_Contact);
+                                        createText(cb,50,655,MemberGST_No);
                                         createHeadings(cb,455,735,"Invoice Date :"+invoice_date);
                                         createHeadings(cb,455,720,"Invoice No : "+Invoice_ID);
                                         createHeadings(cb,455,705,"Member Id : "+MemberID);
@@ -1583,7 +1677,7 @@ public class BalanceReceiptActivity extends AppCompatActivity {
                                         e.printStackTrace();
                                     }
                                     final String subject=Company_Name+" Receipt";
-                                    final String message="Dear Gym Member  Please find the attachment of Your Balance Details";
+                                    final String message=Header+"\nPlease find the attachment of Your Package Details\n\n"+Footer;
                                     BalanceReceiptActivity.this.runOnUiThread(new Runnable() {
 
                                         @Override
@@ -1675,12 +1769,21 @@ public class BalanceReceiptActivity extends AppCompatActivity {
         cb.endText();
 
     }
+    private void createText(PdfContentByte cb, float x, float y, String text){
+
+        cb.beginText();
+        cb.setFontAndSize(bfnormal, 8);
+        cb.setTextMatrix(x,y);
+        cb.showText(text.trim());
+        cb.endText();
+
+    }
     private void initializeFonts(){
 
 
         try {
             bfBold = BaseFont.createFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
-
+            bfnormal = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
         } catch (DocumentException e) {
             e.printStackTrace();
         } catch (IOException e) {

@@ -304,7 +304,9 @@ public class DoneFollowupActivity extends AppCompatActivity implements SwipeRefr
             if (convertedDate2.after(convertedDate) || convertedDate2.equals(convertedDate)) {
                 //.setText("true");
             } else {
-                Toast.makeText(this, "From date should be greater than to date: " , Toast.LENGTH_LONG).show();
+                String firstday= Utility.getFirstDayofMonth();
+                todate.setText(firstday);
+                Toast.makeText(this, "From date should not be greater than to date: " , Toast.LENGTH_LONG).show();
             }
         } catch (ParseException e) {
             // TODO Auto-generated catch block
@@ -338,8 +340,9 @@ public class DoneFollowupActivity extends AppCompatActivity implements SwipeRefr
         itemCount = 0;
         currentPage = PAGE_START;
         isLastPage = false;
+        swipeRefresh.setRefreshing(false);
         //adapter.clear();
-        preparedListItem();
+        //preparedListItem();
     }
     private void showProgressDialog() {
         Log.v(TAG, String.format("showProgressDialog"));
@@ -465,7 +468,8 @@ public class DoneFollowupActivity extends AppCompatActivity implements SwipeRefr
                                     subList.setName(name);
                                     subList.setRating(Rating);
                                     String cont=Utility.lastFour(Contact);
-                                    subList.setContact(cont);
+                                    subList.setContactEncrypt(cont);
+                                    subList.setContact(Contact);
                                     subList.setCallRespond(CallResponse);
                                     subList.setExecutiveName(ExecutiveName);
                                     subList.setComment(Comment);

@@ -1,5 +1,6 @@
 package com.ndfitnessplus.Adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,10 +13,12 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.ndfitnessplus.Activity.WorkoutDetailsActivity;
 import com.ndfitnessplus.Activity.WorkoutDetailsDescriptionActivity;
 import com.ndfitnessplus.Model.WorkOutDetailsList;
 import com.ndfitnessplus.R;
 import com.ndfitnessplus.Utility.ServiceUrls;
+import com.ndfitnessplus.Utility.SharedPrefereneceUtil;
 import com.ndfitnessplus.Utility.Tools;
 import com.ndfitnessplus.Utility.ViewAnimation;
 
@@ -55,7 +58,7 @@ public class WorkOutDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             workout_name = (TextView) v.findViewById(R.id.workout_nameTV);
             set = (TextView) v.findViewById(R.id.sets);
             repitation = (TextView) v.findViewById(R.id.repitationTV);
-           // time = (TextView) v.findViewById(R.id.timeTV);
+            time = (TextView) v.findViewById(R.id.timeTV);
             musculargroup = (TextView) v.findViewById(R.id.musculargroup);
             lyt_parent = (View) v.findViewById(R.id.lyt_parent);
         }
@@ -80,10 +83,10 @@ public class WorkOutDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             view.workout_name.setText(p.getWorkoutName());
             view.set.setText(p.getSet());
             view.repitation.setText(p.getRepitation());
-           // view.time.setText(p.getTime());
+            view.time.setText(p.getTime());
             view.musculargroup.setText(p.getBodyPart());
-
-            String url= ServiceUrls.IMAGES_URL + p.getWorkoutImage();
+            String domainurl= SharedPrefereneceUtil.getDomainUrl((Activity)ctx);
+            String url= domainurl+ServiceUrls.IMAGES_URL + p.getWorkoutImage();
 
             // Glide.with(context).load(url).placeholder(R.drawable.nouser).into(imageView);
             RequestOptions requestOptions = new RequestOptions();

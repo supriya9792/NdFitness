@@ -86,8 +86,8 @@ public class CollectionActivity extends AppCompatActivity implements SwipeRefres
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
-                WindowManager.LayoutParams.FLAG_SECURE);
+//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
+//                WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_collection);
         initToolbar();
     }
@@ -172,7 +172,10 @@ public class CollectionActivity extends AppCompatActivity implements SwipeRefres
             @Override
             public void onClick(View v) {
                 if(inputsearch.getText().length()>0){
-                    balanceReceiptsearchclass();
+                    if(!SharedPrefereneceUtil.getAuthority(CollectionActivity.this).equals("User")){
+                        balanceReceiptsearchclass();
+                    }
+
                 }else{
                     Toast.makeText(CollectionActivity.this,"Please enter text to search", Toast.LENGTH_LONG).show();
                 }

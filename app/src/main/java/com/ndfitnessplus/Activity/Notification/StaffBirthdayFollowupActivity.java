@@ -172,7 +172,7 @@ public class StaffBirthdayFollowupActivity extends AppCompatActivity {
                 Intent intent = new Intent(StaffBirthdayFollowupActivity.this, FullImageActivity.class);
                 intent.putExtra("image",Image);
                 intent.putExtra("contact",Contact);
-               // intent.putExtra("id",member_id);
+                intent.putExtra("id",staff_id);
                 intent.putExtra("user","Member");
                 startActivity(intent);
             }
@@ -529,32 +529,34 @@ private void showCustomDialog() {
     callResponseClass();
     String curr_date = Utility.getCurrentDate();
     inputNextFollowupdate.setText(curr_date);
-
-    inputNextFollowupdate.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            // Get Current Date
-            final Calendar c = Calendar.getInstance();
-            mYear = c.get(Calendar.YEAR);
-            mMonth = c.get(Calendar.MONTH);
-            mDay = c.get(Calendar.DAY_OF_MONTH);
-
-
-            DatePickerDialog datePickerDialog = new DatePickerDialog(StaffBirthdayFollowupActivity.this,
-                    new DatePickerDialog.OnDateSetListener() {
-
-                        @Override
-                        public void onDateSet(DatePicker view, int year,
-                                              int monthOfYear, int dayOfMonth) {
-
-                            inputNextFollowupdate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
-                            //tiemPicker();
-                        }
-                    }, mYear, mMonth, mDay);
-            datePickerDialog.getDatePicker().setMinDate(c.getTimeInMillis());
-            datePickerDialog.show();
-        }
-    });
+    inputNextFollowupdate.setText("");
+    inputNextFollowupdate.setEnabled(false);
+    inputNextFollowupdate.setKeyListener(null);
+//    inputNextFollowupdate.setOnClickListener(new View.OnClickListener() {
+//        @Override
+//        public void onClick(View v) {
+//            // Get Current Date
+//            final Calendar c = Calendar.getInstance();
+//            mYear = c.get(Calendar.YEAR);
+//            mMonth = c.get(Calendar.MONTH);
+//            mDay = c.get(Calendar.DAY_OF_MONTH);
+//
+//
+//            DatePickerDialog datePickerDialog = new DatePickerDialog(StaffBirthdayFollowupActivity.this,
+//                    new DatePickerDialog.OnDateSetListener() {
+//
+//                        @Override
+//                        public void onDateSet(DatePicker view, int year,
+//                                              int monthOfYear, int dayOfMonth) {
+//
+//                            inputNextFollowupdate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+//                            //tiemPicker();
+//                        }
+//                    }, mYear, mMonth, mDay);
+//            datePickerDialog.getDatePicker().setMinDate(c.getTimeInMillis());
+//            datePickerDialog.show();
+//        }
+//    });
 
     ((Button) dialog.findViewById(R.id.btn_submit)).setOnClickListener(new View.OnClickListener() {
         @Override
@@ -565,17 +567,17 @@ private void showCustomDialog() {
                 if(inputfollComment.getText().length()==0){
                     Toast.makeText(getApplicationContext(), "Please enter Comment", Toast.LENGTH_SHORT).show();
                 }else{
-                    if(inputNextFollowupdate.getText().length()==0) {
-                        if (!(Rating.equals("Not Interested") || Rating.equals("Converted"))) {
-                            Toast.makeText(getApplicationContext(), "Please select Next Followup Date " , Toast.LENGTH_SHORT).show();
-                        }else{
-                            takefollowupclass();
-                            dialog.dismiss();
-                        }
-                    }else{
+//                    if(inputNextFollowupdate.getText().length()==0) {
+//                        if (!(Rating.equals("Not Interested") || Rating.equals("Converted"))) {
+//                            Toast.makeText(getApplicationContext(), "Please select Next Followup Date " , Toast.LENGTH_SHORT).show();
+//                        }else{
+//                            takefollowupclass();
+//                            dialog.dismiss();
+//                        }
+//                    }else{
                         takefollowupclass();
                         dialog.dismiss();
-                    }
+//                    }
                 }
             }
 
@@ -1074,7 +1076,7 @@ private void showCustomDialog() {
             jsonObjLoginResponse = new JSONObject(jsonResponse);
             String success = jsonObjLoginResponse.getString(getResources().getString(R.string.success));
 
-            if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
+            if (success.equalsIgnoreCase(getResources().getString(R.string.two))||success.equalsIgnoreCase(getResources().getString(R.string.one))) {
                 Toast.makeText(StaffBirthdayFollowupActivity.this,"Followup added succesfully",Toast.LENGTH_SHORT).show();
                 finish();
                 overridePendingTransition(0, 0);

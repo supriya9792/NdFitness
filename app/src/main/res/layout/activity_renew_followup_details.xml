@@ -105,13 +105,13 @@
                 android:layout_width="@dimen/spacing_xlarge"
                 android:layout_height="0dp" />
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/message"
                 android:layout_width="?attr/actionBarSize"
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:tint="@color/deep_orange_900"
-                app:srcCompat="@drawable/ic_comment_black_24dp" />
+                app:srcCompat="@drawable/follow" />
 
             <View
                 android:layout_width="@dimen/spacing_xlarge"
@@ -200,14 +200,14 @@
                 android:layout_width="1dp"
                 android:layout_height="0dp" />
             <Button
-                android:id="@+id/btn_attendence"
+                android:id="@+id/btn_before_after"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="40dp"
                 android:background="@color/colorPrimary"
                 android:gravity="center"
                 android:layout_gravity="bottom"
-                android:text="Attendance"
+                android:text="Before/After"
                 android:textAllCaps="false"
                 android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                 android:textColor="@color/white"
