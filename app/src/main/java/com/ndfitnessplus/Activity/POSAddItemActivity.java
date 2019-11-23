@@ -430,7 +430,7 @@ public class POSAddItemActivity extends AppCompatActivity {
 
             else if (success.equalsIgnoreCase(getResources().getString(R.string.one)))
             {
-                Toast.makeText(POSAddItemActivity.this,"Something Went Wrong",Toast.LENGTH_SHORT).show();
+                Toast.makeText(POSAddItemActivity.this,"Product Already Added",Toast.LENGTH_SHORT).show();
             }
 
         } catch (JSONException e) {

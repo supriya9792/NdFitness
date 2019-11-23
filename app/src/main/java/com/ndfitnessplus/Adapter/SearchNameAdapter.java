@@ -89,7 +89,8 @@ public class SearchNameAdapter extends ArrayAdapter implements Filterable {
                     suggestions.clear();
                     try {
                         for (Search_list search_list : tempsearch) {
-                            if (search_list.getCustName().toLowerCase().contains(constraint.toString().toLowerCase())) {
+                            if (search_list.getCustName().toLowerCase().contains(constraint.toString().toLowerCase())||
+                                    search_list.getCustContact().toLowerCase().contains(constraint.toString().toLowerCase())) {
                                 suggestions.add(search_list);
                             }
                             //get data from the web

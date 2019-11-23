@@ -65,6 +65,7 @@ public class GenerateQRActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(getResources().getString(R.string.generate_qr));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         initComponent();
+        requestPermission();
     }
     private void initComponent(){
         qrimage = (ImageView)findViewById(R.id.qrcode);

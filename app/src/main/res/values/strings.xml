@@ -189,6 +189,11 @@
     <string name="update_mob">Update your Mobile</string>
     <string name="err_msg_startdate">Please enter Start Date</string>
     <string name="err_msg_paid">Please enter paid amount</string>
+    <string name="err_msg_days">Enter your Days</string>
+    <string name="err_msg_no_of_meals">Enter your No Of Meals</string>
+    <string name="err_msg_charges">Enter your Charges</string>
+    <string name="err_msg_time">Please Enter Time</string>
+    <string name="err_msg_pay_details">Enter your Pay Details</string>
     <!--Spinner arrays -->
     <string name="all">All</string>
     <string name="na">NA</string>
@@ -514,10 +519,22 @@
 
 <!--    Diet Activity -->
     <string name="add_diet">Add Diet</string>
+    <string name="NEXT">NEXT</string>
+    <string name="Back">Back</string>
+    <string name="days">Days*</string>
+    <string name="end_date">End Date</string>
+    <string name="purpose">Purpose</string>
+    <string name="dietition_name">Dietitian Name*</string>
+    <string name="no_of_meals">No.of Meals*</string>
+    <string name="meals">Meal</string>
 
-    <string name="hint_Name" style="color:grey;">Name<span style="color:red;">*</span></string>
-    <string name="hint_Name_red" style="color:grey;">Name<span style="color:red;">*</span></string>
-    <string name="asteriskred"><font color='#cc0029'>*</font></string>
+    <string name="advice">Advice</string>
+    <string name="charges">Charges*</string>
+    <string name="pay_details">Pay Details*</string>
+    <string name="submit">Submit</string>
+    <string name="prompt_dietition_name">Select Dietitian Name</string>
+    <string name="diet_id">Diet Id: </string>
+
     <string name="long_lorem_ipsum">
         Duis tellus metus, elementum a lectus id, aliquet interdum mauris. Nam bibendum efficitur sollicitudin. Proin eleifend libero velit, nec fringilla dolor finibus quis. nMorbi eu libero pellentesque, rutrum metus quis, blandit est. Fusce bibendum accumsan nisi vulputate feugiat. In fermentum laoreet euismod. Praesent sem nisl, facilisis eget odio at, rhoncus scelerisque ipsum. Nulla orci dui, dignissim a risus ut, lobortis porttitor velit.
         \n\nNulla id lectus metus. Maecenas a lorem in odio auctor facilisis non vitae nunc. Sed malesuada volutpat massa. Praesent sit amet lacinia augue, mollis tempor dolor.

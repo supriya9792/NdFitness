@@ -1,46 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:id="@+id/step_one">
+    android:id="@+id/step_four">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <ImageButton
+        <ImageView
             android:layout_width="@dimen/spacing_mxlarge"
             android:layout_height="@dimen/spacing_mxlarge"
             android:layout_marginTop="@dimen/spacing_mlarge"
             android:background="@android:color/transparent"
             android:tint="@color/grey_60"
-            app:srcCompat="@drawable/ic_local_phone" />
+            app:srcCompat="@drawable/advice" />
         <View
             android:layout_width="@dimen/spacing_large"
             android:layout_height="match_parent" />
         <android.support.design.widget.TextInputLayout
-            android:id="@+id/input_layout_cont"
+            android:id="@+id/input_layout_advice"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             >
 
-            <AutoCompleteTextView
-                android:id="@+id/input_cont"
+            <EditText
+                android:id="@+id/input_advice"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
-                android:maxLength="15"
-                android:inputType="number"
+                android:inputType="textCapWords|textCapSentences"
                 android:textColorHint="@color/black"
                 android:backgroundTint="@color/black"
                 android:textColor="@color/black"
-                android:hint="@string/hint_mob_no" />
+                android:hint="@string/advice" />
 
         </android.support.design.widget.TextInputLayout>
 
 
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="@dimen/spacing_mxlarge"
+            android:layout_height="@dimen/spacing_mxlarge"
+            android:layout_marginTop="@dimen/spacing_mlarge"
+            android:background="@android:color/transparent"
+            android:tint="@color/grey_60"
+            app:srcCompat="@drawable/discount" />
+
+        <View
+            android:layout_width="@dimen/spacing_large"
+            android:layout_height="match_parent" />
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_charges"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <EditText
+                android:id="@+id/input_charges"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:capitalize="characters"
+                android:inputType="number"
+                android:textColor="@color/black"
+                android:backgroundTint="@color/black"
+                android:hint="@string/charges" />
+        </android.support.design.widget.TextInputLayout>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -53,19 +86,19 @@
             android:layout_marginTop="@dimen/spacing_mlarge"
             android:background="@android:color/transparent"
             android:tint="@color/grey_60"
-            app:srcCompat="@drawable/ic_person" />
+            app:srcCompat="@drawable/ic_payment" />
 
         <View
             android:layout_width="@dimen/spacing_large"
             android:layout_height="match_parent" />
         <android.support.design.widget.TextInputLayout
-            android:id="@+id/input_layout_name"
+            android:id="@+id/input_layout_pay_details"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             >
 
-            <AutoCompleteTextView
-                android:id="@+id/input_name"
+            <EditText
+                android:id="@+id/input_pay_details"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
@@ -73,85 +106,42 @@
                 android:inputType="textCapWords|textCapSentences"
                 android:textColor="@color/black"
                 android:backgroundTint="@color/black"
-                android:hint="@string/hint_name" />
+                android:hint="@string/pay_details" />
         </android.support.design.widget.TextInputLayout>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-
-        <ImageButton
-            android:layout_width="@dimen/spacing_mxlarge"
-            android:layout_height="@dimen/spacing_mxlarge"
-            android:layout_marginTop="@dimen/spacing_mlarge"
-            android:background="@android:color/transparent"
-            android:tint="@color/grey_60"
-            app:srcCompat="@drawable/ic_person" />
+        <Button
+            android:id="@+id/btn_back3"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="45dp"
+            android:layout_marginLeft="44dp"
+            android:background="@drawable/btn_rounded"
+            android:text="@string/Back"
+            android:onClick="clickAction"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
 
         <View
             android:layout_width="@dimen/spacing_large"
-            android:layout_height="match_parent" />
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/txt_gender"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/spacing_small"
-                android:textColor="@color/black"
-                android:textSize="14dp"
-                android:text="@string/hint_gender" />
-            <RadioGroup
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/imageView"
-                android:weightSum="1"
-                android:orientation="horizontal"
-                android:id="@+id/radioGroup"
-                >
-
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Male"
-                    android:id="@+id/radioButton"
-                    android:layout_gravity="start"
-                    android:checked="false"
-                    android:textColor="@color/black"
-                    android:textSize="14dp" />
-
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Female"
-                    android:id="@+id/radioButton2"
-                    android:layout_gravity="start"
-                    android:checked="false"
-                    android:textColor="@color/black"
-                    android:textSize="14dp"
-                    android:layout_weight="0.13" />
-            </RadioGroup>
-        </LinearLayout>
+            android:layout_height="0dp" />
+        <Button
+            android:id="@+id/btn_submit"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="45dp"
+            android:layout_marginLeft="44dp"
+            android:layout_marginRight="44dp"
+            android:background="@drawable/btn_rounded"
+            android:text="@string/submit"
+            android:onClick="clickAction"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
     </LinearLayout>
-    <View
-        android:layout_width="0dp"
-        android:layout_height="@dimen/spacing_large" />
-
-    <Button
-        android:id="@+id/btn_next1"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_marginLeft="44dp"
-        android:layout_marginRight="44dp"
-        android:background="@drawable/btn_rounded"
-        android:text="@string/NEXT"
-        android:onClick="clickAction"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        android:textStyle="bold" />
 
 </LinearLayout>

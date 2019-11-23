@@ -39,6 +39,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -81,9 +82,12 @@ import com.itextpdf.text.pdf.PdfPage;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.ndfitnessplus.Activity.Notification.TodaysEnrollmentActivity;
 import com.ndfitnessplus.Adapter.AddEnquirySpinnerAdapter;
+import com.ndfitnessplus.Adapter.SearchContactAdapter;
+import com.ndfitnessplus.Adapter.SearchNameAdapter;
 import com.ndfitnessplus.Fragment.CourseFragment;
 import com.ndfitnessplus.MailUtility.Mail;
 import com.ndfitnessplus.Model.FollowupList;
+import com.ndfitnessplus.Model.Search_list;
 import com.ndfitnessplus.Model.Spinner_List;
 import com.ndfitnessplus.R;
 import com.ndfitnessplus.Utility.BitmapSaver;
@@ -114,7 +118,7 @@ import java.util.HashMap;
 import static com.ndfitnessplus.Activity.SelectDomainActivity.TAG;
 
 public class RenewActivity extends AppCompatActivity {
-    public EditText inputContact,inputName,inputDuration,inputStartDate,inputPackageFees,inputDiscount,inputRegiFees,inputRate,inputDiscReason,
+    public EditText inputDuration,inputStartDate,inputPackageFees,inputDiscount,inputRegiFees,inputRate,inputDiscReason,
             inputPaymentDtl,inputPaid,inputNextFollDate,inputComment,inputSession,inputEndDate,inputBalance;
     public TextInputLayout inputLayoutContact,inputLayoutName,inputLayoutDuration,inputLayoutStartDate,inputLayoutPackageFees,inputLayoutDiscount,
             inputLayoutRegiFees,inputLayoutRate,inputLayoutDiscReason,inputLayoutPaymentDtl,inputLayoutPaid,inputLayoutNextFollDate,
@@ -125,6 +129,7 @@ public class RenewActivity extends AppCompatActivity {
     private AwesomeValidation awesomeValidation;
     private int mYear, mMonth, mDay;
 
+    AutoCompleteTextView inputContact ,inputName;
     private static final int PERMISSION_REQUEST_CODE = 1;
     //Spinner Adapter
     public Spinner spinPackageType,spinPackageName,spinInstructor,spinTime,spinPaymentype;
@@ -165,6 +170,11 @@ public class RenewActivity extends AppCompatActivity {
     String fname ="";
     private BaseFont bfBold,bfnormal;
     String Email_ID,Password,Header,Footer;
+    //Autocomplete suggestion of name
+    Search_list searchModel;
+    ArrayList<Search_list> searchArrayList = new ArrayList<Search_list>();
+    public SearchNameAdapter searchnameadapter;
+    SearchContactAdapter searchcontactadapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -238,8 +248,8 @@ public class RenewActivity extends AppCompatActivity {
         inputLayoutEnddate= (TextInputLayout) findViewById(R.id.input_layout_end_date);
         inputLayoutBalance= (TextInputLayout) findViewById(R.id.input_layout_balance);
 
-        inputContact = (EditText) findViewById(R.id.input_cont);
-        inputName = (EditText) findViewById(R.id.input_name);
+        inputContact = (AutoCompleteTextView) findViewById(R.id.input_cont);
+        inputName = (AutoCompleteTextView) findViewById(R.id.input_name);
         inputDuration = (EditText) findViewById(R.id.input_duration);
         inputStartDate = (EditText) findViewById(R.id.input_startdate);
         inputPackageFees = (EditText) findViewById(R.id.input_pack_fees);
@@ -287,6 +297,80 @@ public class RenewActivity extends AppCompatActivity {
                 }
 
 
+            }
+        });
+        inputContact.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                // String selection = (String)parent.getItemAtPosition(position);
+                // Toast.makeText(MainNavigationActivity.this,"this is autocomplete suggestions"+selection,Toast.LENGTH_SHORT).show();
+                String countryName = searchcontactadapter.getItem(position).getCustName();
+                String contact = searchcontactadapter.getItem(position).getCustContact();
+                MemberID = searchcontactadapter.getItem(position).getMemberId();
+                Email=searchcontactadapter.getItem(position).getEmail();
+
+                inputName.setText(countryName);
+                inputContact.setText(contact);
+
+
+            }
+        });
+        inputContact.addTextChangedListener(new TextWatcher() {
+            //
+            public void onTextChanged(CharSequence s, int start, int before,
+                                      int count) {
+            }
+
+
+
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+
+            }
+
+            public void afterTextChanged(Editable s) {
+                if(inputContact.getText().length()==0){
+                    inputName.getText().clear();
+                }
+            }
+        });
+        showSearchListClass();
+        inputName.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+
+                // String selection = (String)parent.getItemAtPosition(position);
+                // Toast.makeText(MainNavigationActivity.this,"this is autocomplete suggestions"+selection,Toast.LENGTH_SHORT).show();
+                String countryName = searchnameadapter.getItem(position).getCustName();
+                String contact = searchnameadapter.getItem(position).getCustContact();
+                MemberID = searchnameadapter.getItem(position).getMemberId();
+
+                Email=searchcontactadapter.getItem(position).getEmail();
+
+                inputName.setText(countryName);
+                inputContact.setText(contact);
+
+            }
+        });
+        inputName.addTextChangedListener(new TextWatcher() {
+            //
+            public void onTextChanged(CharSequence s, int start, int before,
+                                      int count) {
+            }
+
+
+
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+
+            }
+
+            public void afterTextChanged(Editable s) {
+                if(inputName.getText().length()==0){
+                    inputContact.getText().clear();
+                }
             }
         });
         String curr_date = Utility.getCurrentDate();
@@ -2535,9 +2619,11 @@ public class RenewActivity extends AppCompatActivity {
                                                 String ReceiptOwnerExecutive =  jsonObj1.getString("ReceiptOwnerExecutive");
 
                                                 float[] columnWidths = {1.2f, 1.8f, 1.1f,2.2f, 2.2f,2f,2f,2f};
-                                                 tablePayTrasa = new PdfPTable(columnWidths);
+                                                 tablePayTrasa = new PdfPTable(10);
                                                 // set table width a percentage of the page width
                                                 tablePayTrasa.setTotalWidth(550f);
+                                                tablePayTrasa.setWidths(columnWidths);
+                                                tablePayTrasa.setLockedWidth(true);
                                                 tablePayTrasa.getDefaultCell().setMinimumHeight(30f);
                                                 tablePayTrasa.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
                                                 tablePayTrasa.getDefaultCell().setVerticalAlignment(Element.ALIGN_MIDDLE);
@@ -2813,7 +2899,7 @@ public class RenewActivity extends AppCompatActivity {
 
                                         thread.start();
 //
-                                                                               createHeadings(cb,50,780,Company_Name);
+                                        createHeadings(cb,50,780,Company_Name);
                                         createText(cb,50,765,Address);
                                         createText(cb,50,750,Contact);
                                         createText(cb,50,735,GST_No);
@@ -2917,6 +3003,8 @@ public class RenewActivity extends AppCompatActivity {
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");
+                e.printStackTrace();
+            } catch (DocumentException e) {
                 e.printStackTrace();
             }
         }
@@ -3258,5 +3346,117 @@ public class RenewActivity extends AppCompatActivity {
             return true;
         }
         return false;
+    }
+    public void  showSearchListClass() {
+        RenewActivity.SearchTrackClass ru = new RenewActivity.SearchTrackClass();
+        ru.execute("5");
+    }
+    private   class SearchTrackClass extends AsyncTask<String, Void, String> {
+
+        ServerClass ruc = new ServerClass();
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Log.v(TAG, "onPreExecute");
+            // showProgressDialog();
+        }
+
+        @Override
+        protected void onPostExecute(String response) {
+            super.onPostExecute(response);
+            Log.v(TAG, String.format("onPostExecute :: response = %s", response));
+            //dismissProgressDialog();
+            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
+            SearchDetails(response);
+
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+            HashMap<String, String> SearchDetails = new HashMap<String, String>();
+
+            SearchDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(RenewActivity.this) );
+            SearchDetails.put("action", "show_all_member_list");
+            String domainurl=SharedPrefereneceUtil.getDomainUrl(RenewActivity.this);
+            //EmployeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(Employee.this));
+            String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, SearchDetails);
+            Log.v(TAG, String.format("doInBackground :: show_all_member_list= %s", loginResult));
+            return loginResult;
+        }
+
+
+    }
+
+
+    private void SearchDetails(String jsonResponse) {
+
+
+        Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
+//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
+        if (jsonResponse != null) {
+
+
+            try {
+                Log.v(TAG, "JsonResponseOpeartion :: test");
+                JSONObject object = new JSONObject(jsonResponse);
+                if (object != null) {
+                    JSONArray jsonArrayResult = object.getJSONArray("result");
+
+                    if (jsonArrayResult != null && jsonArrayResult.length() > 0){
+                        for (int i = 0; i < jsonArrayResult.length(); i++) {
+                            searchModel = new Search_list();
+                            Log.v(TAG, "JsonResponseOpeartion ::");
+                            JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
+                            if (jsonObj != null) {
+
+                                String Name     = jsonObj.getString("Name");
+                                String Contact     = jsonObj.getString("Contact");
+                                String MemberID     = jsonObj.getString("MemberID");
+                                String Email = jsonObj.getString("Email");
+                                String Gender = jsonObj.getString("Gender");
+
+
+                                //  String email = jsonObj.getString("email");
+                                // String phn_no = jsonObj.getString("mobile");
+
+
+                                searchModel.setCustName(Name);
+                                searchModel.setCustContact(Contact);
+                                searchModel.setMemberId(MemberID);
+                                searchModel.setEmail(Email);
+                                searchModel.setGender(Gender);
+
+                                searchArrayList.add(searchModel);
+                                searchnameadapter = new SearchNameAdapter(RenewActivity.this, searchArrayList);
+
+                                inputName.setAdapter(searchnameadapter);
+                                // inputName.setDropDownBackgroundResource(R.drawable.search_background);
+                                inputName.setThreshold(1);
+
+                                searchcontactadapter = new SearchContactAdapter(RenewActivity.this, searchArrayList);
+
+                                inputContact.setAdapter(searchcontactadapter);
+                                // textContact.setDropDownBackgroundResource(R.drawable.search_background);
+                                inputContact.setThreshold(1);
+
+                                //searchnameadapter = new SearchAdapter(MainNavigationActivity.this, searchArrayList);
+                                //text.setAdapter(searchnameadapter);
+                                // text.setDropDownBackgroundResource(R.drawable.layoutborder);
+                                // text.setThreshold(1);
+
+
+                            }
+                        }}else if(jsonArrayResult.length()==0){
+                        System.out.println("No records found");
+                    }
+                }
+            } catch (JSONException e) {
+                Log.v(TAG, "JsonResponseOpeartion :: catch");
+                e.printStackTrace();
+            }
+        }
     }
 }

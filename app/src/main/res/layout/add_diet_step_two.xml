@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:id="@+id/step_two">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <ImageButton
+            android:layout_width="@dimen/spacing_mxlarge"
+            android:layout_height="@dimen/spacing_mxlarge"
+            android:layout_marginTop="@dimen/spacing_mlarge"
+            android:background="@android:color/transparent"
+            android:tint="@color/grey_60"
+            app:srcCompat="@drawable/ic_event" />
+        <View
+            android:layout_width="@dimen/spacing_large"
+            android:layout_height="match_parent" />
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_days"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            >
+
+            <EditText
+                android:id="@+id/input_days"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:maxLength="15"
+                android:inputType="number"
+                android:textColorHint="@color/black"
+                android:backgroundTint="@color/black"
+                android:textColor="@color/black"
+                android:hint="@string/days" />
+
+        </android.support.design.widget.TextInputLayout>
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:layout_width="@dimen/spacing_mxlarge"
+            android:layout_height="@dimen/spacing_mxlarge"
+            android:layout_marginTop="@dimen/spacing_mlarge"
+            android:background="@android:color/transparent"
+            android:tint="@color/grey_60"
+            app:srcCompat="@drawable/ic_event" />
+
+        <View
+            android:layout_width="@dimen/spacing_large"
+            android:layout_height="match_parent" />
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_end_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <EditText
+                android:id="@+id/input_end_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:capitalize="characters"
+                android:inputType="textCapWords|textCapSentences"
+                android:textColor="@color/black"
+                android:backgroundTint="@color/black"
+                android:hint="@string/end_date" />
+        </android.support.design.widget.TextInputLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="@dimen/spacing_mxlarge"
+            android:layout_height="@dimen/spacing_mxlarge"
+            android:layout_marginTop="@dimen/spacing_mlarge"
+            android:background="@android:color/transparent"
+            android:tint="@color/grey_60"
+            app:srcCompat="@drawable/weight" />
+
+        <View
+            android:layout_width="@dimen/spacing_large"
+            android:layout_height="match_parent" />
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_weight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <EditText
+                android:id="@+id/input_weight"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:capitalize="characters"
+                android:inputType="number"
+                android:textColor="@color/black"
+                android:backgroundTint="@color/black"
+                android:hint="@string/weight" />
+        </android.support.design.widget.TextInputLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="@dimen/spacing_mxlarge"
+            android:layout_height="@dimen/spacing_mxlarge"
+            android:layout_marginTop="@dimen/spacing_mlarge"
+            android:background="@android:color/transparent"
+            android:tint="@color/grey_60"
+            app:srcCompat="@drawable/purpose" />
+
+        <View
+            android:layout_width="@dimen/spacing_large"
+            android:layout_height="match_parent" />
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_purpose"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <EditText
+                android:id="@+id/input_purpose"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:capitalize="characters"
+                android:inputType="textCapWords|textCapSentences"
+                android:textColor="@color/black"
+                android:backgroundTint="@color/black"
+                android:hint="@string/purpose" />
+        </android.support.design.widget.TextInputLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:layout_width="@dimen/spacing_mxlarge"
+            android:layout_height="@dimen/spacing_mxlarge"
+            android:layout_marginTop="@dimen/spacing_mlarge"
+            android:background="@android:color/transparent"
+            android:tint="@color/grey_60"
+            app:srcCompat="@drawable/ic_person" />
+
+        <View
+            android:layout_width="@dimen/spacing_large"
+            android:layout_height="match_parent" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="bottom">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/dietition_name"
+                android:paddingTop="@dimen/spacing_medium"
+                android:visibility="gone"
+                android:id="@+id/txt_dietition_name"
+                android:textSize="11sp"
+                android:textColor="@android:color/darker_gray"
+                />
+            <Spinner
+                android:id="@+id/spinner_dietition_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:spinnerMode="dialog"
+                android:textColor="@android:color/darker_gray"
+                android:backgroundTint="@color/black"
+                android:dropDownSelector="@color/black"
+                />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1.5dp"
+                android:background="@android:color/darker_gray" />
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="@dimen/spacing_mxlarge"
+            android:layout_height="@dimen/spacing_mxlarge"
+            android:layout_marginTop="@dimen/spacing_mlarge"
+            android:background="@android:color/transparent"
+            android:tint="@color/grey_60"
+            app:srcCompat="@drawable/dinner" />
+
+        <View
+            android:layout_width="@dimen/spacing_large"
+            android:layout_height="match_parent" />
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_no_of_meals"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <EditText
+                android:id="@+id/input_no_of_meals"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:capitalize="characters"
+                android:inputType="number"
+                android:textColor="@color/black"
+                android:backgroundTint="@color/black"
+                android:hint="@string/no_of_meals" />
+        </android.support.design.widget.TextInputLayout>
+    </LinearLayout>
+    <View
+        android:layout_width="0dp"
+        android:layout_height="@dimen/spacing_large" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/btn_back1"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="45dp"
+            android:layout_marginLeft="44dp"
+            android:background="@drawable/btn_rounded"
+            android:text="@string/Back"
+            android:onClick="clickAction"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+
+        <View
+            android:layout_width="@dimen/spacing_large"
+            android:layout_height="0dp" />
+        <Button
+            android:id="@+id/btn_next2"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="45dp"
+            android:layout_marginRight="44dp"
+            android:background="@drawable/btn_rounded"
+            android:text="@string/NEXT"
+            android:onClick="clickAction"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+    </LinearLayout>
+</LinearLayout>

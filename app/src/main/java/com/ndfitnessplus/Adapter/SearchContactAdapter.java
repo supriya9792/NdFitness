@@ -15,6 +15,7 @@ import com.ndfitnessplus.Model.Search_list;
 import com.ndfitnessplus.R;
 
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.Locale;
 
@@ -108,9 +109,14 @@ public class SearchContactAdapter extends ArrayAdapter implements Filterable {
                 ArrayList<Search_list> filterList = (ArrayList<Search_list>) results.values;
                 if (results != null && results.count > 0) {
                     clear();
+                    try{
                     for (Search_list people : filterList) {
                         add(people);
                         notifyDataSetChanged();
+                    }
+                    }
+                    catch (ConcurrentModificationException e){
+                        e.printStackTrace();
                     }
                 }
             }

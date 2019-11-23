@@ -98,6 +98,7 @@ public class DietActivity extends AppCompatActivity implements SwipeRefreshLayou
     TextView total_enquiry;
 
     ViewDialog viewDialog;
+    FloatingActionButton  addDiet;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -123,6 +124,7 @@ public class DietActivity extends AppCompatActivity implements SwipeRefreshLayou
         recyclerView.setHasFixedSize(true);
         viewDialog = new ViewDialog(this);
 
+        addDiet=(FloatingActionButton)findViewById(R.id.fab);
         total_enquiry=findViewById(R.id.ttl_enq);
         nodata=findViewById(R.id.nodata);
         frame=findViewById(R.id.main_frame);
@@ -186,17 +188,14 @@ public class DietActivity extends AppCompatActivity implements SwipeRefreshLayou
         inputsearch=(EditText)findViewById(R.id.inputsearchid);
         search=findViewById(R.id.search);
 
-//        search.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if(inputsearch.getText().length()>0){
-//                    //enquirysearchclass();
-//                }else{
-//                    Toast.makeText(DietActivity.this,"Please enter text to search", Toast.LENGTH_LONG).show();
-//                }
-//
-//            }
-//        });
+        addDiet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(DietActivity.this,AddDietActivity.class);
+                startActivity(intent);
+
+            }
+        });
 
         inputsearch.addTextChangedListener(new TextWatcher() {
 
@@ -231,13 +230,22 @@ public class DietActivity extends AppCompatActivity implements SwipeRefreshLayou
                 // TODO Auto-generated method stub
 
                 if(inputsearch.getText().length()==0) {
-                    //do your work here
-                    // Toast.makeText(AddDietActivity.this ,"Text vhanged count  is 10 then: " , Toast.LENGTH_LONG).show();
+                   // do your work here
+                     //Toast.makeText(DietActivity.this ,"Please enter text to search" , Toast.LENGTH_LONG).show();
                     enquiryclass();
                 }
             }
         });
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(inputsearch.getText().length()==0){
 
+                    Toast.makeText(DietActivity.this,"Please enter text to search", Toast.LENGTH_LONG).show();
+                }
+
+            }
+        });
 
     }
     @Override
@@ -249,6 +257,7 @@ public class DietActivity extends AppCompatActivity implements SwipeRefreshLayou
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_home:
+                finish();
                 Intent intent = new Intent(DietActivity.this,MainActivity.class);
                 startActivity(intent);
                 return true;
@@ -431,6 +440,14 @@ public class DietActivity extends AppCompatActivity implements SwipeRefreshLayou
                 dialog.show();
             }
         }
+    }
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        swipeRefresh.setRefreshing(false);
+        finish();
+        Intent intent=new Intent(DietActivity.this,DietActivity.class);
+        startActivity(intent);
     }
     @Override
     public boolean onSupportNavigateUp(){

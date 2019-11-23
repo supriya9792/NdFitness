@@ -1,5 +1,7 @@
 package com.ndfitnessplus.Model;
 
+import android.widget.EditText;
+
 public class AdmissionList {
     String ID , name ,Gender ,Contact ,RegDate ,Address , Status ,ExecutiveName,packageInfo
             ,totalPaid,startDate,endDate,balance,session,totalFeeDue;
