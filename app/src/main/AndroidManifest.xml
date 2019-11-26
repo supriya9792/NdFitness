@@ -39,6 +39,7 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
         <activity android:name=".Activity.WorkoutActivity"></activity>
+        <activity android:name=".Activity.AddWorkoutActivity" />
         <activity android:name=".Activity.AddDietActivity" />
         <activity
             android:name=".Activity.WorkoutDetailsDescriptionActivity"

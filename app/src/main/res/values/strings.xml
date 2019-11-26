@@ -512,7 +512,6 @@
     <string name="tab_after">After</string>
 
 
-
     <!--    Diet Activity -->
     <string name="add_diet">Add Diet</string>
     <string name="NEXT">NEXT</string>
@@ -537,7 +536,7 @@
     <!--<string name="time">15 min</string>-->
     <string name="body_part">Body Part : </string>
 
-<!--    Workout Activity -->
+    <!--    Workout Activity -->
     <string name="prompt_workout_level">Select Workout Level</string>
     <string name="workout_level">Workout Level</string>
     <string name="add_workout">Add Workout</string>

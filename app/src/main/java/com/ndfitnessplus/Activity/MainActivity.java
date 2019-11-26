@@ -26,7 +26,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -37,7 +36,6 @@ import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.ndfitnessplus.Activity.Notification.TodaysEnquiryActivity;
 import com.ndfitnessplus.Adapter.AdSliderAdapter;
-import com.ndfitnessplus.CustomData.AdSliderData;
 import com.ndfitnessplus.Model.AdSliderList;
 import com.ndfitnessplus.Model.EnquiryList;
 import com.ndfitnessplus.Notification.NotificationUtils;
@@ -216,7 +214,7 @@ public class MainActivity extends AppCompatActivity
         Workout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(MainActivity.this, WorkoutActivity.class);
+                Intent intent=new Intent(MainActivity.this, AddWorkoutActivity.class);
                 startActivity(intent);
             }
         });
