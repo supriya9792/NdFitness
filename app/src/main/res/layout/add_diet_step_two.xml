@@ -69,6 +69,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
+                android:focusableInTouchMode="false"
+                android:editable="false"
                 android:capitalize="characters"
                 android:inputType="textCapWords|textCapSentences"
                 android:textColor="@color/black"

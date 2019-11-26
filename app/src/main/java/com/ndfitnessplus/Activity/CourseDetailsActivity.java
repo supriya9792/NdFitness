@@ -2218,7 +2218,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
 
                                                 @Override
                                                 protected Void doInBackground(String... params) {
-                                                    Mail m = new Mail("tulsababar.ndsoft@gmail.com", "Tulsa@2019");
+                                                    Mail m = new Mail(Email_ID, Password);
 
                                                     String[] toArr = { Email, "tulsababar01@gmail.com"};
                                                    // Log.v(TAG, String.format(" Email array to send = %s", toArr));

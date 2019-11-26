@@ -512,79 +512,79 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:gravity="bottom">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/enq_for"
-                android:paddingTop="@dimen/spacing_medium"
-                android:id="@+id/txt_enqfor"
-                android:textSize="11sp"
-                android:visibility="gone"
-                android:textColor="@android:color/darker_gray"
-                />
-            <Spinner
-                android:id="@+id/spinner_enq_for"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:spinnerMode="dialog"
-                android:paddingTop="@dimen/spacing_small"
-                android:textColor="@android:color/darker_gray"
-                android:backgroundTint="@color/black"
-                android:dropDownSelector="@color/black"
-                />
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1.5dp"
-                android:background="@android:color/darker_gray" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/enq_for"
+                    android:paddingTop="@dimen/spacing_medium"
+                    android:id="@+id/txt_enqfor"
+                    android:textSize="11sp"
+                    android:visibility="gone"
+                    android:textColor="@android:color/darker_gray"
+                    />
+                <Spinner
+                    android:id="@+id/spinner_enq_for"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:spinnerMode="dialog"
+                    android:paddingTop="@dimen/spacing_small"
+                    android:textColor="@android:color/darker_gray"
+                    android:backgroundTint="@color/black"
+                    android:dropDownSelector="@color/black"
+                    />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1.5dp"
+                    android:background="@android:color/darker_gray" />
             </LinearLayout>
         </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="3"
-            android:orientation="horizontal">
-
-            <ImageButton
-                android:layout_width="@dimen/spacing_mxlarge"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_mlarge"
-                android:background="@android:color/transparent"
-                android:tint="@color/grey_60"
-                app:srcCompat="@drawable/ic_library_books" />
-
-            <View
-                android:layout_width="@dimen/spacing_large"
-                android:layout_height="match_parent" />
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:gravity="bottom">
-            <TextView
-                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/enquiry_source"
-                android:id="@+id/txt_enqsrc"
-                android:paddingTop="@dimen/spacing_medium"
-                android:visibility="gone"
-                android:textSize="11sp"
-                android:textColor="@android:color/darker_gray"
-                />
-            <Spinner
-                android:id="@+id/spinner_enq_source"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:spinnerMode="dialog"
-                android:textColor="@android:color/darker_gray"
-                android:backgroundTint="@color/black"
-                android:dropDownSelector="@color/black"
-                />
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1.5dp"
-                android:background="@android:color/darker_gray" />
+                android:layout_weight="3"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:layout_width="@dimen/spacing_mxlarge"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_mlarge"
+                    android:background="@android:color/transparent"
+                    android:tint="@color/grey_60"
+                    app:srcCompat="@drawable/ic_library_books" />
+
+                <View
+                    android:layout_width="@dimen/spacing_large"
+                    android:layout_height="match_parent" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="bottom">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/enquiry_source"
+                        android:id="@+id/txt_enqsrc"
+                        android:paddingTop="@dimen/spacing_medium"
+                        android:visibility="gone"
+                        android:textSize="11sp"
+                        android:textColor="@android:color/darker_gray"
+                        />
+                    <Spinner
+                        android:id="@+id/spinner_enq_source"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:spinnerMode="dialog"
+                        android:textColor="@android:color/darker_gray"
+                        android:backgroundTint="@color/black"
+                        android:dropDownSelector="@color/black"
+                        />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1.5dp"
+                        android:background="@android:color/darker_gray" />
+                </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

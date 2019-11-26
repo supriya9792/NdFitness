@@ -10,18 +10,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <Button
-            android:id="@+id/btn_back2"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="45dp"
-            android:layout_marginLeft="44dp"
-            android:background="@drawable/btn_rounded"
-            android:text="@string/Back"
-            android:onClick="clickAction"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textStyle="bold" />
+<!--        <Button-->
+<!--            android:id="@+id/btn_back2"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_weight="1"-->
+<!--            android:layout_height="45dp"-->
+<!--            android:layout_marginLeft="44dp"-->
+<!--            android:background="@drawable/btn_rounded"-->
+<!--            android:text="@string/Back"-->
+<!--            android:onClick="clickAction"-->
+<!--            android:textAllCaps="false"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:textStyle="bold" />-->
 
         <View
             android:layout_width="@dimen/spacing_large"

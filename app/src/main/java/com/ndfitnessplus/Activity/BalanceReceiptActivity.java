@@ -1467,8 +1467,9 @@ public class BalanceReceiptActivity extends AppCompatActivity {
                                     TermsAndConditions = TermsAndConditions.replace("\r\n", "<br />");
                                     String Logo = jsonObj.getString("Logo");
                                     String l=Logo.replaceAll("\\s+","%20");
-                                    // Logo.replace(" ","%20");
-                                  final  String imgurl=ServiceUrls.IMAGES_URL+l;
+
+                                    String domainurl=SharedPrefereneceUtil.getDomainUrl(BalanceReceiptActivity.this);
+                                    final  String imgurl=domainurl+ServiceUrls.IMAGES_URL+l;
                                     Log.d(TAG, "imgurl: " +imgurl);
 
                                     String textBody = "";

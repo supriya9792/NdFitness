@@ -4,7 +4,8 @@ import java.io.Serializable;
 
 public class WorkOutDetailsList implements Serializable {
 
-    String BodyPart,WorkoutName,WorkoutImage,Discription,VideoLink,Set,Repitation,Time,Weight,InstructorName,PlanName,SetAndRepitations;
+    String BodyPart,WorkoutName,WorkoutImage,Discription,VideoLink,Set,Repitation,Time,Weight,InstructorName,PlanName,SetAndRepitations,
+    Day,LevelName;
 
     public WorkOutDetailsList() {
     }
@@ -117,5 +118,21 @@ public class WorkOutDetailsList implements Serializable {
 
     public void setSetAndRepitations(String setAndRepitations) {
         SetAndRepitations = setAndRepitations;
+    }
+
+    public String getDay() {
+        return Day;
+    }
+
+    public void setDay(String day) {
+        Day = day;
+    }
+
+    public String getLevelName() {
+        return LevelName;
+    }
+
+    public void setLevelName(String levelName) {
+        LevelName = levelName;
     }
 }

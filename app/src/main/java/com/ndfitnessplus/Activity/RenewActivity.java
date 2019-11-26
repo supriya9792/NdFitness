@@ -2619,7 +2619,7 @@ public class RenewActivity extends AppCompatActivity {
                                                 String ReceiptOwnerExecutive =  jsonObj1.getString("ReceiptOwnerExecutive");
 
                                                 float[] columnWidths = {1.2f, 1.8f, 1.1f,2.2f, 2.2f,2f,2f,2f};
-                                                 tablePayTrasa = new PdfPTable(10);
+                                                 tablePayTrasa = new PdfPTable(8);
                                                 // set table width a percentage of the page width
                                                 tablePayTrasa.setTotalWidth(550f);
                                                 tablePayTrasa.setWidths(columnWidths);
@@ -3131,7 +3131,7 @@ public class RenewActivity extends AppCompatActivity {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
            // showProgressDialog();
-            //viewDialog.showDialog();
+            viewDialog.showDialog();
         }
 
         @Override
@@ -3139,7 +3139,7 @@ public class RenewActivity extends AppCompatActivity {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
            // dismissProgressDialog();
-          //  viewDialog.hideDialog();
+            viewDialog.hideDialog();
 
             SendEnquirySmsDetails(response);
 

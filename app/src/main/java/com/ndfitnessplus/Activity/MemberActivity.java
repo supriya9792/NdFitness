@@ -125,7 +125,7 @@ public class MemberActivity extends AppCompatActivity implements SwipeRefreshLay
         if (args != null) {
             ArrayList<MemberDataList> filterArrayList = (ArrayList<MemberDataList>) args.getSerializable("filter_array_list");
             progressBar.setVisibility(View.GONE);
-             length=filterArrayList.size();
+
             total_member.setText(String.valueOf(length));
             adapter = new MemberAdapter( filterArrayList,MemberActivity.this);
             recyclerView.setAdapter(adapter);
@@ -235,7 +235,7 @@ public class MemberActivity extends AppCompatActivity implements SwipeRefreshLay
                 isLoading = true;
 
                 Log.d(TAG, "prepare called current item: " + currentPage+"Total page"+totalPage);
-                if(currentPage<=totalPage&& length<=0){
+                if(currentPage<=totalPage && length<=0){
                    // currentPage = PAGE_START;
                     Log.d(TAG, "currentPage: " + currentPage);
                     isLastPage = false;
@@ -680,6 +680,7 @@ public class MemberActivity extends AppCompatActivity implements SwipeRefreshLay
 //                        }
                         String cnt= String.valueOf(jsonArrayResult.length());
                         total_member.setText(cnt);
+                        length=jsonArrayResult.length();
                         final   ArrayList<MemberDataList> subListArrayList = new ArrayList<MemberDataList>();
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
                             for (int i = 0; i < jsonArrayResult.length(); i++) {

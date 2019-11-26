@@ -38,7 +38,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
-        <activity android:name=".Activity.AddDietActivity"></activity>
+        <activity android:name=".Activity.WorkoutActivity"></activity>
+        <activity android:name=".Activity.AddDietActivity" />
         <activity
             android:name=".Activity.WorkoutDetailsDescriptionActivity"
             android:configChanges="keyboard|orientation|screenSize"

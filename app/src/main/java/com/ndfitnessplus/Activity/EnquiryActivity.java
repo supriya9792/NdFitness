@@ -114,8 +114,7 @@ public class EnquiryActivity extends AppCompatActivity implements SwipeRefreshLa
         viewDialog = new ViewDialog(this);
 
         total_enquiry=findViewById(R.id.ttl_enq);
-        ttl_budget=findViewById(R.id.ttl_budget);
-        nodata=findViewById(R.id.nodata);
+        ttl_budget=findViewById(R.id.ttl_budget); nodata=findViewById(R.id.nodata);
         frame=findViewById(R.id.main_frame);
         noInternet=findViewById(R.id.no_internet);
         progress_bar = (ProgressBar) findViewById(R.id.progress_bar);
@@ -123,6 +122,7 @@ public class EnquiryActivity extends AppCompatActivity implements SwipeRefreshLa
         swipeRefresh.setOnRefreshListener(this);
         progress_bar.setVisibility(View.GONE);
         lyt_no_connection.setVisibility(View.VISIBLE);
+
 //        adapter = new EnquiryAdapter( new ArrayList<EnquiryList>(),EnquiryActivity.this);
 //        recyclerView.setAdapter(adapter);
 

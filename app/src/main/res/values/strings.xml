@@ -63,6 +63,7 @@
     <string name="exi_expenses">Existing Expense</string>
     <string name="mem_info">Member Info</string>
     <string name="pos">POS</string>
+    <string name="workout">Workout</string>
     <string name="collections">Collection</string>
     <string name="diet">Diet</string>
     <string name="noti">Notifications</string>
@@ -510,14 +511,9 @@
     <string name="tab_before">Before</string>
     <string name="tab_after">After</string>
 
-    <!--Workout Activity -->
-    <string name="set_repitations">Set * Repetition</string>
-    <string name="workout_name">Cardio</string>
-    <string name="something_went">Something Went Wrong !</string>
-    <!--<string name="time">15 min</string>-->
-    <string name="body_part">Body Part : </string>
 
-<!--    Diet Activity -->
+
+    <!--    Diet Activity -->
     <string name="add_diet">Add Diet</string>
     <string name="NEXT">NEXT</string>
     <string name="Back">Back</string>
@@ -534,6 +530,22 @@
     <string name="submit">Submit</string>
     <string name="prompt_dietition_name">Select Dietitian Name</string>
     <string name="diet_id">Diet Id: </string>
+    <!--Workout Activity -->
+    <string name="set_repitations">Set * Repetition</string>
+    <string name="workout_name">Cardio</string>
+    <string name="something_went">Something Went Wrong !</string>
+    <!--<string name="time">15 min</string>-->
+    <string name="body_part">Body Part : </string>
+
+<!--    Workout Activity -->
+    <string name="prompt_workout_level">Select Workout Level</string>
+    <string name="workout_level">Workout Level</string>
+    <string name="add_workout">Add Workout</string>
+    <string name="exi_workout">Existing Workout</string>
+    <string name="set">Set:</string>
+    <string name="repitatios">Repetition:</string>
+    <string name="musclegrp">Muscular Group</string>
+    <string name="assign_workout">Assing Workout</string>
 
     <string name="long_lorem_ipsum">
         Duis tellus metus, elementum a lectus id, aliquet interdum mauris. Nam bibendum efficitur sollicitudin. Proin eleifend libero velit, nec fringilla dolor finibus quis. nMorbi eu libero pellentesque, rutrum metus quis, blandit est. Fusce bibendum accumsan nisi vulputate feugiat. In fermentum laoreet euismod. Praesent sem nisl, facilisis eget odio at, rhoncus scelerisque ipsum. Nulla orci dui, dignissim a risus ut, lobortis porttitor velit.

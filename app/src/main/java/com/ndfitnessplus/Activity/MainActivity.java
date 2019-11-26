@@ -74,7 +74,8 @@ public class MainActivity extends AppCompatActivity
     public final String TAG = MainActivity.class.getName();
     private ProgressDialog pd;
     //dashnoard menu
-    LinearLayout notification, enquiry, add_member, renew, balance_receipt, expenses, member_info, collections, attendance, measurement, pos, diet;
+    LinearLayout notification, enquiry, add_member, renew, balance_receipt, expenses, member_info, collections, attendance,
+            measurement, Workout, diet;
     TextView Username, Welcome;
     String UName, companyname, token;
     ImageView compLogo;
@@ -120,7 +121,7 @@ public class MainActivity extends AppCompatActivity
         collections=findViewById(R.id.quicksms);
         attendance=findViewById(R.id.attendance);
         measurement=findViewById(R.id.measurement);
-        pos=findViewById(R.id.pos);
+        Workout=findViewById(R.id.workout);
         diet=findViewById(R.id.diet);
 
         Username=findViewById(R.id.user_name);
@@ -212,10 +213,10 @@ public class MainActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
-        pos.setOnClickListener(new View.OnClickListener() {
+        Workout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(MainActivity.this, POSActivity.class);
+                Intent intent=new Intent(MainActivity.this, WorkoutActivity.class);
                 startActivity(intent);
             }
         });

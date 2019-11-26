@@ -60,8 +60,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -302,7 +305,7 @@ public class AddDietActivity extends AppCompatActivity {
                 return false;
             }
         }) ;
-               inputContact.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        inputContact.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
@@ -340,6 +343,7 @@ public class AddDietActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
                 if(inputContact.getText().length()==0){
                     inputName.getText().clear();
+                    radioGroup.clearCheck();
                 }
             }
         });
@@ -384,6 +388,7 @@ public class AddDietActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
                 if(inputName.getText().length()==0){
                     inputContact.getText().clear();
+                    radioGroup.clearCheck();
                 }
             }
         });
@@ -413,7 +418,7 @@ public class AddDietActivity extends AppCompatActivity {
                 if (stepTwoValidation.validate()) {
                     step2process.setProgress(100);
                     if(dietition_name.equals(getResources().getString(R.string.dietition_name)) ){
-                        Toast.makeText(this, "Please select Dietition Name", Toast.LENGTH_LONG).show();
+                        Toast.makeText(this, "Please select Dietitian Name", Toast.LENGTH_LONG).show();
                     }else{
                     collapseAndContinue(1);
                     if(inputNoOfMeals.getText().length()>0) {
@@ -527,10 +532,10 @@ public class AddDietActivity extends AppCompatActivity {
 
                 collapseAndBack(1);
                 break;
-            case R.id.btn_back2:
-                // validate input user here
-                collapseAndBack(2);
-                break;
+//            case R.id.btn_back2:
+//                // validate input user here
+//                collapseAndBack(2);
+//                break;
             case R.id.btn_back3:
                 // validate input user here
                 collapseAndBack(3);
@@ -590,8 +595,17 @@ public class AddDietActivity extends AppCompatActivity {
                         mMinute = minute;
                         //nextfolltime=hourOfDay + ":" + minute;
                         inputTime = (EditText)row. findViewById(pos);
-                        inputTime.setText(hourOfDay + ":" + minute);
-                        inputTime.setError(null);
+                        try {
+                            SimpleDateFormat fmt = new SimpleDateFormat("HH:mm");
+                            Date date = fmt.parse(hourOfDay + ":" + minute);
+                            SimpleDateFormat fmtOut = new SimpleDateFormat("HH:mm");
+                            fmtOut.format(date);
+                            inputTime.setText(fmtOut.format(date));
+                            inputTime.setError(null);
+                        } catch (ParseException e) {
+
+                        }
+
                        // stepThreeValation.clear();
                     }
                 }, mHour, mMinute, false);
@@ -785,7 +799,7 @@ public class AddDietActivity extends AppCompatActivity {
             Log.v(TAG, String.format("doInBackground :: weight = %s", inputWeight.getText().toString()));
             AddDietDetails.put("purpose",inputPurpose.getText().toString());
             Log.v(TAG, String.format("doInBackground :: purpose = %s", inputPurpose.getText().toString()));
-            if(allEds.size()<10) {
+            if(allEds.size()<=10) {
                 for (int j = 0; j < allEds.size(); j++) {
                     String mealtype="meal_type" + (j+1);
                     String meal="meal_"+(j+1);
@@ -809,7 +823,7 @@ public class AddDietActivity extends AppCompatActivity {
                 }
             }else{
                 int mm=10-allEds.size();
-                for (int j = allEds.size(); j < mm; j++) {
+                for (int j = allEds.size(); j < 10; j++) {
                     String mealtype="meal_type" + (j+1);
                     String meal="meal_"+(j+1);
                     String time="time_"+(j+1);
