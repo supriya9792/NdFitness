@@ -6,7 +6,7 @@ public class WorkOutDetailsList implements Serializable {
 
     String BodyPart,WorkoutName,WorkoutImage,Discription,VideoLink,Set,Repitation,Time,Weight,InstructorName,PlanName,SetAndRepitations,
     Day,LevelName;
-
+    public boolean section = false;
     public WorkOutDetailsList() {
     }
 
@@ -134,5 +134,13 @@ public class WorkOutDetailsList implements Serializable {
 
     public void setLevelName(String levelName) {
         LevelName = levelName;
+    }
+
+    public boolean isSection() {
+        return section;
+    }
+
+    public void setSection(boolean section) {
+        this.section = section;
     }
 }

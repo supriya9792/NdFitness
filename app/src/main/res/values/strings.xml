@@ -535,6 +535,7 @@
     <string name="something_went">Something Went Wrong !</string>
     <!--<string name="time">15 min</string>-->
     <string name="body_part">Body Part : </string>
+    <string name="exercise_id">Exercise Id: </string>
 
     <!--    Workout Activity -->
     <string name="prompt_workout_level">Select Workout Level</string>
@@ -543,8 +544,9 @@
     <string name="exi_workout">Existing Workout</string>
     <string name="set">Set:</string>
     <string name="repitatios">Repetition:</string>
-    <string name="musclegrp">Muscular Group</string>
+    <string name="musclegrp">Muscular Group: </string>
     <string name="assign_workout">Assing Workout</string>
+    <string name="workout_filters">Workout Filters</string>
 
     <string name="long_lorem_ipsum">
         Duis tellus metus, elementum a lectus id, aliquet interdum mauris. Nam bibendum efficitur sollicitudin. Proin eleifend libero velit, nec fringilla dolor finibus quis. nMorbi eu libero pellentesque, rutrum metus quis, blandit est. Fusce bibendum accumsan nisi vulputate feugiat. In fermentum laoreet euismod. Praesent sem nisl, facilisis eget odio at, rhoncus scelerisque ipsum. Nulla orci dui, dignissim a risus ut, lobortis porttitor velit.

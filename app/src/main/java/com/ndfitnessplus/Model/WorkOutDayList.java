@@ -1,8 +1,10 @@
 package com.ndfitnessplus.Model;
 
-public class WorkOutDayList {
+import java.io.Serializable;
 
-    String Day,MemberId,Level;
+public class WorkOutDayList implements Serializable {
+
+    String Day,MemberId,Level,ExerciseId,AssignDate,MemberName,MemberContact,EmailId,MemberImage,InstructorName;
     public boolean section = false;
     public WorkOutDayList(String day) {
         Day = day;
@@ -41,5 +43,61 @@ public class WorkOutDayList {
 
     public void setLevel(String level) {
         Level = level;
+    }
+
+    public String getExerciseId() {
+        return ExerciseId;
+    }
+
+    public void setExerciseId(String exerciseId) {
+        ExerciseId = exerciseId;
+    }
+
+    public String getAssignDate() {
+        return AssignDate;
+    }
+
+    public void setAssignDate(String assignDate) {
+        AssignDate = assignDate;
+    }
+
+    public String getMemberName() {
+        return MemberName;
+    }
+
+    public void setMemberName(String memberName) {
+        MemberName = memberName;
+    }
+
+    public String getMemberContact() {
+        return MemberContact;
+    }
+
+    public void setMemberContact(String memberContact) {
+        MemberContact = memberContact;
+    }
+
+    public String getEmailId() {
+        return EmailId;
+    }
+
+    public void setEmailId(String emailId) {
+        EmailId = emailId;
+    }
+
+    public String getMemberImage() {
+        return MemberImage;
+    }
+
+    public void setMemberImage(String memberImage) {
+        MemberImage = memberImage;
+    }
+
+    public String getInstructorName() {
+        return InstructorName;
+    }
+
+    public void setInstructorName(String instructorName) {
+        InstructorName = instructorName;
     }
 }

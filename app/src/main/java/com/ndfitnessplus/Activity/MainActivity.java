@@ -214,7 +214,7 @@ public class MainActivity extends AppCompatActivity
         Workout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(MainActivity.this, AddWorkoutActivity.class);
+                Intent intent=new Intent(MainActivity.this, WorkoutActivity.class);
                 startActivity(intent);
             }
         });
@@ -409,6 +409,9 @@ public class MainActivity extends AppCompatActivity
             startActivity(intent);
         } else if (id == R.id.nav_push_noti) {
             Intent intent=new Intent(MainActivity.this,PushNotificationActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_pos) {
+            Intent intent=new Intent(MainActivity.this,POSActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_switch_branch) {
             Intent intent=new Intent(MainActivity.this,BranchSelectionActivity.class);

@@ -23,6 +23,10 @@
                 android:id="@+id/nav_push_noti"
                 android:icon="@drawable/ic_notifications"
                 android:title="@string/menu_push_noti" />
+            <item
+                android:id="@+id/nav_pos"
+                android:icon="@drawable/pos"
+                android:title="@string/pos" />
 
         <!--</menu>-->
     <!--</item>-->

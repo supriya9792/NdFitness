@@ -5,7 +5,7 @@ package com.ndfitnessplus.Model;
  */
 
 public class Search_list {
-    String CustName,CustContact,MemberId,Email,Gender;
+    String CustName,CustContact,MemberId,Email,Gender,NameContact;
 
     public Search_list() {
     }
@@ -53,5 +53,13 @@ public class Search_list {
 
     public void setGender(String gender) {
         Gender = gender;
+    }
+
+    public String getNameContact() {
+        return NameContact;
+    }
+
+    public void setNameContact(String nameContact) {
+        NameContact = nameContact;
     }
 }

@@ -322,6 +322,7 @@ public class AddDietActivity extends AppCompatActivity {
                 else
                     radioGroup.check(R.id.radioButton2);
                 inputName.setText(countryName);
+                inputName.setError(null);
                 inputContact.setText(contact);
 
 
@@ -368,6 +369,7 @@ public class AddDietActivity extends AppCompatActivity {
                     radioGroup.check(R.id.radioButton2);
 
                 inputName.setText(countryName);
+                inputContact.setError(null);
                 inputContact.setText(contact);
 
             }
@@ -1092,12 +1094,13 @@ public class AddDietActivity extends AppCompatActivity {
                                 //  String email = jsonObj.getString("email");
                                 // String phn_no = jsonObj.getString("mobile");
 
-
+                                String namec=Name+"-"+Contact;
                                 searchModel.setCustName(Name);
                                 searchModel.setCustContact(Contact);
                                 searchModel.setMemberId(MemberID);
                                 searchModel.setEmail(Email);
                                 searchModel.setGender(Gender);
+                                searchModel.setNameContact(namec);
 
                                 searchArrayList.add(searchModel);
                                 searchnameadapter = new SearchNameAdapter(AddDietActivity.this, searchArrayList);

@@ -599,12 +599,13 @@ public class AddMeasurementActivity extends AppCompatActivity {
                                 //  String email = jsonObj.getString("email");
                                 // String phn_no = jsonObj.getString("mobile");
 
-
+                                String namec=Name+"-"+Contact;
                                 searchModel.setCustName(Name);
                                 searchModel.setCustContact(Contact);
                                 searchModel.setMemberId(MemberID);
                                 searchModel.setEmail(Email);
                                 searchModel.setGender(Gender);
+                                searchModel.setNameContact(namec);
 
                                 searchArrayList.add(searchModel);
                                 searchnameadapter = new SearchNameAdapter(AddMeasurementActivity.this, searchArrayList);

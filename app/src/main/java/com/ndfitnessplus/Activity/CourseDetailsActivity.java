@@ -1943,16 +1943,16 @@ public class CourseDetailsActivity extends AppCompatActivity {
 //                                                    tablePayTrasa.addCell(ReceiptOwnerExecutive);
 
 //                                                }
-                                            textBody += "  <tr >\n \n" +
-                                                    "    <td >"+Receipt_Id+"</td>\n \n" +
-                                                    "     <td >"+receipt_date+"</td>\n\n" +
-                                                    "    <td >"+Tax+"</td> \n\n" +
-                                                    "    <td >"+TaxAmount+"</td>\n\n" +
-                                                    "    <td >"+Paid+"</td>\n\n" +
-                                                    "    <td >"+PaymentType+"</td>\n\n" +
-                                                    "    <td >"+PaymentDetails+"</td>\n\n" +
-                                                    "    <td >"+ReceiptOwnerExecutive+"</td>\n\n" +
-                                                    "    </tr>\n";
+                                                textBody += "  <tr >\n \n" +
+                                                        "    <td width='10%'>"+Receipt_Id+"</td>\n \n" +
+                                                        "     <td width='15%'>"+receipt_date+"</td>\n\n" +
+                                                        "    <td width='8%'>"+Tax+"</td> \n\n" +
+                                                        "    <td width='12.5%'>"+TaxAmount+"</td>\n\n" +
+                                                        "    <td width='12.5%'>"+Paid+"</td>\n\n" +
+                                                        "    <td width='12.5%'>"+PaymentType+"</td>\n\n" +
+                                                        "    <td width='12.5%'>"+PaymentDetails+"</td>\n\n" +
+                                                        "    <td width='13%'>"+ReceiptOwnerExecutive+"</td>\n\n" +
+                                                        "    </tr>\n";
                                         }
                                     }
 
@@ -2034,14 +2034,14 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                             "                                </thead>\n" +
                                             "                               <tbody height=\"100\" >\n" +
                                             "                                    <tr height=\"100\" >\n" +
-                                            "                                        <td >"+Package_Name+"</td>\n" +
-                                            "                                         <td >"+Duration_Days+"</td>\n" +
-                                            "                                        <td >"+Session+"</td>                                       \n" +
-                                            "                                        <td >"+s_date+"</td>\n" +
-                                            "                                        <td >"+edate+"</td>\n" +
-                                            "                                        <td >"+Time+"</td>\n" +
-                                            "                                        <td >"+Instructor_Name+"</td>\n" +
-                                            "                                        <td >"+Package_Fees+"</td>\n" +
+                                            "                                        <td width='12.5%'>"+Package_Name+"</td>\n" +
+                                            "                                         <td width='11.5%'>"+Duration_Days+"</td>\n" +
+                                            "                                        <td width='11%'>"+Session+"</td>                                       \n" +
+                                            "                                        <td width='14%'>"+s_date+"</td>\n" +
+                                            "                                        <td width='14%'>"+edate+"</td>\n" +
+                                            "                                        <td width='8%'>"+Time+"</td>\n" +
+                                            "                                        <td width='13%'>"+Instructor_Name+"</td>\n" +
+                                            "                                        <td width='12%'>"+Package_Fees+"</td>\n" +
                                             "                                    </tr>\n" +
                                             "                                </tbody>\n" +
                                             "                            </table>\n" +

@@ -18,16 +18,16 @@ import java.util.List;
 
 public class WorkoutLevelAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private final int VIEW_ITEM = 1;
-    private final int VIEW_SECTION = 0;
+private final int VIEW_ITEM = 1;
+private final int VIEW_SECTION = 0;
 
-    private List<WorkOutDayList> items = new ArrayList<>();
-    private Context ctx;
-    private OnItemClickListener mOnItemClickListener;
+private List<WorkOutDayList> items = new ArrayList<>();
+private Context ctx;
+private OnItemClickListener mOnItemClickListener;
 
-    public interface OnItemClickListener {
-        void onItemClick(View view, WorkOutDayList obj, int position);
-    }
+public interface OnItemClickListener {
+    void onItemClick(View view, WorkOutDayList obj, int position);
+}
 
     public void setOnItemClickListener(final OnItemClickListener mItemClickListener) {
         this.mOnItemClickListener = mItemClickListener;
@@ -38,27 +38,27 @@ public class WorkoutLevelAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         ctx = context;
     }
 
-    public class OriginalViewHolder extends RecyclerView.ViewHolder {
-        public ImageView image;
-        public TextView workout_day;
-        public View lyt_parent;
+public class OriginalViewHolder extends RecyclerView.ViewHolder {
+    public ImageView image;
+    public TextView workout_day;
+    public View lyt_parent;
 
-        public OriginalViewHolder(View v) {
-            super(v);
-            image = (ImageView) v.findViewById(R.id.image);
-            workout_day = (TextView) v.findViewById(R.id.workout_day);
-            lyt_parent = (View) v.findViewById(R.id.lyt_parent);
-        }
+    public OriginalViewHolder(View v) {
+        super(v);
+        image = (ImageView) v.findViewById(R.id.image);
+        workout_day = (TextView) v.findViewById(R.id.workout_day);
+        lyt_parent = (View) v.findViewById(R.id.lyt_parent);
     }
+}
 
-    public static class SectionViewHolder extends RecyclerView.ViewHolder {
-        public TextView title_section;
+public static class SectionViewHolder extends RecyclerView.ViewHolder {
+    public TextView title_section;
 
-        public SectionViewHolder(View v) {
-            super(v);
-            title_section = (TextView) v.findViewById(R.id.title_section);
-        }
+    public SectionViewHolder(View v) {
+        super(v);
+        title_section = (TextView) v.findViewById(R.id.title_section);
     }
+}
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -76,11 +76,11 @@ public class WorkoutLevelAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-      final   WorkOutDayList p = items.get(position);
+        final   WorkOutDayList p = items.get(position);
         if (holder instanceof OriginalViewHolder) {
             OriginalViewHolder view = (OriginalViewHolder) holder;
 
-           //final WorkOutDayList p = items.get(position);
+            //final WorkOutDayList p = items.get(position);
 
             view.workout_day.setText(p.getDay());
 

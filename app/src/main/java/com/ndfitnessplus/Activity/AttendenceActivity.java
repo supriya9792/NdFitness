@@ -511,7 +511,8 @@ class MeasurementSearchTrackclass extends AsyncTask<String, Void, String> {
                                     String Start_Date = jsonObj.getString("Start_Date");
                                     String End_Date = jsonObj.getString("End_Date");
                                     String Attendance_Mode = jsonObj.getString("Attendance_Mode");
-
+                                    String Image = jsonObj.getString("Image");
+                                    String Status = jsonObj.getString("Status");
 
                                     subList.setMemberID(MemberID);
                                     subList.setContact(Contact);
@@ -537,7 +538,8 @@ class MeasurementSearchTrackclass extends AsyncTask<String, Void, String> {
                                     String edate=Utility.formatDate(End_Date);
                                     subList.setExpiryDate(edate);
                                     subList.setAttendanceMode(Attendance_Mode);
-
+                                    subList.setImage(Image);
+                                    subList.setStatus(Status);
                                     //  for (int j = 0; j < 5; j++) {
 
                                     subListArrayList.add(subList);

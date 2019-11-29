@@ -376,6 +376,8 @@ public class CourseFilterActivity extends AppCompatActivity {
             if (convertedDate2.after(convertedDate) || convertedDate2.equals(convertedDate)) {
                 //.setText("true");
             } else {
+                String firstday= Utility.getFirstDayofMonth();
+                todate.setText(firstday);
                 Toast.makeText(this, "From date should be greater than to date: " , Toast.LENGTH_LONG).show();
             }
         } catch (ParseException e) {

@@ -13,7 +13,9 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.ndfitnessplus.Activity.WorkoutDetailsActivity;
 import com.ndfitnessplus.Activity.WorkoutDetailsDescriptionActivity;
+import com.ndfitnessplus.Model.WorkOutDetailsList;
 import com.ndfitnessplus.Model.WorkOutDetailsList;
 import com.ndfitnessplus.R;
 import com.ndfitnessplus.Utility.ServiceUrls;
@@ -26,17 +28,18 @@ import java.util.List;
 
 public class WorkoutLevelDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+    private final int VIEW_ITEM = 1;
+    private final int VIEW_SECTION = 0;
+
     private List<WorkOutDetailsList> items = new ArrayList<>();
-
-
     private Context ctx;
-    private WorkOutAdapter.OnItemClickListener mOnItemClickListener;
+    private WorkoutLevelDetailsAdapter.OnItemClickListener mOnItemClickListener;
 
     public interface OnItemClickListener {
         void onItemClick(View view, WorkOutDetailsList obj, int position);
     }
 
-    public void setOnItemClickListener(final WorkOutAdapter.OnItemClickListener mItemClickListener) {
+    public void setOnItemClickListener(final WorkoutLevelDetailsAdapter.OnItemClickListener mItemClickListener) {
         this.mOnItemClickListener = mItemClickListener;
     }
 
@@ -46,60 +49,90 @@ public class WorkoutLevelDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
     }
 
     public class OriginalViewHolder extends RecyclerView.ViewHolder {
-        public TextView workout_name, set, repitation, time, musculargroup,levelname,day;
+//        public ImageView image;
+        public TextView mulsclegrpTv,workoutnameTv,setTv,repitationsTv,timeTv;
         public View lyt_parent;
 
         public OriginalViewHolder(View v) {
             super(v);
-            workout_name = (TextView) v.findViewById(R.id.workout_nameTV);
-            set = (TextView) v.findViewById(R.id.setsTV);
-            repitation = (TextView) v.findViewById(R.id.repitationsTV);
-            time = (TextView) v.findViewById(R.id.timeTV);
-            musculargroup = (TextView) v.findViewById(R.id.musclegrpTV);
-            levelname = (TextView) v.findViewById(R.id.level_nameTV);
-            day = (TextView) v.findViewById(R.id.daysTV);
+//            image = (ImageView) v.findViewById(R.id.image);
+            mulsclegrpTv = (TextView) v.findViewById(R.id.musclegrpTV);
+            workoutnameTv = (TextView) v.findViewById(R.id.workout_nameTV);
+            setTv = (TextView) v.findViewById(R.id.setsTV);
+            repitationsTv = (TextView) v.findViewById(R.id.repitationsTV);
+            timeTv = (TextView) v.findViewById(R.id.timeTV);
             lyt_parent = (View) v.findViewById(R.id.lyt_parent);
+        }
+    }
+
+    public static class SectionViewHolder extends RecyclerView.ViewHolder {
+        public TextView title_section;
+
+        public SectionViewHolder(View v) {
+            super(v);
+            title_section = (TextView) v.findViewById(R.id.title_section);
         }
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         RecyclerView.ViewHolder vh;
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.workout_level_details, parent, false);
-        vh = new WorkoutLevelDetailsAdapter.OriginalViewHolder(v);
+        if (viewType == VIEW_ITEM) {
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.workout_level_details, parent, false);
+            vh = new WorkoutLevelDetailsAdapter.OriginalViewHolder(v);
+        } else {
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_section, parent, false);
+            vh = new WorkoutLevelDetailsAdapter.SectionViewHolder(v);
+        }
         return vh;
     }
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+        final   WorkOutDetailsList p = items.get(position);
         if (holder instanceof WorkoutLevelDetailsAdapter.OriginalViewHolder) {
-            final WorkoutLevelDetailsAdapter.OriginalViewHolder view = (WorkoutLevelDetailsAdapter.OriginalViewHolder) holder;
+            WorkoutLevelDetailsAdapter.OriginalViewHolder view = (WorkoutLevelDetailsAdapter.OriginalViewHolder) holder;
 
-            final WorkOutDetailsList p = items.get(position);
+            //final WorkOutDetailsList p = items.get(position);
 
-            view.workout_name.setText(p.getWorkoutName());
-            view.set.setText(p.getSet());
-            view.repitation.setText(p.getRepitation());
-            view.time.setText(p.getTime());
-            view.musculargroup.setText(p.getBodyPart());
-            view.levelname.setText(p.getLevelName());
-            view.day.setText(p.getDay());
-        }
-    }
+            view.mulsclegrpTv.setText(p.getBodyPart());
+            view.workoutnameTv.setText(p.getWorkoutName());
+            view.setTv.setText(p.getSet());
+            view.repitationsTv.setText(p.getRepitation());
+            view.timeTv.setText(p.getTime());
 
-    private boolean toggleLayoutExpand(boolean show, View view, View lyt_expand) {
-        Tools.toggleArrow(show, view);
-        if (show) {
-            ViewAnimation.expand(lyt_expand);
+
+
+//            view.lyt_parent.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    Intent intent=new Intent(ctx, WorkoutDetailsActivity.class);
+//                    intent.putExtra("days",p.getDay());
+//                    intent.putExtra("member_id",p.getMemberId());
+//                    ctx.startActivity(intent);
+//                }
+//            });
+
         } else {
-            ViewAnimation.collapse(lyt_expand);
+            WorkoutLevelDetailsAdapter.SectionViewHolder view = (WorkoutLevelDetailsAdapter.SectionViewHolder) holder;
+            view.title_section.setText(p.getDay());
         }
-        return show;
     }
 
     @Override
     public int getItemCount() {
         return items.size();
     }
+
+    @Override
+    public int getItemViewType(int position) {
+        return this.items.get(position).section ? VIEW_SECTION : VIEW_ITEM;
+    }
+
+    public void insertItem(int index, WorkOutDetailsList people){
+        items.add(index, people);
+        notifyItemInserted(index);
+    }
+
 }

@@ -67,7 +67,7 @@ public class SearchContactAdapter extends ArrayAdapter implements Filterable {
 
 
 
-        contact.setText(model.getCustContact());
+        contact.setText(model.getNameContact());
 
 
         return convertView;

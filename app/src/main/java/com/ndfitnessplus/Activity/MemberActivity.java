@@ -125,7 +125,7 @@ public class MemberActivity extends AppCompatActivity implements SwipeRefreshLay
         if (args != null) {
             ArrayList<MemberDataList> filterArrayList = (ArrayList<MemberDataList>) args.getSerializable("filter_array_list");
             progressBar.setVisibility(View.GONE);
-
+            length=filterArrayList.size();
             total_member.setText(String.valueOf(length));
             adapter = new MemberAdapter( filterArrayList,MemberActivity.this);
             recyclerView.setAdapter(adapter);

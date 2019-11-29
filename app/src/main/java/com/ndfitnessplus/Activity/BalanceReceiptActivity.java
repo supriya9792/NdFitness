@@ -1261,7 +1261,8 @@ public class BalanceReceiptActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-    public void  EmailLoginClass() { BalanceReceiptActivity.EmailLoginTrackClass ru = new BalanceReceiptActivity.EmailLoginTrackClass();
+    public void  EmailLoginClass() {
+        BalanceReceiptActivity.EmailLoginTrackClass ru = new BalanceReceiptActivity.EmailLoginTrackClass();
         ru.execute("5");
     }
 
@@ -1499,15 +1500,16 @@ public class BalanceReceiptActivity extends AppCompatActivity {
                                                 String ReceiptOwnerExecutive =  jsonObj1.getString("ReceiptOwnerExecutive");
 
                                                 textBody += "  <tr >\n \n" +
-                                                        "    <td >"+Receipt_Id+"</td>\n \n" +
-                                                        "     <td >"+receipt_date+"</td>\n\n" +
-                                                        "    <td >"+Tax+"</td> \n\n" +
-                                                        "    <td >"+TaxAmount+"</td>\n\n" +
-                                                        "    <td >"+Paid+"</td>\n\n" +
-                                                        "    <td >"+PaymentType+"</td>\n\n" +
-                                                        "    <td >"+PaymentDetails+"</td>\n\n" +
-                                                        "    <td >"+ReceiptOwnerExecutive+"</td>\n\n" +
+                                                        "    <td width='10%'>"+Receipt_Id+"</td>\n \n" +
+                                                        "     <td width='15%'>"+receipt_date+"</td>\n\n" +
+                                                        "    <td width='8%'>"+Tax+"</td> \n\n" +
+                                                        "    <td width='12.5%'>"+TaxAmount+"</td>\n\n" +
+                                                        "    <td width='12.5%'>"+Paid+"</td>\n\n" +
+                                                        "    <td width='12.5%'>"+PaymentType+"</td>\n\n" +
+                                                        "    <td width='12.5%'>"+PaymentDetails+"</td>\n\n" +
+                                                        "    <td width='13%'>"+ReceiptOwnerExecutive+"</td>\n\n" +
                                                         "    </tr>\n";
+//
                                             }
                                         }
 
@@ -1594,14 +1596,14 @@ public class BalanceReceiptActivity extends AppCompatActivity {
                                             "                                </thead>\n" +
                                             "                               <tbody height=\"100\" >\n" +
                                             "                                    <tr height=\"100\" >\n" +
-                                            "                                        <td >"+Package_Name+"</td>\n" +
-                                            "                                         <td >"+Duration_Days+"</td>\n" +
-                                            "                                        <td >"+Session+"</td>                                       \n" +
-                                            "                                        <td >"+start_date+"</td>\n" +
-                                            "                                        <td >"+end_date+"</td>\n" +
-                                            "                                        <td >"+Time+"</td>\n" +
-                                            "                                        <td >"+Instructor_Name+"</td>\n" +
-                                            "                                        <td >"+Package_Fees+"</td>\n" +
+                                            "                                        <td width='12.5%'>"+Package_Name+"</td>\n" +
+                                            "                                         <td width='11.5%'>"+Duration_Days+"</td>\n" +
+                                            "                                        <td width='11%'>"+Session+"</td>                                       \n" +
+                                            "                                        <td width='14%'>"+start_date+"</td>\n" +
+                                            "                                        <td width='14%'>"+end_date+"</td>\n" +
+                                            "                                        <td width='8%'>"+Time+"</td>\n" +
+                                            "                                        <td width='13%'>"+Instructor_Name+"</td>\n" +
+                                            "                                        <td width='12%'>"+Package_Fees+"</td>\n" +
                                             "                                    </tr>\n" +
                                             "                                </tbody>\n" +
                                             "                            </table>\n" +
@@ -1772,7 +1774,7 @@ public class BalanceReceiptActivity extends AppCompatActivity {
 
                                                 @Override
                                                 protected Void doInBackground(String... params) {
-                                                    Mail m = new Mail("tulsababar.ndsoft@gmail.com", "Tulsa@2019");
+                                                    Mail m = new Mail(Email_ID, Password);
 
                                                     String[] toArr = { Email, "tulsababar01@gmail.com"};
                                                    // Log.v(TAG, String.format(" Email array to send = %s", toArr));
@@ -1874,28 +1876,7 @@ public class BalanceReceiptActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-    // sending email in android
-    protected void sendEmail() {
-        Log.i("Send email", "");
-        String[] TO = {Email};
-        String[] CC = {""};
-        Intent emailIntent = new Intent(Intent.ACTION_SEND);
 
-        emailIntent.setData(Uri.parse("mailto:"));
-        emailIntent.setType("text/plain");
-        emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
-        emailIntent.putExtra(Intent.EXTRA_CC, CC);
-        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Your subject");
-        emailIntent.putExtra(Intent.EXTRA_TEXT, "Email message goes here");
-
-        try {
-            startActivity(Intent.createChooser(emailIntent, "Send mail..."));
-            finish();
-
-        } catch (android.content.ActivityNotFoundException ex) {
-            Toast.makeText(BalanceReceiptActivity.this, "There is no email client installed.", Toast.LENGTH_SHORT).show();
-        }
-    }
     // ******************* send sms for add enquiry **************
     public void  SendEnquirySmsClass() {
         BalanceReceiptActivity.SendEnquirySmsTrackClass ru = new BalanceReceiptActivity.SendEnquirySmsTrackClass();
@@ -2139,12 +2120,13 @@ public class BalanceReceiptActivity extends AppCompatActivity {
                                 //  String email = jsonObj.getString("email");
                                 // String phn_no = jsonObj.getString("mobile");
 
-
+                                String namec=Name+"-"+Contact;
                                 searchModel.setCustName(Name);
                                 searchModel.setCustContact(Contact);
                                 searchModel.setMemberId(MemberID);
                                 searchModel.setEmail(Email);
                                 searchModel.setGender(Gender);
+                                searchModel.setNameContact(namec);
 
                                 searchArrayList.add(searchModel);
                                 searchnameadapter = new SearchNameAdapter(BalanceReceiptActivity.this, searchArrayList);

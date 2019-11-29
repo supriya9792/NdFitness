@@ -61,6 +61,9 @@ import com.bumptech.glide.Glide;
 //import com.itextpdf.text.pdf.PdfPCell;
 //import com.itextpdf.text.pdf.PdfPTable;
 //import com.itextpdf.text.pdf.PdfWriter;
+import com.google.common.base.Joiner;
+import com.google.common.base.Splitter;
+import com.google.common.collect.Iterables;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
@@ -2580,6 +2583,9 @@ public class RenewActivity extends AppCompatActivity {
 
                                     String Company_Name = SharedPrefereneceUtil.getCompanyName(RenewActivity.this)+"-"+SharedPrefereneceUtil.getSelectedBranch(RenewActivity.this);
                                     String Address = jsonObj.getString("Address");
+
+                                    String ad[]=Address.split(",");
+
                                     String Contact = jsonObj.getString("Contact");
                                     String TermsAndConditions = jsonObj.getString("TermsAndConditions");
                                     String MemberGST_No = jsonObj.getString("MemberGST_No");
@@ -2671,14 +2677,14 @@ public class RenewActivity extends AppCompatActivity {
 
                                                 }
                                                 textBody += "  <tr >\n \n" +
-                                                        "    <td >"+Receipt_Id+"</td>\n \n" +
-                                                        "     <td >"+receipt_date+"</td>\n\n" +
-                                                        "    <td >"+Tax+"</td> \n\n" +
-                                                        "    <td >"+TaxAmount+"</td>\n\n" +
-                                                        "    <td >"+Paid+"</td>\n\n" +
-                                                        "    <td >"+PaymentType+"</td>\n\n" +
-                                                        "    <td >"+PaymentDetails+"</td>\n\n" +
-                                                        "    <td >"+ReceiptOwnerExecutive+"</td>\n\n" +
+                                                        "    <td width='10%'>"+Receipt_Id+"</td>\n \n" +
+                                                        "     <td width='15%'>"+receipt_date+"</td>\n\n" +
+                                                        "    <td width='8%'>"+Tax+"</td> \n\n" +
+                                                        "    <td width='12.5%'>"+TaxAmount+"</td>\n\n" +
+                                                        "    <td width='12.5%'>"+Paid+"</td>\n\n" +
+                                                        "    <td width='12.5%'>"+PaymentType+"</td>\n\n" +
+                                                        "    <td width='12.5%'>"+PaymentDetails+"</td>\n\n" +
+                                                        "    <td width='13%'>"+ReceiptOwnerExecutive+"</td>\n\n" +
                                                         "    </tr>\n";
 //
                                             }
@@ -2763,14 +2769,14 @@ public class RenewActivity extends AppCompatActivity {
                                             "                                </thead>\n" +
                                             "                               <tbody height=\"100\" >\n" +
                                             "                                    <tr height=\"100\" >\n" +
-                                            "                                        <td >"+Package_Name+"</td>\n" +
-                                            "                                         <td >"+Duration_Days+"</td>\n" +
-                                            "                                        <td >"+Session+"</td>                                       \n" +
-                                            "                                        <td >"+start_date+"</td>\n" +
-                                            "                                        <td >"+end_date+"</td>\n" +
-                                            "                                        <td >"+Time+"</td>\n" +
-                                            "                                        <td >"+Instructor_Name+"</td>\n" +
-                                            "                                        <td >"+Package_Fees+"</td>\n" +
+                                            "                                        <td width='12.5%'>"+Package_Name+"</td>\n" +
+                                            "                                        <td width='11.5%'>"+Duration_Days+"</td>\n" +
+                                            "                                        <td width='11%'>"+Session+"</td>                                       \n" +
+                                            "                                        <td width='14%'>"+start_date+"</td>\n" +
+                                            "                                        <td width='14%'>"+end_date+"</td>\n" +
+                                            "                                        <td width='8%'>"+Time+"</td>\n" +
+                                            "                                        <td width='13%'>"+Instructor_Name+"</td>\n" +
+                                            "                                        <td width='12%'>"+Package_Fees+"</td>\n" +
                                             "                                    </tr>\n" +
                                             "                                </tbody>\n" +
                                             "                            </table>\n" +
@@ -2820,8 +2826,8 @@ public class RenewActivity extends AppCompatActivity {
                                             "             <table border = '1' cellpadding=\"6\"  width=\"100%\" >\n" +
                                             "             <thead height=\"100\">\n" +
                                             "                   <tr height=\"100\" >\n" +
-                                            "                      <th ><strong>#RNo</strong></th>\n" +
-                                            "                      <th ><strong>Date</strong></th>\n" +
+                                            "                      <th  ><strong>#RNo</strong></th>\n" +
+                                            "                      <th  ><strong>Date</strong></th>\n" +
                                             "                      <th ><strong>Tax</strong></th>                                    \n" +
                                             "                      <th ><strong>Tax Amount</strong></th>\n" +
                                             "                      <th ><strong>Paid Amount</strong></th>\n" +
@@ -2900,14 +2906,27 @@ public class RenewActivity extends AppCompatActivity {
                                         thread.start();
 //
                                         createHeadings(cb,50,780,Company_Name);
-                                        createText(cb,50,765,Address);
-                                        createText(cb,50,750,Contact);
-                                        createText(cb,50,735,GST_No);
-                                        createHeadings(cb,50,715,"Bill To");
-                                        createText(cb,50,700,Name);
-                                        createText(cb,50,685,Email);
-                                        createText(cb,50,670,Member_Contact);
-                                        createText(cb,50,655,MemberGST_No);
+//                                        Paragraph p = new Paragraph(Address);
+//                                        document.add(p);
+                                        String delimiter = " ";
+                                        int partitionSize = 6;
+                                        String add="";
+                                        int x=50;
+                                        int y=765;
+                                        for (Iterable<String> iterable : Iterables.partition(Splitter.on(delimiter).split(Address), partitionSize)) {
+                                            System.out.println(Joiner.on(delimiter).join(iterable));
+                                            add+=Joiner.on(delimiter).join(iterable)+"\n";
+
+                                        createText(cb,x,y,Joiner.on(delimiter).join(iterable));
+                                         y= y-10;
+                                        }
+                                        createText(cb,50,730,Contact);
+                                        createText(cb,50,720,GST_No);
+                                        createHeadings(cb,50,705,"Bill To");
+                                        createText(cb,50,690,Name);
+                                        createText(cb,50,675,Email);
+                                        createText(cb,50,660,Member_Contact);
+                                        createText(cb,50,645,MemberGST_No);
 
                                         createHeadings(cb,465,735,"Invoice Date :"+invoice_date);
                                         createHeadings(cb,465,720,"Invoice No : "+Invoice_ID);
@@ -3422,12 +3441,13 @@ public class RenewActivity extends AppCompatActivity {
                                 //  String email = jsonObj.getString("email");
                                 // String phn_no = jsonObj.getString("mobile");
 
-
+                                String namec=Name+"-"+Contact;
                                 searchModel.setCustName(Name);
                                 searchModel.setCustContact(Contact);
                                 searchModel.setMemberId(MemberID);
                                 searchModel.setEmail(Email);
                                 searchModel.setGender(Gender);
+                                searchModel.setNameContact(namec);
 
                                 searchArrayList.add(searchModel);
                                 searchnameadapter = new SearchNameAdapter(RenewActivity.this, searchArrayList);
