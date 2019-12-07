@@ -981,7 +981,7 @@ public class RenewActivity extends AppCompatActivity {
                                 inputStartDate.setText(cdate);
                                 if(inputDuration.getText().length()>0) {
                                     int duration = Integer.parseInt(inputDuration.getText().toString());
-                                    EndDate = Utility.CalulateDateFromGivenDays(inputStartDate.getText().toString(), duration);
+                                    EndDate = Utility.CalulateDateFromGivenDays(inputStartDate.getText().toString(), (duration));
                                 }
                                 inputEndDate.setText(EndDate);
                                 Log.v(TAG, String.format("End Date  :: End date= %s", EndDate));
@@ -1714,7 +1714,7 @@ public class RenewActivity extends AppCompatActivity {
                                         maxdisc=Double.parseDouble(MaxDiscount);
                                         if(inputDuration.getText().length()>0) {
                                             int duration = Integer.parseInt(inputDuration.getText().toString());
-                                            EndDate = Utility.CalulateDateFromGivenDays(inputStartDate.getText().toString(), duration-1);
+                                            EndDate = Utility.CalulateDateFromGivenDays(inputStartDate.getText().toString(), (duration));
                                         }
                                         inputEndDate.setText(EndDate);
                                         inputPaid.setText("");
@@ -2491,7 +2491,7 @@ public class RenewActivity extends AppCompatActivity {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
           //  showProgressDialog();
-            viewDialog.showDialog();
+           // viewDialog.showDialog();
         }
 
         @Override
@@ -2499,7 +2499,7 @@ public class RenewActivity extends AppCompatActivity {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: show_receipt_data = %s", response));
             //dismissProgressDialog();
-            viewDialog.hideDialog();
+            //viewDialog.hideDialog();
             //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             ReceiptDataDetails(response);
 

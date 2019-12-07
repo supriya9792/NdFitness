@@ -88,7 +88,7 @@ public class ShowWorkoutAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             final WorkOutDayList p = arrayList.get(position);
 
             view.Name.setText(p.getMemberName());
-            view.Contact.setText(p.getMemberContact());
+            view.Contact.setText(p.getEncryptContact());
             view.Date.setText(p.getAssignDate());
             view.ExerciseId.setText(p.getExerciseId());
             view.LevelName.setText(p.getLevel());

@@ -299,11 +299,13 @@ public class EnquiryAdapter extends RecyclerView.Adapter<EnquiryAdapter.BaseView
                 @Override
                 public void onClick(View v) {
                   String   enquiryId=enq.getID();
-                    Intent intent=new Intent(context, EnquiryFollowupDetailsActivity.class);
-                    intent.putExtra("enquiry_id",enquiryId);
-                    intent.putExtra("rating",enq.getRating());
-                    intent.putExtra("call_response",enq.getCallResponse());
-                    context.startActivity(intent);
+                    if (!enq.getRating().equals("Converted")) {
+                        Intent intent = new Intent(context, EnquiryFollowupDetailsActivity.class);
+                        intent.putExtra("enquiry_id", enquiryId);
+                        intent.putExtra("rating", enq.getRating());
+                        intent.putExtra("call_response", enq.getCallResponse());
+                        context.startActivity(intent);
+                    }
                 }
             });
         }

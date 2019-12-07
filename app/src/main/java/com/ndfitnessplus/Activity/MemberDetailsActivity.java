@@ -163,20 +163,24 @@ public class MemberDetailsActivity extends AppCompatActivity {
                 FollowupType="";
             }
             Image=filterArrayList.getImage();
-            Image.replace("\"", "");
-            String domainurl= SharedPrefereneceUtil.getDomainUrl(MemberDetailsActivity.this);
-            String url= domainurl+ServiceUrls.IMAGES_URL + Image;
-            username.setText(name);
-            mobilenumber.setText(Contact);
-           // Glide.with(this).load(url).placeholder(R.drawable.nouser).into(imageView);
-            RequestOptions requestOptions = new RequestOptions();
-            requestOptions.placeholder(R.drawable.nouser);
-            requestOptions.error(R.drawable.nouser);
+            Log.d(TAG, "Image: " + Image);
+            if(Image !=null) {
+               String img= Image.replace("\"", "");
+                String domainurl= SharedPrefereneceUtil.getDomainUrl(MemberDetailsActivity.this);
+                String url= domainurl+ServiceUrls.IMAGES_URL + img;
+                username.setText(name);
+                mobilenumber.setText(Contact);
+                // Glide.with(this).load(url).placeholder(R.drawable.nouser).into(imageView);
+                RequestOptions requestOptions = new RequestOptions();
+                requestOptions.placeholder(R.drawable.nouser);
+                requestOptions.error(R.drawable.nouser);
 
 
-            Glide.with(this)
-                    .setDefaultRequestOptions(requestOptions)
-                    .load(url).into(imageView);
+                Glide.with(this)
+                        .setDefaultRequestOptions(requestOptions)
+                        .load(url).into(imageView);
+            }
+
             folldetailsclass();
             memberdetailsclass();
         }
@@ -480,6 +484,12 @@ public class MemberDetailsActivity extends AppCompatActivity {
                         } else {
                             inputNextFollowupdate.setEnabled(true);
                         }
+
+                    }
+                    if(FollowupType.equals("Payment")&&(Rating.equals("Not Interested"))){
+                        inputNextFollowupdate.setEnabled(true);
+                        String curr_date = Utility.getCurrentDate();
+                        inputNextFollowupdate.setText(curr_date);
                     }
                     // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.black));
                     // Showing selected spinner item
@@ -557,6 +567,7 @@ public class MemberDetailsActivity extends AppCompatActivity {
                     }
                     if (!(Rating == null)) {
                         if(!FollowupType.equals("Member BirthDay")){
+
                             if (Rating.equals("Not Interested") || Rating.equals("Converted")) {
                                 //Toast.makeText(parent.getContext(), "no interetsed: ", Toast.LENGTH_LONG).show();
                                 inputNextFollowupdate.setText("");
@@ -564,8 +575,23 @@ public class MemberDetailsActivity extends AppCompatActivity {
                                 inputNextFollowupdate.setKeyListener(null);
                             } else {
                                 inputNextFollowupdate.setEnabled(true);
+                                String curr_date = Utility.getCurrentDate();
+                                inputNextFollowupdate.setText(curr_date);
                             }
                         }
+                        if(FollowupType.equals("Payment")&&(Rating.equals("Not Interested"))){
+                            inputNextFollowupdate.setEnabled(true);
+                            String curr_date = Utility.getCurrentDate();
+                            inputNextFollowupdate.setText(curr_date);
+                        }else{
+                            if (Rating.equals("Not Interested") || Rating.equals("Converted")) {
+                                //Toast.makeText(parent.getContext(), "no interetsed: ", Toast.LENGTH_LONG).show();
+                                inputNextFollowupdate.setText("");
+                                inputNextFollowupdate.setEnabled(false);
+                                inputNextFollowupdate.setKeyListener(null);
+                            }
+                        }
+
 
                     }
                     if(index==0){
@@ -703,6 +729,7 @@ public class MemberDetailsActivity extends AppCompatActivity {
                                     //  for (int j = 0; j < 5; j++) {
 
                                     subList.setName(name);
+                                    username.setText(name);
                                     String sdate=Utility.formatDate(Start_Date);
                                     String edate=Utility.formatDate(End_Date);
                                     String todate=sdate+" to "+edate;
@@ -1134,7 +1161,7 @@ public class MemberDetailsActivity extends AppCompatActivity {
 
             if (success.equalsIgnoreCase(getResources().getString(R.string.two))||success.equalsIgnoreCase(getResources().getString(R.string.one))) {
                 Toast.makeText(MemberDetailsActivity.this,"Followup added succesfully",Toast.LENGTH_LONG).show();
-                //finish();
+                finish();
                 overridePendingTransition(0, 0);
                 Intent intent=new Intent(this, MemberDetailsActivity.class);
                 Bundle bundle = new Bundle();

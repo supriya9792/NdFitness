@@ -275,7 +275,7 @@ public class MeasurementActivity extends AppCompatActivity implements SwipeRefre
 
     @Override
     public void onRefresh() {
-
+         onRestart();
     }
     // Asycc class for loading data for database
     private void measurementclass() {

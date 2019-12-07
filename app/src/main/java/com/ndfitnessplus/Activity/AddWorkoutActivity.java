@@ -218,6 +218,7 @@ public class AddWorkoutActivity extends AppCompatActivity {
                     if(index!=0){
                         txtWorkoutLevel.setVisibility(View.VISIBLE);
                         subListArrayList.clear();
+                        subListArrayList1.clear();
                         workout_detailsclass();
                     }
                     if(!workoutLevel.equals(getResources().getString(R.string.workout_level))){
@@ -243,6 +244,7 @@ public class AddWorkoutActivity extends AppCompatActivity {
                 return false;
             }
         }) ;
+
         spinInstructorName.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -285,6 +287,17 @@ public class AddWorkoutActivity extends AppCompatActivity {
                 return false;
             }
         }) ;
+        inputContact.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+
+                if(inputContact.getText().length()>0){
+                    CheckContactClass();
+                }
+
+
+            }
+        });
         inputContact.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -298,6 +311,7 @@ public class AddWorkoutActivity extends AppCompatActivity {
                 gender=searchcontactadapter.getItem(position).getGender();
 
                 inputName.setText(countryName);
+                inputName.setError(null);
                 inputContact.setText(contact);
 
 
@@ -341,6 +355,7 @@ public class AddWorkoutActivity extends AppCompatActivity {
 
 
                 inputName.setText(countryName);
+                inputContact.setError(null);
                 inputContact.setText(contact);
 
             }
@@ -594,7 +609,7 @@ public class AddWorkoutActivity extends AppCompatActivity {
                         JSONArray jsonArrayCountry = object.getJSONArray("result");
                         instructorNameArrayList.clear();
                         instructorNamelist = new Spinner_List();
-                        instructorNamelist.setName(getResources().getString(R.string.hint_instructor));
+                        instructorNamelist.setName(getResources().getString(R.string.hint_instructor_name));
                         instructorNameArrayList.add(0,instructorNamelist);
                         if (jsonArrayCountry != null && jsonArrayCountry.length() > 0){
                             for (int i = 0; i < jsonArrayCountry.length(); i++) {
@@ -789,120 +804,106 @@ public class AddWorkoutActivity extends AppCompatActivity {
         }
     }
 
-//    //*************** Add enquiry to database *************
-//    public void  AddEnquiryClass() {
-//        AddWorkoutActivity.AddEnquiryTrackClass ru = new AddWorkoutActivity.AddEnquiryTrackClass();
-//        ru.execute("5");
-//    }
-//    private void showProgressDialog() {
-//        Log.v(TAG, String.format("showProgressDialog"));
-//        pd = new ProgressDialog(AddWorkoutActivity.this);
-//        pd.setMessage("loading");
-//        pd.setCancelable(false);
-//        pd.show();
-//    }
-//
-//    /**
-//     * Dismiss Progress Dialog.
-//     */
-//    private void dismissProgressDialog() {
-//        Log.v(TAG, String.format("dismissProgressDialog"));
-//        pd.cancel();
-//
-//
-//    }
-//
-//
-//
-//    class AddEnquiryTrackClass extends AsyncTask<String, Void, String> {
-//
-//        ServerClass ruc = new ServerClass();
-//
-//
-//        @Override
-//        protected void onPreExecute() {
-//            super.onPreExecute();
-//            Log.v(TAG, "onPreExecute");
-//            // showProgressDialog();
-//            viewDialog.showDialog();
-//        }
-//
-//        @Override
-//        protected void onPostExecute(String response) {
-//            super.onPostExecute(response);
-//            Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-//            //dismissProgressDialog();
-//            viewDialog.hideDialog();
-//            //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
-//            //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
-//            AddEnquiryDetails(response);
-//
-//        }
-//
-//        @Override
-//        protected String doInBackground(String... params) {
-//            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
-//            HashMap<String, String> AddEnquiryDetails = new HashMap<String, String>();
-//            AddEnquiryDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(AddWorkoutActivity.this));
-//            AddEnquiryDetails.put("name",inputName.getText().toString());
-//            AddEnquiryDetails.put("contact",inputContact.getText().toString());
-//            AddEnquiryDetails.put("add",inputAdd.getText().toString());
-//            AddEnquiryDetails.put("email",inputEmail.getText().toString());
-//            AddEnquiryDetails.put("location",inputLocation.getText().toString());
-//            AddEnquiryDetails.put("gender", gender);
-//            AddEnquiryDetails.put("occupation",occupation);
-//            AddEnquiryDetails.put("enq_type",enquiryType);
-//            AddEnquiryDetails.put("enq_source",enquirySource);
-//            AddEnquiryDetails.put("enq_for",enquiryFor);
-//            AddEnquiryDetails.put("comment",inputComment.getText().toString());
-//            AddEnquiryDetails.put("foll_type","Enquiry");
-//            AddEnquiryDetails.put("rating",Rating);
-//            AddEnquiryDetails.put("call_res",callResponce);
-//            AddEnquiryDetails.put("nextFoll_date",inputNextFollowupdate.getText().toString());
-//            Log.v(TAG, String.format("doInBackground :: next followup date= %s", inputNextFollowupdate.getText().toString()));
-//            AddEnquiryDetails.put("dob",inputDOB.getText().toString());
-//            AddEnquiryDetails.put("budget",inputBudget.getText().toString());
-//            AddEnquiryDetails.put("image_path",ConvertImage);
-//            AddEnquiryDetails.put("exe_name",SharedPrefereneceUtil.getName(AddWorkoutActivity.this));
-//            AddEnquiryDetails.put("mode","AdminApp");
-//            Log.v(TAG, String.format("doInBackground :: executive name= %s", SharedPrefereneceUtil.getName(AddWorkoutActivity.this)));
-//            AddEnquiryDetails.put("action", "add_enquiry");
-//            String domainurl=SharedPrefereneceUtil.getDomainUrl(AddWorkoutActivity.this);
-//            String loginResult2 = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, AddEnquiryDetails);
-//
-//            Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult2));
-//            return loginResult2;
-//        }
-//    }
-//
-//
-//    private void AddEnquiryDetails(String jsonResponse) {
-//
-//        Log.v(TAG, String.format("loginServerResponse :: response = %s", jsonResponse));
-//
-//        JSONObject jsonObjLoginResponse = null;
-//        try {
-//            jsonObjLoginResponse = new JSONObject(jsonResponse);
-//            String success = jsonObjLoginResponse.getString(getResources().getString(R.string.success));
-//
-//            if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
-//                Toast.makeText(AddWorkoutActivity.this,"Enquiry added succesfully",Toast.LENGTH_SHORT).show();
-//                inputName.getText().clear();
-//
-//            }
-//
-//
-//            else if (success.equalsIgnoreCase(getResources().getString(R.string.one)))
-//            {
-//                Toast.makeText(AddWorkoutActivity.this,"Contact Already Exits",Toast.LENGTH_SHORT).show();
-//                inputContact.getText().clear();
-//                // Toast.makeText(AddWorkoutActivity.this,"Please Enter New Mobile Number",Toast.LENGTH_SHORT).show();
-//            }
-//
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//    }
+    //   ************** Check Contact number already exist or not **************
+    public void  CheckContactClass() {
+        AddWorkoutActivity.CheckContactTrackClass ru = new AddWorkoutActivity.CheckContactTrackClass();
+        ru.execute("5");
+    }
+
+    class CheckContactTrackClass extends AsyncTask<String, Void, String> {
+
+        ServerClass ruc = new ServerClass();
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Log.v(TAG, "onPreExecute");
+            // showProgressDialog();
+            viewDialog.showDialog();
+        }
+
+        @Override
+        protected void onPostExecute(String response) {
+            super.onPostExecute(response);
+            Log.v(TAG, String.format("onPostExecute :: response = %s", response));
+            //dismissProgressDialog();
+            viewDialog.hideDialog();
+            //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
+            //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
+            CheckContactDetails(response);
+
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            //  Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+            HashMap<String, String> EnquiryForDetails = new HashMap<String, String>();
+
+            EnquiryForDetails.put("mobileno",inputContact.getText().toString() );
+            EnquiryForDetails.put("user","Member" );
+            EnquiryForDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(AddWorkoutActivity.this) );
+            EnquiryForDetails.put("action", "check_mobile_already_exist_or_not");
+            String domainurl=SharedPrefereneceUtil.getDomainUrl(AddWorkoutActivity.this);
+            //EnquiryForloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(EnquiryForloyee.this));
+            String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EnquiryForDetails);
+            Log.v(TAG, String.format("doInBackground :: check_mobile_already_exist_or_not= %s", loginResult));
+            return loginResult;
+        }
+    }
+    private void CheckContactDetails(String jsonResponse) {
+
+        Log.v(TAG, String.format("loginServerResponse :: response = %s", jsonResponse));
+
+        JSONObject object = null;
+        try {
+            object = new JSONObject(jsonResponse);
+            String success = object.getString(getResources().getString(R.string.success));
+
+            if (success.equalsIgnoreCase(getResources().getString(R.string.zero))) {
+                Toast.makeText(AddWorkoutActivity.this,"Member is not registred. Please register Member first",Toast.LENGTH_SHORT).show();
+                //inputContact.getText().clear();
+                // showCustomDialog();
+                finish();
+                Intent intent=new Intent(AddWorkoutActivity.this,AddMemberActivity.class);
+                intent.putExtra("contact",inputContact.getText().toString());
+                startActivity(intent);
+                //inputEmail, inputPhone,inputAdd,inputReq,inputFollowupdate;
+            }
+            else if (success.equalsIgnoreCase(getResources().getString(R.string.two)))
+            {
+                JSONArray jsonArrayResult = object.getJSONArray("Data");
+
+                if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
+                    for (int i = 0; i < jsonArrayResult.length(); i++) {
+
+                        Log.v(TAG, "JsonResponseOpeartion ::");
+                        JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
+                        if (jsonObj != null) {
+
+                            MemberID = jsonObj.getString("MemberID");
+                            String Name = jsonObj.getString("Name");
+                            Email = jsonObj.getString("Email");
+                            inputName.setText(Name);
+                            //invoiceRefIdClass();
+
+                        }
+                    }
+                } else if (jsonArrayResult.length() == 0) {
+                    System.out.println("No records found");
+                }
+                // Toast.makeText(AddEnquiryActivity.this,"Please Enter New Mobile Number",Toast.LENGTH_SHORT).show();
+            }else if(success.equalsIgnoreCase(getResources().getString(R.string.one))){
+                Toast.makeText(AddWorkoutActivity.this,"member has no active course.Please add course first",Toast.LENGTH_SHORT).show();
+                Intent intent=new Intent(AddWorkoutActivity.this,RenewActivity.class);
+                intent.putExtra("contact",inputContact.getText().toString());
+                startActivity(intent);
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 
 private void workout_detailsclass() {
     AddWorkoutActivity.WorkoutDetailsTrackclass ru = new AddWorkoutActivity.WorkoutDetailsTrackclass();
@@ -1031,7 +1032,7 @@ private void workout_detailsclass() {
                     recyclerView.setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
+//                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
             }
         }
@@ -1342,7 +1343,7 @@ private void workout_detailsclass() {
                                     String currentdate=Utility.getCurrentDate();
                                     //JSONArray jsonArrayPayTrasa = jsonObj.getJSONArray("payment_transa");
                                     //if (jsonArrayPayTrasa != null && jsonArrayPayTrasa.length() > 0) {
-                                        for (WorkOutDetailsList data : subListArrayList)
+                                        for (WorkOutDetailsList data : subListArrayList1)
                                         {
 
 

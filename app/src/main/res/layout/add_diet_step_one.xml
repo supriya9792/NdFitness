@@ -34,6 +34,7 @@
                 android:maxLength="15"
                 android:inputType="number"
                 android:textColorHint="@color/black"
+                android:imeOptions="actionNext"
                 android:backgroundTint="@color/black"
                 android:textColor="@color/black"
                 android:hint="@string/hint_mob_no" />

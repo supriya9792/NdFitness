@@ -173,7 +173,7 @@ public class StaffBirthdayFollowupActivity extends AppCompatActivity {
                 intent.putExtra("image",Image);
                 intent.putExtra("contact",Contact);
                 intent.putExtra("id",staff_id);
-                intent.putExtra("user","Member");
+                intent.putExtra("user","Staff");
                 startActivity(intent);
             }
         });
@@ -1188,7 +1188,7 @@ private void showCustomDialog() {
                                     String designation = jsonObj.getString("Designation");
                                     String dOB = jsonObj.getString("DOB");
                                     String gender = jsonObj.getString("Gender");
-                                    String Image = jsonObj.getString("Image");
+                                     Image = jsonObj.getString("Image");
 
 
 

@@ -220,8 +220,8 @@ public class WorkoutDetailsActivity extends AppCompatActivity {
                                     subList.setSet(sets);
                                     String rep="Repetation : "+Repetation;
                                     subList.setRepitation(rep);
-                                    // String timee=Time+" mins";
-                                    subList.setTime(Time);
+                                     String timee="Time: "+Time;
+                                    subList.setTime(timee);
                                    // subList.setWeight(Weight);
                                     subList.setDiscription(Description);
                                     subList.setWorkoutImage(Image);

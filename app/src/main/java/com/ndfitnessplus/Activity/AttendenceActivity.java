@@ -263,7 +263,7 @@ public class AttendenceActivity extends AppCompatActivity implements SwipeRefres
 
     @Override
     public void onRefresh() {
-
+        onRestart();
     }
     // Asycc class for loading data for database
     private void measurementclass() {

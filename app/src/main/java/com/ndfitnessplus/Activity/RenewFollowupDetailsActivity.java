@@ -55,8 +55,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 
 import static com.ndfitnessplus.Utility.HTTPRequestQueue.isOnline;
@@ -687,6 +690,25 @@ public class RenewFollowupDetailsActivity extends AppCompatActivity {
                                     String edate=Utility.formatDate(End_Date);
                                     String todate=sdate+" to "+edate;
                                     subList.setStartToEndDate(todate);
+                                    SimpleDateFormat dateFormat = new SimpleDateFormat(
+                                            "dd-MM-yyyy");
+                                    Date endDate = new Date();
+                                    Date currentdate = new Date();
+                                    String endc=Utility.formatDateDB(End_Date);
+                                    try {
+                                        endDate = dateFormat.parse(endc);
+                                        currentdate = dateFormat.parse(Utility.getCurrentDate());
+                                        Log.v(TAG, String.format(" ::endDate = %s", endDate));
+                                        Log.v(TAG, String.format(" :: currentdate = %s",currentdate));
+                                        if (currentdate.before(endDate)|| currentdate.equals(endDate) ) {
+                                            subList.setStatus("Active");
+                                        } else {
+                                            subList.setStatus("Inactive");
+                                        }
+                                    } catch (ParseException e) {
+                                        // TODO Auto-generated catch block
+                                        e.printStackTrace();
+                                    }
                                     String cont=Utility.lastFour(Contact);
                                     subList.setContact(Contact);
                                     subList.setContactEncrypt(cont);

@@ -229,7 +229,8 @@ public class WorkoutActivity extends AppCompatActivity  implements SwipeRefreshL
 
     @Override
     public void onRefresh() {
-        // adapter.clear();
+        // adapter.clear(
+        swipeRefresh.setRefreshing(false);
         onRestart();
         //preparedListItem();
 
@@ -326,7 +327,7 @@ public class WorkoutActivity extends AppCompatActivity  implements SwipeRefreshL
                                    // subList.setGender(gender);
                                     String cont= Utility.lastFour(Contact);
                                     subList.setMemberContact(Contact);
-                                    //subList.setContactEncrypt(cont);
+                                    subList.setEncryptContact(cont);
 //                                    subList.setAssignDate(Date);
                                     subList.setExerciseId(Exercise_Id);
                                     subList.setEmailId(Email_Id);

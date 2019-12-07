@@ -200,6 +200,7 @@ public class POSProductListActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_pos_home, menu);
         MenuItem itemCart = menu.findItem(R.id.action_cart);
         LayerDrawable icon = (LayerDrawable) itemCart.getIcon();
+        db=new SQLiteDataBaseHelper(POSProductListActivity.this);
         subArrayList=db.getAllCartProduct();
         cartcount=subArrayList.size();
         Utility.setBadgeCount(this, icon, String.valueOf(cartcount));

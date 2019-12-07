@@ -46,7 +46,7 @@ import java.util.HashMap;
 
 import static com.ndfitnessplus.Utility.HTTPRequestQueue.isOnline;
 
-public class ExpensesActivity extends AppCompatActivity {
+public class ExpensesActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener{
     ExpensesAdapter adapter;
     ArrayList<ExpensesList> subListArrayList = new ArrayList<ExpensesList>();
     ExpensesList subList;
@@ -101,7 +101,7 @@ public class ExpensesActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
         viewDialog = new ViewDialog(this);
-
+        swipeRefresh.setOnRefreshListener(this);
         nodata=findViewById(R.id.nodata);
         frame=findViewById(R.id.main_frame);
         noInternet=findViewById(R.id.no_internet);
@@ -290,6 +290,26 @@ public class ExpensesActivity extends AppCompatActivity {
         ru.execute("5");
     }
 
+    @Override
+    public void onRefresh() {
+       // swipeRefresh.setRefreshing(false);
+       onRestart();
+    }
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        swipeRefresh.setRefreshing(false);
+        finish();
+        startActivity(getIntent());
+//        Intent intent=new Intent(ExpensesActivity.this,ExpensesActivity.class);
+//        startActivity(intent);
+    }
+    @Override
+    protected void onResume() {
+        swipeRefresh.setRefreshing(false);
+        super.onResume();
+
+    }
     class ExpenseTrackclass extends AsyncTask<String, Void, String> {
 
         ServerClass ruc = new ServerClass();

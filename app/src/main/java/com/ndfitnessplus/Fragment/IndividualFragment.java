@@ -223,6 +223,7 @@ public class IndividualFragment extends Fragment {
 
                                 searchModel.setCustName(Name);
                                 searchModel.setCustContact(Contact);
+                                searchModel.setNameContact(Contact);
                                 searchModel.setMemberId(MemberID);
 
                                 searchArrayList.add(searchModel);

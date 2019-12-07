@@ -211,17 +211,17 @@ public class AddDietActivity extends AppCompatActivity {
 
         view_list.get(0).setVisibility(View.VISIBLE);
 
-//        inputContact.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-//            @Override
-//            public void onFocusChange(View v, boolean hasFocus) {
-//
-//                if(inputContact.getText().length()>0){
-//                    CheckContactClass();
-//                }
-//
-//
-//            }
-//        });
+        inputContact.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+
+                if(inputContact.getText().length()>0){
+                    CheckContactClass();
+                }
+
+
+            }
+        });
         inputDays.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -319,7 +319,7 @@ public class AddDietActivity extends AppCompatActivity {
 
                 if(gender.equals("Male"))
                     radioGroup.check(R.id.radioButton);
-                else
+                else  if(gender.equals("Female"))
                     radioGroup.check(R.id.radioButton2);
                 inputName.setText(countryName);
                 inputName.setError(null);
@@ -365,7 +365,7 @@ public class AddDietActivity extends AppCompatActivity {
 
                 if(gender.equals("Male"))
                     radioGroup.check(R.id.radioButton);
-                else
+                else  if(gender.equals("Female"))
                     radioGroup.check(R.id.radioButton2);
 
                 inputName.setText(countryName);

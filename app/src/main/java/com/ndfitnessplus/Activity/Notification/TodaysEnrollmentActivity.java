@@ -184,7 +184,7 @@ public class TodaysEnrollmentActivity extends AppCompatActivity {
                                         + (monthOfYear + 1) + "-" + dayOfMonth).toString();
                                 String cdate=Utility.formatDateDB(date);
                                 fromdate.setText(cdate);
-
+                                CampareFronTwoDates();
                             }
                         }, mYear, mMonth, mDay);
                 datePickerDialog.show();
@@ -350,6 +350,29 @@ public class TodaysEnrollmentActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+    public void CampareFronTwoDates(){
+        //******************campare two dates****************
+//        String date = "03/26/2012 11:00:00";
+//        String dateafter = "03/26/2012 11:59:00";
+        SimpleDateFormat dateFormat = new SimpleDateFormat(
+                "dd-MM-yyyy");
+        Date convertedDate = new Date();
+        Date convertedDate2 = new Date();
+        try {
+            convertedDate = dateFormat.parse(fromdate.getText().toString());
+            convertedDate2 = dateFormat.parse(todate.getText().toString());
+            if (convertedDate2.before(convertedDate) || convertedDate2.equals(convertedDate)) {
+                //.setText("true");
+            } else {
+                String firstday= Utility.getCurrentDate();
+                fromdate.setText(firstday);
+                Toast.makeText(this, "From date should not be less than to date: " , Toast.LENGTH_LONG).show();
+            }
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
     private void showProgressDialog() {
         Log.v(TAG, String.format("showProgressDialog"));
         pd = new ProgressDialog(TodaysEnrollmentActivity.this);
@@ -425,7 +448,8 @@ public class TodaysEnrollmentActivity extends AppCompatActivity {
 
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
                     //String ttl_enq = object.getString("total_member_count");
-
+                    recyclerView.setVisibility(View.VISIBLE);
+                    nodata.setVisibility(View.GONE);
                     progressBar.setVisibility(View.GONE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
@@ -754,6 +778,8 @@ public class TodaysEnrollmentActivity extends AppCompatActivity {
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
+                    nodata.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.VISIBLE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
 //
@@ -818,6 +844,8 @@ public class TodaysEnrollmentActivity extends AppCompatActivity {
                         }
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
+                    nodata.setVisibility(View.VISIBLE);
+                    recyclerView.setVisibility(View.GONE);
                     // nodata.setVisibility(View.VISIBLE);
                     Toast.makeText(TodaysEnrollmentActivity.this, "NO Record Found", Toast.LENGTH_SHORT).show();
                     progressBar.setVisibility(View.GONE);
@@ -827,7 +855,7 @@ public class TodaysEnrollmentActivity extends AppCompatActivity {
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
-                recyclerView.setVisibility(View.GONE);
+                //recyclerView.setVisibility(View.GONE);
 //                frame.setVisibility(View.VISIBLE);
             }
         }

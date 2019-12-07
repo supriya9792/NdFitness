@@ -197,6 +197,7 @@
     <string name="err_msg_pay_details">Enter your Pay Details</string>
     <!--Spinner arrays -->
     <string name="all">All</string>
+    <string name="converted">Converted</string>
     <string name="na">NA</string>
 
     <!--Enquiry Type-->
@@ -244,6 +245,15 @@
         <item>Warm</item>
         <item>Expected</item>
         <item>Not Interested</item>
+    </string-array>
+    <string-array name="rating_array_convertd">
+        <item> Rating *</item>
+        <item>Hot  </item>
+        <item>Cold </item>
+        <item>Warm</item>
+        <item>Expected</item>
+        <item>Not Interested</item>
+        <item>Converted</item>
     </string-array>
     <string name="prompt_enq_for">Select Enquiry For</string>
     <string name="enq_for">Enquiry For</string>
@@ -539,7 +549,9 @@
 
     <!--    Workout Activity -->
     <string name="prompt_workout_level">Select Workout Level</string>
-    <string name="workout_level">Workout Level</string>
+    <string name="workout_level">Workout Level*</string>
+    <string name="workout_level_filters">Workout Level</string>
+    <string name="hint_instructor_name">Instructor Name*</string>
     <string name="add_workout">Add Workout</string>
     <string name="exi_workout">Existing Workout</string>
     <string name="set">Set:</string>

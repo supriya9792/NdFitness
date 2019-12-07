@@ -115,7 +115,7 @@ public class FullImageActivity extends AppCompatActivity {
             Log.d(TAG, "user: "+user);
             String domainurl= SharedPrefereneceUtil.getDomainUrl(FullImageActivity.this);
             String url= domainurl+ServiceUrls.IMAGES_URL + imageurl;
-            if(!(imageurl.equals("null")||imageurl.equals(""))) {
+            if(imageurl!=null) {
                 //Glide.with(FullImageActivity.this).load(url).placeholder(R.drawable.nouser).into(imageView);
                 RequestOptions requestOptions = new RequestOptions();
                 requestOptions.placeholder(R.drawable.nouser);

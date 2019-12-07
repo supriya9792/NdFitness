@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class WorkOutDayList implements Serializable {
 
-    String Day,MemberId,Level,ExerciseId,AssignDate,MemberName,MemberContact,EmailId,MemberImage,InstructorName;
+    String Day,MemberId,Level,ExerciseId,AssignDate,MemberName,MemberContact,EmailId,MemberImage,InstructorName,EncryptContact;
     public boolean section = false;
     public WorkOutDayList(String day) {
         Day = day;
@@ -99,5 +99,13 @@ public class WorkOutDayList implements Serializable {
 
     public void setInstructorName(String instructorName) {
         InstructorName = instructorName;
+    }
+
+    public String getEncryptContact() {
+        return EncryptContact;
+    }
+
+    public void setEncryptContact(String encryptContact) {
+        EncryptContact = encryptContact;
     }
 }

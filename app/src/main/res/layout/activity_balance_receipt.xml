@@ -60,6 +60,7 @@
                         android:hint="@string/hint_mob_no"
                         android:inputType="number"
                         android:maxLength="15"
+                        android:imeOptions="actionNext"
                         android:singleLine="true"
                         android:textColor="@color/black"
                         android:textColorHint="@color/black" />

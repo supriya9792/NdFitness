@@ -167,7 +167,7 @@ public class ActiveMemberActivity extends AppCompatActivity {
                                         + (monthOfYear + 1) + "-" + dayOfMonth).toString();
                                 String cdate=Utility.formatDateDB(date);
                                 fromdate.setText(cdate);
-
+                                CampareFronTwoDates();
                             }
                         }, mYear, mMonth, mDay);
                 datePickerDialog.show();
@@ -263,6 +263,29 @@ public class ActiveMemberActivity extends AppCompatActivity {
                 String firstday= Utility.getFirstDayofMonth();
                 todate.setText(firstday);
                 Toast.makeText(this, "From date should be greater than to date: " , Toast.LENGTH_LONG).show();
+            }
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+    public void CampareFronTwoDates(){
+        //******************campare two dates****************
+//        String date = "03/26/2012 11:00:00";
+//        String dateafter = "03/26/2012 11:59:00";
+        SimpleDateFormat dateFormat = new SimpleDateFormat(
+                "dd-MM-yyyy");
+        Date convertedDate = new Date();
+        Date convertedDate2 = new Date();
+        try {
+            convertedDate = dateFormat.parse(fromdate.getText().toString());
+            convertedDate2 = dateFormat.parse(todate.getText().toString());
+            if (convertedDate2.before(convertedDate) || convertedDate2.equals(convertedDate)) {
+                //.setText("true");
+            } else {
+                String firstday= Utility.getCurrentDate();
+                fromdate.setText(firstday);
+                Toast.makeText(this, "From date should not be less than to date: " , Toast.LENGTH_LONG).show();
             }
         } catch (ParseException e) {
             // TODO Auto-generated catch block

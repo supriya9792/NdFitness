@@ -256,13 +256,14 @@ public class FollowupAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             subList.setOccupation("NA");
             subList.setID(enq.getID());
             String image=enq.getImage();
-            try {
-            if((image.equals("null")||image.equals(""))) {
-                String replace = image.replace("\"", "");
-                subList.setImage(replace);
-            }}catch (Exception e){
-                e.printStackTrace();
-            }
+            subList.setImage(enq.getImage());
+//            try {
+//            if((image.equals("null")||image.equals(""))) {
+//                String replace = image.replace("\"", "");
+//                subList.setImage(replace);
+//            }}catch (Exception e){
+//                e.printStackTrace();
+//            }
             subList.setStatus("");
             subList.setEmail("");
 

@@ -273,7 +273,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
             durationTv.setText(dur);
              String rm[]=dur.split(",");
              String rms[]=rm[1].split(":");
-             remSession=rms[1];
+            // remSession=rms[1];
             start_to_end_dateTV.setText(filterArrayList.getStartToEndDate());
             paidTV.setText(fpaid);
             executiveNameTV.setText(filterArrayList.getExecutiveName());
@@ -822,6 +822,11 @@ public class CourseDetailsActivity extends AppCompatActivity {
                         } else {
                             inputNextFollowupdate.setEnabled(true);
                         }
+                        if(FollowupType.equals("Payment")&&(Rating.equals("Not Interested"))){
+                            inputNextFollowupdate.setEnabled(true);
+                            String curr_date = Utility.getCurrentDate();
+                            inputNextFollowupdate.setText(curr_date);
+                        }
                     }
                     // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.black));
                     // Showing selected spinner item
@@ -905,6 +910,18 @@ public class CourseDetailsActivity extends AppCompatActivity {
                             inputNextFollowupdate.setKeyListener(null);
                         } else {
                             inputNextFollowupdate.setEnabled(true);
+                        }
+                        if(FollowupType.equals("Payment")&&(Rating.equals("Not Interested"))){
+                            inputNextFollowupdate.setEnabled(true);
+                            String curr_date = Utility.getCurrentDate();
+                            inputNextFollowupdate.setText(curr_date);
+                        }else{
+                            if (Rating.equals("Not Interested") || Rating.equals("Converted")) {
+                                //Toast.makeText(parent.getContext(), "no interetsed: ", Toast.LENGTH_LONG).show();
+                                inputNextFollowupdate.setText("");
+                                inputNextFollowupdate.setEnabled(false);
+                                inputNextFollowupdate.setKeyListener(null);
+                            }
                         }
                     }
                     if(index==0){
@@ -2540,6 +2557,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                     filterArrayList.setTax(Tax);
                                     String dur_sess="Duration:"+Duration_Days+","+"Session:"+Session;
                                     filterArrayList.setPackageNameWithDS(dur_sess);
+                                    remSession=Session;
                                     String reg_date= Utility.formatDate(RegistrationDate);
                                     filterArrayList.setRegistrationDate(reg_date);
                                     filterArrayList.setID(Member_ID);
