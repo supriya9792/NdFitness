@@ -95,7 +95,7 @@ public class MemberDetailsActivity extends AppCompatActivity {
     TextView txtcallres,txtrating,txtFollType;
     String[] callresponce ;
     String[] folltype ;
-    String NextFollowupDate;
+    String NextFollowupDate,FinalBalance;
 
     String Image="";
     String Before_Photo="";
@@ -227,13 +227,17 @@ public class MemberDetailsActivity extends AppCompatActivity {
         message.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showFollowupDialog();
+
+                    showFollowupDialog();
+
             }
         });
         followup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showFollowupDialog();
+
+                    showFollowupDialog();
+
             }
         });
         imageView.setOnClickListener(new View.OnClickListener() {
@@ -393,8 +397,13 @@ public class MemberDetailsActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "Please select Next Followup Date", Toast.LENGTH_SHORT).show();
                         }else{
                             if(inputfollComment.getText().length()>0) {
-                                takefollowupclass();
-                                dialog.dismiss();
+                                if(FollowupType.equals("Payment")&&(FinalBalance.equals("0.0"))){
+                                    dialog.dismiss();
+                                    Toast.makeText(MemberDetailsActivity.this, "No Outstanding Remainig", Toast.LENGTH_LONG).show();
+                                }else{
+                                    takefollowupclass();
+                                    dialog.dismiss();
+                                }
                             }else{
                                 Toast.makeText(getApplicationContext(), "Please enter comment" , Toast.LENGTH_SHORT).show();
 
@@ -403,8 +412,13 @@ public class MemberDetailsActivity extends AppCompatActivity {
                     }else{
                         ///takefollowupclass();
                         if(inputfollComment.getText().length()>0) {
-                            takefollowupclass();
-                            dialog.dismiss();
+                            if(FollowupType.equals("Payment")&&(FinalBalance.equals("0.0"))){
+                                dialog.dismiss();
+                                Toast.makeText(MemberDetailsActivity.this, "No Outstanding Remainig", Toast.LENGTH_LONG).show();
+                            }else{
+                                takefollowupclass();
+                                dialog.dismiss();
+                            }
                         }else{
                             Toast.makeText(getApplicationContext(), "Please enter comment" , Toast.LENGTH_SHORT).show();
 
@@ -491,6 +505,7 @@ public class MemberDetailsActivity extends AppCompatActivity {
                         String curr_date = Utility.getCurrentDate();
                         inputNextFollowupdate.setText(curr_date);
                     }
+
                     // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.black));
                     // Showing selected spinner item
                     //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
@@ -1374,6 +1389,10 @@ public class MemberDetailsActivity extends AppCompatActivity {
 
                                     After_Photo = jsonObj.getString("After_Photo");
                                     Before_Photo = jsonObj.getString("Before_Photo");
+                                    FinalBalance = jsonObj.getString("FinalBalance");
+                                    if(FinalBalance.equals("null")||FinalBalance.equals(".00")){
+                                        FinalBalance="0.0";
+                                    }
 
                                 }
                             }

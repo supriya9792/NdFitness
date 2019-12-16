@@ -732,8 +732,15 @@ public class CourseDetailsActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "Please select Next Followup Date" , Toast.LENGTH_SHORT).show();
                         }else{
                             if(inputfollComment.getText().length()>0) {
-                                takefollowupclass();
-                                dialog.dismiss();
+                                if(FollowupType.equals("Payment")&&(balanceTV.getText().toString().equals("0.0"))){
+                                    dialog.dismiss();
+                                    Toast.makeText(CourseDetailsActivity.this, "No Outstanding Remainig", Toast.LENGTH_LONG).show();
+                                }else{
+                                    takefollowupclass();
+                                    dialog.dismiss();
+                                }
+//                                takefollowupclass();
+//                                dialog.dismiss();
                             }else{
                                 Toast.makeText(getApplicationContext(), "Please enter comment" , Toast.LENGTH_SHORT).show();
 
@@ -741,8 +748,15 @@ public class CourseDetailsActivity extends AppCompatActivity {
                         }
                     }else{
                         if(inputfollComment.getText().length()>0) {
-                            takefollowupclass();
-                            dialog.dismiss();
+                            if(FollowupType.equals("Payment")&&(balanceTV.getText().toString().equals("0.0"))){
+                                dialog.dismiss();
+                                Toast.makeText(CourseDetailsActivity.this, "No Outstanding Remainig", Toast.LENGTH_LONG).show();
+                            }else{
+                                takefollowupclass();
+                                dialog.dismiss();
+                            }
+//                            takefollowupclass();
+//                            dialog.dismiss();
                         }else{
                             Toast.makeText(getApplicationContext(), "Please enter comment" , Toast.LENGTH_SHORT).show();
 
