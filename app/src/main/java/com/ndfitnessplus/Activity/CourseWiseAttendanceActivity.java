@@ -8,6 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageButton;
@@ -82,6 +84,7 @@ public class CourseWiseAttendanceActivity extends AppCompatActivity {
         backmonth=(ImageButton)findViewById(R.id.backmonth);
         nextmonth=(ImageButton)findViewById(R.id.nextmonth);
 
+        missed.setVisibility(View.GONE);
 
         Calendar cal=Calendar.getInstance();
         expCalendarView.getMarkedDates().removeAdd();
@@ -144,6 +147,32 @@ public class CourseWiseAttendanceActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(getResources().getString(R.string.attendance));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.attendance_list_menu, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_home) {
+            Intent intent = new Intent(CourseWiseAttendanceActivity.this, MainActivity.class);
+            startActivity(intent);
+        }else if(id ==R.id.action_attendance){
+            Intent intent = new Intent(CourseWiseAttendanceActivity.this, CourseWiseAttendanceDetailsActivity.class);
+            intent.putExtra("invoice_id",invoice_id);
+            intent.putExtra("financial_yr",FinancialYear);
+            intent.putExtra("member_id",member_id);
+            startActivity(intent);
+        }else if(id== android.R.id.home){
+            //Toast.makeText(this,"Navigation back pressed",Toast.LENGTH_SHORT).show();
+            // NavUtils.navigateUpFromSameTask(this);
+            finish();
+        }
+
+        return true;
     }
     private void attedanceDetailsclass() {
         AttendanceTrackclass ru = new AttendanceTrackclass();

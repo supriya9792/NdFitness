@@ -211,7 +211,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/colorPrimary"
                 android:padding="@dimen/spacing_middle"
-                android:text="@string/assign_workout"
+                android:text="@string/workout_details"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:textColor="@color/white"
                 android:textStyle="bold" />

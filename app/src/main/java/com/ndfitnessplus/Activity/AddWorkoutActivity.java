@@ -162,7 +162,7 @@ public class AddWorkoutActivity extends AppCompatActivity {
     private void initToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(getResources().getString(R.string.add_workout));
+        getSupportActionBar().setTitle(getResources().getString(R.string.assign_workout));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         initComponent();
     }

@@ -24,6 +24,8 @@ import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -396,6 +398,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
         });
 
     }
+
     private void showCustomDialog() {
         final Dialog dialog = new Dialog(CourseDetailsActivity.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE); // before
@@ -728,7 +731,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Please select Call Response or Rating or Followup Type", Toast.LENGTH_SHORT).show();
                 }else{
                     if(inputNextFollowupdate.getText().length()==0) {
-                        if (!(Rating.equals("Not Interested") || Rating.equals("Converted")||FollowupType.equals("Member BirthDay"))) {
+                        if (!(Rating.equals("Not Interested") || Rating.equals("Converted")||FollowupType.equals("Member BirthDay")||FollowupType.equals("Staff BirthDay"))) {
                             Toast.makeText(getApplicationContext(), "Please select Next Followup Date" , Toast.LENGTH_SHORT).show();
                         }else{
                             if(inputfollComment.getText().length()>0) {

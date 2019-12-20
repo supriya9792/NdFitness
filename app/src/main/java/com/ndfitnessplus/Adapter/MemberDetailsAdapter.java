@@ -1,8 +1,12 @@
 package com.ndfitnessplus.Adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
+import android.media.ToneGenerator;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -15,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.mikhaellopez.circularimageview.CircularImageView;
@@ -24,9 +29,16 @@ import com.ndfitnessplus.Activity.MemberDetailsActivity;
 import com.ndfitnessplus.Model.CourseList;
 import com.ndfitnessplus.Model.MemberDataList;
 import com.ndfitnessplus.R;
+import com.ndfitnessplus.Utility.ServerClass;
 import com.ndfitnessplus.Utility.ServiceUrls;
+import com.ndfitnessplus.Utility.SharedPrefereneceUtil;
+import com.ndfitnessplus.Utility.ViewDialog;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Locale;
 
 import butterknife.BindView;
@@ -42,6 +54,8 @@ public class MemberDetailsAdapter extends RecyclerView.Adapter<MemberDetailsAdap
     private static final int VIEW_TYPE_LOADING = 0;
     private static final int VIEW_TYPE_NORMAL = 1;
     private boolean isLoaderVisible = false;
+    String member_id,name,contact,status,End_Date,FinalBalance,InvoiceId,PackName,FinicialYr;
+    ViewDialog viewDialog;
 
     public MemberDetailsAdapter(ArrayList<CourseList> enquiryList, Context context) {
         //this.arrayList = enquiryList;
@@ -209,7 +223,7 @@ public class MemberDetailsAdapter extends RecyclerView.Adapter<MemberDetailsAdap
     public class ViewHolder extends MemberDetailsAdapter.BaseViewHolder implements View.OnClickListener {
         TextView nameTV,regdateTV,packagenameTV,start_to_end_dateTV,rateTV,paidTV,balanceTV,contactTV,executiveNameTV;
         ImageView contactIV;
-        ImageView statusIv;
+        ImageView statusIv,attendanceIv;
         CircularImageView imageView;
         View layoutparent;
         public ViewHolder(View itemView) {
@@ -228,6 +242,8 @@ public class MemberDetailsAdapter extends RecyclerView.Adapter<MemberDetailsAdap
             executiveNameTV=(TextView)itemView.findViewById(R.id.excecutive_nameTV);
             balanceTV = (TextView) itemView.findViewById(R.id.balanceTV);
             layoutparent=(View)itemView.findViewById(R.id.lyt_parent);
+            attendanceIv = (ImageView) itemView.findViewById(R.id.attendanceIV);
+            viewDialog = new ViewDialog((Activity) context);
         }
 
         @Override
@@ -276,6 +292,29 @@ public class MemberDetailsAdapter extends RecyclerView.Adapter<MemberDetailsAdap
                         context.startActivity(intent);
                   }
               });
+            attendanceIv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(enq.getStatus().equals("Active")) {
+                        if(enq.getCourseStatus().equals("Start")) {
+                            member_id = enq.getID();
+                            name = enq.getName();
+                            status = enq.getStatus();
+                            contact = enq.getContact();
+                            End_Date = enq.getEndDate();
+                            FinalBalance = enq.getBalance();
+                            InvoiceId = enq.getInvoiceID();
+                            PackName = enq.getPackageName();
+                            FinicialYr = enq.getFinancialYear();
+                            makeattendanceclass();
+                        }else {
+                            Toast.makeText(context,"Your Package not stared yet ",Toast.LENGTH_SHORT).show();
+                        }
+                    }else{
+                        Toast.makeText(context,"Your An Inactive Member",Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
           //  }
 
         }
@@ -318,6 +357,96 @@ public class MemberDetailsAdapter extends RecyclerView.Adapter<MemberDetailsAdap
             return mCurrentPosition;
         }
 
+    }
+    private void makeattendanceclass() {
+        MakeAttendanceTrackclass ru = new MakeAttendanceTrackclass();
+        ru.execute("5");
+    }
+    class MakeAttendanceTrackclass extends AsyncTask<String, Void, String> {
+
+        ServerClass ruc = new ServerClass();
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Log.v(TAG, "onPreExecute");
+            //showProgressDialog();
+            viewDialog.showDialog();
+        }
+
+        @Override
+        protected void onPostExecute(String response) {
+            super.onPostExecute(response);
+            Log.v(TAG, String.format("onPostExecute :: response = %s", response));
+            // dismissProgressDialog();
+            viewDialog.hideDialog();
+            //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
+            //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
+            MakeAttendanceDetails(response);
+
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+            HashMap<String, String> MakeAttendanceDetails = new HashMap<String, String>();
+            MakeAttendanceDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId((Activity)context));
+            Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId((Activity)context)));
+            MakeAttendanceDetails.put("member_id",member_id);
+            Log.v(TAG, String.format("doInBackground :: member_id = %s", member_id));
+            MakeAttendanceDetails.put("invoice_id",InvoiceId);
+            Log.v(TAG, String.format("doInBackground :: invoice_id = %s", InvoiceId));
+            MakeAttendanceDetails.put("pack_name",PackName);
+            Log.v(TAG, String.format("doInBackground :: pack_name = %s", PackName));
+            MakeAttendanceDetails.put("name",name);
+            Log.v(TAG, String.format("doInBackground :: name = %s", name));
+            MakeAttendanceDetails.put("contact",contact);
+            Log.v(TAG, String.format("doInBackground :: contact = %s", contact));
+            MakeAttendanceDetails.put("balance",FinalBalance);
+            MakeAttendanceDetails.put("expiry_date",End_Date);
+            MakeAttendanceDetails.put("status",status);
+            MakeAttendanceDetails.put("mode", "AdminApp");
+            MakeAttendanceDetails.put("financial_yr", FinicialYr);
+            Log.v(TAG, String.format("doInBackground :: expiry_date = %s", End_Date));
+            MakeAttendanceDetails.put("action", "make_attendence");
+            String domainurl=SharedPrefereneceUtil.getDomainUrl((Activity)context);
+            String loginResult2 = ruc.sendPostRequest( domainurl+ServiceUrls.LOGIN_URL, MakeAttendanceDetails);
+
+            Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult2));
+            return loginResult2;
+        }
+    }
+    private void MakeAttendanceDetails(String jsonResponse) {
+
+        Log.v(TAG, String.format("loginServerResponse :: response = %s", jsonResponse));
+
+        JSONObject jsonObjLoginResponse = null;
+        try {
+            jsonObjLoginResponse = new JSONObject(jsonResponse);
+            String success = jsonObjLoginResponse.getString(context.getResources().getString(R.string.success));
+
+            if (success.equalsIgnoreCase(context.getResources().getString(R.string.two))) {
+                ToneGenerator toneG = new ToneGenerator(AudioManager.STREAM_ALARM, 100);
+                toneG.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD, 200);
+                Toast.makeText(context,"Your Attendance Marked Successfully",Toast.LENGTH_SHORT).show();
+                // finish();
+
+                // showCustomDialog();
+
+                //inputEmail, inputPhone,inputAdd,inputReq,inputFollowupdate;
+            }
+
+            else if (success.equalsIgnoreCase(context.getResources().getString(R.string.one)))
+            {
+                Toast.makeText(context,"Please try after 1 hour ,Your attendance is already marked",Toast.LENGTH_SHORT).show();
+                // inputContact.getText().clear();
+                //Toast.makeText(AttendanceActivity.this,"Please Enter New Mobile Number",Toast.LENGTH_SHORT).show();
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }
 

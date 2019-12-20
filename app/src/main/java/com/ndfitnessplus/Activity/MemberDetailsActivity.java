@@ -739,6 +739,7 @@ public class MemberDetailsActivity extends AppCompatActivity {
                                     String Invoice_ID = jsonObj.getString("Invoice_ID");
                                     String Tax = jsonObj.getString("Tax");
                                     String Financial_Year = jsonObj.getString("Financial_Year");
+                                    String Image = jsonObj.getString("Image");
 
 
                                     //  for (int j = 0; j < 5; j++) {
@@ -753,10 +754,13 @@ public class MemberDetailsActivity extends AppCompatActivity {
                                     SimpleDateFormat dateFormat = new SimpleDateFormat(
                                             "dd-MM-yyyy");
                                     Date endDate = new Date();
+                                    Date startdate = new Date();
                                     Date currentdate = new Date();
                                     String endc=Utility.formatDateDB(End_Date);
+                                    String sdatec=Utility.formatDateDB(Start_Date);
                                     try {
                                         endDate = dateFormat.parse(endc);
+                                        startdate = dateFormat.parse(sdatec);
                                         currentdate = dateFormat.parse(Utility.getCurrentDate());
                                         Log.v(TAG, String.format(" ::endDate = %s", endDate));
                                         Log.v(TAG, String.format(" :: currentdate = %s",currentdate));
@@ -764,6 +768,12 @@ public class MemberDetailsActivity extends AppCompatActivity {
                                             subList.setStatus("Active");
                                         } else {
                                             subList.setStatus("Inactive");
+                                        }
+
+                                        if(startdate.after(currentdate)){
+                                            subList.setCourseStatus("Stop");
+                                        }else{
+                                            subList.setCourseStatus("Start");
                                         }
                                     } catch (ParseException e) {
                                         // TODO Auto-generated catch block
@@ -791,9 +801,11 @@ public class MemberDetailsActivity extends AppCompatActivity {
                                     subList.setInvoiceID(Invoice_ID);
                                     subList.setTax(Tax);
                                     subList.setFinancialYear(Financial_Year);
+                                    subList.setEndDate(dateFormat.format(endDate));
                                     mobilenumber.setText(Contact);
                                     invoice_id=Invoice_ID;
                                     FinancialYear=Financial_Year;
+                                    subList.setImage((Image));
                                     item.add(subList);
                                     adapter = new MemberDetailsAdapter( item,MemberDetailsActivity.this);
                                     recyclerView.setAdapter(adapter);

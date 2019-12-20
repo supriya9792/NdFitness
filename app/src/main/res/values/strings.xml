@@ -516,7 +516,7 @@
     <!--Individual fragment-->
     <string name="textmeg_hint">Type here...</string>
     <string name="btn_send">Send</string>
-
+    <string name="attendance_details">Attendance Details</string>
     <!--After and Before Fragment-->
     <string name="tab_before">Before</string>
     <string name="tab_after">After</string>
@@ -552,7 +552,7 @@
     <string name="workout_level">Workout Level*</string>
     <string name="workout_level_filters">Workout Level</string>
     <string name="hint_instructor_name">Instructor Name*</string>
-    <string name="add_workout">Add Workout</string>
+    <string name="workout_details">Workout Details</string>
     <string name="exi_workout">Existing Workout</string>
     <string name="set">Set:</string>
     <string name="repitatios">Repetition:</string>

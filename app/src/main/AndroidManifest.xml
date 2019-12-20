@@ -38,7 +38,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
-        <activity android:name=".Activity.WorkoutFilterActivity"></activity>
+        <activity android:name=".Activity.CourseWiseAttendanceDetailsActivity"></activity>
+        <activity android:name=".Activity.WorkoutFilterActivity" />
         <activity android:name=".Activity.WorkoutActivity" />
         <activity android:name=".Activity.AddWorkoutActivity" />
         <activity android:name=".Activity.AddDietActivity" />

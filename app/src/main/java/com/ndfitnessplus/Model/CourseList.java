@@ -3,8 +3,8 @@ package com.ndfitnessplus.Model;
 import java.io.Serializable;
 
 public class CourseList implements Serializable {
-    String  ID , name ,Contact,registrationDate ,PackageNameWithDS , StartToEndDate ,  ExecutiveName,image, Rate,Paid, Balance,Email,
-            InvoiceID,PackageName,Tax,NextPaymentdate,financialYear,followuptype,Status,ContactEncrypt;
+    String  ID , name ,Contact,registrationDate ,PackageNameWithDS , StartToEndDate ,EndDate, ExecutiveName,image, Rate,Paid, Balance,Email,
+            InvoiceID,PackageName,Tax,NextPaymentdate,financialYear,followuptype,Status,ContactEncrypt,CourseStatus;
 
     public CourseList() {
     }
@@ -181,5 +181,22 @@ public class CourseList implements Serializable {
 
     public void setContactEncrypt(String contactEncrypt) {
         ContactEncrypt = contactEncrypt;
+    }
+
+
+    public String getEndDate() {
+        return EndDate;
+    }
+
+    public void setEndDate(String endDate) {
+        EndDate = endDate;
+    }
+
+    public String getCourseStatus() {
+        return CourseStatus;
+    }
+
+    public void setCourseStatus(String courseStatus) {
+        CourseStatus = courseStatus;
     }
 }

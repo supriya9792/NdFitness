@@ -95,11 +95,12 @@ public void onClick(DialogInterface dialog, int id) {
         }
         });
         forgetpwd.setOnClickListener(new View.OnClickListener() {
-@Override
-public void onClick(View v) {
-        Intent intent=new Intent(LoginActivity.this,ForgotPasswordActivity.class);
-        startActivity(intent);
-        }
+                @Override
+                public void onClick(View v) {
+                        Intent intent=new Intent(LoginActivity.this,ForgotPasswordActivity.class);
+                        intent.putExtra("username",username.getText().toString());
+                        startActivity(intent);
+                        }
         });
         }
 //  ************  Validation of username and password **********

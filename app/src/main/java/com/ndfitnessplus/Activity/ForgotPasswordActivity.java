@@ -54,6 +54,11 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         viewDialog = new ViewDialog(this);
 
         recoverpassword=findViewById(R.id.btn_recover_pass);
+        Intent intent =getIntent();
+        if(intent != null){
+            String uname=intent.getStringExtra("username");
+            username.setText(uname);
+        }
         recoverpassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

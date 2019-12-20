@@ -554,7 +554,7 @@ public class AddDietActivity extends AppCompatActivity {
     }
     private void collapseAndBack(int index) {
         ViewAnimation.collapse(view_list.get(index));
-        setCheckedStep(index);
+        //setCheckedStep(index);
         index--;
         current_step = index;
         success_step = index > success_step ? index : success_step;
