@@ -4,12 +4,7 @@ package com.ndfitnessplus.Utility;
  * Created by admin on 7/11/2017.
  */
 import android.content.Context;
-import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
-
-import com.ndfitnessplus.Activity.LoginActivity;
-import com.ndfitnessplus.R;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -33,7 +28,7 @@ import javax.net.ssl.HttpsURLConnection;
 import static com.ndfitnessplus.Activity.EnquiryActivity.TAG;
 
 
-public class ServerClass  {
+public class ServerClass {
     public static final String Email="email";
     public static final String PASSWORD="password";
     public static final String ACTION="action";

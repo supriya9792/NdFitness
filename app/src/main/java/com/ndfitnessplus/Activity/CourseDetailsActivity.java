@@ -3,18 +3,31 @@ package com.ndfitnessplus.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.BitmapShader;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Shader;
+import android.graphics.drawable.Drawable;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,10 +37,13 @@ import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Display;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -37,7 +53,9 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -78,6 +96,7 @@ import com.ndfitnessplus.Adapter.AddEnquirySpinnerAdapter;
 import com.ndfitnessplus.Adapter.BalanceTrasactionAdapter;
 import com.ndfitnessplus.Adapter.MemberAdapter;
 import com.ndfitnessplus.Adapter.MemberDetailsAdapter;
+import com.ndfitnessplus.BuildConfig;
 import com.ndfitnessplus.MailUtility.Mail;
 import com.ndfitnessplus.Model.BalanceTrasactionList;
 import com.ndfitnessplus.Model.CourseList;
@@ -96,10 +115,12 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -172,48 +193,48 @@ public class CourseDetailsActivity extends AppCompatActivity {
     private String filepath = "MyInvoices";
     String FilePath;
     String fname ="";
-    String Email_ID,Password,Header,Footer;
+    String Email_ID,Password,Header,Footer,ContactNumber;
+    String Logo;
+    String NextPaymentDate;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
-//                WindowManager.LayoutParams.FLAG_SECURE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
+                WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_course_details);
         initToolbar();
         requestPermission();
-        if (!isExternalStorageAvailable() || isExternalStorageReadOnly()) {
-            Log.v(LOG_TAG, "External Storage not available or you don't have permission to write");
-        }
-        else {
-            //path for the PDF file in the external storage
-            // pdfFile = new File(getExternalFilesDir(filepath), filename);
-//            String root = Environment.getExternalStoragePublicDirectory().getAbsolutePath();
-            String root = Environment.getExternalStorageDirectory().getPath();
-            File myDir = new File(root + "/MyInvoices");
-            myDir.mkdirs();
-            long n = System.currentTimeMillis() / 1000L;
-            fname = "Invoice" + n + ".pdf";
-            FilePath = root + "/MyInvoices/" + fname;
-            pdfFile = new File(myDir, fname);
-            if (pdfFile.exists())
-                pdfFile.delete();
-
-            try {
-                pdfFile.createNewFile();
-                FileOutputStream out = new FileOutputStream(pdfFile);
-                out.flush();
-                out.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            MediaScannerConnection.scanFile(this, new String[]{pdfFile.toString()}, null,
-                    new MediaScannerConnection.OnScanCompletedListener() {
-                        public void onScanCompleted(String path, Uri uri) {
-                            Log.i("ExternalStorage", "Scanned " + path + ":");
-                            Log.i("ExternalStorage", "-> uri=" + uri);
-                        }
-                    });
-        }
+//        if (!isExternalStorageAvailable() || isExternalStorageReadOnly()) {
+//            Log.v(LOG_TAG, "External Storage not available or you don't have permission to write");
+//        }
+//        else {
+//            String root = Environment.getExternalStorageDirectory().getPath();
+//            File myDir = new File(root + "/MyInvoices");
+//            myDir.mkdirs();
+//            long n = System.currentTimeMillis() / 1000L;
+//            String iname=SharedPrefereneceUtil.getSelectedBranchId(CourseDetailsActivity.this)+member_id;
+//            fname = "Invoice" + n + ".pdf";
+//            FilePath = root + "/MyInvoices/" + fname;
+//            pdfFile = new File(myDir, fname);
+//            if (pdfFile.exists())
+//                pdfFile.delete();
+//
+//            try {
+//                pdfFile.createNewFile();
+//                FileOutputStream out = new FileOutputStream(pdfFile);
+//                out.flush();
+//                out.close();
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//            MediaScannerConnection.scanFile(this, new String[]{pdfFile.toString()}, null,
+//                    new MediaScannerConnection.OnScanCompletedListener() {
+//                        public void onScanCompleted(String path, Uri uri) {
+//                            Log.i("ExternalStorage", "Scanned " + path + ":");
+//                            Log.i("ExternalStorage", "-> uri=" + uri);
+//                        }
+//                    });
+//        }
     }
     private void initToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -261,6 +282,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
            filterArrayList = (CourseList) args.getSerializable("filter_array_list");
 
                  String cont=filterArrayList.getContact();
+                 ContactNumber=cont;
 //                Log.v(TAG, String.format("Selected  ::contact= %s", cont));
 //                Log.v(TAG, String.format("Selected  ::name= %s", filterArrayList.getName()));
                  contactTV.setText(cont);
@@ -312,6 +334,39 @@ public class CourseDetailsActivity extends AppCompatActivity {
            folldetailsclass();
             balanceTrasactionclass();
             coursedetailsclass();
+            pdfGenerationdataclass();
+        }
+//        requestPermission();
+        if (!isExternalStorageAvailable() || isExternalStorageReadOnly()) {
+            Log.v(LOG_TAG, "External Storage not available or you don't have permission to write");
+        }
+        else {
+            String root = Environment.getExternalStorageDirectory().getPath();
+            File myDir = new File(root + "/MyInvoices");
+            myDir.mkdirs();
+            long n = System.currentTimeMillis() / 1000L;
+            String iname=SharedPrefereneceUtil.getSelectedBranchId(CourseDetailsActivity.this)+member_id;
+            fname = "Invoice" + iname + ".pdf";
+            FilePath = root + "/MyInvoices/" + fname;
+            pdfFile = new File(myDir, fname);
+            if (pdfFile.exists())
+                pdfFile.delete();
+
+            try {
+                pdfFile.createNewFile();
+                FileOutputStream out = new FileOutputStream(pdfFile);
+                out.flush();
+                out.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            MediaScannerConnection.scanFile(this, new String[]{pdfFile.toString()}, null,
+                    new MediaScannerConnection.OnScanCompletedListener() {
+                        public void onScanCompleted(String path, Uri uri) {
+                            Log.i("ExternalStorage", "Scanned " + path + ":");
+                            Log.i("ExternalStorage", "-> uri=" + uri);
+                        }
+                    });
         }
         phone.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -647,12 +702,8 @@ public class CourseDetailsActivity extends AppCompatActivity {
                     if (index != 0) {
                         txtPaymentType.setVisibility(View.VISIBLE);
                     }
-
-
                 }
-                // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.black));
-                // Showing selected spinner item
-                //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+
             }
 
             @Override
@@ -742,8 +793,6 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                     takefollowupclass();
                                     dialog.dismiss();
                                 }
-//                                takefollowupclass();
-//                                dialog.dismiss();
                             }else{
                                 Toast.makeText(getApplicationContext(), "Please enter comment" , Toast.LENGTH_SHORT).show();
 
@@ -758,24 +807,249 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                 takefollowupclass();
                                 dialog.dismiss();
                             }
-//                            takefollowupclass();
-//                            dialog.dismiss();
                         }else{
                             Toast.makeText(getApplicationContext(), "Please enter comment" , Toast.LENGTH_SHORT).show();
 
                         }
                     }
                 }
-
-                //  Toast.makeText(CourseDetailsActivity.this, "Mobile number verified successully", Toast.LENGTH_SHORT).show();
-
-
-                //Toast.makeText(getApplicationContext(), "Subcribe Clicked", Toast.LENGTH_SHORT).show();
             }
         });
 
         dialog.show();
         //dialog.getWindow().setAttributes(lp);
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.balance_pdf_menu, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_print) {
+
+
+            return true;
+        }else
+        if (id == R.id.whatsapp) {
+
+            return true;
+        }else if (id == R.id.share_pdf) {
+            try {
+                    File outputFile = new File(FilePath);
+                    String toNumber = "91"+ContactNumber; // contains spaces.
+                    toNumber = toNumber.replace("+", "").replace(" ", "");
+
+                    Intent sendIntent = new Intent("android.intent.action.MAIN");
+                    if(Build.VERSION.SDK_INT>=24){
+                        try{
+                            Method m = StrictMode.class.getMethod("disableDeathOnFileUriExposure");
+                            m.invoke(null);
+                            sendIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(pdfFile));
+//                            shareImage(Uri.fromFile(new File(Path)));
+                        }catch(Exception e){
+                            e.printStackTrace();
+                        }
+                    }
+                    sendIntent.putExtra("jid", toNumber + "@s.whatsapp.net");
+//                sendIntent.setType("*/*");
+//                String[] mimetypes = {"image/*", "text/plain"};
+//                sendIntent.putExtra(Intent.EXTRA_MIME_TYPES, mimetypes);       Image with message
+                    sendIntent.setAction(Intent.ACTION_SEND);
+                    sendIntent.setPackage("com.whatsapp");
+                    sendIntent.setType("application/pdf");
+                    startActivity(sendIntent);
+
+                }  catch (ActivityNotFoundException e) {
+                    Toast.makeText(CourseDetailsActivity.this, "WhatsApp not Installed", Toast.LENGTH_SHORT)
+                            .show();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            return true;
+        }else if (id == R.id.send_reminders) {
+            if(!(balanceTV.getText().toString().equals("0.00"))){
+
+                        Display display = getWindowManager().getDefaultDisplay();
+                        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                        final  View shareview = inflater.inflate(R.layout.reminder_share_view, null,false);
+
+                        TextView CompanyName=shareview.findViewById(R.id.gym_name);
+                        TextView Balance=shareview.findViewById(R.id.text_balance);
+                        TextView payment_date=shareview.findViewById(R.id.payment_date);
+                        final  ImageView compLogo=shareview.findViewById(R.id.input_logo);
+
+                        String comp_name=SharedPrefereneceUtil.getCompanyName(CourseDetailsActivity.this)+ "-"+
+                                SharedPrefereneceUtil.getSelectedBranch(CourseDetailsActivity.this);
+                        CompanyName.setText(comp_name);
+                        String bal="₹ "+balanceTV.getText().toString();
+                        Balance.setText(bal);
+                        //String folldate=Utility.formatDate(NextPaymentDate);
+                        String pdate="As of "+NextPaymentDate;
+                        payment_date.setText(pdate);
+//            try {
+                        String domainurl= SharedPrefereneceUtil.getDomainUrl(CourseDetailsActivity.this);
+                        final  String strurl= domainurl+ServiceUrls.IMAGES_URL + Logo;
+                        Log.e("Imageurl", strurl);
+
+//                        RequestOptions requestOptions = new RequestOptions();
+//                        requestOptions.placeholder(R.drawable.nouser);
+//                        requestOptions.error(R.drawable.nouser);
+//
+//
+//                        Glide.with(this)
+//                                .setDefaultRequestOptions(requestOptions)
+//                                .load(strurl).into(compLogo);
+//                runOnUiThread(new Runnable() {
+//                    public void run() {
+//                        (new AsyncTask<String, String, Void>() {
+//
+//
+//                          @Override
+//                          protected Void doInBackground(String... params) {
+//                              try {
+//                                  URL url = new URL(strurl);
+//                                  Bitmap image = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+//                                  RoundedBitmapDrawable drawable = RoundedBitmapDrawableFactory.create(
+//                                          getResources(), Bitmap.createScaledBitmap(image, 50, 50, false));
+//                                  drawable.setCircular(true);
+//                                  compLogo.setImageDrawable(drawable);
+//                              } catch (IOException e){
+//                                System.out.println(e);
+//                            }
+//                            return null;
+//                          }
+//
+//                          @Override
+//                          protected void onPostExecute(Void aVoid) {
+//                              super.onPostExecute(aVoid);
+//
+//
+//                          }
+//                      }).execute();
+//
+//
+//                    }
+//                });
+//
+//            } catch(IOException e) {
+//                System.out.println(e);
+//            }
+//
+//                        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(500, 300);
+//            wrapper.addView(shareview);
+//                        shareview.setLayoutParams(layoutParams);
+//            shareview.measure(display.getWidth(), display.getHeight());
+                        shareview.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+                        shareview.layout(0,0,0,0);
+
+                        shareview.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+
+                            @Override
+                            public void onGlobalLayout() {
+
+                                shareview.getWidth();
+
+                            }
+                        });
+//            shareview.setMinimumWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
+//            shareview.setMinimumHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+//            lp.copyFrom(shareview.getWindowVisibility());
+//            lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
+//            lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+                        int width=shareview.getMeasuredWidth();
+                        int height=shareview.getMeasuredHeight();
+
+                        Bitmap bitmap1 = loadBitmapFromView(shareview, width,height);
+                        saveBitmap(bitmap1);
+                        //  String str_screenshot = "/sdcard/Testing/"+"testing" + ".jpg";
+                        String str_screenshot = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+"/testing" + ".png";
+                        fn_share(str_screenshot);
+
+            }else{
+                Toast.makeText(CourseDetailsActivity.this, "No Outstanding Remaining", Toast.LENGTH_SHORT).show();
+            }
+//            LinearLayout wrapper = new LinearLayout(this);
+//            wrapper.setLayoutParams(new LinearLayout.LayoutParams(500,500,1));
+
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+    public void saveBitmap(Bitmap bitmap) {
+        File imagePath = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+"/testing" + ".png");
+        FileOutputStream fos;
+        try {
+            fos = new FileOutputStream(imagePath);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            fos.flush();
+            fos.close();
+
+            Log.e("ImageSave", "Saveimage");
+        } catch (FileNotFoundException e) {
+            Log.e("GREC", e.getMessage(), e);
+        } catch (IOException e) {
+            Log.e("GREC", e.getMessage(), e);
+        }
+    }
+
+    public static Bitmap loadBitmapFromView(View v, int width, int height) {
+        Bitmap b = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        BitmapShader shader = new BitmapShader(b,  Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+        Paint paint = new Paint();
+        paint.setShader(shader);
+        Canvas c = new Canvas(b);
+        c.drawCircle(v.getWidth() / 2, v.getWidth() / 2, v.getWidth() / 2, paint);
+        Drawable bgDrawable = v.getBackground();
+        if (bgDrawable != null)
+            bgDrawable.draw(c);
+        else
+            c.drawColor(Color.WHITE);
+        v.draw(c);
+
+        return b;
+    }
+
+    public void fn_share(String path) {
+
+        File file = new File(path);
+
+        Bitmap bmp = BitmapFactory.decodeFile(file.getAbsolutePath());
+        // Uri uri = Uri.fromFile(file);
+        try {
+            File outputFile = new File(FilePath);
+            String toNumber = "91"+ContactNumber; // contains spaces.
+            toNumber = toNumber.replace("+", "").replace(" ", "");
+
+            Intent sendIntent = new Intent("android.intent.action.MAIN");
+            if(Build.VERSION.SDK_INT>=24){
+                try{
+                    Method m = StrictMode.class.getMethod("disableDeathOnFileUriExposure");
+                    m.invoke(null);
+                    sendIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
+//                            shareImage(Uri.fromFile(new File(Path)));
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+            }
+            sendIntent.putExtra("jid", toNumber + "@s.whatsapp.net");
+//                sendIntent.setType("*/*");
+//                String[] mimetypes = {"image/*", "text/plain"};
+//                sendIntent.putExtra(Intent.EXTRA_MIME_TYPES, mimetypes);       Image with message
+            sendIntent.setAction(Intent.ACTION_SEND);
+            sendIntent.setPackage("com.whatsapp");
+            sendIntent.setType("image/*");
+            startActivity(sendIntent);
+
+        }  catch (ActivityNotFoundException e) {
+            Toast.makeText(CourseDetailsActivity.this, "WhatsApp not Installed", Toast.LENGTH_SHORT)
+                    .show();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+
     }
     public  void SetFollowupSpinner(){
 
@@ -799,9 +1073,6 @@ public class CourseDetailsActivity extends AppCompatActivity {
                         txtcallres.setVisibility(View.VISIBLE);
                         tv.setText(callResponce);
                     }
-                    // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.black));
-                    // Showing selected spinner item
-                    //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -845,9 +1116,6 @@ public class CourseDetailsActivity extends AppCompatActivity {
                             inputNextFollowupdate.setText(curr_date);
                         }
                     }
-                    // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.black));
-                    // Showing selected spinner item
-                    //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -946,10 +1214,6 @@ public class CourseDetailsActivity extends AppCompatActivity {
                         tv.setText(Rating);
                     }
                 }
-
-                // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.black));
-                // Showing selected spinner item
-                //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -1826,7 +2090,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-           // showProgressDialog();
+            // showProgressDialog();
             viewDialog.showDialog();
         }
 
@@ -1927,11 +2191,11 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                     String GST_No = jsonObj.getString("GST_No");
                                     String TermsAndConditions = jsonObj.getString("TermsAndConditions");
                                     TermsAndConditions = TermsAndConditions.replace("\r\n", "<br />");
-                                    String Logo = jsonObj.getString("Logo");
+                                     Logo = jsonObj.getString("Logo");
                                     String l=Logo.replaceAll("\\s+","%20");
                                     // Logo.replace(" ","%20");
                                     String domainurl=SharedPrefereneceUtil.getDomainUrl(CourseDetailsActivity.this);
-                                   final String imgurl=domainurl+ServiceUrls.IMAGES_URL+l;
+                                    final String imgurl=domainurl+ServiceUrls.IMAGES_URL+l;
                                     Log.d(TAG, "imgurl: " +imgurl);
 
                                     String textBody = "";
@@ -1943,7 +2207,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                             JSONObject jsonObj1 = jsonArrayPayTrasa.getJSONObject(loopCount);
                                             if (jsonObj1 != null) {
                                                 String Receipt_Id = jsonObj1.getString("Receipt_Id");
-                                               // String start_date=Utility.formatDateDB(Start_Date);
+                                                // String start_date=Utility.formatDateDB(Start_Date);
                                                 String ReceiptDate = jsonObj1.getString("ReceiptDate");
                                                 String receipt_date=Utility.formatDateDB(ReceiptDate);
                                                 String Tax = jsonObj1.getString("Tax");
@@ -1987,11 +2251,11 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                                         "    <td width='12.5%'>"+PaymentDetails+"</td>\n\n" +
                                                         "    <td width='13%'>"+ReceiptOwnerExecutive+"</td>\n\n" +
                                                         "    </tr>\n";
+                                            }
                                         }
-                                    }
 
                                     }
-                               final String messagehtml = "<!DOCTYPE html>\n" +
+                                    final String messagehtml = "<!DOCTYPE html>\n" +
                                             "\n" +
                                             "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n" +
                                             "<head runat=\"server\">\n" +
@@ -2033,14 +2297,14 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                             "                            <strong>  "+"</strong>\n" +
                                             "                        </address>\n" +
                                             "                    </div>\n" +
-                                       "                    <div >" +
-                                       "                        <address>" +
-                                       "                            <strong>"+"</strong><br></br>\n" +
-                                       "\n" +
-                                       "                            <strong> "+"</strong><br></br>\n" +
-                                       "                            <strong>  "+"</strong>\n" +
-                                       "                        </address>\n" +
-                                       "                    </div>\n" +
+                                            "                    <div >" +
+                                            "                        <address>" +
+                                            "                            <strong>"+"</strong><br></br>\n" +
+                                            "\n" +
+                                            "                            <strong> "+"</strong><br></br>\n" +
+                                            "                            <strong>  "+"</strong>\n" +
+                                            "                        </address>\n" +
+                                            "                    </div>\n" +
                                             "                </div>\n" +
                                             "      </div>\n" +
                                             "\n" +
@@ -2136,7 +2400,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                             "                    </tr>\n" +
                                             "             </thead>\n" +
                                             "           <tbody >\n" +
-                                                            textBody+
+                                            textBody+
                                             "          </tbody>\n" +
                                             "       </table>\n" +
                                             "       </div>\n" +
@@ -2232,7 +2496,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                         HTMLWorker htmlWorker = new HTMLWorker(document);
                                         htmlWorker.parse(new StringReader(messagehtml));
                                         document.close();
-                                       // document.close();
+                                        // document.close();
                                     }
                                     catch(Exception e){
                                         e.printStackTrace();
@@ -2255,7 +2519,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                                     Mail m = new Mail(Email_ID, Password);
 
                                                     String[] toArr = { Email, "tulsababar01@gmail.com"};
-                                                   // Log.v(TAG, String.format(" Email array to send = %s", toArr));
+                                                    // Log.v(TAG, String.format(" Email array to send = %s", toArr));
                                                     m.setTo(toArr);
                                                     m.setFrom("tulsababar.ndsoft@gmail.com");
                                                     m.setSubject(subject);
@@ -2838,6 +3102,393 @@ public class CourseDetailsActivity extends AppCompatActivity {
             Toast.makeText(CourseDetailsActivity.this, "Write External Storage permission allows us to do store images. Please allow this permission in App Settings.", Toast.LENGTH_LONG).show();
         } else {
             ActivityCompat.requestPermissions(CourseDetailsActivity.this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
+        }
+    }
+
+    private void pdfGenerationdataclass() {
+        CourseDetailsActivity.PDFGenerationDataTrackclass ru = new CourseDetailsActivity.PDFGenerationDataTrackclass();
+        ru.execute("5");
+    }
+    class PDFGenerationDataTrackclass extends AsyncTask<String, Void, String> {
+
+        ServerClass ruc = new ServerClass();
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Log.v(TAG, "onPreExecute");
+            //viewDialog.showDialog();
+        }
+
+        @Override
+        protected void onPostExecute(String response) {
+            super.onPostExecute(response);
+            Log.v(TAG, String.format("onPostExecute :: show_receipt_data = %s", response));
+            //viewDialog.hideDialog();
+            PDFGenerationDataDetails(response);
+
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            HashMap<String, String> PDFGenerationDataDetails = new HashMap<String, String>();
+            PDFGenerationDataDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(CourseDetailsActivity.this));
+            PDFGenerationDataDetails.put("invoice_id", invoice_id);
+            Log.v(TAG, String.format("doInBackground :: receipt data invoice_id= %s", invoice_id));
+            PDFGenerationDataDetails.put("financial_yr", FinancialYear);
+            Log.v(TAG, String.format("doInBackground :: receipt data company id = %s", FinancialYear));
+            Log.v(TAG, String.format("doInBackground :: receipt data company id = %s", SharedPrefereneceUtil.getSelectedBranchId(CourseDetailsActivity.this)));
+            PDFGenerationDataDetails.put("action","show_receipt_data");
+            String domainurl=SharedPrefereneceUtil.getDomainUrl(CourseDetailsActivity.this);
+            String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, PDFGenerationDataDetails);
+            Log.v(TAG, String.format("doInBackground :: show_receipt_data= %s", loginResult));
+            return loginResult;
+        }
+    }
+
+    private void PDFGenerationDataDetails(String jsonResponse) {
+
+        Log.v(TAG, String.format("show_receipt_data :: jsonResponse = %s", jsonResponse));
+        if (jsonResponse != null) {
+
+
+            try {
+                Log.v(TAG, "JsonResponseOpeartion :: test");
+                JSONObject object = new JSONObject(jsonResponse);
+                String success = object.getString(getResources().getString(R.string.success));
+                if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
+                    if (object != null) {
+                        JSONArray jsonArrayResult = object.getJSONArray("result");
+
+                        if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
+                            for (int i = 0; i < jsonArrayResult.length(); i++) {
+
+                                Log.v(TAG, "JsonResponseOpeartion ::");
+                                JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
+                                if (jsonObj != null) {
+
+                                    String Name = nameTV.getText().toString();
+                                    String Member_Contact = contactTV.getText().toString();
+                                    String invoice_date=Utility.getCurrentDate();
+                                    String Package_Name = jsonObj.getString("Package_Name");
+                                    String Duration_Days =jsonObj.getString("Duration_Days");
+                                    String Session = jsonObj.getString("Session");
+                                    String Start_Date = jsonObj.getString("Start_Date");
+                                    String s_date=Utility.formatDateDB(Start_Date);
+                                    String End_Date = jsonObj.getString("End_Date");
+                                    String edate=Utility.formatDateDB(End_Date);
+                                    String Rate = jsonObj.getString("Rate");
+                                    String Final_paid = jsonObj.getString("Final_paid");;
+                                    String Final_Balance =  jsonObj.getString("Final_Balance");
+                                    if(Final_Balance.equals(".00")){
+                                        Final_Balance="0.00";
+                                    }
+                                    String Invoice_ID = invoice_id;
+
+                                    start_date=Start_Date;
+                                    end_date=End_Date;
+                                    String Member_Email_ID = Email;
+                                    String Time =  jsonObj.getString("Time");;
+                                    String Instructor_Name = jsonObj.getString("Instructor_Name");;
+                                    String Package_Fees =  jsonObj.getString("Package_Fees");;
+                                    String Discount =  jsonObj.getString("Discount");;
+                                    if(Discount.equals(".00")){
+                                        Discount="0.00";
+                                    }
+                                    String Registration_Fees =  jsonObj.getString("Registration_Fees");;
+                                    if(Registration_Fees.equals(".00")){
+                                        Registration_Fees="0.00";
+                                    }
+
+                                    String Company_Name = SharedPrefereneceUtil.getCompanyName(CourseDetailsActivity.this)+"-"+SharedPrefereneceUtil.getSelectedBranch(CourseDetailsActivity.this);
+                                    String Address = jsonObj.getString("Address");
+                                    String Contact = jsonObj.getString("Contact");
+                                    String MemberGST_No = jsonObj.getString("MemberGST_No");
+                                    String GST_No = jsonObj.getString("GST_No");
+                                     NextPaymentDate = jsonObj.getString("NextPaymentDate");
+                                    String TermsAndConditions = jsonObj.getString("TermsAndConditions");
+                                    TermsAndConditions = TermsAndConditions.replace("\r\n", "<br />");
+                                     Logo = jsonObj.getString("Logo");
+                                    String l=Logo.replaceAll("\\s+","%20");
+                                    String domainurl=SharedPrefereneceUtil.getDomainUrl(CourseDetailsActivity.this);
+                                    final String imgurl=domainurl+ServiceUrls.IMAGES_URL+l;
+                                    Log.d(TAG, "imgurl: " +imgurl);
+
+                                    String textBody = "";
+
+                                    JSONArray jsonArrayPayTrasa = jsonObj.getJSONArray("payment_transa");
+                                    if (jsonArrayPayTrasa != null && jsonArrayPayTrasa.length() > 0) {
+                                        for (int loopCount = 0; loopCount < jsonArrayPayTrasa.length(); loopCount++)
+                                        {
+                                            JSONObject jsonObj1 = jsonArrayPayTrasa.getJSONObject(loopCount);
+                                            if (jsonObj1 != null) {
+                                                String Receipt_Id = jsonObj1.getString("Receipt_Id");
+                                                String ReceiptDate = jsonObj1.getString("ReceiptDate");
+                                                String receipt_date=Utility.formatDateDB(ReceiptDate);
+                                                String Tax = jsonObj1.getString("Tax");
+                                                if(Tax.equals(".00")){
+                                                    Tax="0.00";
+                                                }
+                                                String TaxAmount = jsonObj1.getString("TaxAmount");
+                                                if(TaxAmount.equals(".00")){
+                                                    TaxAmount="0.00";
+                                                }
+                                                String Paid =  jsonObj1.getString("Paid");
+                                                String PaymentType =  jsonObj1.getString("PaymentType");
+                                                String PaymentDetails =  jsonObj1.getString("PaymentDetails");
+                                                String ReceiptOwnerExecutive =  jsonObj1.getString("ReceiptOwnerExecutive");
+
+                                                textBody += "  <tr >\n \n" +
+                                                        "    <td width='10%'>"+Receipt_Id+"</td>\n \n" +
+                                                        "     <td width='15%'>"+receipt_date+"</td>\n\n" +
+                                                        "    <td width='8%'>"+Tax+"</td> \n\n" +
+                                                        "    <td width='12.5%'>"+TaxAmount+"</td>\n\n" +
+                                                        "    <td width='12.5%'>"+Paid+"</td>\n\n" +
+                                                        "    <td width='12.5%'>"+PaymentType+"</td>\n\n" +
+                                                        "    <td width='12.5%'>"+PaymentDetails+"</td>\n\n" +
+                                                        "    <td width='13%'>"+ReceiptOwnerExecutive+"</td>\n\n" +
+                                                        "    </tr>\n";
+                                            }
+                                        }
+
+                                    }
+                                    final String messagehtml = "<!DOCTYPE html>\n" +
+                                            "\n" +
+                                            "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n" +
+                                            "<head runat=\"server\">\n" +
+                                            "    <title></title>\n" +
+                                            "</head>\n" +
+                                            "<body>\n" +
+                                            "    <form runat=\"server\">\n" +
+                                            "\n" +
+                                            " <div class=\"row\">\n" +
+                                            "                <div class=\"column\" >\n" +
+                                            "                    <div >\n" +
+                                            "                        <address>\n" +
+                                            "                            <strong style=\"font: 700;\">\n" +
+                                            "                               </strong><br></br>" +
+                                            "                          <br></br>" +
+                                            "                           <br></br>" +
+                                            "                        </address>" +
+                                            "                    </div>" +
+                                            "                    <div >" +
+                                            "                        <address>" +
+                                            "                        " +
+//                                            "                            <img src="+ imgurl +">" +
+                                            "                        </address>\n" +
+                                            "                    </div>" +
+                                            "                </div>" +
+                                            "                <div class=\"column\" >\n" +
+                                            "                    <div  >\n" +
+                                            "                        <address>\n" +
+                                            "                            <strong></strong><br></br>\n" +
+                                            "                            <strong style=\"font: 900;\">"+"</strong><br></br>\n" +
+                                            "                           <br></br>\n" +
+                                            "                        </address>\n" +
+                                            "                    </div>" +
+                                            "                    <div >" +
+                                            "                        <address>" +
+                                            "                            <strong>"+"</strong><br></br>\n" +
+                                            "\n" +
+                                            "                            <strong> "+"</strong><br></br>\n" +
+                                            "                            <strong>  "+"</strong>\n" +
+                                            "                        </address>\n" +
+                                            "                    </div>\n" +
+                                            "                    <div >" +
+                                            "                        <address>" +
+                                            "                            <strong>"+"</strong><br></br>\n" +
+                                            "\n" +
+                                            "                            <strong> "+"</strong><br></br>\n" +
+                                            "                            <strong>  "+"</strong>\n" +
+                                            "                        </address>\n" +
+                                            "                    </div>\n" +
+                                            "                </div>\n" +
+                                            "      </div>\n" +
+                                            "\n" +
+                                            "        <div  >\n" +
+                                            "\n" +
+                                            "            <div >\n" +
+                                            "                <div >\n" +
+                                            "                    <div  >\n" +
+                                            "                        <h3 ><strong>Package Summary</strong></h3>\n" +
+                                            "                    </div>\n" +
+                                            "                    <div  >\n" +
+                                            "                        <div  >\n" +
+                                            "   <table border = '1' cellpadding=\"6\"  width=\"100%\" >\n" +
+                                            "                             <thead height=\"100\" >\n" +
+                                            "                                    <tr height=\"100\" >\n" +
+                                            "                                      <th ><strong>Package</strong></th>\n" +
+                                            "                                       <th ><strong>Duration</strong></th>\n" +
+                                            "                                       <th ><strong>Session</strong></th>                                    \n" +
+                                            "                                       <th ><strong>StartDate</strong></th>\n" +
+                                            "                                       <th ><strong>EndDate</strong></th>\n" +
+                                            "                                       <th ><strong>Time</strong></th>\n" +
+                                            "                                       <th ><strong>Instructor</strong></th>\n" +
+                                            "                                       <th ><strong>Package Fees</strong></th>\n" +
+                                            "                                    </tr>\n" +
+                                            "                                </thead>\n" +
+                                            "                               <tbody height=\"100\" >\n" +
+                                            "                                    <tr height=\"100\" >\n" +
+                                            "                                        <td width='12.5%'>"+Package_Name+"</td>\n" +
+                                            "                                         <td width='11.5%'>"+Duration_Days+"</td>\n" +
+                                            "                                        <td width='11%'>"+Session+"</td>                                       \n" +
+                                            "                                        <td width='14%'>"+s_date+"</td>\n" +
+                                            "                                        <td width='14%'>"+edate+"</td>\n" +
+                                            "                                        <td width='8%'>"+Time+"</td>\n" +
+                                            "                                        <td width='13%'>"+Instructor_Name+"</td>\n" +
+                                            "                                        <td width='12%'>"+Package_Fees+"</td>\n" +
+                                            "                                    </tr>\n" +
+                                            "                                </tbody>\n" +
+                                            "                            </table>\n" +
+                                            "                        </div>\n" +
+                                            "                    </div>\n" +
+                                            "                    <div >\n" +
+                                            "                        <div  >\n" +
+                                            "                            <table border = '1' cellpadding=\"6\"  width=\"100%\" >\n" +
+                                            "                                <thead height=\"100\">\n" +
+                                            "                                    <tr height=\"100\" >\n" +
+                                            "                                        <th ><strong>Discount</strong></th>\n" +
+                                            "                                        <th ><strong>Reg Fees</strong></th>\n" +
+                                            "                                        <th ><strong>Total Amount</strong></th>\n" +
+                                            "                                        <th ><strong>Paid Amount</strong></th>\n" +
+                                            "                                        <th ><strong>Balance</strong></th>\n" +
+                                            "                                    </tr>\n" +
+                                            "                                </thead>\n" +
+                                            "                                <tbody >\n" +
+                                            "                                    <tr>\n" +
+                                            "                                        <td >"+Discount+"</td>\n" +
+                                            "                                        <td >"+Registration_Fees+"</td>\n" +
+                                            "                                       \n" +
+                                            "                                        <td >"+Rate+"</td>\n" +
+                                            "                                        <td >"+Final_paid+"</td>\n" +
+                                            "                                        <td >"+Final_Balance+"</td>\n" +
+                                            "                                    </tr>\n" +
+                                            "                                </tbody>\n" +
+                                            "                            </table>\n" +
+                                            "                        </div>\n" +
+                                            "                    </div>\n" +
+                                            "\n" +
+                                            "                </div>\n" +
+                                            "            </div>\n" +
+                                            "        </div>\n" +
+                                            "\n" +
+                                            "       \n" +
+                                            " <div  >\n" +
+                                            "\n" +
+                                            "    <div >\n" +
+
+                                            "            <div >\n" +
+                                            "                <div  >\n" +
+                                            "                        <h3 ><strong>Payment Transaction</strong></h3>\n" +
+                                            "                    </div>\n" +
+                                            "                <div >\n" +
+                                            "              <div >\n" +
+                                            "             <table border = '1' cellpadding=\"6\"  width=\"100%\" >\n" +
+                                            "             <thead height=\"100\">\n" +
+                                            "                   <tr height=\"100\" >\n" +
+                                            "                      <th ><strong>#RNo</strong></th>\n" +
+                                            "                      <th ><strong>Date</strong></th>\n" +
+                                            "                      <th ><strong>Tax</strong></th>                                    \n" +
+                                            "                      <th ><strong>Tax Amount</strong></th>\n" +
+                                            "                      <th ><strong>Paid Amount</strong></th>\n" +
+                                            "                       <th ><strong>Payment Mode</strong></th>\n" +
+                                            "                       <th ><strong>Payment Details</strong></th>\n" +
+                                            "                       <th ><strong>Executive</strong></th>\n" +
+                                            "                    </tr>\n" +
+                                            "             </thead>\n" +
+                                            "           <tbody >\n" +
+                                            textBody+
+                                            "          </tbody>\n" +
+                                            "       </table>\n" +
+                                            "       </div>\n" +
+                                            "       </div>\n" +
+                                            "                     \n" +
+                                            "      </div>\n" +
+                                            "     </div>\n" +
+                                            "  </div>\n" +
+                                            "\n" +
+                                            "      \n" +
+                                            "\n" +
+                                            "  <div  >\n" +
+                                            "    <div >\n" +
+                                            "       <div  >\n" +
+                                            "          <h3 ><strong>Terms And Conditions</strong></h3>\n" +
+                                            "       </div>\n" +
+                                            "                  \n" +
+                                            "                           "+TermsAndConditions+"\n" +
+                                            "                     \n" +
+                                            "    \n" +
+                                            "                \n" +
+                                            "            </div>\n" +
+                                            "        </div>\n" +
+                                            "\n" +
+                                            "    </div>\n" +
+                                            "        </form>\n" +
+                                            "</body>\n" +
+                                            "</html>";
+                                    final Document document = new Document(PageSize.A4);
+
+                                    try {
+
+                                        PdfWriter docWriter = PdfWriter.getInstance(document, new FileOutputStream(pdfFile));
+                                        document.open();
+
+                                        PdfContentByte cb = docWriter.getDirectContent();
+                                        //initialize fonts for text printing
+                                        initializeFonts();
+                                        //Add Image from some URL
+                                        Thread thread = new Thread(new Runnable() {
+                                            //
+                                            @Override
+                                            public void run() {
+                                                try  {
+                                                    Image image = Image.getInstance(new URL(imgurl));
+                                                    image.setAbsolutePosition(510,750);
+                                                    image.scalePercent(50);
+                                                    document.add(image);
+                                                } catch (Exception e) {
+                                                    e.printStackTrace();
+                                                }
+                                            }
+                                        });
+                                        thread.start();
+                                        createHeadings(cb,50,780,Company_Name);
+                                        createText(cb,50,765,Address);
+                                        createText(cb,50,750,Contact);
+                                        createText(cb,50,735,GST_No);
+                                        createHeadings(cb,50,715,"Bill To");
+                                        createText(cb,50,700,Name);
+                                        createText(cb,50,685,Email);
+                                        createText(cb,50,670,Member_Contact);
+                                        createText(cb,50,655,MemberGST_No);
+
+                                        createHeadings(cb,455,735,"Invoice Date :"+invoice_date);
+                                        createHeadings(cb,455,720,"Invoice No : "+Invoice_ID);
+                                        createHeadings(cb,455,705,"Member Id : "+member_id);
+
+                                        HTMLWorker htmlWorker = new HTMLWorker(document);
+                                        htmlWorker.parse(new StringReader(messagehtml));
+                                        document.close();
+                                    }
+                                    catch(Exception e){
+                                        e.printStackTrace();
+                                    }
+
+                                }
+                            }
+                        } else if (jsonArrayResult.length() == 0) {
+                            System.out.println("No records found");
+                        }
+                    }
+                }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
+                    //nodata.setVisibility(View.VISIBLE);
+                    //.setVisibility(View.GONE);
+                }
+            } catch (JSONException e) {
+                Log.v(TAG, "JsonResponseOpeartion :: catch");
+                e.printStackTrace();
+            }
         }
     }
 }

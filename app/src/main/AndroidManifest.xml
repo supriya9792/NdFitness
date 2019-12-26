@@ -27,7 +27,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
     <application
         android:allowBackup="false"
         android:icon="@drawable/logo"
@@ -41,8 +41,12 @@
         <activity android:name=".Activity.CourseWiseAttendanceDetailsActivity"></activity>
         <activity android:name=".Activity.WorkoutFilterActivity" />
         <activity android:name=".Activity.WorkoutActivity" />
-        <activity android:name=".Activity.AddWorkoutActivity" />
-        <activity android:name=".Activity.AddDietActivity" />
+        <activity android:name=".Activity.AddWorkoutActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity android:name=".Activity.AddDietActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
         <activity
             android:name=".Activity.WorkoutDetailsDescriptionActivity"
             android:configChanges="keyboard|orientation|screenSize"

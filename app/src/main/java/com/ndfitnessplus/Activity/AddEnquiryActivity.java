@@ -1767,8 +1767,6 @@ public class AddEnquiryActivity extends AppCompatActivity  {
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
 //        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
-
-
             try {
                 Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);

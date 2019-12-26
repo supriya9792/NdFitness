@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_print"
+        android:icon="@drawable/ic_print"
+        app:showAsAction="always"
+        android:title="Print" />
+    <item
+        android:id="@+id/a_More"
+        android:icon="@drawable/ic_more_vert_black_24dp"
+        app:showAsAction="always"
+        android:title="More" >
+
+        <menu>
+
+            <item
+                android:id="@+id/send_reminders"
+                android:orderInCategory="100"
+                app:showAsAction="never"
+                android:iconTint="@color/grey_90"
+                android:icon="@drawable/ic_notifications_none_black_24dp"
+                android:title="Send Reminders "/>
+
+            <item
+                android:id="@+id/whatsapp"
+                android:orderInCategory="100"
+                app:showAsAction="never"
+                android:icon="@drawable/whatsapp24"
+                android:title="Chat on Whatsapp"/>
+
+            <item
+                android:id="@+id/share_pdf"
+                android:orderInCategory="100"
+                app:showAsAction="never"
+                android:icon="@drawable/pdf244"
+                android:title="Share pdf"/>
+
+
+
+        </menu>
+    </item>
+</menu>

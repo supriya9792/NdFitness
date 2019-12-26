@@ -9,8 +9,45 @@
         app:showAsAction="always" />
     <item
         android:id="@+id/action_more_info"
-        android:orderInCategory="100"
         android:title="@string/action_more_info"
+        android:icon="@drawable/ic_home"
         app:showAsAction="never" />
-    
+    <item
+        android:id="@+id/a_More"
+        android:icon="@drawable/ic_info"
+        app:showAsAction="always"
+        android:title="More" >
+
+        <menu>
+
+            <item
+                android:id="@+id/MENU_GOTO"
+                android:orderInCategory="100"
+                app:showAsAction="never"
+                android:icon="@drawable/checked"
+                android:title="Go To Page"/>
+
+            <item
+                android:id="@+id/MENU_OUTLINE"
+                android:orderInCategory="100"
+                app:showAsAction="never"
+                android:icon="@drawable/prod_code"
+                android:title="Table of Contents"/>
+
+            <item
+                android:id="@+id/MENU_OPTIONS"
+                android:orderInCategory="100"
+                app:showAsAction="never"
+                android:icon="@drawable/ic_search"
+                android:title="Settings"/>
+
+            <item
+                android:id="@+id/MENU_EXIT"
+                android:orderInCategory="100"
+                app:showAsAction="never"
+                android:icon="@drawable/rate"
+                android:title="Exit"/>
+
+        </menu>
+    </item>
 </menu>

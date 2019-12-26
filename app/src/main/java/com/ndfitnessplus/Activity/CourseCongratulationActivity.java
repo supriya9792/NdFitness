@@ -1,9 +1,14 @@
 package com.ndfitnessplus.Activity;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
+import android.os.FileUriExposedException;
+import android.os.StrictMode;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,6 +17,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -27,12 +33,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class CourseCongratulationActivity extends AppCompatActivity {
    // private View root_view;
-    String member_id,invoice_id,FinancialYear;
+    String member_id,invoice_id,FinancialYear,filepath;
     TextView Name,Packagename,StartDate,EndDate,PaymentMode,Paid,InvoiceId,Date,SessionTv,DurationTv,MobileNo,BalanceTV,Total,MemberID;
     CircularImageView imageView;
     public static String TAG = CourseDetailsActivity.class.getName();
@@ -65,6 +73,7 @@ public class CourseCongratulationActivity extends AppCompatActivity {
             member_id=intent.getStringExtra("member_id");
             invoice_id=intent.getStringExtra("invoice_id");
             FinancialYear=intent.getStringExtra("financial_yr");
+            filepath=intent.getStringExtra("filepath");
 
         }
         coursedetailsclass();
@@ -74,6 +83,47 @@ public class CourseCongratulationActivity extends AppCompatActivity {
                // dismiss();
                 Intent intent = new Intent(CourseCongratulationActivity.this, CourseActivity.class);
                 startActivity(intent);
+//                try {
+//                    File outputFile = new File(filepath);
+////                Uri uri = Uri.fromFile(outputFile);
+////
+////                Intent share = new Intent();
+////                share.setAction(Intent.ACTION_SEND);
+////                share.setType("application/pdf");
+////                share.putExtra(Intent.EXTRA_STREAM, uri);
+////                share.setPackage("com.whatsapp");
+////                startActivity(share);
+//
+//
+//                    String toNumber = "+91 9860562507"; // contains spaces.
+//                    toNumber = toNumber.replace("+", "").replace(" ", "");
+//
+//                    Intent sendIntent = new Intent("android.intent.action.MAIN");
+//                    if(Build.VERSION.SDK_INT>=24){
+//                        try{
+//                            Method m = StrictMode.class.getMethod("disableDeathOnFileUriExposure");
+//                            m.invoke(null);
+//                            sendIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(outputFile));
+////                            shareImage(Uri.fromFile(new File(Path)));
+//                        }catch(Exception e){
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                    sendIntent.putExtra("jid", toNumber + "@s.whatsapp.net");
+////                sendIntent.setType("*/*");
+////                String[] mimetypes = {"image/*", "text/plain"};
+////                sendIntent.putExtra(Intent.EXTRA_MIME_TYPES, mimetypes);       Image with message
+//                    sendIntent.setAction(Intent.ACTION_SEND);
+//                    sendIntent.setPackage("com.whatsapp");
+//                    sendIntent.setType("application/pdf");
+//                    startActivity(sendIntent);
+//
+//                }  catch (ActivityNotFoundException e) {
+//                    Toast.makeText(CourseCongratulationActivity.this, "WhatsApp not Installed", Toast.LENGTH_SHORT)
+//                            .show();
+//                }catch (Exception e){
+//                    e.printStackTrace();
+//                }
             }
         });
     }

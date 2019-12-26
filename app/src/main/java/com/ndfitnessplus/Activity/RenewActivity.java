@@ -2991,7 +2991,7 @@ public class RenewActivity extends AppCompatActivity {
                                                                 }
                                                             });
                                                         } else {
-                                                            Toast.makeText(RenewActivity.this, "Email was not sent.", Toast.LENGTH_LONG).show();
+                                                          //  Toast.makeText(RenewActivity.this, "Email was not sent.", Toast.LENGTH_LONG).show();
                                                         }
                                                     } catch(Exception e) {
                                                         Log.e("MailApp", "Could not send email", e);
@@ -3296,6 +3296,7 @@ public class RenewActivity extends AppCompatActivity {
         intent.putExtra("member_id",MemberID);
         intent.putExtra("invoice_id", invoice_id);
         intent.putExtra("financial_yr",financial_yr);
+        intent.putExtra("filepath",FilePath);
         startActivity(intent);
 //        new Handler().postDelayed(new Runnable() {
 //            @Override
