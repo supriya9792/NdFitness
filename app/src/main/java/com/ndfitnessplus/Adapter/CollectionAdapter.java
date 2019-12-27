@@ -43,18 +43,18 @@ import butterknife.ButterKnife;
 import static com.ndfitnessplus.Activity.EnquiryActivity.TAG;
 
 public class CollectionAdapter  extends RecyclerView.Adapter<CollectionAdapter.BaseViewHolder> {
-    ArrayList<CollectionList> arrayList;
-    private ArrayList<CollectionList> subList;
+    ArrayList<CourseList> arrayList;
+    private ArrayList<CourseList> subList;
     Context context;
 
     private static final int VIEW_TYPE_LOADING = 0;
     private static final int VIEW_TYPE_NORMAL = 1;
     private boolean isLoaderVisible = false;
 
-    public CollectionAdapter(ArrayList<CollectionList> enquiryList, Context context) {
+    public CollectionAdapter(ArrayList<CourseList> enquiryList, Context context) {
         //this.arrayList = enquiryList;
         this.subList = enquiryList;
-        this.arrayList = new ArrayList<CollectionList>();
+        this.arrayList = new ArrayList<CourseList>();
         this.context = context;
         this.arrayList.addAll(enquiryList);
     }
@@ -93,15 +93,15 @@ public class CollectionAdapter  extends RecyclerView.Adapter<CollectionAdapter.B
     public int getItemCount() {
         return arrayList == null ? 0 : arrayList.size();
     }
-    public void add(CollectionList response) {
+    public void add(CourseList response) {
         arrayList.add(response);
         //subList.add(response);
         Log.d(TAG, "sublist size after add : "+String.valueOf(subList.size()) );
         notifyItemInserted(arrayList.size() - 1);
     }
 
-    public void addAll(ArrayList<CollectionList> postItems) {
-        for (CollectionList response : postItems) {
+    public void addAll(ArrayList<CourseList> postItems) {
+        for (CourseList response : postItems) {
             add(response);
             subList.add(response);
         }
@@ -111,7 +111,7 @@ public class CollectionAdapter  extends RecyclerView.Adapter<CollectionAdapter.B
     }
 
 
-    private void remove(CollectionList postItems) {
+    private void remove(CourseList postItems) {
         int position = arrayList.indexOf(postItems);
         if (position > -1) {
             arrayList.remove(position);
@@ -121,14 +121,14 @@ public class CollectionAdapter  extends RecyclerView.Adapter<CollectionAdapter.B
 
     public void addLoading() {
         isLoaderVisible = false;
-        add(new CollectionList());
+        add(new CourseList());
 
     }
 
     public void removeLoading() {
         isLoaderVisible = false;
         int position = arrayList.size() - 1;
-        CollectionList item = getItem(position);
+        CourseList item = getItem(position);
         if (item != null) {
             arrayList.remove(position);
             notifyItemRemoved(position);
@@ -138,7 +138,7 @@ public class CollectionAdapter  extends RecyclerView.Adapter<CollectionAdapter.B
     public void removeblank(){
         isLoaderVisible = false;
         int position = arrayList.size() - 1;
-        CollectionList item = getItem(position);
+        CourseList item = getItem(position);
         if (item != null) {
             arrayList.remove(position);
             notifyItemRemoved(position);
@@ -150,7 +150,7 @@ public class CollectionAdapter  extends RecyclerView.Adapter<CollectionAdapter.B
             remove(getItem(0));
         }
     }
-    CollectionList getItem(int position) {
+    CourseList getItem(int position) {
         return arrayList.get(position);
     }
     //filter for search
@@ -164,7 +164,7 @@ public class CollectionAdapter  extends RecyclerView.Adapter<CollectionAdapter.B
 
             arrayList.addAll(subList);
         } else {
-            for (CollectionList wp : subList) {
+            for (CourseList wp : subList) {
                 if (wp.getName().toLowerCase(Locale.getDefault())
                         .contains(charText) || wp.getPaymentType().toLowerCase(Locale.getDefault()).contains(charText)||
                         wp.getBalance().toLowerCase(Locale.getDefault()).contains(charText)
@@ -179,7 +179,7 @@ public class CollectionAdapter  extends RecyclerView.Adapter<CollectionAdapter.B
         //return  arrayList.size();
     }
     //filter for search
-    public int search(String charTex,final ArrayList<CollectionList> subList) {
+    public int search(String charTex,final ArrayList<CourseList> subList) {
         // subList=arrayList;
 
         final String charText = charTex.toLowerCase(Locale.getDefault());
@@ -194,7 +194,7 @@ public class CollectionAdapter  extends RecyclerView.Adapter<CollectionAdapter.B
 //            handler.post(new Runnable() {
 //                public void run() {
                     // UI code goes here
-                    for (final CollectionList wp : subList) {
+                    for (final CourseList wp : subList) {
                         if (wp.getName().toLowerCase(Locale.getDefault())
                                 .contains(charText) || wp.getPaymentType().toLowerCase(Locale.getDefault()).contains(charText)||
                                 wp.getBalance().toLowerCase(Locale.getDefault()).contains(charText)
@@ -254,7 +254,7 @@ public class CollectionAdapter  extends RecyclerView.Adapter<CollectionAdapter.B
 
         public void onBind(final int position) {
             super.onBind(position);
-            final CollectionList enq = arrayList.get(position);
+            final CourseList enq = arrayList.get(position);
             //Log.d(TAG, "enquiry name: " + enq.getName());
             // idTV.setText(enq.getID());
             nameTV.setText(enq.getName());
@@ -264,7 +264,7 @@ public class CollectionAdapter  extends RecyclerView.Adapter<CollectionAdapter.B
             paymenttypeTv.setText(enq.getPaymentType());
             executiveNameTV.setText(enq.getExecutiveName());
             paidTV.setText(enq.getPaid());
-            balanceTV.setText(enq.getBalance());
+            balanceTV.setText(enq.getBalanceRuppe());
             invoiceidTv.setText(enq.getReceiptId());
             paymentDetailsTv.setText(enq.getPaymentDetails());
             receipttypeTV.setText(enq.getReceiptType());
@@ -287,17 +287,17 @@ public class CollectionAdapter  extends RecyclerView.Adapter<CollectionAdapter.B
                     showCustomDialog(position);
                 }
             });
-//            layoutparent.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    String   enquiryId=enq.getID();
-//                    Intent intent=new Intent(context, CourseDetailsActivity.class);
-//                    Bundle bundle = new Bundle();
-//                    bundle.putSerializable("filter_array_list", enq);
-//                    intent.putExtra("BUNDLE",bundle);
-//                    context.startActivity(intent);
-//                }
-//            });
+            layoutparent.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String   enquiryId=enq.getID();
+                    Intent intent=new Intent(context, CourseDetailsActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("filter_array_list", enq);
+                    intent.putExtra("BUNDLE",bundle);
+                    context.startActivity(intent);
+                }
+            });
         }
     }
     private void showCustomDialog(int position) {
@@ -305,7 +305,7 @@ public class CollectionAdapter  extends RecyclerView.Adapter<CollectionAdapter.B
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE); // before
         dialog.setContentView(R.layout.item_grid_image_two_line_light);
         dialog.setCancelable(true);
-        final CollectionList enq = arrayList.get(position);
+        final CourseList enq = arrayList.get(position);
 //        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
 //        lp.copyFrom(dialog.getWindow().getAttributes());
 //        lp.width = WindowManager.LayoutParams.WRAP_CONTENT;

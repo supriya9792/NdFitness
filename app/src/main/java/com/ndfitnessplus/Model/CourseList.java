@@ -4,7 +4,8 @@ import java.io.Serializable;
 
 public class CourseList implements Serializable {
     String  ID , name ,Contact,registrationDate ,PackageNameWithDS , StartToEndDate ,EndDate, ExecutiveName,image, Rate,Paid, Balance,Email,
-            InvoiceID,PackageName,Tax,NextPaymentdate,financialYear,followuptype,Status,ContactEncrypt,CourseStatus;
+            InvoiceID,PackageName,Tax,NextPaymentdate,financialYear,followuptype,Status,ContactEncrypt,CourseStatus,ReceiptDate,PaymentType,
+            ReceiptId,ReceiptType,PaymentDetails,BalanceRuppe;
 
     public CourseList() {
     }
@@ -198,5 +199,54 @@ public class CourseList implements Serializable {
 
     public void setCourseStatus(String courseStatus) {
         CourseStatus = courseStatus;
+    }
+
+
+    public String getReceiptDate() {
+        return ReceiptDate;
+    }
+
+    public void setReceiptDate(String receiptDate) {
+        ReceiptDate = receiptDate;
+    }
+
+    public String getPaymentType() {
+        return PaymentType;
+    }
+
+    public void setPaymentType(String paymentType) {
+        PaymentType = paymentType;
+    }
+
+    public String getReceiptId() {
+        return ReceiptId;
+    }
+
+    public void setReceiptId(String receiptId) {
+        ReceiptId = receiptId;
+    }
+
+    public String getReceiptType() {
+        return ReceiptType;
+    }
+
+    public void setReceiptType(String receiptType) {
+        ReceiptType = receiptType;
+    }
+
+    public String getPaymentDetails() {
+        return PaymentDetails;
+    }
+
+    public void setPaymentDetails(String paymentDetails) {
+        PaymentDetails = paymentDetails;
+    }
+
+    public String getBalanceRuppe() {
+        return BalanceRuppe;
+    }
+
+    public void setBalanceRuppe(String balanceRuppe) {
+        BalanceRuppe = balanceRuppe;
     }
 }

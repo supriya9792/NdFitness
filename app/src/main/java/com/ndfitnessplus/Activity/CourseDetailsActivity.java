@@ -1,14 +1,17 @@
 package com.ndfitnessplus.Activity;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapShader;
@@ -23,6 +26,8 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
 import android.os.StrictMode;
+import android.provider.ContactsContract;
+import android.support.annotation.RequiresPermission;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
@@ -33,6 +38,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.telephony.PhoneNumberUtils;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
@@ -131,23 +137,24 @@ import java.util.HashMap;
 
 public class CourseDetailsActivity extends AppCompatActivity {
     public static final String CSS_DIR = "D:\\Tulsa\\NDFitness_final\\NDFitness_14_9_2019\\NDFitness_2_10_2019Final\\NDFitness\\app\\src\\main\\res\\css";
+    private static final boolean TODO = true;
 
     public static String TAG = CourseDetailsActivity.class.getName();
     private ProgressDialog pd;
-    TextView nameTV,regdateTV,packagenameTV,start_to_end_dateTV,rateTV,paidTV,balanceTV,contactTV,executiveNameTV,durationTv,invoice_idTV;
+    TextView nameTV, regdateTV, packagenameTV, start_to_end_dateTV, rateTV, paidTV, balanceTV, contactTV, executiveNameTV, durationTv, invoice_idTV;
     ImageView contactIV;
     CircularImageView imageView;
 
     private RecyclerView recyclerView;
     private LinearLayoutManager layoutManager;
     ProgressBar progressBar;
-    String member_id,invoice_id,Email,FinancialYear;
+    String member_id, invoice_id, Email, FinancialYear;
     View nodata;
     BalanceTrasactionAdapter adapter;
     ArrayList<BalanceTrasactionList> subListArrayList = new ArrayList<BalanceTrasactionList>();
     BalanceTrasactionList subList;
     String NextFollowupDate;
-    Button balance,followup,attendence;
+    Button balance, followup, attendence;
     String Tax;
     String TaxAmount;
     String finalBalance;
@@ -160,31 +167,31 @@ public class CourseDetailsActivity extends AppCompatActivity {
     Spinner_List paymentTypeList;
     public AddEnquirySpinnerAdapter paymentTypeadapter;
     ArrayList<Spinner_List> paymentTypeArrayList = new ArrayList<Spinner_List>();
-    public EditText inputPaymentDtl,inputPaid,inputNextFollDate,inputComment,inputBalance;
+    public EditText inputPaymentDtl, inputPaid, inputNextFollDate, inputComment, inputBalance;
     private int mYear, mMonth, mDay;
     String paymentType;
     TextView txtPaymentType;
     CourseList filterArrayList;
     ImageButton phone;
-    ImageView whatsapp,message;
+    ImageView whatsapp, message;
 
     //setting followup popup
-    EditText inputNextFollowupdate,inputfollComment;
-    Spinner spinCallResponce,spinRating,spinFollType;
-    Spinner_List spinCallReslist,ratingList,spinFollTypeList;
+    EditText inputNextFollowupdate, inputfollComment;
+    Spinner spinCallResponce, spinRating, spinFollType;
+    Spinner_List spinCallReslist, ratingList, spinFollTypeList;
 
     private static final int PERMISSION_REQUEST_CODE = 1;
-    AddEnquirySpinnerAdapter callresponceadapter,ratingadapter;
-    String callResponce="";
-    String Rating="";
-    String FollowupType="";
-    TextView txtcallres,txtrating,txtFollType;
-    String[] callresponce ;
-    String[] folltype ;
-    String start_date,end_date,remSession;
+    AddEnquirySpinnerAdapter callresponceadapter, ratingadapter;
+    String callResponce = "";
+    String Rating = "";
+    String FollowupType = "";
+    TextView txtcallres, txtrating, txtFollType;
+    String[] callresponce;
+    String[] folltype;
+    String start_date, end_date, remSession;
     //Loading gif
     ViewDialog viewDialog;
-    private BaseFont bfBold,bfnormal;
+    private BaseFont bfBold, bfnormal;
     private static final String LOG_TAG = "GeneratePDF";
 
     private EditText preparedBy;
@@ -192,10 +199,11 @@ public class CourseDetailsActivity extends AppCompatActivity {
     private String filename = "Sample.pdf";
     private String filepath = "MyInvoices";
     String FilePath;
-    String fname ="";
-    String Email_ID,Password,Header,Footer,ContactNumber;
+    String fname = "";
+    String Email_ID, Password, Header, Footer, ContactNumber;
     String Logo;
     String NextPaymentDate;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -236,6 +244,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
 //                    });
 //        }
     }
+
     private void initToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -243,14 +252,15 @@ public class CourseDetailsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         initComponent();
     }
-    private void initComponent(){
+
+    private void initComponent() {
 
 
         contactTV = (TextView) findViewById(R.id.contactTV);
         rateTV = (TextView) findViewById(R.id.rateTV);
         nameTV = (TextView) findViewById(R.id.nameTV);
         contactIV = (ImageView) findViewById(R.id.contactIV);
-        imageView=(CircularImageView) findViewById(R.id.input_image);
+        imageView = (CircularImageView) findViewById(R.id.input_image);
 
         viewDialog = new ViewDialog(this);
 
@@ -258,70 +268,70 @@ public class CourseDetailsActivity extends AppCompatActivity {
         packagenameTV = (TextView) findViewById(R.id.package_nameTV);
         start_to_end_dateTV = (TextView) findViewById(R.id.start_to_end_date_TV);
         paidTV = (TextView) findViewById(R.id.paidTV);
-        executiveNameTV=(TextView)findViewById(R.id.excecutive_nameTV);
+        executiveNameTV = (TextView) findViewById(R.id.excecutive_nameTV);
         balanceTV = (TextView) findViewById(R.id.balanceTV);
         durationTv = (TextView) findViewById(R.id.duration);
         invoice_idTV = (TextView) findViewById(R.id.invoice_idTV);
 
-        phone=findViewById(R.id.phone_call);
-        message=findViewById(R.id.message);
-        whatsapp=findViewById(R.id.whatsapp);
+        phone = findViewById(R.id.phone_call);
+        message = findViewById(R.id.message);
+        whatsapp = findViewById(R.id.whatsapp);
 
-        progressBar=findViewById(R.id.progressBar);
+        progressBar = findViewById(R.id.progressBar);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
 
-        balance=findViewById(R.id.btn_balance);
-        followup=findViewById(R.id.btn_followup);
-        attendence=findViewById(R.id.btn_attendence);
+        balance = findViewById(R.id.btn_balance);
+        followup = findViewById(R.id.btn_followup);
+        attendence = findViewById(R.id.btn_attendence);
         Intent intent = getIntent();
         Bundle args = intent.getBundleExtra("BUNDLE");
         if (args != null) {
-           filterArrayList = (CourseList) args.getSerializable("filter_array_list");
+            filterArrayList = (CourseList) args.getSerializable("filter_array_list");
 
-                 String cont=filterArrayList.getContact();
-                 ContactNumber=cont;
+            String cont = filterArrayList.getContact();
+            ContactNumber = cont;
 //                Log.v(TAG, String.format("Selected  ::contact= %s", cont));
 //                Log.v(TAG, String.format("Selected  ::name= %s", filterArrayList.getName()));
-                 contactTV.setText(cont);
+            contactTV.setText(cont);
             nameTV.setText(filterArrayList.getName());
-            String fpaid="₹ "+filterArrayList.getPaid();
-            String ttl="₹ "+filterArrayList.getRate();
+            String fpaid = "₹ " + filterArrayList.getPaid();
+            String ttl = "₹ " + filterArrayList.getRate();
             rateTV.setText(ttl);
-            String regdate=Utility.formatDate(filterArrayList.getRegistrationDate());
+            String regdate = Utility.formatDate(filterArrayList.getRegistrationDate());
             regdateTV.setText(regdate);
             packagenameTV.setText(filterArrayList.getPackageName());
-            String dur=filterArrayList.getPackageNameWithDS();
+            String dur = filterArrayList.getPackageNameWithDS();
             durationTv.setText(dur);
-             String rm[]=dur.split(",");
-             String rms[]=rm[1].split(":");
+            String rm[] = dur.split(",");
+            String rms[] = rm[1].split(":");
             // remSession=rms[1];
             start_to_end_dateTV.setText(filterArrayList.getStartToEndDate());
             paidTV.setText(fpaid);
             executiveNameTV.setText(filterArrayList.getExecutiveName());
             balanceTV.setText(filterArrayList.getBalance());
-            invoice_id=filterArrayList.getInvoiceID();
-            FinancialYear=filterArrayList.getFinancialYear();
+            invoice_id = filterArrayList.getInvoiceID();
+            FinancialYear = filterArrayList.getFinancialYear();
             invoice_idTV.setText(invoice_id);
-            member_id=filterArrayList.getID();
-            Tax=filterArrayList.getTax();
-            Email=filterArrayList.getEmail();
+            member_id = filterArrayList.getID();
+            Tax = filterArrayList.getTax();
+            Email = filterArrayList.getEmail();
 
-            FollowupType=filterArrayList.getFollowuptype();
-            if(FollowupType ==null){
-                FollowupType="";
+            FollowupType = filterArrayList.getFollowuptype();
+            if (FollowupType == null) {
+                FollowupType = "";
             }
 
             Log.v(TAG, String.format("Selected  ::invoice_id= %s", invoice_id));
             Log.v(TAG, String.format("Email= %s", Email));
             Log.v(TAG, String.format("Selected  ::Paid= %s", fpaid));
             Log.v(TAG, String.format("Selected  ::Balance= %s", filterArrayList.getBalance()));
-            String domainurl= SharedPrefereneceUtil.getDomainUrl(CourseDetailsActivity.this);
-            String url= domainurl+ServiceUrls.IMAGES_URL + filterArrayList.getImage();
+            String domainurl = SharedPrefereneceUtil.getDomainUrl(CourseDetailsActivity.this);
+            String url = domainurl + ServiceUrls.IMAGES_URL + filterArrayList.getImage();
 
-           // Glide.with(this).load(url).placeholder(R.drawable.nouser).into(imageView);
+            // Glide.with(this).load(url).placeholder(R.drawable.nouser).into(imageView);
             RequestOptions requestOptions = new RequestOptions();
             requestOptions.placeholder(R.drawable.nouser);
             requestOptions.error(R.drawable.nouser);
@@ -331,7 +341,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                     .setDefaultRequestOptions(requestOptions)
                     .load(url).into(imageView);
 
-           folldetailsclass();
+            folldetailsclass();
             balanceTrasactionclass();
             coursedetailsclass();
             pdfGenerationdataclass();
@@ -339,13 +349,12 @@ public class CourseDetailsActivity extends AppCompatActivity {
 //        requestPermission();
         if (!isExternalStorageAvailable() || isExternalStorageReadOnly()) {
             Log.v(LOG_TAG, "External Storage not available or you don't have permission to write");
-        }
-        else {
+        } else {
             String root = Environment.getExternalStorageDirectory().getPath();
             File myDir = new File(root + "/MyInvoices");
             myDir.mkdirs();
             long n = System.currentTimeMillis() / 1000L;
-            String iname=SharedPrefereneceUtil.getSelectedBranchId(CourseDetailsActivity.this)+member_id;
+            String iname = SharedPrefereneceUtil.getSelectedBranchId(CourseDetailsActivity.this) + member_id;
             fname = "Invoice" + iname + ".pdf";
             FilePath = root + "/MyInvoices/" + fname;
             pdfFile = new File(myDir, fname);
@@ -372,7 +381,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent dialIntent = new Intent(Intent.ACTION_DIAL);
-                dialIntent.setData(Uri.parse("tel:"+contactTV.getText().toString()));
+                dialIntent.setData(Uri.parse("tel:" + contactTV.getText().toString()));
                 startActivity(dialIntent);
             }
         });
@@ -393,15 +402,15 @@ public class CourseDetailsActivity extends AppCompatActivity {
             public void onClick(View v) {
 
 
-                PackageManager pm=getPackageManager();
+                PackageManager pm = getPackageManager();
                 try {
                     // Uri uri = Uri.parse("smsto:" + Contact);
                     Uri uri = Uri.parse("whatsapp://send?phone=+91" + contactTV.getText().toString());
-                    Intent waIntent = new Intent(Intent.ACTION_VIEW,uri);
+                    Intent waIntent = new Intent(Intent.ACTION_VIEW, uri);
                     //waIntent.setType("text/plain");
                     String text = "YOUR TEXT HERE";
 
-                    PackageInfo info=pm.getPackageInfo("com.whatsapp", PackageManager.GET_META_DATA);
+                    PackageInfo info = pm.getPackageInfo("com.whatsapp", PackageManager.GET_META_DATA);
                     //Check if package exists or not. If not then code
                     //in catch block will be called
                     waIntent.setPackage("com.whatsapp");
@@ -419,35 +428,35 @@ public class CourseDetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(CourseDetailsActivity.this, FullImageActivity.class);
-                intent.putExtra("image",filterArrayList.getImage());
-                intent.putExtra("contact",filterArrayList.getContact());
-                intent.putExtra("id",member_id);
-                intent.putExtra("user","Member");
+                intent.putExtra("image", filterArrayList.getImage());
+                intent.putExtra("contact", filterArrayList.getContact());
+                intent.putExtra("id", member_id);
+                intent.putExtra("user", "Member");
                 startActivity(intent);
             }
         });
 
 
-        if(!(balanceTV.getText().toString().equals("0.00"))){
+        if (!(balanceTV.getText().toString().equals("0.00"))) {
             balance.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     showCustomDialog();
                 }
             });
-        }else{
+        } else {
             Toast.makeText(CourseDetailsActivity.this, "No Outstanding Remaining", Toast.LENGTH_SHORT).show();
         }
         attendence.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(CourseDetailsActivity.this,CourseWiseAttendanceActivity.class);
-                intent.putExtra("invoice_id",invoice_id);
-                intent.putExtra("financial_yr",FinancialYear);
-                intent.putExtra("member_id",member_id);
-                intent.putExtra("start_date",start_date);
-                intent.putExtra("end_date",end_date);
-                intent.putExtra("remaining_session",remSession);
+                Intent intent = new Intent(CourseDetailsActivity.this, CourseWiseAttendanceActivity.class);
+                intent.putExtra("invoice_id", invoice_id);
+                intent.putExtra("financial_yr", FinancialYear);
+                intent.putExtra("member_id", member_id);
+                intent.putExtra("start_date", start_date);
+                intent.putExtra("end_date", end_date);
+                intent.putExtra("remaining_session", remSession);
                 startActivity(intent);
             }
         });
@@ -465,16 +474,16 @@ public class CourseDetailsActivity extends AppCompatActivity {
 //        lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
 //        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
 
-        spinPaymentype = (Spinner)dialog. findViewById(R.id.spinner_payment_type);
-        inputComment = (EditText)dialog. findViewById(R.id.input_enquiry_comment);
+        spinPaymentype = (Spinner) dialog.findViewById(R.id.spinner_payment_type);
+        inputComment = (EditText) dialog.findViewById(R.id.input_enquiry_comment);
         //final EditText veri_otp=(EditText)dialog.findViewById(R.id.et_otp);
-        inputNextFollDate=(EditText)dialog.findViewById(R.id.input_next_foll_date);
-        inputPaymentDtl = (EditText)dialog. findViewById(R.id.input_payment_details);
-        inputPaid = (EditText)dialog. findViewById(R.id.input_paid);
-        inputNextFollDate = (EditText)dialog. findViewById(R.id.input_nextfollDate);
-        inputComment = (EditText)dialog. findViewById(R.id.input_comment);
-        inputBalance = (EditText)dialog. findViewById(R.id.input_balance);
-        txtPaymentType=dialog.findViewById(R.id.txt_payment_type);
+        inputNextFollDate = (EditText) dialog.findViewById(R.id.input_next_foll_date);
+        inputPaymentDtl = (EditText) dialog.findViewById(R.id.input_payment_details);
+        inputPaid = (EditText) dialog.findViewById(R.id.input_paid);
+        inputNextFollDate = (EditText) dialog.findViewById(R.id.input_nextfollDate);
+        inputComment = (EditText) dialog.findViewById(R.id.input_comment);
+        inputBalance = (EditText) dialog.findViewById(R.id.input_balance);
+        txtPaymentType = dialog.findViewById(R.id.txt_payment_type);
         inputBalance.setText("0");
         String curr_date = Utility.getCurrentDate();
         inputNextFollDate.setText(curr_date);
@@ -482,7 +491,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
         //awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
 
 
-      //  awesomeValidation.addValidation(this, R.id.input_paid, RegexTemplate.NOT_EMPTY, R.string.err_msg_paid);
+        //  awesomeValidation.addValidation(this, R.id.input_paid, RegexTemplate.NOT_EMPTY, R.string.err_msg_paid);
         ((ImageButton) dialog.findViewById(R.id.bt_close)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -499,30 +508,30 @@ public class CourseDetailsActivity extends AppCompatActivity {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
 
-                if(inputPaid.getText().length()>0){
-                    double rate=Double.parseDouble(balanceTV.getText().toString());
-                    double paid=Double.parseDouble(inputPaid.getText().toString());
-                    double tax=Double.parseDouble(Tax);
+                if (inputPaid.getText().length() > 0) {
+                    double rate = Double.parseDouble(balanceTV.getText().toString());
+                    double paid = Double.parseDouble(inputPaid.getText().toString());
+                    double tax = Double.parseDouble(Tax);
 
-                    double finalbal=rate-paid;
-                    finalBalance=String.valueOf(finalbal);
+                    double finalbal = rate - paid;
+                    finalBalance = String.valueOf(finalbal);
                     inputBalance.setText(finalBalance);
-                    double i=(paid/((tax/100)+1));
-                    double tax_amt=paid-i;
-                    TaxAmount=String.valueOf(tax_amt);
-                    subtotal=String.valueOf(i);
+                    double i = (paid / ((tax / 100) + 1));
+                    double tax_amt = paid - i;
+                    TaxAmount = String.valueOf(tax_amt);
+                    subtotal = String.valueOf(i);
                     // Log.v(TAG, String.format("Max Discount  :: souble max discout= %s", maxdisc));
-                    if(rate == paid){
+                    if (rate == paid) {
                         inputNextFollDate.getText().clear();
                         inputNextFollDate.setEnabled(false);
                         inputNextFollDate.setKeyListener(null);
-                     //   awesomeValidation.clear();
-                    } else{
+                        //   awesomeValidation.clear();
+                    } else {
                         inputNextFollDate.setEnabled(true);
-                       // awesomeValidation.addValidation(CourseDetailsActivity.this,R.id.input_nextfollDate, RegexTemplate.NOT_EMPTY,R.string.err_msg_next_foll_date);
+                        // awesomeValidation.addValidation(CourseDetailsActivity.this,R.id.input_nextfollDate, RegexTemplate.NOT_EMPTY,R.string.err_msg_next_foll_date);
                     }
-                    if(paid>rate){
-                        Toast.makeText(CourseDetailsActivity.this,"Your paying more than your fees",Toast
+                    if (paid > rate) {
+                        Toast.makeText(CourseDetailsActivity.this, "Your paying more than your fees", Toast
                                 .LENGTH_SHORT).show();
                         inputBalance.setText(balanceTV.getText().toString());
                         inputPaid.setText("");
@@ -530,11 +539,11 @@ public class CourseDetailsActivity extends AppCompatActivity {
                         inputNextFollDate.getText().clear();
                         inputNextFollDate.setEnabled(false);
                         inputNextFollDate.setKeyListener(null);
-                    }else {
-                       // inputBalance.setText(balanceTV.getText().toString());
+                    } else {
+                        // inputBalance.setText(balanceTV.getText().toString());
                     }
 
-                }else{
+                } else {
                     inputBalance.setText(balanceTV.getText().toString());
                 }
 
@@ -548,45 +557,44 @@ public class CourseDetailsActivity extends AppCompatActivity {
             }
 
 
-
             public void beforeTextChanged(CharSequence s, int start, int count,
                                           int after) {
 
             }
 
             public void afterTextChanged(Editable s) {
-                if(inputPaid.getText().length()>0) {
-                    double rate=Double.parseDouble(balanceTV.getText().toString());
-                    double paid=Double.parseDouble(inputPaid.getText().toString());
-                    double tax=Double.parseDouble(Tax);
+                if (inputPaid.getText().length() > 0) {
+                    double rate = Double.parseDouble(balanceTV.getText().toString());
+                    double paid = Double.parseDouble(inputPaid.getText().toString());
+                    double tax = Double.parseDouble(Tax);
 
-                    double finalbal=rate-paid;
-                    finalBalance=String.valueOf(finalbal);
+                    double finalbal = rate - paid;
+                    finalBalance = String.valueOf(finalbal);
                     inputBalance.setText(finalBalance);
-                    double i=(paid/((tax/100)+1));
-                    double tax_amt=paid-i;
-                    TaxAmount=String.valueOf(tax_amt);
-                    subtotal=String.valueOf(i);
-                    if(rate == paid){
+                    double i = (paid / ((tax / 100) + 1));
+                    double tax_amt = paid - i;
+                    TaxAmount = String.valueOf(tax_amt);
+                    subtotal = String.valueOf(i);
+                    if (rate == paid) {
                         inputNextFollDate.getText().clear();
                         inputNextFollDate.setEnabled(false);
                         inputNextFollDate.setKeyListener(null);
-                       // awesomeValidation.clear();
-                    } else{
+                        // awesomeValidation.clear();
+                    } else {
                         inputNextFollDate.setEnabled(true);
 
                     }
-                    if(paid>rate){
-                        Toast.makeText(CourseDetailsActivity.this,"Your paying more than your fees",Toast
+                    if (paid > rate) {
+                        Toast.makeText(CourseDetailsActivity.this, "Your paying more than your fees", Toast
                                 .LENGTH_SHORT).show();
-                       // awesomeValidation.clear();
+                        // awesomeValidation.clear();
                         inputBalance.setText(balanceTV.getText().toString());
                         inputPaid.setText("");
                         inputNextFollDate.getText().clear();
                         inputNextFollDate.setEnabled(false);
                         inputNextFollDate.setKeyListener(null);
                     }
-                }else {
+                } else {
                     inputBalance.setText(balanceTV.getText().toString());
                 }
 
@@ -622,26 +630,26 @@ public class CourseDetailsActivity extends AppCompatActivity {
         ((Button) dialog.findViewById(R.id.btn_submit)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!(inputBalance.getText().toString().equals("0.0"))){
+                if (!(inputBalance.getText().toString().equals("0.0"))) {
                     // Toast.makeText(this, "Please fill Payment type or Package type", Toast.LENGTH_LONG).show();
                     //awesomeValidation.addValidation(CourseDetailsActivity.this,R.id.input_nextfollDate,RegexTemplate.NOT_EMPTY,R.string.err_msg_next_payment_date);
-                    if (inputNextFollDate.getText().length()>0) {
+                    if (inputNextFollDate.getText().length() > 0) {
                         // Log.v(TAG, String.format("Remaining balance= %s", inputBalance.getText().toString()));
-                        double paid =0;
-                        if(inputPaid.getText().length()>0){
-                             paid = Double.parseDouble(inputPaid.getText().toString());
+                        double paid = 0;
+                        if (inputPaid.getText().length() > 0) {
+                            paid = Double.parseDouble(inputPaid.getText().toString());
                         }
 
-                        if(paymentType.equals(getResources().getString(R.string.payment_type)) ){
+                        if (paymentType.equals(getResources().getString(R.string.payment_type))) {
                             Toast.makeText(CourseDetailsActivity.this, "Please fill Payment type or Package type", Toast.LENGTH_LONG).show();
-                        }else{
-                            if(paid <=0){
+                        } else {
+                            if (paid <= 0) {
                                 inputPaid.getText().clear();
                                 inputBalance.getText().clear();
                                 inputPaid.requestFocus();
                                 Toast.makeText(CourseDetailsActivity.this, "Please pay some amount", Toast
                                         .LENGTH_SHORT).show();
-                            }else{
+                            } else {
                                 AddBalanceReceiptClass();
                                 dialog.dismiss();
                             }
@@ -649,28 +657,28 @@ public class CourseDetailsActivity extends AppCompatActivity {
                             Log.v(TAG, String.format("calling function= %s", "Add Balnce receipt"));
                         }
 
-                    }else{
+                    } else {
                         Toast.makeText(CourseDetailsActivity.this, "Please select next payment date", Toast.LENGTH_LONG).show();
                     }
-                }else{
-                        // Log.v(TAG, String.format("Remaining balance= %s", inputBalance.getText().toString()));
-                        double paid = Double.parseDouble(inputPaid.getText().toString());
-                        if(paymentType.equals(getResources().getString(R.string.payment_type)) ){
-                            Toast.makeText(CourseDetailsActivity.this, "Please fill Payment type or Package type", Toast.LENGTH_LONG).show();
-                        }else{
-                            if(paid <=0){
-                                Toast.makeText(CourseDetailsActivity.this, "Please pay some amount", Toast
-                                        .LENGTH_SHORT).show();
-                                inputPaid.getText().clear();
-                                inputBalance.getText().clear();
-                                inputPaid.requestFocus();
+                } else {
+                    // Log.v(TAG, String.format("Remaining balance= %s", inputBalance.getText().toString()));
+                    double paid = Double.parseDouble(inputPaid.getText().toString());
+                    if (paymentType.equals(getResources().getString(R.string.payment_type))) {
+                        Toast.makeText(CourseDetailsActivity.this, "Please fill Payment type or Package type", Toast.LENGTH_LONG).show();
+                    } else {
+                        if (paid <= 0) {
+                            Toast.makeText(CourseDetailsActivity.this, "Please pay some amount", Toast
+                                    .LENGTH_SHORT).show();
+                            inputPaid.getText().clear();
+                            inputBalance.getText().clear();
+                            inputPaid.requestFocus();
 
-                            }else{
-                                AddBalanceReceiptClass();
-                                dialog.dismiss();
-                            }
-                            Log.v(TAG, String.format("calling function= %s", "Add Balnce receipt"));
+                        } else {
+                            AddBalanceReceiptClass();
+                            dialog.dismiss();
                         }
+                        Log.v(TAG, String.format("calling function= %s", "Add Balnce receipt"));
+                    }
 
                 }
 
@@ -681,13 +689,14 @@ public class CourseDetailsActivity extends AppCompatActivity {
         dialog.show();
         //dialog.getWindow().setAttributes(lp);
     }
-    public  void SetSpinner(){
+
+    public void SetSpinner() {
         spinPaymentype.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 int index = parent.getSelectedItemPosition();
-                if(view != null) {
+                if (view != null) {
                     TextView tv = (TextView) view.findViewById(R.id.tv_Name);
                     View layout = (View) view.findViewById(R.id.layout);
                     layout.setPadding(0, 0, 0, 0);
@@ -712,6 +721,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
             }
         });
     }
+
     private void showFollowupDialog() {
         final Dialog dialog = new Dialog(CourseDetailsActivity.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE); // before
@@ -722,16 +732,16 @@ public class CourseDetailsActivity extends AppCompatActivity {
 //        lp.copyFrom(dialog.getWindow().getAttributes());
 //        lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
 //        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
-        spinCallResponce = (Spinner)dialog. findViewById(R.id.spinner_call_res);
-        spinRating = (Spinner)dialog. findViewById(R.id.spinner_rating);
-        spinFollType= (Spinner)dialog. findViewById(R.id.spinner_folltype);
-        txtcallres=(TextView)dialog.findViewById(R.id.txt_callres);
-        txtrating=(TextView)dialog.findViewById(R.id.txt_rating);
-        txtFollType=(TextView)dialog.findViewById(R.id.txt_folltype);
+        spinCallResponce = (Spinner) dialog.findViewById(R.id.spinner_call_res);
+        spinRating = (Spinner) dialog.findViewById(R.id.spinner_rating);
+        spinFollType = (Spinner) dialog.findViewById(R.id.spinner_folltype);
+        txtcallres = (TextView) dialog.findViewById(R.id.txt_callres);
+        txtrating = (TextView) dialog.findViewById(R.id.txt_rating);
+        txtFollType = (TextView) dialog.findViewById(R.id.txt_folltype);
 
-        inputfollComment = (EditText)dialog. findViewById(R.id.input_enquiry_comment);
+        inputfollComment = (EditText) dialog.findViewById(R.id.input_enquiry_comment);
         //final EditText veri_otp=(EditText)dialog.findViewById(R.id.et_otp);
-        inputNextFollowupdate=(EditText)dialog.findViewById(R.id.input_next_foll_date);
+        inputNextFollowupdate = (EditText) dialog.findViewById(R.id.input_next_foll_date);
 
         ((ImageButton) dialog.findViewById(R.id.bt_close)).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -745,7 +755,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
         //}
         callResponseClass();
         follTypeClass();
-       // inputNextFollowupdate.setText(NextFollowupDate);
+        // inputNextFollowupdate.setText(NextFollowupDate);
         String curr_date = Utility.getCurrentDate();
         inputNextFollowupdate.setText(curr_date);
 
@@ -778,37 +788,37 @@ public class CourseDetailsActivity extends AppCompatActivity {
         ((Button) dialog.findViewById(R.id.btn_submit)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if( callResponce.equals(getResources().getString(R.string.call_res)) || Rating.equals(getResources().getString(R.string.rating)) ||FollowupType.equals(getResources().getString(R.string.hint_foll_type))){
+                if (callResponce.equals(getResources().getString(R.string.call_res)) || Rating.equals(getResources().getString(R.string.rating)) || FollowupType.equals(getResources().getString(R.string.hint_foll_type))) {
                     Toast.makeText(getApplicationContext(), "Please select Call Response or Rating or Followup Type", Toast.LENGTH_SHORT).show();
-                }else{
-                    if(inputNextFollowupdate.getText().length()==0) {
-                        if (!(Rating.equals("Not Interested") || Rating.equals("Converted")||FollowupType.equals("Member BirthDay")||FollowupType.equals("Staff BirthDay"))) {
-                            Toast.makeText(getApplicationContext(), "Please select Next Followup Date" , Toast.LENGTH_SHORT).show();
-                        }else{
-                            if(inputfollComment.getText().length()>0) {
-                                if(FollowupType.equals("Payment")&&(balanceTV.getText().toString().equals("0.0"))){
+                } else {
+                    if (inputNextFollowupdate.getText().length() == 0) {
+                        if (!(Rating.equals("Not Interested") || Rating.equals("Converted") || FollowupType.equals("Member BirthDay") || FollowupType.equals("Staff BirthDay"))) {
+                            Toast.makeText(getApplicationContext(), "Please select Next Followup Date", Toast.LENGTH_SHORT).show();
+                        } else {
+                            if (inputfollComment.getText().length() > 0) {
+                                if (FollowupType.equals("Payment") && (balanceTV.getText().toString().equals("0.0"))) {
                                     dialog.dismiss();
                                     Toast.makeText(CourseDetailsActivity.this, "No Outstanding Remainig", Toast.LENGTH_LONG).show();
-                                }else{
+                                } else {
                                     takefollowupclass();
                                     dialog.dismiss();
                                 }
-                            }else{
-                                Toast.makeText(getApplicationContext(), "Please enter comment" , Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Please enter comment", Toast.LENGTH_SHORT).show();
 
                             }
                         }
-                    }else{
-                        if(inputfollComment.getText().length()>0) {
-                            if(FollowupType.equals("Payment")&&(balanceTV.getText().toString().equals("0.0"))){
+                    } else {
+                        if (inputfollComment.getText().length() > 0) {
+                            if (FollowupType.equals("Payment") && (balanceTV.getText().toString().equals("0.0"))) {
                                 dialog.dismiss();
                                 Toast.makeText(CourseDetailsActivity.this, "No Outstanding Remainig", Toast.LENGTH_LONG).show();
-                            }else{
+                            } else {
                                 takefollowupclass();
                                 dialog.dismiss();
                             }
-                        }else{
-                            Toast.makeText(getApplicationContext(), "Please enter comment" , Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Please enter comment", Toast.LENGTH_SHORT).show();
 
                         }
                     }
@@ -819,11 +829,13 @@ public class CourseDetailsActivity extends AppCompatActivity {
         dialog.show();
         //dialog.getWindow().setAttributes(lp);
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.balance_pdf_menu, menu);
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -831,28 +843,49 @@ public class CourseDetailsActivity extends AppCompatActivity {
 
 
             return true;
-        }else
-        if (id == R.id.whatsapp) {
-
-            return true;
-        }else if (id == R.id.share_pdf) {
+        } else if (id == R.id.whatsapp) {
+            PackageManager pm = getPackageManager();
             try {
-                    File outputFile = new File(FilePath);
-                    String toNumber = "91"+ContactNumber; // contains spaces.
-                    toNumber = toNumber.replace("+", "").replace(" ", "");
+                // Uri uri = Uri.parse("smsto:" + Contact);
+                Uri uri = Uri.parse("whatsapp://send?phone=+91" + contactTV.getText().toString());
+                Intent waIntent = new Intent(Intent.ACTION_VIEW, uri);
+                //waIntent.setType("text/plain");
+                String text = "YOUR TEXT HERE";
+
+                PackageInfo info = pm.getPackageInfo("com.whatsapp", PackageManager.GET_META_DATA);
+                //Check if package exists or not. If not then code
+                //in catch block will be called
+                waIntent.setPackage("com.whatsapp");
+
+                // waIntent.putExtra(Intent.EXTRA_TEXT, text);
+                startActivity(waIntent);
+
+            } catch (PackageManager.NameNotFoundException e) {
+                Toast.makeText(CourseDetailsActivity.this, "WhatsApp not Installed", Toast.LENGTH_SHORT)
+                        .show();
+            }
+            return true;
+        } else if (id == R.id.share_pdf) {
+            try {
+                File outputFile = new File(FilePath);
+//                   Uri uri = Uri.parse("whatsapp://send?phone=+91" + contactTV.getText().toString());
+                String toNumber = "91" + ContactNumber; // contains spaces.
+                toNumber = toNumber.replace("+", "").replace(" ", "");
 
                     Intent sendIntent = new Intent("android.intent.action.MAIN");
-                    if(Build.VERSION.SDK_INT>=24){
-                        try{
+                    if (Build.VERSION.SDK_INT >= 24) {
+                        try {
                             Method m = StrictMode.class.getMethod("disableDeathOnFileUriExposure");
                             m.invoke(null);
                             sendIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(pdfFile));
 //                            shareImage(Uri.fromFile(new File(Path)));
-                        }catch(Exception e){
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
                     sendIntent.putExtra("jid", toNumber + "@s.whatsapp.net");
+//                      sendIntent.putExtra(Intent.ACTION_VIEW, uri);
+//                    sendIntent.putExtra("jid", toNumber + "@s.whatsapp.net");
 //                sendIntent.setType("*/*");
 //                String[] mimetypes = {"image/*", "text/plain"};
 //                sendIntent.putExtra(Intent.EXTRA_MIME_TYPES, mimetypes);       Image with message
@@ -864,9 +897,13 @@ public class CourseDetailsActivity extends AppCompatActivity {
                 }  catch (ActivityNotFoundException e) {
                     Toast.makeText(CourseDetailsActivity.this, "WhatsApp not Installed", Toast.LENGTH_SHORT)
                             .show();
-                }catch (Exception e){
+                }catch (ClassCastException e){
                     e.printStackTrace();
+
+                }catch (Exception e){
+                e.printStackTrace();
                 }
+
             return true;
         }else if (id == R.id.send_reminders) {
             if(!(balanceTV.getText().toString().equals("0.00"))){
@@ -1014,7 +1051,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
     public void fn_share(String path) {
 
         File file = new File(path);
-
+        Uri uri = Uri.parse("whatsapp://send?phone=+91" + contactTV.getText().toString());
         Bitmap bmp = BitmapFactory.decodeFile(file.getAbsolutePath());
         // Uri uri = Uri.fromFile(file);
         try {
@@ -1033,16 +1070,19 @@ public class CourseDetailsActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
-            sendIntent.putExtra("jid", toNumber + "@s.whatsapp.net");
+            sendIntent.putExtra("jid", PhoneNumberUtils.stripSeparators(toNumber) + "@s.whatsapp.net");
+//            sendIntent.putExtra(Intent.ACTION_VIEW, uri);
 //                sendIntent.setType("*/*");
 //                String[] mimetypes = {"image/*", "text/plain"};
 //                sendIntent.putExtra(Intent.EXTRA_MIME_TYPES, mimetypes);       Image with message
             sendIntent.setAction(Intent.ACTION_SEND);
+
             sendIntent.setPackage("com.whatsapp");
             sendIntent.setType("image/*");
             startActivity(sendIntent);
 
         }  catch (ActivityNotFoundException e) {
+            e.printStackTrace();
             Toast.makeText(CourseDetailsActivity.this, "WhatsApp not Installed", Toast.LENGTH_SHORT)
                     .show();
         }catch (Exception e){
@@ -1050,6 +1090,42 @@ public class CourseDetailsActivity extends AppCompatActivity {
         }
 
 
+    }
+    private String contactIdByPhoneNumber(String phoneNumber) {
+        String contactId = null;
+        if (phoneNumber != null && phoneNumber.length() > 0) {
+            ContentResolver contentResolver = getContentResolver();
+            Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNumber));
+            String[] projection = new String[]{ContactsContract.PhoneLookup._ID};
+
+            Cursor cursor = contentResolver.query(uri, projection, null, null, null);
+
+            if (cursor != null) {
+                while (cursor.moveToNext()) {
+                    contactId = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.PhoneLookup._ID));
+                }
+                cursor.close();
+            }
+        }
+        return contactId;
+    }
+    public String hasWhatsApp(String contactID) {
+        String rowContactId = null;
+        boolean hasWhatsApp;
+
+        String[] projection;
+        projection = new String[]{ContactsContract.RawContacts._ID};
+        String selection = ContactsContract.RawContacts.CONTACT_ID + " = ? AND " + ContactsContract.RawContacts.ACCOUNT_TYPE + " = ?";
+        String[] selectionArgs = new String[]{contactID, "com.whatsapp"};
+        Cursor cursor = getContentResolver().query(ContactsContract.RawContacts.CONTENT_URI, projection, selection, selectionArgs, null);
+        if (cursor != null) {
+            hasWhatsApp = cursor.moveToNext();
+            if (hasWhatsApp) {
+                rowContactId = cursor.getString(0);
+            }
+            cursor.close();
+        }
+        return rowContactId;
     }
     public  void SetFollowupSpinner(){
 
