@@ -67,6 +67,8 @@
     <string name="collections">Collection</string>
     <string name="diet">Diet</string>
     <string name="noti">Notifications</string>
+    <string name="staff_attendance">Staff Attendance</string>
+    <string name="create_plan">Create Plans</string>
 
     <!--Notification String-->
     <string name="member_bday">Member Birthday</string>
@@ -561,6 +563,10 @@
     <string name="workout_filters">Workout Filters</string>
 
     <string name="whatsapp_">This phone number isn\'t on whatsapp</string>
+
+    <string name="intime">InTime:</string>
+    <string name="outtime">OutTime:</string>
+    <string name="staff_id">Staff Id</string>
 
     <string name="long_lorem_ipsum">
         Duis tellus metus, elementum a lectus id, aliquet interdum mauris. Nam bibendum efficitur sollicitudin. Proin eleifend libero velit, nec fringilla dolor finibus quis. nMorbi eu libero pellentesque, rutrum metus quis, blandit est. Fusce bibendum accumsan nisi vulputate feugiat. In fermentum laoreet euismod. Praesent sem nisl, facilisis eget odio at, rhoncus scelerisque ipsum. Nulla orci dui, dignissim a risus ut, lobortis porttitor velit.

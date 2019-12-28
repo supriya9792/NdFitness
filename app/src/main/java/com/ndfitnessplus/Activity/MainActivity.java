@@ -413,6 +413,12 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_pos) {
             Intent intent=new Intent(MainActivity.this,POSActivity.class);
             startActivity(intent);
+        }else if (id == R.id.nav_staff_attendance) {
+            Intent intent=new Intent(MainActivity.this,StaffAttendanceActivity.class);
+            startActivity(intent);
+        }else if (id == R.id.nav_create_plans) {
+            Intent intent=new Intent(MainActivity.this,POSActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_switch_branch) {
             Intent intent=new Intent(MainActivity.this,BranchSelectionActivity.class);
             startActivity(intent);
