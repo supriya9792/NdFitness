@@ -6,30 +6,21 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
-import android.text.Html;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.util.Patterns;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -42,7 +33,6 @@ import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -50,50 +40,29 @@ import android.widget.Toast;
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
 import com.basgeekball.awesomevalidation.utility.RegexTemplate;
-import com.bumptech.glide.Glide;
-//import com.itextpdf.text.Document;
-//import com.itextpdf.text.DocumentException;
-//import com.itextpdf.text.Element;
-//import com.itextpdf.text.Image;
-//import com.itextpdf.text.Phrase;
-//import com.itextpdf.text.pdf.BaseFont;
-//import com.itextpdf.text.pdf.PdfContentByte;
-//import com.itextpdf.text.pdf.PdfPCell;
-//import com.itextpdf.text.pdf.PdfPTable;
-//import com.itextpdf.text.pdf.PdfWriter;
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
-import com.itextpdf.text.BaseColor;
-import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
-import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Image;
-import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
-import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.html.simpleparser.HTMLWorker;
 import com.itextpdf.text.pdf.BaseFont;
-import com.itextpdf.text.pdf.ColumnText;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfPage;
 import com.itextpdf.text.pdf.PdfWriter;
-import com.ndfitnessplus.Activity.Notification.TodaysEnrollmentActivity;
 import com.ndfitnessplus.Adapter.AddEnquirySpinnerAdapter;
 import com.ndfitnessplus.Adapter.SearchContactAdapter;
 import com.ndfitnessplus.Adapter.SearchNameAdapter;
-import com.ndfitnessplus.Fragment.CourseFragment;
 import com.ndfitnessplus.MailUtility.Mail;
 import com.ndfitnessplus.Model.FollowupList;
 import com.ndfitnessplus.Model.Search_list;
 import com.ndfitnessplus.Model.Spinner_List;
 import com.ndfitnessplus.R;
-import com.ndfitnessplus.Utility.BitmapSaver;
 import com.ndfitnessplus.Utility.ServerClass;
 import com.ndfitnessplus.Utility.ServiceUrls;
 import com.ndfitnessplus.Utility.SharedPrefereneceUtil;
@@ -104,21 +73,25 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.StringReader;
 import java.net.URL;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
-import static com.ndfitnessplus.Activity.SelectDomainActivity.TAG;
+//import com.itextpdf.text.Document;
+//import com.itextpdf.text.DocumentException;
+//import com.itextpdf.text.Element;
+//import com.itextpdf.text.Image;
+//import com.itextpdf.text.Phrase;
+//import com.itextpdf.text.pdf.BaseFont;
+//import com.itextpdf.text.pdf.PdfContentByte;
+//import com.itextpdf.text.pdf.PdfPCell;
+//import com.itextpdf.text.pdf.PdfPTable;
+//import com.itextpdf.text.pdf.PdfWriter;
 
 public class RenewActivity extends AppCompatActivity {
     public EditText inputDuration,inputStartDate,inputPackageFees,inputDiscount,inputRegiFees,inputRate,inputDiscReason,
@@ -977,7 +950,7 @@ public class RenewActivity extends AppCompatActivity {
                                                   int monthOfYear, int dayOfMonth) {
                                 String date=(year + "-"
                                         + (monthOfYear + 1) + "-" + dayOfMonth).toString();
-                                String cdate=Utility.formatDateDB(date);
+                                String cdate= Utility.formatDateDB(date);
                                 inputStartDate.setText(cdate);
                                 if(inputDuration.getText().length()>0) {
                                     int duration = Integer.parseInt(inputDuration.getText().toString());
@@ -1169,7 +1142,7 @@ public class RenewActivity extends AppCompatActivity {
         //if this becomes true that means validation is successfull
         //if(inputPassword.getText().toString().equals(inputCfmPassword.getText().toString())){
             if(!inputBalance.getText().toString().equals("0.0")){
-                awesomeValidation.addValidation(RenewActivity.this,R.id.input_nextfollDate,RegexTemplate.NOT_EMPTY,R.string.err_msg_next_foll_date);
+                awesomeValidation.addValidation(RenewActivity.this, R.id.input_nextfollDate,RegexTemplate.NOT_EMPTY, R.string.err_msg_next_foll_date);
                 if (awesomeValidation.validate()) {
 
                     double paid = Double.parseDouble(inputPaid.getText().toString());
@@ -1269,9 +1242,9 @@ public class RenewActivity extends AppCompatActivity {
             EnquiryForDetails.put("user","Member" );
             EnquiryForDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(RenewActivity.this) );
             EnquiryForDetails.put("action", "check_mobile_already_exist_or_not");
-            String domainurl=SharedPrefereneceUtil.getDomainUrl(RenewActivity.this);
+            String domainurl= SharedPrefereneceUtil.getDomainUrl(RenewActivity.this);
             //EnquiryForloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(EnquiryForloyee.this));
-            String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EnquiryForDetails);
+            String loginResult = ruc.sendPostRequest(domainurl+ ServiceUrls.LOGIN_URL, EnquiryForDetails);
             Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
@@ -1289,7 +1262,7 @@ public class RenewActivity extends AppCompatActivity {
                 Toast.makeText(RenewActivity.this,"Member is not registred. Please register Member first",Toast.LENGTH_SHORT).show();
                 //inputContact.getText().clear();
                 // showCustomDialog();
-              Intent intent=new Intent(RenewActivity.this,AddMemberActivity.class);
+              Intent intent=new Intent(RenewActivity.this, AddMemberActivity.class);
               intent.putExtra("contact",inputContact.getText().toString());
               startActivity(intent);
                 //inputEmail, inputPhone,inputAdd,inputReq,inputFollowupdate;
@@ -1379,9 +1352,9 @@ public class RenewActivity extends AppCompatActivity {
             HashMap<String, String> PackageTypeDetails = new HashMap<String, String>();
             PackageTypeDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(RenewActivity.this));
             PackageTypeDetails.put("action", "show_package_type");
-            String domainurl=SharedPrefereneceUtil.getDomainUrl(RenewActivity.this);
+            String domainurl= SharedPrefereneceUtil.getDomainUrl(RenewActivity.this);
             //PackageTypeloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(PackageTypeloyee.this));
-            String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, PackageTypeDetails);
+            String loginResult = ruc.sendPostRequest(domainurl+ ServiceUrls.LOGIN_URL, PackageTypeDetails);
             Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
@@ -1522,9 +1495,9 @@ public class RenewActivity extends AppCompatActivity {
             PackageNameDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(RenewActivity.this));
             PackageNameDetails.put("pack_type", packageType);
             PackageNameDetails.put("action", "show_packages_details");
-            String domainurl=SharedPrefereneceUtil.getDomainUrl(RenewActivity.this);
+            String domainurl= SharedPrefereneceUtil.getDomainUrl(RenewActivity.this);
             //PackageNameloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(PackageNameloyee.this));
-            String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, PackageNameDetails);
+            String loginResult = ruc.sendPostRequest(domainurl+ ServiceUrls.LOGIN_URL, PackageNameDetails);
             Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
@@ -1657,8 +1630,8 @@ public class RenewActivity extends AppCompatActivity {
             PackageDetails.put("pack_name",packagename );
             Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(RenewActivity.this)));
             PackageDetails.put("action","show_package_details_by_name");
-            String domainurl=SharedPrefereneceUtil.getDomainUrl(RenewActivity.this);
-            String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, PackageDetails);
+            String domainurl= SharedPrefereneceUtil.getDomainUrl(RenewActivity.this);
+            String loginResult = ruc.sendPostRequest(domainurl+ ServiceUrls.LOGIN_URL, PackageDetails);
             //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
@@ -1783,9 +1756,9 @@ public class RenewActivity extends AppCompatActivity {
             HashMap<String, String> InstructorNameDetails = new HashMap<String, String>();
             InstructorNameDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(RenewActivity.this));
             InstructorNameDetails.put("action", "show_instructor_name_list");
-            String domainurl=SharedPrefereneceUtil.getDomainUrl(RenewActivity.this);
+            String domainurl= SharedPrefereneceUtil.getDomainUrl(RenewActivity.this);
             //InstructorNameloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(InstructorNameloyee.this));
-            String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, InstructorNameDetails);
+            String loginResult = ruc.sendPostRequest(domainurl+ ServiceUrls.LOGIN_URL, InstructorNameDetails);
             Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
@@ -1966,9 +1939,9 @@ public class RenewActivity extends AppCompatActivity {
             HashMap<String, String> TimeDetails = new HashMap<String, String>();
            // TimeDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(RenewActivity.this));
             TimeDetails.put("action", "show_master_time");
-            String domainurl=SharedPrefereneceUtil.getDomainUrl(RenewActivity.this);
+            String domainurl= SharedPrefereneceUtil.getDomainUrl(RenewActivity.this);
             //TimeloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(Timeloyee.this));
-            String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, TimeDetails);
+            String loginResult = ruc.sendPostRequest(domainurl+ ServiceUrls.LOGIN_URL, TimeDetails);
             Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
@@ -2134,9 +2107,9 @@ public class RenewActivity extends AppCompatActivity {
            // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> PaymentTypeDetails = new HashMap<String, String>();
             PaymentTypeDetails.put("action", "show_payment_type_list");
-            String domainurl=SharedPrefereneceUtil.getDomainUrl(RenewActivity.this);
+            String domainurl= SharedPrefereneceUtil.getDomainUrl(RenewActivity.this);
             //PaymentTypeloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(PaymentTypeloyee.this));
-            String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, PaymentTypeDetails);
+            String loginResult = ruc.sendPostRequest(domainurl+ ServiceUrls.LOGIN_URL, PaymentTypeDetails);
             Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
@@ -2270,7 +2243,7 @@ public class RenewActivity extends AppCompatActivity {
 
             if(inputStartDate.getText().length()>0 && inputDuration.getText().length()>0){
                 int duration =Integer.parseInt(inputDuration.getText().toString());
-                EndDate=Utility.CalulateDateFromGivenDays(inputStartDate.getText().toString(),duration);
+                EndDate= Utility.CalulateDateFromGivenDays(inputStartDate.getText().toString(),duration);
                 Log.v(TAG, String.format("End Date  :: End date= %s", EndDate));
             }
             HashMap<String, String> AddCourseDetails = new HashMap<String, String>();
@@ -2329,15 +2302,15 @@ public class RenewActivity extends AppCompatActivity {
             Log.v(TAG, String.format("doInBackground :: discount = %s", inputDiscount.getText().toString()));
             AddCourseDetails.put("next_payment_date",inputNextFollDate.getText().toString());
             Log.v(TAG, String.format("doInBackground :: discount = %s", inputDiscount.getText().toString()));
-            AddCourseDetails.put("mem_own_exe",SharedPrefereneceUtil.getName(RenewActivity.this));
+            AddCourseDetails.put("mem_own_exe", SharedPrefereneceUtil.getName(RenewActivity.this));
             AddCourseDetails.put("mode","AdminApp");
             Log.v(TAG, String.format("doInBackground :: executive name= %s", SharedPrefereneceUtil.getName(RenewActivity.this)));
             AddCourseDetails.put("subtotal",subtotal);
             Log.v(TAG, String.format("doInBackground :: subtotal = %s", subtotal));
 
             AddCourseDetails.put("action", "add_course");
-            String domainurl=SharedPrefereneceUtil.getDomainUrl(RenewActivity.this);
-            String loginResult2 = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, AddCourseDetails);
+            String domainurl= SharedPrefereneceUtil.getDomainUrl(RenewActivity.this);
+            String loginResult2 = ruc.sendPostRequest(domainurl+ ServiceUrls.LOGIN_URL, AddCourseDetails);
 
             Log.v(TAG, String.format("doInBackground :: add_course= %s", loginResult2));
             return loginResult2;
@@ -2364,13 +2337,6 @@ public class RenewActivity extends AppCompatActivity {
                 SendEnquirySmsClass();
                 submitAction();
                 EmailLoginClass();
-
-
-                // imageView.setImageResource(R.drawable.add_photo);
-
-                // showCustomDialog();
-
-                //inputEmail, inputPhone,inputAdd,inputReq,inputFollowupdate;
             }
 
 
@@ -2416,11 +2382,11 @@ public class RenewActivity extends AppCompatActivity {
         protected String doInBackground(String... params) {
             //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EmailLoginDetails = new HashMap<String, String>();
-            EmailLoginDetails.put("comp_id",SharedPrefereneceUtil.getSelectedBranchId(RenewActivity.this) );
+            EmailLoginDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(RenewActivity.this) );
             EmailLoginDetails.put("action", "show_email_login");
-            String domainurl=SharedPrefereneceUtil.getDomainUrl(RenewActivity.this);
+            String domainurl= SharedPrefereneceUtil.getDomainUrl(RenewActivity.this);
             //EnquiryForloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(EnquiryForloyee.this));
-            String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EmailLoginDetails);
+            String loginResult = ruc.sendPostRequest(domainurl+ ServiceUrls.LOGIN_URL, EmailLoginDetails);
 
             Log.v(TAG, String.format("doInBackground :: show_email_login= %s", loginResult));
             return loginResult;
@@ -2437,9 +2403,6 @@ public class RenewActivity extends AppCompatActivity {
 
             if (success.equalsIgnoreCase(getResources().getString(R.string.zero))) {
 
-                // showCustomDialog();
-
-                //inputEmail, inputPhone,inputAdd,inputReq,inputFollowupdate;
             }
             else if (success.equalsIgnoreCase(getResources().getString(R.string.two)))
             {
@@ -2490,17 +2453,12 @@ public class RenewActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-          //  showProgressDialog();
-           // viewDialog.showDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: show_receipt_data = %s", response));
-            //dismissProgressDialog();
-            //viewDialog.hideDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             ReceiptDataDetails(response);
 
         }
@@ -2515,8 +2473,8 @@ public class RenewActivity extends AppCompatActivity {
             Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(RenewActivity.this)));
             ReceiptDataDetails.put("action","show_receipt_data");
 
-            String domainurl=SharedPrefereneceUtil.getDomainUrl(RenewActivity.this);
-            String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, ReceiptDataDetails);
+            String domainurl= SharedPrefereneceUtil.getDomainUrl(RenewActivity.this);
+            String loginResult = ruc.sendPostRequest(domainurl+ ServiceUrls.LOGIN_URL, ReceiptDataDetails);
             Log.v(TAG, String.format("doInBackground :: show_receipt_data= %s", loginResult));
             return loginResult;
         }
@@ -2549,7 +2507,7 @@ public class RenewActivity extends AppCompatActivity {
                                     String Name = inputName.getText().toString();
                                     String Member_Contact = inputContact.getText().toString();
                                     //String Invoice_date = jsonObj.getString("Invoice_date");
-                                    String invoice_date=Utility.getCurrentDate();
+                                    String invoice_date= Utility.getCurrentDate();
                                     String Package_Name = packagename;
                                     String Duration_Days =inputDuration.getText().toString();
                                     String Session = inputSession.getText().toString();
@@ -2581,7 +2539,7 @@ public class RenewActivity extends AppCompatActivity {
                                         Registration_Fees="0.00";
                                     }
 
-                                    String Company_Name = SharedPrefereneceUtil.getCompanyName(RenewActivity.this)+"-"+SharedPrefereneceUtil.getSelectedBranch(RenewActivity.this);
+                                    String Company_Name = SharedPrefereneceUtil.getCompanyName(RenewActivity.this)+"-"+ SharedPrefereneceUtil.getSelectedBranch(RenewActivity.this);
                                     String Address = jsonObj.getString("Address");
 
                                     String ad[]=Address.split(",");
@@ -2594,8 +2552,8 @@ public class RenewActivity extends AppCompatActivity {
                                     String Logo = jsonObj.getString("Logo");
                                     String l=Logo.replaceAll("\\s+","%20");
                                    // Logo.replace(" ","%20");
-                                    String domainurl=SharedPrefereneceUtil.getDomainUrl(RenewActivity.this);
-                                  final  String imgurl=domainurl+ServiceUrls.IMAGES_URL+l;
+                                    String domainurl= SharedPrefereneceUtil.getDomainUrl(RenewActivity.this);
+                                  final  String imgurl=domainurl+ ServiceUrls.IMAGES_URL+l;
                                     Log.d(TAG, "GST_No: " +GST_No);
                                     Log.d(TAG, "MemberGST_No: " +MemberGST_No);
 
@@ -2610,7 +2568,7 @@ public class RenewActivity extends AppCompatActivity {
                                                 String Receipt_Id = jsonObj1.getString("Receipt_Id");
                                                 // String start_date=Utility.formatDateDB(Start_Date);
                                                 String ReceiptDate = jsonObj1.getString("ReceiptDate");
-                                                String receipt_date=Utility.formatDateDB(ReceiptDate);
+                                                String receipt_date= Utility.formatDateDB(ReceiptDate);
                                                 String Tax = jsonObj1.getString("Tax");
                                                 if(Tax.equals(".00")){
                                                     Tax="0.00";
@@ -2691,7 +2649,7 @@ public class RenewActivity extends AppCompatActivity {
                                         }
 
                                     }
-//
+
                                     final String messagehtml = "<!DOCTYPE html>\n" +
                                             "\n" +
                                             "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n" +
@@ -2734,17 +2692,45 @@ public class RenewActivity extends AppCompatActivity {
                                             "                            <strong>  "+"</strong>\n" +
                                             "                        </address>\n" +
                                             "                    </div>\n" +
-                                            "                    <div >" +
-                                            "                        <address>" +
-                                            "                            <strong>"+"</strong><br></br>\n" +
-                                            "\n" +
-                                            "                            <strong> "+"</strong><br></br>\n" +
-                                            "                            <strong>  "+"</strong>\n" +
-                                            "                        </address>\n" +
-                                            "                    </div>\n" +
+
                                             "                </div>\n" +
                                             "      </div>\n" +
                                             "\n" +
+                                            "    <div >\n" +
+
+                                            "            <div >\n" +
+                                            "                <div  >\n" +
+                                            "                        <h3 ><strong>Bill To</strong></h3>\n" +
+                                            "                    </div>\n" +
+                                            "                <div >\n" +
+                                            "              <div >\n" +
+                                            "             <table border = '1' cellpadding=\"6\"  width=\"100%\" >\n" +
+                                            "             <thead height=\"100\">\n" +
+                                            "                   <tr height=\"100\" >\n" +
+                                            "                      <th ><strong>ID</strong></th>\n" +
+                                            "                      <th ><strong>Name</strong></th>\n" +
+                                            "                      <th ><strong>Email Id</strong></th>                                    \n" +
+                                            "                      <th ><strong>Contact</strong></th>\n" +
+                                            "                      <th ><strong>GST No</strong></th>\n" +
+                                            "                    </tr>\n" +
+                                            "             </thead>\n" +
+                                            "           <tbody >\n" +
+                                                            "  <tr >\n \n" +
+                                                            "    <td width='12%'>"+MemberID+"</td>\n \n" +
+                                                            "     <td width='25%'>"+Name+"</td>\n\n" +
+                                                            "    <td width='30%'>"+Email+"</td> \n\n" +
+                                                            "    <td width='16%'>"+Member_Contact+"</td>\n\n" +
+                                                            "    <td width='17%'>"+MemberGST_No+"</td>\n\n" +
+                                                            "    </tr>\n"+
+                                            "          </tbody>\n" +
+                                            "       </table>\n" +
+                                            "       </div>\n" +
+                                            "       </div>\n" +
+                                            "                     \n" +
+                                            "      </div>\n" +
+                                            "     </div>\n" +
+                                            "  </div>\n" +
+                                            "                           <br></br>\n" +
                                             "        <div  >\n" +
                                             "\n" +
                                             "            <div >\n" +
@@ -2812,7 +2798,7 @@ public class RenewActivity extends AppCompatActivity {
                                             "            </div>\n" +
                                             "        </div>\n" +
                                             "\n" +
-                                            "       \n" +
+                                            "                           <br></br>\n" +
                                             " <div  >\n" +
                                             "\n" +
                                             "    <div >\n" +
@@ -2847,7 +2833,7 @@ public class RenewActivity extends AppCompatActivity {
                                             "     </div>\n" +
                                             "  </div>\n" +
                                             "\n" +
-                                            "      \n" +
+                                            "                           <br></br>\n" +
                                             "\n" +
                                             "  <div  >\n" +
                                             "    <div >\n" +
@@ -2922,15 +2908,10 @@ public class RenewActivity extends AppCompatActivity {
                                         }
                                         createText(cb,50,730,Contact);
                                         createText(cb,50,720,GST_No);
-                                        createHeadings(cb,50,705,"Bill To");
-                                        createText(cb,50,690,Name);
-                                        createText(cb,50,675,Email);
-                                        createText(cb,50,660,Member_Contact);
-                                        createText(cb,50,645,MemberGST_No);
 
-                                        createHeadings(cb,465,735,"Invoice Date :"+invoice_date);
-                                        createHeadings(cb,465,720,"Invoice No : "+Invoice_ID);
-                                        createHeadings(cb,465,705,"Member Id : "+MemberID);
+                                        createHeadings(cb,435,735,"Invoice Date :"+invoice_date);
+                                        createHeadings(cb,435,720,"Invoice No : "+Invoice_ID);
+
 
                                         HTMLWorker htmlWorker = new HTMLWorker(document);
                                         htmlWorker.parse(new StringReader(messagehtml));
@@ -3080,11 +3061,11 @@ public class RenewActivity extends AppCompatActivity {
 
             EnquiryForDetails.put("package_name",packagename );
             EnquiryForDetails.put("member_id",MemberID );
-            EnquiryForDetails.put("comp_id",SharedPrefereneceUtil.getSelectedBranchId(RenewActivity.this) );
+            EnquiryForDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(RenewActivity.this) );
             EnquiryForDetails.put("action", "check_package_already_assigned_to_member");
-            String domainurl=SharedPrefereneceUtil.getDomainUrl(RenewActivity.this);
+            String domainurl= SharedPrefereneceUtil.getDomainUrl(RenewActivity.this);
             //EnquiryForloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(EnquiryForloyee.this));
-            String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EnquiryForDetails);
+            String loginResult = ruc.sendPostRequest(domainurl+ ServiceUrls.LOGIN_URL, EnquiryForDetails);
 
             Log.v(TAG, String.format("doInBackground :: check_package_already_assigned_to_member= %s", loginResult));
             return loginResult;
@@ -3114,7 +3095,7 @@ public class RenewActivity extends AppCompatActivity {
                     if(inputDuration.getText().length()>0){
                          duration =Integer.parseInt(inputDuration.getText().toString());
                     }
-                    EndDate =Utility.CalulateDateFromGivenDays(inputStartDate.getText().toString(),duration-1);
+                    EndDate = Utility.CalulateDateFromGivenDays(inputStartDate.getText().toString(),duration-1);
                     inputEndDate.setText(EndDate);
                     inputRegiFees.setText("");
                     inputPaid.setText("");
@@ -3170,11 +3151,11 @@ public class RenewActivity extends AppCompatActivity {
             HashMap<String, String> EnquiryForDetails = new HashMap<String, String>();
 
             EnquiryForDetails.put("type","Renew" );
-            EnquiryForDetails.put("comp_id",SharedPrefereneceUtil.getSelectedBranchId(RenewActivity.this) );
+            EnquiryForDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(RenewActivity.this) );
             EnquiryForDetails.put("action", "sms_for_add_enquiry");
-            String domainurl=SharedPrefereneceUtil.getDomainUrl(RenewActivity.this);
+            String domainurl= SharedPrefereneceUtil.getDomainUrl(RenewActivity.this);
             //EnquiryForloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(EnquiryForloyee.this));
-            String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EnquiryForDetails);
+            String loginResult = ruc.sendPostRequest(domainurl+ ServiceUrls.LOGIN_URL, EnquiryForDetails);
             Log.v(TAG, String.format("doInBackground :: sms_for_add_enquiry= %s", loginResult));
             return loginResult;
         }
@@ -3229,7 +3210,7 @@ public class RenewActivity extends AppCompatActivity {
                                 }
                                 String iname="Instructor Name:"+instructorname;
                                 afterEnquirySms = afterEnquirySms.replace("#Instructor#", iname);
-                                String paydate="Payment Date:"+Utility.getCurrentDate();
+                                String paydate="Payment Date:"+ Utility.getCurrentDate();
                                 afterEnquirySms = afterEnquirySms.replace("#PayDate#", paydate);
                                 String startdate="Start Date:"+inputStartDate.getText().toString();
                                 afterEnquirySms = afterEnquirySms.replace("#SDate#", startdate);
@@ -3237,7 +3218,7 @@ public class RenewActivity extends AppCompatActivity {
                                 afterEnquirySms = afterEnquirySms.replace("#EDate#", endate);
                                 String nextbalan="Next Balance Date:"+inputNextFollDate.getText().toString();
                                 afterEnquirySms = afterEnquirySms.replace("#NextBalanceDate#", nextbalan);
-                                String exe="Executive:"+SharedPrefereneceUtil.getName(RenewActivity.this);
+                                String exe="Executive:"+ SharedPrefereneceUtil.getName(RenewActivity.this);
                                 afterEnquirySms = afterEnquirySms.replace("#Executive#", exe);
                                 String tpaid="Total Paid:"+inputPaid.getText().toString();
                                 afterEnquirySms = afterEnquirySms.replace("#TPaid#", tpaid);
@@ -3258,7 +3239,7 @@ public class RenewActivity extends AppCompatActivity {
 
                                                 @Override
                                                 protected String doInBackground(String... params) {
-                                                    String loginResult2 = ruc.SendSMS(inputContact.getText().toString(), message,SharedPrefereneceUtil.getSmsUsername(RenewActivity.this),
+                                                    String loginResult2 = ruc.SendSMS(inputContact.getText().toString(), message, SharedPrefereneceUtil.getSmsUsername(RenewActivity.this),
                                                             SharedPrefereneceUtil.getSmsPassword(RenewActivity.this),
                                                             SharedPrefereneceUtil.getSmsRoute(RenewActivity.this),
                                                             SharedPrefereneceUtil.getSmsSenderid(RenewActivity.this));
@@ -3292,7 +3273,7 @@ public class RenewActivity extends AppCompatActivity {
     }
     private void submitAction() {
         finish();
-        Intent intent=new Intent(RenewActivity.this,CourseCongratulationActivity.class);
+        Intent intent=new Intent(RenewActivity.this, CourseCongratulationActivity.class);
         intent.putExtra("member_id",MemberID);
         intent.putExtra("invoice_id", invoice_id);
         intent.putExtra("financial_yr",financial_yr);
@@ -3310,14 +3291,14 @@ public class RenewActivity extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp(){
-       Intent intent=new Intent(RenewActivity.this,CourseActivity.class);
+       Intent intent=new Intent(RenewActivity.this, CourseActivity.class);
        startActivity(intent);
         return true;
     }
 
     @Override
     public void onBackPressed() {
-        Intent intent=new Intent(RenewActivity.this,CourseActivity.class);
+        Intent intent=new Intent(RenewActivity.this, CourseActivity.class);
         startActivity(intent);
     }
 
@@ -3400,9 +3381,9 @@ public class RenewActivity extends AppCompatActivity {
 
             SearchDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(RenewActivity.this) );
             SearchDetails.put("action", "show_all_member_list");
-            String domainurl=SharedPrefereneceUtil.getDomainUrl(RenewActivity.this);
+            String domainurl= SharedPrefereneceUtil.getDomainUrl(RenewActivity.this);
             //EmployeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(Employee.this));
-            String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, SearchDetails);
+            String loginResult = ruc.sendPostRequest(domainurl+ ServiceUrls.LOGIN_URL, SearchDetails);
             Log.v(TAG, String.format("doInBackground :: show_all_member_list= %s", loginResult));
             return loginResult;
         }
@@ -3439,9 +3420,6 @@ public class RenewActivity extends AppCompatActivity {
                                 String Gender = jsonObj.getString("Gender");
 
 
-                                //  String email = jsonObj.getString("email");
-                                // String phn_no = jsonObj.getString("mobile");
-
                                 String namec=Name+"-"+Contact;
                                 searchModel.setCustName(Name);
                                 searchModel.setCustContact(Contact);
@@ -3462,12 +3440,6 @@ public class RenewActivity extends AppCompatActivity {
                                 inputContact.setAdapter(searchcontactadapter);
                                 // textContact.setDropDownBackgroundResource(R.drawable.search_background);
                                 inputContact.setThreshold(1);
-
-                                //searchnameadapter = new SearchAdapter(MainNavigationActivity.this, searchArrayList);
-                                //text.setAdapter(searchnameadapter);
-                                // text.setDropDownBackgroundResource(R.drawable.layoutborder);
-                                // text.setThreshold(1);
-
 
                             }
                         }}else if(jsonArrayResult.length()==0){

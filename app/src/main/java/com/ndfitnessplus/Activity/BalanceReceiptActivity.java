@@ -2,8 +2,6 @@ package com.ndfitnessplus.Activity;
 
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -11,24 +9,21 @@ import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
@@ -40,6 +35,9 @@ import android.widget.Toast;
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
 import com.basgeekball.awesomevalidation.utility.RegexTemplate;
+import com.google.common.base.Joiner;
+import com.google.common.base.Splitter;
+import com.google.common.collect.Iterables;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Image;
@@ -48,7 +46,6 @@ import com.itextpdf.text.html.simpleparser.HTMLWorker;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfWriter;
-import com.ndfitnessplus.Activity.Notification.TodaysEnrollmentActivity;
 import com.ndfitnessplus.Adapter.AddEnquirySpinnerAdapter;
 import com.ndfitnessplus.Adapter.SearchContactAdapter;
 import com.ndfitnessplus.Adapter.SearchNameAdapter;
@@ -141,9 +138,6 @@ public class BalanceReceiptActivity extends AppCompatActivity {
             Log.v(LOG_TAG, "External Storage not available or you don't have permission to write");
         }
         else {
-            //path for the PDF file in the external storage
-            // pdfFile = new File(getExternalFilesDir(filepath), filename);
-//            String root = Environment.getExternalStoragePublicDirectory().getAbsolutePath();
             String root = Environment.getExternalStorageDirectory().getPath();
             File myDir = new File(root + "/MyInvoices");
             myDir.mkdirs();
@@ -399,9 +393,6 @@ public class BalanceReceiptActivity extends AppCompatActivity {
                     }
                     balanceDetailsclass();
                 }
-                // ((TextView) spinPackageType.getSelectedView()).setTextColor(getResources().getColor(R.color.black));
-                // Showing selected spinner item
-                //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -448,10 +439,7 @@ public class BalanceReceiptActivity extends AppCompatActivity {
                         inputNextFollDate.setKeyListener(null);
                         awesomeValidation.clear();
                     }
-//                    }else{
-//                        Toast.makeText(BalanceReceiptActivity.this, "Please pay some amount", Toast
-//                                .LENGTH_SHORT).show();
-//                    }
+//
                 }else{
                     inputBalance.setText(inputRemBal.getText().toString());
                 }
@@ -604,7 +592,7 @@ public class BalanceReceiptActivity extends AppCompatActivity {
 
         if(!(inputBalance.getText().toString().equals("0.0"))){
            // Toast.makeText(this, "Please fill Payment type or Package type", Toast.LENGTH_LONG).show();
-            awesomeValidation.addValidation(BalanceReceiptActivity.this,R.id.input_nextfollDate,RegexTemplate.NOT_EMPTY,R.string.err_msg_next_payment_date);
+            awesomeValidation.addValidation(BalanceReceiptActivity.this, R.id.input_nextfollDate,RegexTemplate.NOT_EMPTY, R.string.err_msg_next_payment_date);
             if (awesomeValidation.validate()) {
                 // Log.v(TAG, String.format("Remaining balance= %s", inputBalance.getText().toString()));
                 double paid = Double.parseDouble(inputPaid.getText().toString());
@@ -699,7 +687,7 @@ public class BalanceReceiptActivity extends AppCompatActivity {
             EnquiryForDetails.put("user","Member" );
             EnquiryForDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(BalanceReceiptActivity.this) );
             EnquiryForDetails.put("action", "check_mobile_already_exist_or_not");
-            String domainurl=SharedPrefereneceUtil.getDomainUrl(BalanceReceiptActivity.this);
+            String domainurl= SharedPrefereneceUtil.getDomainUrl(BalanceReceiptActivity.this);
             //EnquiryForloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(EnquiryForloyee.this));
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EnquiryForDetails);
             Log.v(TAG, String.format("doInBackground :: check_mobile_already_exist_or_not= %s", loginResult));
@@ -719,7 +707,7 @@ public class BalanceReceiptActivity extends AppCompatActivity {
                 Toast.makeText(BalanceReceiptActivity.this,"Member is not registred. Please register Member first",Toast.LENGTH_SHORT).show();
                 //inputContact.getText().clear();
                 // showCustomDialog();
-                Intent intent=new Intent(BalanceReceiptActivity.this,AddMemberActivity.class);
+                Intent intent=new Intent(BalanceReceiptActivity.this, AddMemberActivity.class);
                 intent.putExtra("contact",inputContact.getText().toString());
                 startActivity(intent);
                 //inputEmail, inputPhone,inputAdd,inputReq,inputFollowupdate;
@@ -749,7 +737,7 @@ public class BalanceReceiptActivity extends AppCompatActivity {
                 // Toast.makeText(AddEnquiryActivity.this,"Please Enter New Mobile Number",Toast.LENGTH_SHORT).show();
             }else if(success.equalsIgnoreCase(getResources().getString(R.string.one))){
                 Toast.makeText(BalanceReceiptActivity.this,"member has no active course.Please add course first",Toast.LENGTH_SHORT).show();
-                Intent intent=new Intent(BalanceReceiptActivity.this,RenewActivity.class);
+                Intent intent=new Intent(BalanceReceiptActivity.this, RenewActivity.class);
                 intent.putExtra("contact",inputContact.getText().toString());
                 startActivity(intent);
             }
@@ -792,7 +780,7 @@ public class BalanceReceiptActivity extends AppCompatActivity {
             InvoiceRefDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(BalanceReceiptActivity.this));
             InvoiceRefDetails.put("member_id", MemberID);
             InvoiceRefDetails.put("action", "show_balance_package_name_list");
-            String domainurl=SharedPrefereneceUtil.getDomainUrl(BalanceReceiptActivity.this);
+            String domainurl= SharedPrefereneceUtil.getDomainUrl(BalanceReceiptActivity.this);
             //InvoiceRefloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(InvoiceRefloyee.this));
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, InvoiceRefDetails);
             Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
@@ -889,7 +877,7 @@ public class BalanceReceiptActivity extends AppCompatActivity {
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
 
                     Toast.makeText(BalanceReceiptActivity.this, "No Outstanding Remaining", Toast.LENGTH_LONG).show();
-                   Intent intent=new Intent(BalanceReceiptActivity.this,BalanceReceiptDetailsActivity.class);
+                   Intent intent=new Intent(BalanceReceiptActivity.this, BalanceReceiptDetailsActivity.class);
                    startActivity(intent);
                 }
             } catch (JSONException e) {
@@ -939,7 +927,7 @@ public class BalanceReceiptActivity extends AppCompatActivity {
             BalanceDetails.put("financial_year",FinancialYear );
             Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(BalanceReceiptActivity.this)));
             BalanceDetails.put("action","show_balance_details_by_invoice_id");
-            String domainurl=SharedPrefereneceUtil.getDomainUrl(BalanceReceiptActivity.this);
+            String domainurl= SharedPrefereneceUtil.getDomainUrl(BalanceReceiptActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, BalanceDetails);
             //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
@@ -1049,7 +1037,7 @@ public class BalanceReceiptActivity extends AppCompatActivity {
             HashMap<String, String> PaymentTypeDetails = new HashMap<String, String>();
             PaymentTypeDetails.put("action", "show_payment_type_list");
             //PaymentTypeloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(PaymentTypeloyee.this));
-            String domainurl=SharedPrefereneceUtil.getDomainUrl(BalanceReceiptActivity.this);
+            String domainurl= SharedPrefereneceUtil.getDomainUrl(BalanceReceiptActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, PaymentTypeDetails);
             Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
@@ -1207,13 +1195,13 @@ public class BalanceReceiptActivity extends AppCompatActivity {
             AddBalanceReceiptDetails.put("comment",inputComment.getText().toString());
             AddBalanceReceiptDetails.put("next_payment_date",inputNextFollDate.getText().toString());
             Log.v(TAG, String.format("doInBackground :: next_payment_date= %s", inputNextFollDate.getText().toString()));
-            AddBalanceReceiptDetails.put("mem_own_exe",SharedPrefereneceUtil.getName(BalanceReceiptActivity.this));
+            AddBalanceReceiptDetails.put("mem_own_exe", SharedPrefereneceUtil.getName(BalanceReceiptActivity.this));
             AddBalanceReceiptDetails.put("financial_year",FinancialYear);
             Log.v(TAG, String.format("doInBackground :: financial_year= %s", FinancialYear));
             Log.v(TAG, String.format("doInBackground :: executive name= %s", SharedPrefereneceUtil.getName(BalanceReceiptActivity.this)));
             AddBalanceReceiptDetails.put("mode", "AdminApp");
             AddBalanceReceiptDetails.put("action", "add_balance_receipt");
-            String domainurl=SharedPrefereneceUtil.getDomainUrl(BalanceReceiptActivity.this);
+            String domainurl= SharedPrefereneceUtil.getDomainUrl(BalanceReceiptActivity.this);
             String loginResult2 = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, AddBalanceReceiptDetails);
 
             Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult2));
@@ -1249,7 +1237,7 @@ public class BalanceReceiptActivity extends AppCompatActivity {
             else if (success.equalsIgnoreCase(getResources().getString(R.string.zero)))
             {
                 Toast.makeText(BalanceReceiptActivity.this,"Your Balance is Already Paid",Toast.LENGTH_SHORT).show();
-                Intent intent=new Intent(BalanceReceiptActivity.this,BalanceReceiptActivity.class);
+                Intent intent=new Intent(BalanceReceiptActivity.this, BalanceReceiptActivity.class);
 //                Bundle bundle = new Bundle();
 //                bundle.putSerializable("filter_array_list", filterArrayList);
 //                intent.putExtra("BUNDLE",bundle);
@@ -1293,9 +1281,9 @@ public class BalanceReceiptActivity extends AppCompatActivity {
         protected String doInBackground(String... params) {
             //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EmailLoginDetails = new HashMap<String, String>();
-            EmailLoginDetails.put("comp_id",SharedPrefereneceUtil.getSelectedBranchId(BalanceReceiptActivity.this) );
+            EmailLoginDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(BalanceReceiptActivity.this) );
             EmailLoginDetails.put("action", "show_email_login");
-            String domainurl=SharedPrefereneceUtil.getDomainUrl(BalanceReceiptActivity.this);
+            String domainurl= SharedPrefereneceUtil.getDomainUrl(BalanceReceiptActivity.this);
             //EnquiryForloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(EnquiryForloyee.this));
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EmailLoginDetails);
 
@@ -1393,7 +1381,7 @@ public class BalanceReceiptActivity extends AppCompatActivity {
             Log.v(TAG, String.format("doInBackground :: receipt data company id = %s", FinancialYear));
             Log.v(TAG, String.format("doInBackground :: receipt data company id = %s", SharedPrefereneceUtil.getSelectedBranchId(BalanceReceiptActivity.this)));
             ReceiptDataDetails.put("action","show_receipt_data");
-            String domainurl=SharedPrefereneceUtil.getDomainUrl(BalanceReceiptActivity.this);
+            String domainurl= SharedPrefereneceUtil.getDomainUrl(BalanceReceiptActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, ReceiptDataDetails);
             Log.v(TAG, String.format("doInBackground :: show_receipt_data= %s", loginResult));
             return loginResult;
@@ -1427,14 +1415,14 @@ public class BalanceReceiptActivity extends AppCompatActivity {
                                     String Name = inputName.getText().toString();
                                     String Member_Contact = inputContact.getText().toString();
                                     //String Invoice_date = jsonObj.getString("Invoice_date");
-                                    String invoice_date=Utility.getCurrentDate();
+                                    String invoice_date= Utility.getCurrentDate();
                                     String Package_Name = jsonObj.getString("Package_Name");
                                     String Duration_Days =jsonObj.getString("Duration_Days");
                                     String Session = jsonObj.getString("Session");
                                     String Start_Date = jsonObj.getString("Start_Date");
-                                    String start_date=Utility.formatDateDB(Start_Date);
+                                    String start_date= Utility.formatDateDB(Start_Date);
                                     String End_Date = jsonObj.getString("End_Date");
-                                    String end_date=Utility.formatDateDB(End_Date);
+                                    String end_date= Utility.formatDateDB(End_Date);
                                     String Rate = jsonObj.getString("Rate");
                                     String Final_paid = jsonObj.getString("Final_paid");;
                                     String Final_Balance =  jsonObj.getString("Final_Balance");;
@@ -1459,7 +1447,7 @@ public class BalanceReceiptActivity extends AppCompatActivity {
                                         Registration_Fees="0.00";
                                     }
 
-                                    String Company_Name = SharedPrefereneceUtil.getCompanyName(BalanceReceiptActivity.this)+"-"+SharedPrefereneceUtil.getSelectedBranch(BalanceReceiptActivity.this);
+                                    String Company_Name = SharedPrefereneceUtil.getCompanyName(BalanceReceiptActivity.this)+"-"+ SharedPrefereneceUtil.getSelectedBranch(BalanceReceiptActivity.this);
                                     String Address = jsonObj.getString("Address");
                                     String Contact = jsonObj.getString("Contact");
                                     String MemberGST_No = jsonObj.getString("MemberGST_No");
@@ -1469,7 +1457,7 @@ public class BalanceReceiptActivity extends AppCompatActivity {
                                     String Logo = jsonObj.getString("Logo");
                                     String l=Logo.replaceAll("\\s+","%20");
 
-                                    String domainurl=SharedPrefereneceUtil.getDomainUrl(BalanceReceiptActivity.this);
+                                    String domainurl= SharedPrefereneceUtil.getDomainUrl(BalanceReceiptActivity.this);
                                     final  String imgurl=domainurl+ServiceUrls.IMAGES_URL+l;
                                     Log.d(TAG, "imgurl: " +imgurl);
 
@@ -1484,7 +1472,7 @@ public class BalanceReceiptActivity extends AppCompatActivity {
                                                 String Receipt_Id = jsonObj1.getString("Receipt_Id");
                                                 // String start_date=Utility.formatDateDB(Start_Date);
                                                 String ReceiptDate = jsonObj1.getString("ReceiptDate");
-                                                String receipt_date=Utility.formatDateDB(ReceiptDate);
+                                                String receipt_date= Utility.formatDateDB(ReceiptDate);
                                                 String Tax = jsonObj1.getString("Tax");
                                                 if(Tax.equals(".00")){
                                                     Tax="0.00";
@@ -1561,17 +1549,43 @@ public class BalanceReceiptActivity extends AppCompatActivity {
                                             "                            <strong>  "+"</strong>\n" +
                                             "                        </address>\n" +
                                             "                    </div>\n" +
-                                            "                    <div >" +
-                                            "                        <address>" +
-                                            "                            <strong>"+"</strong><br></br>\n" +
-                                            "\n" +
-                                            "                            <strong> "+"</strong><br></br>\n" +
-                                            "                            <strong>  "+"</strong>\n" +
-                                            "                        </address>\n" +
-                                            "                    </div>\n" +
                                             "                </div>\n" +
                                             "      </div>\n" +
-                                            "\n" +
+                                            "\n" + "    <div >\n" +
+
+                                            "            <div >\n" +
+                                            "                <div  >\n" +
+                                            "                        <h3 ><strong>Bill To</strong></h3>\n" +
+                                            "                    </div>\n" +
+                                            "                <div >\n" +
+                                            "              <div >\n" +
+                                            "             <table border = '1' cellpadding=\"6\"  width=\"100%\" >\n" +
+                                            "             <thead height=\"100\">\n" +
+                                            "                   <tr height=\"100\" >\n" +
+                                            "                      <th ><strong>ID</strong></th>\n" +
+                                            "                      <th ><strong>Name</strong></th>\n" +
+                                            "                      <th ><strong>Email Id</strong></th>                                    \n" +
+                                            "                      <th ><strong>Contact</strong></th>\n" +
+                                            "                      <th ><strong>GST No</strong></th>\n" +
+                                            "                    </tr>\n" +
+                                            "             </thead>\n" +
+                                            "           <tbody >\n" +
+                                            "  <tr >\n \n" +
+                                            "    <td width='12%'>"+MemberID+"</td>\n \n" +
+                                            "     <td width='25%'>"+Name+"</td>\n\n" +
+                                            "    <td width='30%'>"+Email+"</td> \n\n" +
+                                            "    <td width='16%'>"+Member_Contact+"</td>\n\n" +
+                                            "    <td width='17%'>"+MemberGST_No+"</td>\n\n" +
+                                            "    </tr>\n"+
+                                            "          </tbody>\n" +
+                                            "       </table>\n" +
+                                            "       </div>\n" +
+                                            "       </div>\n" +
+                                            "                     \n" +
+                                            "      </div>\n" +
+                                            "     </div>\n" +
+                                            "  </div>\n" +
+                                            "                           <br></br>\n" +
                                             "        <div  >\n" +
                                             "\n" +
                                             "            <div >\n" +
@@ -1638,7 +1652,7 @@ public class BalanceReceiptActivity extends AppCompatActivity {
                                             "                </div>\n" +
                                             "            </div>\n" +
                                             "        </div>\n" +
-                                            "\n" +
+                                            "\n" + "                           <br></br>\n" +
                                             "       \n" +
                                             " <div  >\n" +
                                             "\n" +
@@ -1673,7 +1687,7 @@ public class BalanceReceiptActivity extends AppCompatActivity {
                                             "      </div>\n" +
                                             "     </div>\n" +
                                             "  </div>\n" +
-                                            "\n" +
+                                            "\n" + "                           <br></br>\n" +
                                             "      \n" +
                                             "\n" +
                                             "  <div  >\n" +
@@ -1741,17 +1755,23 @@ public class BalanceReceiptActivity extends AppCompatActivity {
 //
                                         // creating a sample invoice with some customer data
                                         createHeadings(cb,50,780,Company_Name);
-                                        createText(cb,50,765,Address);
-                                        createText(cb,50,750,Contact);
-                                        createText(cb,50,735,GST_No);
-                                        createHeadings(cb,50,715,"Bill To");
-                                        createText(cb,50,700,Name);
-                                        createText(cb,50,685,Email);
-                                        createText(cb,50,670,Member_Contact);
-                                        createText(cb,50,655,MemberGST_No);
-                                        createHeadings(cb,455,735,"Invoice Date :"+invoice_date);
-                                        createHeadings(cb,455,720,"Invoice No : "+Invoice_ID);
-                                        createHeadings(cb,455,705,"Member Id : "+MemberID);
+                                        String delimiter = " ";
+                                        int partitionSize = 6;
+                                        String add="";
+                                        int x=50;
+                                        int y=765;
+                                        for (Iterable<String> iterable : Iterables.partition(Splitter.on(delimiter).split(Address), partitionSize)) {
+                                            System.out.println(Joiner.on(delimiter).join(iterable));
+                                            add+=Joiner.on(delimiter).join(iterable)+"\n";
+
+                                            createText(cb,x,y,Joiner.on(delimiter).join(iterable));
+                                            y= y-10;
+                                        }
+                                        createText(cb,50,730,Contact);
+                                        createText(cb,50,720,GST_No);
+
+                                        createHeadings(cb,435,735,"Invoice Date :"+invoice_date);
+                                        createHeadings(cb,435,720,"Invoice No : "+Invoice_ID);
 
 
                                         HTMLWorker htmlWorker = new HTMLWorker(document);
@@ -1912,9 +1932,9 @@ public class BalanceReceiptActivity extends AppCompatActivity {
             HashMap<String, String> EnquiryForDetails = new HashMap<String, String>();
 
             EnquiryForDetails.put("type","balancepaid" );
-            EnquiryForDetails.put("comp_id",SharedPrefereneceUtil.getSelectedBranchId(BalanceReceiptActivity.this) );
+            EnquiryForDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(BalanceReceiptActivity.this) );
             EnquiryForDetails.put("action", "sms_for_add_enquiry");
-            String domainurl=SharedPrefereneceUtil.getDomainUrl(BalanceReceiptActivity.this);
+            String domainurl= SharedPrefereneceUtil.getDomainUrl(BalanceReceiptActivity.this);
             //EnquiryForloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(EnquiryForloyee.this));
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EnquiryForDetails);
             Log.v(TAG, String.format("doInBackground :: sms_for_add_enquiry= %s", loginResult));
@@ -2078,7 +2098,7 @@ public class BalanceReceiptActivity extends AppCompatActivity {
 
             SearchDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(BalanceReceiptActivity.this) );
             SearchDetails.put("action", "show_all_member_list");
-            String domainurl=SharedPrefereneceUtil.getDomainUrl(BalanceReceiptActivity.this);
+            String domainurl= SharedPrefereneceUtil.getDomainUrl(BalanceReceiptActivity.this);
             //EmployeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(Employee.this));
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, SearchDetails);
             Log.v(TAG, String.format("doInBackground :: show_all_member_list= %s", loginResult));

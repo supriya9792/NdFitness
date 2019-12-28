@@ -24,23 +24,18 @@ import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.ContactsContract;
-import android.support.annotation.RequiresPermission;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.FileProvider;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.telephony.PhoneNumberUtils;
 import android.text.Editable;
-import android.text.Html;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Display;
@@ -59,54 +54,31 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.basgeekball.awesomevalidation.AwesomeValidation;
-import com.basgeekball.awesomevalidation.ValidationStyle;
-import com.basgeekball.awesomevalidation.utility.RegexTemplate;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.common.base.Joiner;
+import com.google.common.base.Splitter;
+import com.google.common.collect.Iterables;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Element;
-import com.itextpdf.text.Font;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.PageSize;
-import com.itextpdf.text.Phrase;
-import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.html.simpleparser.HTMLWorker;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfContentByte;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
-import com.itextpdf.tool.xml.XMLWorker;
-import com.itextpdf.tool.xml.XMLWorkerHelper;
-import com.itextpdf.tool.xml.html.Tags;
-import com.itextpdf.tool.xml.net.FileRetrieve;
-import com.itextpdf.tool.xml.net.FileRetrieveImpl;
-import com.itextpdf.tool.xml.parser.XMLParser;
-import com.itextpdf.tool.xml.pipeline.css.CSSResolver;
-import com.itextpdf.tool.xml.pipeline.css.CssResolverPipeline;
-import com.itextpdf.tool.xml.pipeline.end.PdfWriterPipeline;
-import com.itextpdf.tool.xml.pipeline.html.HtmlPipeline;
-import com.itextpdf.tool.xml.pipeline.html.HtmlPipelineContext;
 import com.mikhaellopez.circularimageview.CircularImageView;
-import com.ndfitnessplus.Activity.Notification.TodaysEnrollmentActivity;
 import com.ndfitnessplus.Adapter.AddEnquirySpinnerAdapter;
 import com.ndfitnessplus.Adapter.BalanceTrasactionAdapter;
-import com.ndfitnessplus.Adapter.MemberAdapter;
-import com.ndfitnessplus.Adapter.MemberDetailsAdapter;
-import com.ndfitnessplus.BuildConfig;
 import com.ndfitnessplus.MailUtility.Mail;
 import com.ndfitnessplus.Model.BalanceTrasactionList;
 import com.ndfitnessplus.Model.CourseList;
-import com.ndfitnessplus.Model.MemberDataList;
 import com.ndfitnessplus.Model.Spinner_List;
 import com.ndfitnessplus.R;
 import com.ndfitnessplus.Utility.ServerClass;
@@ -119,18 +91,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.StringReader;
 import java.lang.reflect.Method;
 import java.net.URL;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -917,7 +884,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                         TextView payment_date=shareview.findViewById(R.id.payment_date);
                         final  ImageView compLogo=shareview.findViewById(R.id.input_logo);
 
-                        String comp_name=SharedPrefereneceUtil.getCompanyName(CourseDetailsActivity.this)+ "-"+
+                        String comp_name= SharedPrefereneceUtil.getCompanyName(CourseDetailsActivity.this)+ "-"+
                                 SharedPrefereneceUtil.getSelectedBranch(CourseDetailsActivity.this);
                         CompanyName.setText(comp_name);
                         String bal="₹ "+balanceTV.getText().toString();
@@ -1203,7 +1170,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
         //Call Responce spinner adapter setting
         final  String[] ratingarray = getResources().getStringArray(R.array.rating_array);
         ArrayAdapter<String> spinnerArrayAdapter1 = new ArrayAdapter<String>(
-                this,R.layout.spinner_item,ratingarray ){
+                this, R.layout.spinner_item,ratingarray ){
             @Override
             public boolean isEnabled(int position){
                 if(position == 0)
@@ -1360,7 +1327,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
             Log.v(TAG, String.format("doInBackground :: invoice_id = %s", invoice_id));
             Log.v(TAG, String.format("doInBackground :: FinancialYear = %s", FinancialYear));
             BalanceTrasactionDetails.put("action","show_balance_trasaction_details");
-            String domainurl=SharedPrefereneceUtil.getDomainUrl(CourseDetailsActivity.this);
+            String domainurl= SharedPrefereneceUtil.getDomainUrl(CourseDetailsActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, BalanceTrasactionDetails);
             //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
@@ -1414,12 +1381,12 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                     subList.setBalance(RemainingBalance);
                                     subList.setPaymentType(PaymentType);
                                     subList.setExecutiveName(ReceiptOwnerExecutive);
-                                    String rdate=Utility.formatDate(ReceiptDate);
+                                    String rdate= Utility.formatDate(ReceiptDate);
                                     subList.setPaymentDate(rdate);
                                     subList.setID(Receipt_Id);
 
                                     item.add(subList);
-                                    adapter = new BalanceTrasactionAdapter( item,CourseDetailsActivity.this);
+                                    adapter = new BalanceTrasactionAdapter( item, CourseDetailsActivity.this);
                                     recyclerView.setAdapter(adapter);
 
                                 }
@@ -1482,7 +1449,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
             HashMap<String, String> PaymentTypeDetails = new HashMap<String, String>();
             PaymentTypeDetails.put("action", "show_payment_type_list");
             //PaymentTypeloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(PaymentTypeloyee.this));
-            String domainurl=SharedPrefereneceUtil.getDomainUrl(CourseDetailsActivity.this);
+            String domainurl= SharedPrefereneceUtil.getDomainUrl(CourseDetailsActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, PaymentTypeDetails);
             Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
@@ -1614,7 +1581,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
             //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> CallResponseDetails = new HashMap<String, String>();
             CallResponseDetails.put("action", "show_call_response_list");
-            String domainurl=SharedPrefereneceUtil.getDomainUrl(CourseDetailsActivity.this);
+            String domainurl= SharedPrefereneceUtil.getDomainUrl(CourseDetailsActivity.this);
             //CallResponseloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(CallResponseloyee.this));
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, CallResponseDetails);
             Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
@@ -1665,7 +1632,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                 }
                             }
                             ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(
-                                    this,R.layout.spinner_item,callresponce ){
+                                    this, R.layout.spinner_item,callresponce ){
                                 @Override
                                 public boolean isEnabled(int position){
                                     if(position == 0)
@@ -1751,7 +1718,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
            // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> FollTypeDetails = new HashMap<String, String>();
             FollTypeDetails.put("action", "show_master_followup_type_list_for_course");
-            String domainurl=SharedPrefereneceUtil.getDomainUrl(CourseDetailsActivity.this);
+            String domainurl= SharedPrefereneceUtil.getDomainUrl(CourseDetailsActivity.this);
             //FollTypeloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(FollTypeloyee.this));
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, FollTypeDetails);
             Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
@@ -1802,7 +1769,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                 }
                             }
                             ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(
-                                    this,R.layout.spinner_item,folltype ){
+                                    this, R.layout.spinner_item,folltype ){
                                 @Override
                                 public boolean isEnabled(int position){
                                     if(position == 0)
@@ -1902,7 +1869,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
             Log.v(TAG, String.format("doInBackground :: callResponce = %s", callResponce));
             TakeFollowupDetails.put("next_foll_date",inputNextFollowupdate.getText().toString());
             Log.v(TAG, String.format("doInBackground :: next_foll_date = %s", inputNextFollowupdate.getText().toString()));
-            TakeFollowupDetails.put("exe_name",SharedPrefereneceUtil.getName(CourseDetailsActivity.this));
+            TakeFollowupDetails.put("exe_name", SharedPrefereneceUtil.getName(CourseDetailsActivity.this));
             TakeFollowupDetails.put("name",nameTV.getText().toString());
             TakeFollowupDetails.put("contact",contactTV.getText().toString());
             TakeFollowupDetails.put("foll_type",FollowupType);
@@ -1910,7 +1877,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
             TakeFollowupDetails.put("financial_yr",FinancialYear);
             Log.v(TAG, String.format("doInBackground :: exe_name = %s", SharedPrefereneceUtil.getName(CourseDetailsActivity.this)));
             TakeFollowupDetails.put("action", "add_other_followup");
-            String domainurl=SharedPrefereneceUtil.getDomainUrl(CourseDetailsActivity.this);
+            String domainurl= SharedPrefereneceUtil.getDomainUrl(CourseDetailsActivity.this);
             String loginResult2 = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, TakeFollowupDetails);
 
             Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult2));
@@ -2005,14 +1972,14 @@ public class CourseDetailsActivity extends AppCompatActivity {
             AddBalanceReceiptDetails.put("balance",finalBalance);
             AddBalanceReceiptDetails.put("comment",inputComment.getText().toString());
             AddBalanceReceiptDetails.put("next_payment_date",inputNextFollDate.getText().toString());
-            AddBalanceReceiptDetails.put("mem_own_exe",SharedPrefereneceUtil.getName(CourseDetailsActivity.this));
+            AddBalanceReceiptDetails.put("mem_own_exe", SharedPrefereneceUtil.getName(CourseDetailsActivity.this));
             Log.v(TAG, String.format("doInBackground :: executive name= %s", SharedPrefereneceUtil.getName(CourseDetailsActivity.this)));
             AddBalanceReceiptDetails.put("financial_year",FinancialYear);
             AddBalanceReceiptDetails.put("mode","AdminApp");
             Log.v(TAG, String.format("doInBackground :: financial_year= %s", FinancialYear));
 
             AddBalanceReceiptDetails.put("action", "add_balance_receipt");
-            String domainurl=SharedPrefereneceUtil.getDomainUrl(CourseDetailsActivity.this);
+            String domainurl= SharedPrefereneceUtil.getDomainUrl(CourseDetailsActivity.this);
             String loginResult2 = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, AddBalanceReceiptDetails);
 
             Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult2));
@@ -2047,7 +2014,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
             else if (success.equalsIgnoreCase(getResources().getString(R.string.zero)))
             {
                 Toast.makeText(CourseDetailsActivity.this,"Your Balance is Already Paid",Toast.LENGTH_SHORT).show();
-                Intent intent=new Intent(CourseDetailsActivity.this,CourseDetailsActivity.class);
+                Intent intent=new Intent(CourseDetailsActivity.this, CourseDetailsActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("filter_array_list", filterArrayList);
                 intent.putExtra("BUNDLE",bundle);
@@ -2091,9 +2058,9 @@ public class CourseDetailsActivity extends AppCompatActivity {
         protected String doInBackground(String... params) {
             //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EmailLoginDetails = new HashMap<String, String>();
-            EmailLoginDetails.put("comp_id",SharedPrefereneceUtil.getSelectedBranchId(CourseDetailsActivity.this) );
+            EmailLoginDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(CourseDetailsActivity.this) );
             EmailLoginDetails.put("action", "show_email_login");
-            String domainurl=SharedPrefereneceUtil.getDomainUrl(CourseDetailsActivity.this);
+            String domainurl= SharedPrefereneceUtil.getDomainUrl(CourseDetailsActivity.this);
             //EnquiryForloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(EnquiryForloyee.this));
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EmailLoginDetails);
 
@@ -2192,7 +2159,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
             Log.v(TAG, String.format("doInBackground :: receipt data company id = %s", FinancialYear));
             Log.v(TAG, String.format("doInBackground :: receipt data company id = %s", SharedPrefereneceUtil.getSelectedBranchId(CourseDetailsActivity.this)));
             ReceiptDataDetails.put("action","show_receipt_data");
-            String domainurl=SharedPrefereneceUtil.getDomainUrl(CourseDetailsActivity.this);
+            String domainurl= SharedPrefereneceUtil.getDomainUrl(CourseDetailsActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, ReceiptDataDetails);
             Log.v(TAG, String.format("doInBackground :: show_receipt_data= %s", loginResult));
             return loginResult;
@@ -2226,14 +2193,14 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                     String Name = nameTV.getText().toString();
                                     String Member_Contact = contactTV.getText().toString();
                                     //String Invoice_date = jsonObj.getString("Invoice_date");
-                                    String invoice_date=Utility.getCurrentDate();
+                                    String invoice_date= Utility.getCurrentDate();
                                     String Package_Name = jsonObj.getString("Package_Name");
                                     String Duration_Days =jsonObj.getString("Duration_Days");
                                     String Session = jsonObj.getString("Session");
                                     String Start_Date = jsonObj.getString("Start_Date");
-                                    String s_date=Utility.formatDateDB(Start_Date);
+                                    String s_date= Utility.formatDateDB(Start_Date);
                                     String End_Date = jsonObj.getString("End_Date");
-                                    String edate=Utility.formatDateDB(End_Date);
+                                    String edate= Utility.formatDateDB(End_Date);
                                     String Rate = jsonObj.getString("Rate");
                                     String Final_paid = jsonObj.getString("Final_paid");;
                                     String Final_Balance =  jsonObj.getString("Final_Balance");
@@ -2260,7 +2227,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                         Registration_Fees="0.00";
                                     }
 
-                                    String Company_Name = SharedPrefereneceUtil.getCompanyName(CourseDetailsActivity.this)+"-"+SharedPrefereneceUtil.getSelectedBranch(CourseDetailsActivity.this);
+                                    String Company_Name = SharedPrefereneceUtil.getCompanyName(CourseDetailsActivity.this)+"-"+ SharedPrefereneceUtil.getSelectedBranch(CourseDetailsActivity.this);
                                     String Address = jsonObj.getString("Address");
                                     String Contact = jsonObj.getString("Contact");
                                     String MemberGST_No = jsonObj.getString("MemberGST_No");
@@ -2270,7 +2237,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                      Logo = jsonObj.getString("Logo");
                                     String l=Logo.replaceAll("\\s+","%20");
                                     // Logo.replace(" ","%20");
-                                    String domainurl=SharedPrefereneceUtil.getDomainUrl(CourseDetailsActivity.this);
+                                    String domainurl= SharedPrefereneceUtil.getDomainUrl(CourseDetailsActivity.this);
                                     final String imgurl=domainurl+ServiceUrls.IMAGES_URL+l;
                                     Log.d(TAG, "imgurl: " +imgurl);
 
@@ -2285,7 +2252,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                                 String Receipt_Id = jsonObj1.getString("Receipt_Id");
                                                 // String start_date=Utility.formatDateDB(Start_Date);
                                                 String ReceiptDate = jsonObj1.getString("ReceiptDate");
-                                                String receipt_date=Utility.formatDateDB(ReceiptDate);
+                                                String receipt_date= Utility.formatDateDB(ReceiptDate);
                                                 String Tax = jsonObj1.getString("Tax");
                                                 if(Tax.equals(".00")){
                                                     Tax="0.00";
@@ -2300,23 +2267,6 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                                 String PaymentDetails =  jsonObj1.getString("PaymentDetails");
                                                 String ReceiptOwnerExecutive =  jsonObj1.getString("ReceiptOwnerExecutive");
 
-                                                // set table width a percentage of the page width
-
-//                                        PdfPCell[] cells = table.getRow(0).getCells();
-//                                        cells[0].setBackgroundColor(BaseColor.GRAY);
-
-//                                                for(int j=0; j < jsonArrayPayTrasa.length(); j++ ){
-//                                                    cellp.setMinimumHeight(30f);
-//                                                    tablePayTrasa.addCell(Receipt_Id);
-//                                                    tablePayTrasa.addCell(receipt_date);
-//                                                    tablePayTrasa.addCell(Tax);
-//                                                    tablePayTrasa.addCell(TaxAmount);
-//                                                    tablePayTrasa.addCell(Paid);
-//                                                    tablePayTrasa.addCell(PaymentType);
-//                                                    tablePayTrasa.addCell(PaymentDetails);
-//                                                    tablePayTrasa.addCell(ReceiptOwnerExecutive);
-
-//                                                }
                                                 textBody += "  <tr >\n \n" +
                                                         "    <td width='10%'>"+Receipt_Id+"</td>\n \n" +
                                                         "     <td width='15%'>"+receipt_date+"</td>\n\n" +
@@ -2373,16 +2323,43 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                             "                            <strong>  "+"</strong>\n" +
                                             "                        </address>\n" +
                                             "                    </div>\n" +
-                                            "                    <div >" +
-                                            "                        <address>" +
-                                            "                            <strong>"+"</strong><br></br>\n" +
-                                            "\n" +
-                                            "                            <strong> "+"</strong><br></br>\n" +
-                                            "                            <strong>  "+"</strong>\n" +
-                                            "                        </address>\n" +
-                                            "                    </div>\n" +
                                             "                </div>\n" +
                                             "      </div>\n" +
+                                            "    <div >\n" +
+
+                                            "            <div >\n" +
+                                            "                <div  >\n" +
+                                            "                        <h3 ><strong>Bill To</strong></h3>\n" +
+                                            "                    </div>\n" +
+                                            "                <div >\n" +
+                                            "              <div >\n" +
+                                            "             <table border = '1' cellpadding=\"6\"  width=\"100%\" >\n" +
+                                            "             <thead height=\"100\">\n" +
+                                            "                   <tr height=\"100\" >\n" +
+                                            "                      <th ><strong>ID</strong></th>\n" +
+                                            "                      <th ><strong>Name</strong></th>\n" +
+                                            "                      <th ><strong>Email Id</strong></th>                                    \n" +
+                                            "                      <th ><strong>Contact</strong></th>\n" +
+                                            "                      <th ><strong>GST No</strong></th>\n" +
+                                            "                    </tr>\n" +
+                                            "             </thead>\n" +
+                                            "           <tbody >\n" +
+                                            "  <tr >\n \n" +
+                                            "    <td width='12%'>"+member_id+"</td>\n \n" +
+                                            "     <td width='25%'>"+Name+"</td>\n\n" +
+                                            "    <td width='30%'>"+Email+"</td> \n\n" +
+                                            "    <td width='16%'>"+Member_Contact+"</td>\n\n" +
+                                            "    <td width='17%'>"+MemberGST_No+"</td>\n\n" +
+                                            "    </tr>\n"+
+                                            "          </tbody>\n" +
+                                            "       </table>\n" +
+                                            "       </div>\n" +
+                                            "       </div>\n" +
+                                            "                     \n" +
+                                            "      </div>\n" +
+                                            "     </div>\n" +
+                                            "  </div>\n" +
+                                            "                           <br></br>\n" +
                                             "\n" +
                                             "        <div  >\n" +
                                             "\n" +
@@ -2451,6 +2428,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                             "            </div>\n" +
                                             "        </div>\n" +
                                             "\n" +
+                                            "                           <br></br>\n" +
                                             "       \n" +
                                             " <div  >\n" +
                                             "\n" +
@@ -2486,7 +2464,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                             "     </div>\n" +
                                             "  </div>\n" +
                                             "\n" +
-                                            "      \n" +
+                                            "      \n" + "                           <br></br>\n" +
                                             "\n" +
                                             "  <div  >\n" +
                                             "    <div >\n" +
@@ -2553,19 +2531,22 @@ public class CourseDetailsActivity extends AppCompatActivity {
 //
                                         // creating a sample invoice with some customer data
                                         createHeadings(cb,50,780,Company_Name);
-                                        createText(cb,50,765,Address);
+                                        String delimiter = " ";
+                                        int partitionSize = 6;
+                                        String add="";
+                                        int x=50;
+                                        int y=765;
+                                        for (Iterable<String> iterable : Iterables.partition(Splitter.on(delimiter).split(Address), partitionSize)) {
+                                            System.out.println(Joiner.on(delimiter).join(iterable));
+                                            add+=Joiner.on(delimiter).join(iterable)+"\n";
+
+                                            createText(cb,x,y,Joiner.on(delimiter).join(iterable));
+                                            y= y-10;
+                                        }
                                         createText(cb,50,750,Contact);
                                         createText(cb,50,735,GST_No);
-                                        createHeadings(cb,50,715,"Bill To");
-                                        createText(cb,50,700,Name);
-                                        createText(cb,50,685,Email);
-                                        createText(cb,50,670,Member_Contact);
-                                        createText(cb,50,655,MemberGST_No);
-
-
-                                        createHeadings(cb,455,735,"Invoice Date :"+invoice_date);
-                                        createHeadings(cb,455,720,"Invoice No : "+Invoice_ID);
-                                        createHeadings(cb,455,705,"Member Id : "+member_id);
+                                        createHeadings(cb,435,735,"Invoice Date :"+invoice_date);
+                                        createHeadings(cb,435,720,"Invoice No : "+Invoice_ID);
 //
 //
 
@@ -2699,9 +2680,9 @@ public class CourseDetailsActivity extends AppCompatActivity {
             HashMap<String, String> EnquiryForDetails = new HashMap<String, String>();
 
             EnquiryForDetails.put("type","balancepaid" );
-            EnquiryForDetails.put("comp_id",SharedPrefereneceUtil.getSelectedBranchId(CourseDetailsActivity.this) );
+            EnquiryForDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(CourseDetailsActivity.this) );
             EnquiryForDetails.put("action", "sms_for_add_enquiry");
-            String domainurl=SharedPrefereneceUtil.getDomainUrl(CourseDetailsActivity.this);
+            String domainurl= SharedPrefereneceUtil.getDomainUrl(CourseDetailsActivity.this);
             //EnquiryForloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(EnquiryForloyee.this));
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EnquiryForDetails);
             Log.v(TAG, String.format("doInBackground :: sms_for_add_enquiry= %s", loginResult));
@@ -2839,7 +2820,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
              CourseDetailsDetails.put("financial_yr",FinancialYear );
             Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(CourseDetailsActivity.this)));
             Log.v(TAG, String.format("doInBackground :: member_id id = %s", member_id));
-            String domainurl=SharedPrefereneceUtil.getDomainUrl(CourseDetailsActivity.this);
+            String domainurl= SharedPrefereneceUtil.getDomainUrl(CourseDetailsActivity.this);
              CourseDetailsDetails.put("action","show_course_details_by_member_id");
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL,  CourseDetailsDetails);
             //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
@@ -2903,8 +2884,8 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                     start_date=Start_Date;
                                     end_date=End_Date;
                                     filterArrayList.setName(name);
-                                    String sdate=Utility.formatDate(Start_Date);
-                                    String edate=Utility.formatDate(End_Date);
+                                    String sdate= Utility.formatDate(Start_Date);
+                                    String edate= Utility.formatDate(End_Date);
                                     String todate=sdate+" to "+edate;
                                     filterArrayList.setStartToEndDate(todate);
                                     filterArrayList.setContact(Contact);
@@ -3024,7 +3005,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
             Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(CourseDetailsActivity.this)));
             Log.v(TAG, String.format("doInBackground :: member_id id = %s", member_id));
             Log.v(TAG, String.format("doInBackground :: foll_type = %s", FollowupType));
-            String domainurl=SharedPrefereneceUtil.getDomainUrl(CourseDetailsActivity.this);
+            String domainurl= SharedPrefereneceUtil.getDomainUrl(CourseDetailsActivity.this);
            FollowupDetailsDetails.put("action","show_other_followup_details");
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, FollowupDetailsDetails);
             //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
@@ -3065,7 +3046,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                 if (jsonObj != null) {
 
                                      NextFollowupDate = jsonObj.getString("NextFollowupDate");
-                                     NextFollowupDate=Utility.formatDateDB(NextFollowupDate);
+                                     NextFollowupDate= Utility.formatDateDB(NextFollowupDate);
                                      String Call_Response = jsonObj.getString("Call_Response");
                                      Rating = jsonObj.getString("Rating");
                                      callResponce=Call_Response;
@@ -3164,7 +3145,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
         return false;
     }
     private boolean checkPermission() {
-        int result = ContextCompat.checkSelfPermission(CourseDetailsActivity.this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int result = ContextCompat.checkSelfPermission(CourseDetailsActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         if (result == PackageManager.PERMISSION_GRANTED) {
             return true;
         } else {
@@ -3174,10 +3155,10 @@ public class CourseDetailsActivity extends AppCompatActivity {
 
     private void requestPermission() {
 
-        if (ActivityCompat.shouldShowRequestPermissionRationale(CourseDetailsActivity.this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(CourseDetailsActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             Toast.makeText(CourseDetailsActivity.this, "Write External Storage permission allows us to do store images. Please allow this permission in App Settings.", Toast.LENGTH_LONG).show();
         } else {
-            ActivityCompat.requestPermissions(CourseDetailsActivity.this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
+            ActivityCompat.requestPermissions(CourseDetailsActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
         }
     }
 
@@ -3216,7 +3197,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
             Log.v(TAG, String.format("doInBackground :: receipt data company id = %s", FinancialYear));
             Log.v(TAG, String.format("doInBackground :: receipt data company id = %s", SharedPrefereneceUtil.getSelectedBranchId(CourseDetailsActivity.this)));
             PDFGenerationDataDetails.put("action","show_receipt_data");
-            String domainurl=SharedPrefereneceUtil.getDomainUrl(CourseDetailsActivity.this);
+            String domainurl= SharedPrefereneceUtil.getDomainUrl(CourseDetailsActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, PDFGenerationDataDetails);
             Log.v(TAG, String.format("doInBackground :: show_receipt_data= %s", loginResult));
             return loginResult;
@@ -3246,14 +3227,14 @@ public class CourseDetailsActivity extends AppCompatActivity {
 
                                     String Name = nameTV.getText().toString();
                                     String Member_Contact = contactTV.getText().toString();
-                                    String invoice_date=Utility.getCurrentDate();
+                                    String invoice_date= Utility.getCurrentDate();
                                     String Package_Name = jsonObj.getString("Package_Name");
                                     String Duration_Days =jsonObj.getString("Duration_Days");
                                     String Session = jsonObj.getString("Session");
                                     String Start_Date = jsonObj.getString("Start_Date");
-                                    String s_date=Utility.formatDateDB(Start_Date);
+                                    String s_date= Utility.formatDateDB(Start_Date);
                                     String End_Date = jsonObj.getString("End_Date");
-                                    String edate=Utility.formatDateDB(End_Date);
+                                    String edate= Utility.formatDateDB(End_Date);
                                     String Rate = jsonObj.getString("Rate");
                                     String Final_paid = jsonObj.getString("Final_paid");;
                                     String Final_Balance =  jsonObj.getString("Final_Balance");
@@ -3277,7 +3258,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                         Registration_Fees="0.00";
                                     }
 
-                                    String Company_Name = SharedPrefereneceUtil.getCompanyName(CourseDetailsActivity.this)+"-"+SharedPrefereneceUtil.getSelectedBranch(CourseDetailsActivity.this);
+                                    String Company_Name = SharedPrefereneceUtil.getCompanyName(CourseDetailsActivity.this)+"-"+ SharedPrefereneceUtil.getSelectedBranch(CourseDetailsActivity.this);
                                     String Address = jsonObj.getString("Address");
                                     String Contact = jsonObj.getString("Contact");
                                     String MemberGST_No = jsonObj.getString("MemberGST_No");
@@ -3287,7 +3268,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                     TermsAndConditions = TermsAndConditions.replace("\r\n", "<br />");
                                      Logo = jsonObj.getString("Logo");
                                     String l=Logo.replaceAll("\\s+","%20");
-                                    String domainurl=SharedPrefereneceUtil.getDomainUrl(CourseDetailsActivity.this);
+                                    String domainurl= SharedPrefereneceUtil.getDomainUrl(CourseDetailsActivity.this);
                                     final String imgurl=domainurl+ServiceUrls.IMAGES_URL+l;
                                     Log.d(TAG, "imgurl: " +imgurl);
 
@@ -3301,7 +3282,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                             if (jsonObj1 != null) {
                                                 String Receipt_Id = jsonObj1.getString("Receipt_Id");
                                                 String ReceiptDate = jsonObj1.getString("ReceiptDate");
-                                                String receipt_date=Utility.formatDateDB(ReceiptDate);
+                                                String receipt_date= Utility.formatDateDB(ReceiptDate);
                                                 String Tax = jsonObj1.getString("Tax");
                                                 if(Tax.equals(".00")){
                                                     Tax="0.00";
@@ -3371,16 +3352,43 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                             "                            <strong>  "+"</strong>\n" +
                                             "                        </address>\n" +
                                             "                    </div>\n" +
-                                            "                    <div >" +
-                                            "                        <address>" +
-                                            "                            <strong>"+"</strong><br></br>\n" +
-                                            "\n" +
-                                            "                            <strong> "+"</strong><br></br>\n" +
-                                            "                            <strong>  "+"</strong>\n" +
-                                            "                        </address>\n" +
-                                            "                    </div>\n" +
                                             "                </div>\n" +
                                             "      </div>\n" +
+                                            "    <div >\n" +
+
+                                            "            <div >\n" +
+                                            "                <div  >\n" +
+                                            "                        <h3 ><strong>Bill To</strong></h3>\n" +
+                                            "                    </div>\n" +
+                                            "                <div >\n" +
+                                            "              <div >\n" +
+                                            "             <table border = '1' cellpadding=\"6\"  width=\"100%\" >\n" +
+                                            "             <thead height=\"100\">\n" +
+                                            "                   <tr height=\"100\" >\n" +
+                                            "                      <th ><strong>ID</strong></th>\n" +
+                                            "                      <th ><strong>Name</strong></th>\n" +
+                                            "                      <th ><strong>Email Id</strong></th>                                    \n" +
+                                            "                      <th ><strong>Contact</strong></th>\n" +
+                                            "                      <th ><strong>GST No</strong></th>\n" +
+                                            "                    </tr>\n" +
+                                            "             </thead>\n" +
+                                            "           <tbody >\n" +
+                                            "  <tr >\n \n" +
+                                            "    <td width='12%'>"+member_id+"</td>\n \n" +
+                                            "     <td width='25%'>"+Name+"</td>\n\n" +
+                                            "    <td width='30%'>"+Email+"</td> \n\n" +
+                                            "    <td width='16%'>"+Member_Contact+"</td>\n\n" +
+                                            "    <td width='17%'>"+MemberGST_No+"</td>\n\n" +
+                                            "    </tr>\n"+
+                                            "          </tbody>\n" +
+                                            "       </table>\n" +
+                                            "       </div>\n" +
+                                            "       </div>\n" +
+                                            "                     \n" +
+                                            "      </div>\n" +
+                                            "     </div>\n" +
+                                            "  </div>\n" +
+                                            "                           <br></br>\n" +
                                             "\n" +
                                             "        <div  >\n" +
                                             "\n" +
@@ -3448,7 +3456,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                             "                </div>\n" +
                                             "            </div>\n" +
                                             "        </div>\n" +
-                                            "\n" +
+                                            "\n" +  "                           <br></br>\n" +
                                             "       \n" +
                                             " <div  >\n" +
                                             "\n" +
@@ -3483,7 +3491,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                             "      </div>\n" +
                                             "     </div>\n" +
                                             "  </div>\n" +
-                                            "\n" +
+                                            "\n" +  "                           <br></br>\n" +
                                             "      \n" +
                                             "\n" +
                                             "  <div  >\n" +
@@ -3530,18 +3538,23 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                         });
                                         thread.start();
                                         createHeadings(cb,50,780,Company_Name);
-                                        createText(cb,50,765,Address);
-                                        createText(cb,50,750,Contact);
-                                        createText(cb,50,735,GST_No);
-                                        createHeadings(cb,50,715,"Bill To");
-                                        createText(cb,50,700,Name);
-                                        createText(cb,50,685,Email);
-                                        createText(cb,50,670,Member_Contact);
-                                        createText(cb,50,655,MemberGST_No);
+                                        String delimiter = " ";
+                                        int partitionSize = 6;
+                                        String add="";
+                                        int x=50;
+                                        int y=765;
+                                        for (Iterable<String> iterable : Iterables.partition(Splitter.on(delimiter).split(Address), partitionSize)) {
+                                            System.out.println(Joiner.on(delimiter).join(iterable));
+                                            add+=Joiner.on(delimiter).join(iterable)+"\n";
 
-                                        createHeadings(cb,455,735,"Invoice Date :"+invoice_date);
-                                        createHeadings(cb,455,720,"Invoice No : "+Invoice_ID);
-                                        createHeadings(cb,455,705,"Member Id : "+member_id);
+                                            createText(cb,x,y,Joiner.on(delimiter).join(iterable));
+                                            y= y-10;
+                                        }
+                                        createText(cb,50,730,Contact);
+                                        createText(cb,50,720,GST_No);
+
+                                        createHeadings(cb,435,735,"Invoice Date :"+invoice_date);
+                                        createHeadings(cb,435,720,"Invoice No : "+Invoice_ID);
 
                                         HTMLWorker htmlWorker = new HTMLWorker(document);
                                         htmlWorker.parse(new StringReader(messagehtml));
