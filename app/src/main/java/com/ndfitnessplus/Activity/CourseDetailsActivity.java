@@ -889,8 +889,8 @@ public class CourseDetailsActivity extends AppCompatActivity {
                         CompanyName.setText(comp_name);
                         String bal="₹ "+balanceTV.getText().toString();
                         Balance.setText(bal);
-                        //String folldate=Utility.formatDate(NextPaymentDate);
-                        String pdate="As of "+NextPaymentDate;
+                        String folldate=Utility.formatDate(NextPaymentDate);
+                        String pdate="As of "+folldate;
                         payment_date.setText(pdate);
 //            try {
                         String domainurl= SharedPrefereneceUtil.getDomainUrl(CourseDetailsActivity.this);

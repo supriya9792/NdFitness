@@ -96,7 +96,8 @@ public class AddWorkoutActivity extends AppCompatActivity {
     ArrayList<Spinner_List> workoutLevelArrayList = new ArrayList<Spinner_List>();
     ArrayList<Spinner_List> instructorNameArrayList = new ArrayList<Spinner_List>();
     public AddEnquirySpinnerAdapter workoutLeveleadapter,instructorNameadapter;
-    String workoutLevel,instructorName;
+    String workoutLevel;
+        String instructorName="";
     TextView txtWorkoutLevel,txtInstructorName;
 
     WorkoutLevelDetailsAdapter adapter;
@@ -400,8 +401,8 @@ public class AddWorkoutActivity extends AppCompatActivity {
     }
     private void submitForm() {
                 if (awesomeValidation.validate()) {
-                    if(workoutLevel.equals(getResources().getString(R.string.workout_level)) || instructorName.equals(getResources().getString(R.string.hint_instructor))
-                           ){
+                    if(workoutLevel.equals(getResources().getString(R.string.workout_level)) ||
+                            instructorName.equals(getResources().getString(R.string.hint_instructor))) {
                         Toast.makeText(this, "Please fill all fields", Toast.LENGTH_LONG).show();
                     }else{
                         if(subListArrayList.size()>0){
@@ -674,7 +675,8 @@ public class AddWorkoutActivity extends AppCompatActivity {
                     builder.setMessage("Add Staff First");
                     builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            dialog.dismiss();
+                          Intent intent=new Intent(AddWorkoutActivity.this,WorkoutActivity.class);
+                          startActivity(intent);
                         }
                     });
                     android.app.AlertDialog dialog = builder.create();

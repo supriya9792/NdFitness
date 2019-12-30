@@ -91,6 +91,7 @@ public class AddStaffAttendanceActivity extends AppCompatActivity {
 
         awesomeValidation.addValidation(this, R.id.input_name, RegexTemplate.NOT_EMPTY, R.string.err_msg_name);
         awesomeValidation.addValidation(this, R.id.input_cont, RegexTemplate.NOT_EMPTY, R.string.err_msg_cont);
+        awesomeValidation.addValidation(this, R.id.input_id, RegexTemplate.NOT_EMPTY, R.string.err_msg_id);
         showSearchListClass();
 
         inputContact.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -262,7 +263,9 @@ public class AddStaffAttendanceActivity extends AppCompatActivity {
         Present.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                makeattendanceclass();
+                if(awesomeValidation.validate()){
+                    makeattendanceclass();
+                }
             }
         });
 
@@ -460,5 +463,17 @@ public class AddStaffAttendanceActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+    @Override
+    public boolean onSupportNavigateUp(){
+        Intent intent=new Intent(AddStaffAttendanceActivity.this, MainActivity.class);
+        startActivity(intent);
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent=new Intent(AddStaffAttendanceActivity.this, MainActivity.class);
+        startActivity(intent);
     }
 }

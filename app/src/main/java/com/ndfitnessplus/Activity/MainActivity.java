@@ -417,7 +417,7 @@ public class MainActivity extends AppCompatActivity
             Intent intent=new Intent(MainActivity.this,StaffAttendanceActivity.class);
             startActivity(intent);
         }else if (id == R.id.nav_create_plans) {
-            Intent intent=new Intent(MainActivity.this,POSActivity.class);
+            Intent intent=new Intent(MainActivity.this,CreatePlanActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_switch_branch) {
             Intent intent=new Intent(MainActivity.this,BranchSelectionActivity.class);

@@ -175,6 +175,7 @@
     <string name="err_msg_name">Enter your Full name</string>
     <string name="err_msg_email">Enter valid email address</string>
     <string name="err_msg_cont">Enter your valid contact number.</string>
+    <string name="err_msg_id">Enter your valid Staff Id.</string>
     <string name="err_msg_comment">Please enter Comment</string>
     <string name="err_msg_occupation">Please Enter the Occupation</string>
     <string name="err_msg_enq_type">Please enter enquiry type</string>
@@ -197,6 +198,11 @@
     <string name="err_msg_charges">Enter your Charges</string>
     <string name="err_msg_time">Please Enter Time</string>
     <string name="err_msg_pay_details">Enter your Pay Details</string>
+    <string name="err_msg_package_name">Enter your Package Name</string>
+    <string name="err_msg_duration">Enter your Duration</string>
+    <string name="err_msg_session">Enter your Sessino</string>
+    <string name="err_msg_rack_amt">Enter your Rack Amount</string>
+    <string name="err_msg_max_disc">Enter your Max Discount</string>
     <!--Spinner arrays -->
     <string name="all">All</string>
     <string name="converted">Converted</string>
@@ -401,7 +407,26 @@
     <string name="balance_filter">Balance Payment Filter</string>
 
     <string name="profile_photo">Profile Photo</string>
+    <!--Create Plan Activity -->
+    <string name="hint_package_status">Package Status</string>
+    <string name="hint_description">Description</string>
+    <string name="hint_tax_star">Tax*</string>
+    <string name="hint_rack_amt">Rack Amount*</string>
+    <string name="hint_max_disc">Max Discount*</string>
+    <string-array name="package_status_array">
+        <item>Select Status </item>
+        <item>Active</item>
+        <item>Inactive</item>
+    </string-array>
 
+
+    <string name="sunday">Sunday</string>
+    <string name="monday">Monday</string>
+    <string name="tuesday">Tuesday</string>
+    <string name="wednesday">Wednesday</string>
+    <string name="thursday">Thursday</string>
+    <string name="friday">Friday</string>
+    <string name="saturday">Saturday</string>
 
     <!--Copyright string-->
     <string name="copy_right">© 2019 GYMTIME. All Rights Reserved </string>
