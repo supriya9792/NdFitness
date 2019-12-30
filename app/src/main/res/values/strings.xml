@@ -460,7 +460,13 @@
         <item>Biometric</item>
     </string-array>
     <string name="attendance_filters">Attendance Filters</string>
-
+    <string-array name="staff_attendance_mode_array">
+        <item>Select Mode</item>
+        <item>Web</item>
+        <item>AdminApp</item>
+        <item>AdminAppIos</item>
+        <item>Biometric</item>
+    </string-array>
     <!--Pos Activity-->
     <string name="pos_add_item">Add Item</string>
     <string name="pos_show_item">Show Item</string>
@@ -563,10 +569,13 @@
     <string name="workout_filters">Workout Filters</string>
 
     <string name="whatsapp_">This phone number isn\'t on whatsapp</string>
-
+    <!--Staff Attendance -->
     <string name="intime">InTime:</string>
     <string name="outtime">OutTime:</string>
-    <string name="staff_id">Staff Id</string>
+    <string name="staff_id">Staff Id: </string>
+    <string name="staff_id_">Staff Id*</string>
+    <string name="add_staff_attendance">Staff Attendance</string>
+    <string name="staff_attendance_filters">Staff Attendance Filters</string>
 
     <string name="long_lorem_ipsum">
         Duis tellus metus, elementum a lectus id, aliquet interdum mauris. Nam bibendum efficitur sollicitudin. Proin eleifend libero velit, nec fringilla dolor finibus quis. nMorbi eu libero pellentesque, rutrum metus quis, blandit est. Fusce bibendum accumsan nisi vulputate feugiat. In fermentum laoreet euismod. Praesent sem nisl, facilisis eget odio at, rhoncus scelerisque ipsum. Nulla orci dui, dignissim a risus ut, lobortis porttitor velit.

@@ -58,7 +58,7 @@
                 android:id="@+id/search"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
-                android:src="@drawable/ic_search"
+                app:srcCompat="@drawable/ic_search"
                 android:gravity="center"/>
         </LinearLayout>
         <LinearLayout
@@ -110,7 +110,15 @@
                     android:isScrollContainer="false"
                     android:nestedScrollingEnabled="false" />
             </android.support.v4.widget.SwipeRefreshLayout>
-
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_margin="@dimen/fab_margin"
+                android:tint="@color/white"
+                app:backgroundTint="@color/colorPrimary"
+                app:srcCompat="@drawable/ic_add" />
             <include layout="@layout/no_data"/>
         </FrameLayout>
 

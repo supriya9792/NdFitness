@@ -15,11 +15,10 @@ import com.ndfitnessplus.Model.Search_list;
 import com.ndfitnessplus.R;
 
 import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.Locale;
 
-public class SearchContactAdapter extends ArrayAdapter implements Filterable {
+public class SearchStaffIdAdaper  extends ArrayAdapter implements Filterable {
 
     private LayoutInflater inflater = null;
     private Activity activity;
@@ -27,7 +26,7 @@ public class SearchContactAdapter extends ArrayAdapter implements Filterable {
     private Context context;
     private ArrayList<Search_list> arraylist,tempsearch,suggestions;
 
-    public SearchContactAdapter(Context context, ArrayList<Search_list> itemList) {
+    public SearchStaffIdAdaper(Context context, ArrayList<Search_list> itemList) {
         super(context,android.R.layout.simple_list_item_1, itemList);
         this.itemList = itemList;
         this.context = context;
@@ -63,8 +62,12 @@ public class SearchContactAdapter extends ArrayAdapter implements Filterable {
             convertView = inflater.inflate(R.layout.search_list, null);
 
         final Search_list model = itemList.get(position);
-        TextView contact = (TextView) convertView.findViewById(R.id.tv_Name);
-        contact.setText(model.getNameContact());
+        TextView employeeName = (TextView) convertView.findViewById(R.id.tv_Name);
+
+
+
+        employeeName.setText(model.getMemberId());
+
 
         return convertView;
 
@@ -81,7 +84,8 @@ public class SearchContactAdapter extends ArrayAdapter implements Filterable {
                     suggestions.clear();
                     try {
                         for (Search_list search_list : tempsearch) {
-                            if (search_list.getCustContact().toLowerCase().contains(constraint.toString().toLowerCase())) {
+                            if (search_list.getMemberId().toLowerCase().contains(constraint.toString().toLowerCase())||
+                                    search_list.getCustContact().toLowerCase().contains(constraint.toString().toLowerCase())) {
                                 suggestions.add(search_list);
                             }
                             //get data from the web
@@ -105,14 +109,16 @@ public class SearchContactAdapter extends ArrayAdapter implements Filterable {
                 ArrayList<Search_list> filterList = (ArrayList<Search_list>) results.values;
                 if (results != null && results.count > 0) {
                     clear();
-                    try{
-                    for (Search_list people : filterList) {
-                        add(people);
-                        notifyDataSetChanged();
-                    }
-                    }
-                    catch (ConcurrentModificationException e){
-                        e.printStackTrace();
+                    synchronized (filterList) {
+                        try {
+                            for (Search_list people : filterList) {
+                                add(people);
+                                notifyDataSetChanged();
+                            }
+                        }catch (Exception e){
+                            Log.d("HUS", "EXCEPTION " + e);
+                        }
+
                     }
                 }
             }
@@ -127,7 +133,7 @@ public class SearchContactAdapter extends ArrayAdapter implements Filterable {
             itemList.addAll(arraylist);
         } else {
             for (Search_list wp : arraylist) {
-                if (wp.getCustContact().toLowerCase(Locale.getDefault())
+                if (wp.getCustName().toLowerCase(Locale.getDefault())
                         .contains(charText)) {
                     itemList.add(wp);
                 }
@@ -135,4 +141,8 @@ public class SearchContactAdapter extends ArrayAdapter implements Filterable {
         }
         notifyDataSetChanged();
     }
+
+
+
+
 }

@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -80,6 +81,7 @@ public class StaffAttendanceActivity extends AppCompatActivity implements SwipeR
     private EditText inputsearch;
     ImageView search;
     TextView total_present;
+    FloatingActionButton addStaffAtt;
     //Loading gif
     ViewDialog viewDialog;
     @Override
@@ -114,6 +116,7 @@ public class StaffAttendanceActivity extends AppCompatActivity implements SwipeR
         swipeRefresh.setOnRefreshListener(this);
         progress_bar.setVisibility(View.GONE);
         lyt_no_connection.setVisibility(View.VISIBLE);
+        addStaffAtt=findViewById(R.id.fab);
 //        adapter = new CourseAdapter( new ArrayList<EnquiryList>(),CourseActivity.this);
 //        recyclerView.setAdapter(adapter);
 
@@ -155,19 +158,6 @@ public class StaffAttendanceActivity extends AppCompatActivity implements SwipeR
                         }, 1000);
                     }
                 });
-                //Toast.makeText(CourseActivity.this, R.string.internet_unavailable, Toast.LENGTH_LONG).show();
-//                android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(CourseActivity.this);
-//                builder.setMessage(R.string.internet_unavailable);
-//                builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int id) {
-//                        dialog.dismiss();
-//                    }
-//                });
-//                android.app.AlertDialog dialog = builder.create();
-//                dialog.setCancelable(false);
-//                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-//                dialog.show();
-
             }
         }
 
@@ -253,6 +243,14 @@ public class StaffAttendanceActivity extends AppCompatActivity implements SwipeR
             @Override
             public boolean isLoading() {
                 return isLoading;
+            }
+        });
+
+        addStaffAtt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(StaffAttendanceActivity.this,AddStaffAttendanceActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -461,7 +459,7 @@ public class StaffAttendanceActivity extends AppCompatActivity implements SwipeR
             MeasurementSearchDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(StaffAttendanceActivity.this));
             MeasurementSearchDetails.put("text", inputsearch.getText().toString());
             Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(StaffAttendanceActivity.this)));
-            MeasurementSearchDetails.put("action","show_search_attendance");
+            MeasurementSearchDetails.put("action","show_search_staff_attendance");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(StaffAttendanceActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, MeasurementSearchDetails);
             //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
@@ -512,36 +510,43 @@ public class StaffAttendanceActivity extends AppCompatActivity implements SwipeR
                                     String Attendance_Date = jsonObj.getString("Attendance_Date");
                                     String AttendanceMode = jsonObj.getString("AttendanceMode");
                                     String Image = jsonObj.getString("Image");
-                                    String Status = jsonObj.getString("Status");
 
-                                    Log.d(TAG, "Status: " + Status);
                                     subList.setStaffID(Staff_ID);
                                     subList.setContact(Contact);
                                     String cont= Utility.lastFour(Contact);
                                     //subList.setContactEncrypt(cont);
                                     subList.setName(Name);
                                     String[] timearr=InDateTime.split(" ");
-                                    String[] outtimearr=OutTime.split(" ");
+                                    String outtimearr[] = new String[0];
+
 
 
                                     SimpleDateFormat _24HourSDF = new SimpleDateFormat("HH:mm:ss");
                                     SimpleDateFormat _12HourSDF = new SimpleDateFormat("hh:mm a");
                                     Date _24HourDt = null;
                                     Date _24HourDtOut = null;
+
                                     try {
+
                                         if(timearr[1]!=null)
                                             _24HourDt = _24HourSDF.parse(timearr[1]);
-                                        if(outtimearr[1]!=null)
-                                            _24HourDtOut = _24HourSDF.parse(outtimearr[1]);
+                                        if(!OutTime.equals("null")){
+                                            outtimearr=OutTime.split(" ");
+                                            if(outtimearr[1]!=null) {
+                                                _24HourDtOut = _24HourSDF.parse(outtimearr[1]);
+                                                String format12Out = _12HourSDF.format(_24HourDtOut);
+                                                subList.setOutTime(format12Out);
+                                            }
+                                        }
+
                                     } catch (ParseException e) {
                                         e.printStackTrace();
                                     }
                                     System.out.println(_24HourDt);
                                     System.out.println(_12HourSDF.format(_24HourDt));
                                     String format12=_12HourSDF.format(_24HourDt);
-                                    String format12Out=_12HourSDF.format(_24HourDtOut);
+
                                     subList.setInTime(format12);
-                                    subList.setOutTime(format12Out);
                                     String adate=Utility.formatDate(Attendance_Date);
                                     subList.setAttendanceDate(adate);
                                     subList.setAttendanceMode(AttendanceMode);
@@ -591,7 +596,7 @@ public class StaffAttendanceActivity extends AppCompatActivity implements SwipeR
             startActivity(intent);
             return true;
         } else if (id == R.id.action_filter) {
-            Intent intent = new Intent(StaffAttendanceActivity.this, AttendenceFilterActivity.class);
+            Intent intent = new Intent(StaffAttendanceActivity.this, StaffAttendanceFilterActivity.class);
             startActivity(intent);
             return true;
         }

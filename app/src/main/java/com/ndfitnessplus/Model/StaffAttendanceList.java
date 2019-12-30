@@ -1,6 +1,8 @@
 package com.ndfitnessplus.Model;
 
-public class StaffAttendanceList {
+import java.io.Serializable;
+
+public class StaffAttendanceList implements Serializable {
      public  String StaffID,Name,Contact,AttendanceDate,InTime,OutTime,AttendanceMode,Image;
 
     public StaffAttendanceList() {

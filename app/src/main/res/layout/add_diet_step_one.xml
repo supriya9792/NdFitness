@@ -139,8 +139,8 @@
         </LinearLayout>
     </LinearLayout>
     <View
-        android:layout_width="0dp"
-        android:layout_height="@dimen/spacing_large" />
+    android:layout_width="0dp"
+    android:layout_height="@dimen/spacing_large" />
 
     <Button
         android:id="@+id/btn_next1"

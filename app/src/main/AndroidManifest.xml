@@ -41,7 +41,9 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
-        <activity android:name=".Activity.StaffAttendanceActivity"></activity>
+        <activity android:name=".Activity.AddStaffAttendanceActivity"></activity>
+        <activity android:name=".Activity.StaffAttendanceFilterActivity" />
+        <activity android:name=".Activity.StaffAttendanceActivity" />
         <activity android:name=".Activity.CourseWiseAttendanceDetailsActivity" />
         <activity android:name=".Activity.WorkoutFilterActivity" />
         <activity android:name=".Activity.WorkoutActivity" />
