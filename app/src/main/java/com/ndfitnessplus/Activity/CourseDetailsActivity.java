@@ -322,7 +322,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
             myDir.mkdirs();
             long n = System.currentTimeMillis() / 1000L;
             String iname = SharedPrefereneceUtil.getSelectedBranchId(CourseDetailsActivity.this) + member_id;
-            fname = "Invoice" + iname + ".pdf";
+            fname = "Invoice" + n + ".pdf";
             FilePath = root + "/MyInvoices/" + fname;
             pdfFile = new File(myDir, fname);
             if (pdfFile.exists())
@@ -2511,14 +2511,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                                     Image image = Image.getInstance(new URL(imgurl));
                                                     image.setAbsolutePosition(510,750);
                                                     image.scalePercent(50);
-//                                                    //Set absolute position for image in PDF (or fixed)
-//                                                    image.setAbsolutePosition(100, 500);
-//                                                    //Scale image's width and height
-//                                                    image.scaleAbsolute(200, 200);
-//                                                    //Scale image's height
-//                                                    image.scaleAbsoluteWidth(200);
-//                                                    //Scale image's width
-//                                                    image.scaleAbsoluteHeight(200);
+//
                                                     document.add(image);
                                                     //Your code goes here
                                                 } catch (Exception e) {

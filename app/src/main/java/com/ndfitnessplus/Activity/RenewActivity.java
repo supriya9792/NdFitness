@@ -2545,8 +2545,10 @@ public class RenewActivity extends AppCompatActivity {
                                   final  String imgurl=domainurl+ ServiceUrls.IMAGES_URL+l;
                                     Log.d(TAG, "GST_No: " +GST_No);
                                     Log.d(TAG, "MemberGST_No: " +MemberGST_No);
-
+                                    double tax = 0;
+                                    double taxamont = 0;
                                     String textBody = "";
+                                    String cgst = null,Sgst;
                                     PdfPTable tablePayTrasa=null;
                                     JSONArray jsonArrayPayTrasa = jsonObj.getJSONArray("payment_transa");
                                     if (jsonArrayPayTrasa != null && jsonArrayPayTrasa.length() > 0) {
@@ -2566,67 +2568,77 @@ public class RenewActivity extends AppCompatActivity {
                                                 if(TaxAmount.equals(".00")){
                                                     TaxAmount="0.00";
                                                 }
+                                                 tax=Double.parseDouble(Tax);
+                                                 taxamont=Double.parseDouble(TaxAmount);
+                                               double cgstd=tax/2;
+                                               double gstamt=taxamont/2;
+                                               cgst= String.valueOf(cgstd);
+                                               Sgst= String.valueOf(gstamt);
+
                                                 String Paid =  jsonObj1.getString("Paid");
                                                 String PaymentType =  jsonObj1.getString("PaymentType");
                                                 String PaymentDetails =  jsonObj1.getString("PaymentDetails");
                                                 String ReceiptOwnerExecutive =  jsonObj1.getString("ReceiptOwnerExecutive");
 
-                                                float[] columnWidths = {1.2f, 1.8f, 1.1f,2.2f, 2.2f,2f,2f,2f};
-                                                 tablePayTrasa = new PdfPTable(8);
-                                                // set table width a percentage of the page width
-                                                tablePayTrasa.setTotalWidth(550f);
-                                                tablePayTrasa.setWidths(columnWidths);
-                                                tablePayTrasa.setLockedWidth(true);
-                                                tablePayTrasa.getDefaultCell().setMinimumHeight(30f);
-                                                tablePayTrasa.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
-                                                tablePayTrasa.getDefaultCell().setVerticalAlignment(Element.ALIGN_MIDDLE);
-                                                tablePayTrasa.getDefaultCell().setPadding(5f);
-                                                Font boldFont = new Font(Font.FontFamily.UNDEFINED, 13, Font.BOLD);
-                                                PdfPCell cell1 = new PdfPCell(new Phrase("#RNo",boldFont));
-                                               // cell1.setMinimumHeight(30f);
-                                                // cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
-                                                tablePayTrasa.addCell(cell1);
-                                                cell1 = new PdfPCell(new Phrase("Date",boldFont));
-                                                // cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
-                                                tablePayTrasa.addCell(cell1);
-                                                cell1 = new PdfPCell(new Phrase("Tax",boldFont));
-                                                // cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
-                                                tablePayTrasa.addCell(cell1);
-                                                cell1 = new PdfPCell(new Phrase("Tax Amount",boldFont));
-                                                //cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
-                                                tablePayTrasa.addCell(cell1);
-                                                cell1 = new PdfPCell(new Phrase("Paid Amount",boldFont));
-                                                // cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
-                                                tablePayTrasa.addCell(cell1);
-                                                cell1 = new PdfPCell(new Phrase("Payment Mode",boldFont));
-                                                // cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
-                                                tablePayTrasa.addCell(cell1);
-                                                cell1 = new PdfPCell(new Phrase("Payment Details",boldFont));
-                                                // cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
-                                                tablePayTrasa.addCell(cell1);
-                                                cell1 = new PdfPCell(new Phrase("Executive",boldFont));
-                                                // cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
-                                                tablePayTrasa.addCell(cell1);
-                                                tablePayTrasa.setHeaderRows(1);
-//                                        PdfPCell[] cells = table.getRow(0).getCells();
-//                                        cells[0].setBackgroundColor(BaseColor.GRAY);
-
-                                                for(int j=0; j < 1; j++ ){
-                                                    cell1.setMinimumHeight(30f);
-                                                    tablePayTrasa.addCell(Receipt_Id);
-                                                    tablePayTrasa.addCell(receipt_date);
-                                                    tablePayTrasa.addCell(Tax);
-                                                    tablePayTrasa.addCell(TaxAmount);
-                                                    tablePayTrasa.addCell(Paid);
-                                                    tablePayTrasa.addCell(PaymentType);
-                                                    tablePayTrasa.addCell(PaymentDetails);
-                                                    tablePayTrasa.addCell(ReceiptOwnerExecutive);
-
-                                                }
+//                                                float[] columnWidths = {1.2f, 1.8f, 1.1f,2.2f, 2.2f,2f,2f,2f};
+////                                                 tablePayTrasa = new PdfPTable(8);
+////                                                // set table width a percentage of the page width
+////                                                tablePayTrasa.setTotalWidth(550f);
+////                                                tablePayTrasa.setWidths(columnWidths);
+////                                                tablePayTrasa.setLockedWidth(true);
+////                                                tablePayTrasa.getDefaultCell().setMinimumHeight(30f);
+////                                                tablePayTrasa.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
+////                                                tablePayTrasa.getDefaultCell().setVerticalAlignment(Element.ALIGN_MIDDLE);
+////                                                tablePayTrasa.getDefaultCell().setPadding(5f);
+////                                                Font boldFont = new Font(Font.FontFamily.UNDEFINED, 13, Font.BOLD);
+////                                                PdfPCell cell1 = new PdfPCell(new Phrase("#RNo",boldFont));
+////                                               // cell1.setMinimumHeight(30f);
+////                                                // cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
+////                                                tablePayTrasa.addCell(cell1);
+////                                                cell1 = new PdfPCell(new Phrase("Date",boldFont));
+////                                                // cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
+////                                                tablePayTrasa.addCell(cell1);
+////                                                cell1 = new PdfPCell(new Phrase("Tax",boldFont));
+////                                                // cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
+////                                                tablePayTrasa.addCell(cell1);
+////                                                cell1 = new PdfPCell(new Phrase("Tax Amount",boldFont));
+////                                                //cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
+////                                                tablePayTrasa.addCell(cell1);
+////                                                cell1 = new PdfPCell(new Phrase("Paid Amount",boldFont));
+////                                                // cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
+////                                                tablePayTrasa.addCell(cell1);
+////                                                cell1 = new PdfPCell(new Phrase("Payment Mode",boldFont));
+////                                                // cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
+////                                                tablePayTrasa.addCell(cell1);
+////                                                cell1 = new PdfPCell(new Phrase("Payment Details",boldFont));
+////                                                // cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
+////                                                tablePayTrasa.addCell(cell1);
+////                                                cell1 = new PdfPCell(new Phrase("Executive",boldFont));
+////                                                // cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
+////                                                tablePayTrasa.addCell(cell1);
+////                                                tablePayTrasa.setHeaderRows(1);
+//////                                        PdfPCell[] cells = table.getRow(0).getCells();
+//////                                        cells[0].setBackgroundColor(BaseColor.GRAY);
+////
+////                                                for(int j=0; j < 1; j++ ){
+////                                                    cell1.setMinimumHeight(30f);
+////                                                    tablePayTrasa.addCell(Receipt_Id);
+////                                                    tablePayTrasa.addCell(receipt_date);
+////                                                    tablePayTrasa.addCell(Tax);
+////                                                    tablePayTrasa.addCell(TaxAmount);
+////                                                    tablePayTrasa.addCell(Paid);
+////                                                    tablePayTrasa.addCell(PaymentType);
+////                                                    tablePayTrasa.addCell(PaymentDetails);
+////                                                    tablePayTrasa.addCell(ReceiptOwnerExecutive);
+////
+////                                                }
                                                 textBody += "  <tr >\n \n" +
                                                         "    <td width='10%'>"+Receipt_Id+"</td>\n \n" +
                                                         "     <td width='15%'>"+receipt_date+"</td>\n\n" +
+//                                                        "    <td width='8%'>"+subtotal+"</td> \n\n" +
                                                         "    <td width='8%'>"+Tax+"</td> \n\n" +
+//                                                        "    <td width='8%'>"+Sgst+"</td> \n\n" +
+//                                                        "    <td width='8%'>"+Sgst+"</td> \n\n" +
                                                         "    <td width='12.5%'>"+TaxAmount+"</td>\n\n" +
                                                         "    <td width='12.5%'>"+Paid+"</td>\n\n" +
                                                         "    <td width='12.5%'>"+PaymentType+"</td>\n\n" +
@@ -2803,7 +2815,10 @@ public class RenewActivity extends AppCompatActivity {
                                             "                   <tr height=\"100\" >\n" +
                                             "                      <th  ><strong>#RNo</strong></th>\n" +
                                             "                      <th  ><strong>Date</strong></th>\n" +
+//                                            "                      <th  ><strong>SubTotal</strong></th>\n" +
                                             "                      <th ><strong>Tax</strong></th>                                    \n" +
+//                                            "                      <th ><strong>CGST (</strong></th> \n" +cgst+"%)"+
+//                                            "                      <th ><strong>SGST (</strong></th>  \n" +cgst+"%)"+
                                             "                      <th ><strong>Tax Amount</strong></th>\n" +
                                             "                      <th ><strong>Paid Amount</strong></th>\n" +
                                             "                       <th ><strong>Payment Mode</strong></th>\n" +
@@ -2993,7 +3008,7 @@ public class RenewActivity extends AppCompatActivity {
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
-            } catch (DocumentException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

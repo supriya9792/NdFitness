@@ -3,6 +3,7 @@ package com.ndfitnessplus.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.design.widget.TextInputLayout;
@@ -10,6 +11,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,7 +66,7 @@ public class CreatePlanActivity extends AppCompatActivity {
     TextView txtPackageType,txtPackageStatus;
     CheckBox Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,All;
     ViewDialog viewDialog;
-    StringBuilder Days;
+    StringBuilder Days=new StringBuilder();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,7 +79,7 @@ public class CreatePlanActivity extends AppCompatActivity {
     private void initToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(getResources().getString(R.string.course_reg));
+        getSupportActionBar().setTitle(getResources().getString(R.string.create_plan));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         initComponent();
     }
@@ -94,7 +97,7 @@ public class CreatePlanActivity extends AppCompatActivity {
         inputPackageName = (EditText) findViewById(R.id.input_package_name);
         inputDuration = (EditText) findViewById(R.id.input_duration);
         inputSession = (EditText) findViewById(R.id.input_session);
-        inputDescription = (EditText) findViewById(R.id.input_startdate);
+        inputDescription = (EditText) findViewById(R.id.input_description);
         inputTax = (EditText) findViewById(R.id.input_tax);
         inputMaxDiscount = (EditText) findViewById(R.id.input_max_disc);
         inputRackAmount = (EditText) findViewById(R.id.input_rack_amt);
@@ -124,9 +127,19 @@ public class CreatePlanActivity extends AppCompatActivity {
         awesomeValidation.addValidation(this, R.id.input_package_name, RegexTemplate.NOT_EMPTY, R.string.err_msg_package_name);
         awesomeValidation.addValidation(this, R.id.input_duration, RegexTemplate.NOT_EMPTY, R.string.err_msg_duration);
         awesomeValidation.addValidation(this, R.id.input_session, RegexTemplate.NOT_EMPTY, R.string.err_msg_session);
+        awesomeValidation.addValidation(this, R.id.input_tax, RegexTemplate.NOT_EMPTY, R.string.err_msg_tax);
         awesomeValidation.addValidation(this, R.id.input_rack_amt, RegexTemplate.NOT_EMPTY, R.string.err_msg_rack_amt);
         awesomeValidation.addValidation(this, R.id.input_max_disc, RegexTemplate.NOT_EMPTY, R.string.err_msg_max_disc);
 
+        inputPackageName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+
+                if(inputPackageName.getText().length()>0){
+                    CheckPackageClass();
+                }
+            }
+        });
 
         //************** Setting data to spinner seletced item Package Type ***************
         spinPackageType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -252,12 +265,13 @@ public class CreatePlanActivity extends AppCompatActivity {
                 return false;
             }
         }) ;
+        Days.setLength(0);
         All.setOnCheckedChangeListener(new
                          CompoundButton.OnCheckedChangeListener() {
                              @Override
                              public void onCheckedChanged(CompoundButton buttonView, boolean
                                      isChecked) {
-                                 if (All.isChecked()) {
+                                 if (isChecked) {
                                      Sunday.setChecked(true);
                                      Monday.setChecked(true);
                                      Tuesday.setChecked(true);
@@ -266,6 +280,7 @@ public class CreatePlanActivity extends AppCompatActivity {
                                      Friday.setChecked(true);
                                      Saturday.setChecked(true);
                                  }else {
+                                     Days.setLength(0);
                                      Sunday.setChecked(false);
                                      Monday.setChecked(false);
                                      Tuesday.setChecked(false);
@@ -276,7 +291,96 @@ public class CreatePlanActivity extends AppCompatActivity {
                                  }
                              }
                          });
+          Sunday.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+              @Override
+              public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                  if(b){
+                     Days.append("Sunday,");
+                  }
+              }
+          });
+        Monday.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b){
+                    Days.append("Monday,");
+                }
+            }
+        });
+        Tuesday.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b){
+                    Days.append("Tuesday,");
+                }
+            }
+        });
+        Wednesday.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b){
+                    Days.append("Wednesday,");
+                }
+            }
+        });
+        Thursday.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b){
+                    Days.append("Thursday,");
+                }
+            }
+        });
+        Friday.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b){
+                    Days.append("Friday,");
+                }
+            }
+        });
+        Saturday.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b){
+                    Days.append("Saturday");
+                }
+            }
+        });
 
+    }
+    //************ Submit button on action bar ***********
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.save_enquiry_menu, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_save_enquiry) {
+            // sendEmail();
+            submitForm();
+            return true;
+        }else if(id ==  R.id.action_home){
+            Intent intent = new Intent(CreatePlanActivity.this, MainActivity.class);
+            startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
+    }
+    private void submitForm() {
+        //first validate the form then move ahead
+        //if this becomes true that means validation is successfull
+        //if(inputPassword.getText().toString().equals(inputCfmPassword.getText().toString())){
+        if (awesomeValidation.validate()) {
+                if(packageType.equals(getResources().getString(R.string.hint_packagetype)) || packageStatus.equals(getResources().getString(R.string.hint_package_name))
+                        ){
+                    Toast.makeText(this, "Please fill Package type or Package Status", Toast.LENGTH_LONG).show();
+                }else{
+                        AddPackageClass();
+                }
+            }
     }
     // ************* Package Type spinner *******************
     public void  packageTypeClass() {
@@ -420,11 +524,11 @@ public class CreatePlanActivity extends AppCompatActivity {
             }
         }
     }
-    public void  AddCourseClass() {
-        CreatePlanActivity.AddCourseTrackClass ru = new CreatePlanActivity.AddCourseTrackClass();
+    public void  AddPackageClass() {
+        CreatePlanActivity.AddPackageTrackClass ru = new CreatePlanActivity.AddPackageTrackClass();
         ru.execute("5");
     }
-    class AddCourseTrackClass extends AsyncTask<String, Void, String> {
+    class AddPackageTrackClass extends AsyncTask<String, Void, String> {
 
         ServerClass ruc = new ServerClass();
 
@@ -445,49 +549,49 @@ public class CreatePlanActivity extends AppCompatActivity {
             viewDialog.hideDialog();
             //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
             //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
-            AddCourseDetails(response);
+            AddPackageDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
 
-            HashMap<String, String> AddCourseDetails = new HashMap<String, String>();
-            AddCourseDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(CreatePlanActivity.this));
+            HashMap<String, String> AddPackageDetails = new HashMap<String, String>();
+            AddPackageDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(CreatePlanActivity.this));
             Log.v(TAG, String.format("doInBackground :: comp_id = %s", SharedPrefereneceUtil.getSelectedBranchId(CreatePlanActivity.this)));
-            AddCourseDetails.put("package_type",packageType);
+            AddPackageDetails.put("package_type",packageType);
             Log.v(TAG, String.format("doInBackground :: packageType = %s", packageType));
-            AddCourseDetails.put("package_name",inputPackageName.getText().toString());
+            AddPackageDetails.put("package_name",inputPackageName.getText().toString());
             Log.v(TAG, String.format("doInBackground :: name = %s", inputPackageName.getText().toString()));
-            AddCourseDetails.put("duration",inputDuration.getText().toString());
-            Log.v(TAG, String.format("doInBackground :: contact = %s", inputDuration.getText().toString()));
-            AddCourseDetails.put("session",inputSession.getText().toString());
-            Log.v(TAG, String.format("doInBackground :: Email = %s", inputSession.getText().toString()));
-            AddCourseDetails.put("description",inputDescription.getText().toString() );
+            AddPackageDetails.put("duration",inputDuration.getText().toString());
+            Log.v(TAG, String.format("doInBackground :: duration = %s", inputDuration.getText().toString()));
+            AddPackageDetails.put("session",inputSession.getText().toString());
+            Log.v(TAG, String.format("doInBackground :: session = %s", inputSession.getText().toString()));
+            AddPackageDetails.put("description",inputDescription.getText().toString() );
+            Log.v(TAG, String.format("doInBackground :: description = %s", inputDescription.getText().toString()));
+            AddPackageDetails.put("tax",inputTax.getText().toString());
+            Log.v(TAG, String.format("doInBackground :: tax = %s", inputTax.getText().toString()));
+            AddPackageDetails.put("rack_amt",inputRackAmount.getText().toString());
+            Log.v(TAG, String.format("doInBackground :: rack_amt = %s", inputRackAmount.getText().toString()));
+            AddPackageDetails.put("max_disc", inputMaxDiscount.getText().toString());
+            Log.v(TAG, String.format("doInBackground :: max_disc = %s", inputMaxDiscount.getText().toString()));
+            AddPackageDetails.put("days",Days.toString());
+            Log.v(TAG, String.format("doInBackground :: days = %s", Days.toString()));
+            AddPackageDetails.put("package_status",packageStatus);
             Log.v(TAG, String.format("doInBackground :: package_type = %s", packageType));
-            AddCourseDetails.put("tax",inputTax.getText().toString());
-            Log.v(TAG, String.format("doInBackground :: package_type = %s", inputTax.getText().toString()));
-            AddCourseDetails.put("rack_amout",inputRackAmount.getText().toString());
-            Log.v(TAG, String.format("doInBackground :: duration = %s", inputRackAmount.getText().toString()));
-            AddCourseDetails.put("max_discount", inputMaxDiscount.getText().toString());
-            Log.v(TAG, String.format("doInBackground :: package_type = %s", packageType));
-            AddCourseDetails.put("days",Days.toString());
-            Log.v(TAG, String.format("doInBackground :: package_type = %s", packageType));
-            AddCourseDetails.put("package_status",packageStatus);
-            Log.v(TAG, String.format("doInBackground :: package_type = %s", packageType));
-            AddCourseDetails.put("mode","AdminApp");
+            AddPackageDetails.put("mode","AdminApp");
             Log.v(TAG, String.format("doInBackground :: executive name= %s", SharedPrefereneceUtil.getName(CreatePlanActivity.this)));
-            AddCourseDetails.put("action", "add_package");
+            AddPackageDetails.put("action", "create_plans");
             String domainurl= SharedPrefereneceUtil.getDomainUrl(CreatePlanActivity.this);
-            String loginResult2 = ruc.sendPostRequest(domainurl+ ServiceUrls.LOGIN_URL, AddCourseDetails);
+            String loginResult2 = ruc.sendPostRequest(domainurl+ ServiceUrls.LOGIN_URL, AddPackageDetails);
 
-            Log.v(TAG, String.format("doInBackground :: add_package= %s", loginResult2));
+            Log.v(TAG, String.format("doInBackground :: create_plans= %s", loginResult2));
             return loginResult2;
         }
     }
 
 
-    private void AddCourseDetails(String jsonResponse) {
+    private void AddPackageDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("loginServerResponse :: response = %s", jsonResponse));
 
@@ -498,9 +602,9 @@ public class CreatePlanActivity extends AppCompatActivity {
 
             if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
                  Toast.makeText(CreatePlanActivity.this,"Package Created succesfully",Toast.LENGTH_SHORT).show();
-        }
-
-
+                finish();
+                startActivity(getIntent());
+             }
             else if (success.equalsIgnoreCase(getResources().getString(R.string.one)))
             {
                 Toast.makeText(CreatePlanActivity.this,"Mobile Number Already Exits ,Please Enter New Mobile Number",Toast.LENGTH_SHORT).show();
@@ -509,5 +613,84 @@ public class CreatePlanActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+    public void  CheckPackageClass() {
+        CreatePlanActivity.CheckPackageTrackClass ru = new CreatePlanActivity.CheckPackageTrackClass();
+        ru.execute("5");
+    }
+
+    class CheckPackageTrackClass extends AsyncTask<String, Void, String> {
+
+        ServerClass ruc = new ServerClass();
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Log.v(TAG, "onPreExecute");
+            // showProgressDialog();
+            viewDialog.showDialog();
+        }
+
+        @Override
+        protected void onPostExecute(String response) {
+            super.onPostExecute(response);
+            Log.v(TAG, String.format("onPostExecute :: response = %s", response));
+            //dismissProgressDialog();
+            viewDialog.hideDialog();
+            //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
+            //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
+            CheckPackageDetails(response);
+
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            //  Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+            HashMap<String, String> CheckPackageDetails = new HashMap<String, String>();
+
+            CheckPackageDetails.put("package_name",inputPackageName.getText().toString() );
+            CheckPackageDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(CreatePlanActivity.this) );
+            CheckPackageDetails.put("action", "check_package_name_already_name");
+            String domainurl=SharedPrefereneceUtil.getDomainUrl(CreatePlanActivity.this);
+            //CheckPackageloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(CheckPackageloyee.this));
+            String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, CheckPackageDetails);
+            Log.v(TAG, String.format("doInBackground :: check_package_name_already_name= %s", loginResult));
+            return loginResult;
+        }
+    }
+    private void CheckPackageDetails(String jsonResponse) {
+
+        Log.v(TAG, String.format("loginServerResponse :: response = %s", jsonResponse));
+
+        JSONObject object = null;
+        try {
+            object = new JSONObject(jsonResponse);
+            String success = object.getString(getResources().getString(R.string.success));
+
+            if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
+
+            }
+            else if (success.equalsIgnoreCase(getResources().getString(R.string.zero)))
+            {
+                 inputPackageName.getText().clear();
+                 Toast.makeText(CreatePlanActivity.this,"This Package Name is Already exist,Please create new Package Name",Toast.LENGTH_SHORT).show();
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+    @Override
+    public boolean onSupportNavigateUp(){
+        Intent intent=new Intent(CreatePlanActivity.this, MainActivity.class);
+        startActivity(intent);
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(CreatePlanActivity.this, MainActivity.class);
+        startActivity(intent);
     }
 }

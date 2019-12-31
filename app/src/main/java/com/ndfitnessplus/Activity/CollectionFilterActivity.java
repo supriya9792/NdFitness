@@ -21,7 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ndfitnessplus.Adapter.SpinnerAdapter;
-import com.ndfitnessplus.Model.CollectionList;
+import com.ndfitnessplus.Model.CourseList;
 import com.ndfitnessplus.Model.Spinner_List;
 import com.ndfitnessplus.R;
 import com.ndfitnessplus.Utility.ServerClass;
@@ -60,8 +60,8 @@ public class CollectionFilterActivity extends AppCompatActivity {
     ImageButton toDatebtn,fromDateBtn;
     private int mYear, mMonth, mDay;
     String month,day;
-    ArrayList<CollectionList> subListArrayList = new ArrayList<CollectionList>();
-    CollectionList subList;
+    ArrayList<CourseList> subListArrayList = new ArrayList<CourseList>();
+    CourseList subList;
     Button btn_applyFilter;
     //Loading gif
     ViewDialog viewDialog;
@@ -716,7 +716,7 @@ public class CollectionFilterActivity extends AppCompatActivity {
                     if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
                         for (int i = 0; i < jsonArrayResult.length(); i++) {
 
-                            subList = new CollectionList();
+                            subList = new CourseList();
                             Log.d(TAG, "i: " + i);
                             // Log.d(TAG, "run: " + itemCount);
                             Log.v(TAG, "JsonResponseOpeartion ::");
@@ -724,7 +724,7 @@ public class CollectionFilterActivity extends AppCompatActivity {
                             if (jsonObj != null) {
 
                                 String name = jsonObj.getString("Name");
-                                String RegistrationDate = jsonObj.getString("ReceiptDate");
+                                String ReceiptDate = jsonObj.getString("ReceiptDate");
                                 String Contact = jsonObj.getString("Contact");
                                 String PaymentType = jsonObj.getString("PaymentType");
                                 String ExecutiveName = jsonObj.getString("ExecutiveName");
@@ -740,6 +740,14 @@ public class CollectionFilterActivity extends AppCompatActivity {
                                 String ReceiptType = jsonObj.getString("ReceiptType");
                                 String PaymentDetails = jsonObj.getString("PaymentDetails");
 
+                                String Start_Date = jsonObj.getString("Start_Date");
+                                String End_Date = jsonObj.getString("End_Date");
+                                String Rate = jsonObj.getString("Rate");
+                                String RegistrationDate = jsonObj.getString("RegistrationDate");
+                                String Package_Name = jsonObj.getString("Package_Name");
+                                String Duration_Days = jsonObj.getString("Duration_Days");
+                                String Session = jsonObj.getString("Session");
+                                String Financial_Year = jsonObj.getString("Financial_Year");
                                 //  for (int j = 0; j < 5; j++) {
 
                                 subList.setName(name);
@@ -751,8 +759,8 @@ public class CollectionFilterActivity extends AppCompatActivity {
                                 subList.setPaymentType(PaymentType);
                                 subList.setExecutiveName(ExecutiveName);
                                 subList.setTax(Tax);
-                                String reg_date= Utility.formatDate(RegistrationDate);
-                                subList.setReceiptDate(reg_date);
+                                String rec_date= Utility.formatDate(ReceiptDate);
+                                subList.setReceiptDate(rec_date);
                                 subList.setID(Member_ID);
                                 subList.setInvoiceID(Invoice_ID);
                                 subList.setReceiptId(Receipt_Id);
@@ -766,15 +774,48 @@ public class CollectionFilterActivity extends AppCompatActivity {
                                 }
                                 String nextpaydate=Utility.formatDate(Next_payment_date);
                                 String balance="₹ "+Final_Balance;
-                                subList.setBalance(balance);
+                                subList.setBalance(Final_Balance);
+                                subList.setBalanceRuppe(balance);
                                 Image.replace("\"", "");
-                                Log.d(TAG, "Image: " + Image);
                                 subList.setImage(Image);
                                 subList.setEmail(Member_Email_ID);
 
                                 subList.setNextPaymentdate(nextpaydate);
                                 subList.setReceiptType(ReceiptType);
                                 subList.setPaymentDetails(PaymentDetails);
+
+                                String sdate=Utility.formatDate(Start_Date);
+                                String edate=Utility.formatDate(End_Date);
+                                String todate=sdate+" to "+edate;
+                                subList.setStartToEndDate(todate);
+
+                                SimpleDateFormat dateFormat = new SimpleDateFormat(
+                                        "dd-MM-yyyy");
+                                Date endDate = new Date();
+                                Date currentdate = new Date();
+                                String endc=Utility.formatDateDB(End_Date);
+                                try {
+                                    endDate = dateFormat.parse(endc);
+                                    currentdate = dateFormat.parse(Utility.getCurrentDate());
+                                    Log.v(TAG, String.format(" ::endDate = %s", endDate));
+                                    Log.v(TAG, String.format(" :: currentdate = %s",currentdate));
+                                    if (currentdate.before(endDate)|| currentdate.equals(endDate) ) {
+                                        subList.setStatus("Active");
+                                    } else {
+                                        subList.setStatus("Inactive");
+                                    }
+                                } catch (ParseException e) {
+                                    // TODO Auto-generated catch block
+                                    e.printStackTrace();
+                                }
+
+                                subList.setPackageName(Package_Name);
+                                String dur_sess="Duration:"+Duration_Days+","+"Session:"+Session;
+                                subList.setPackageNameWithDS(dur_sess);
+                                String reg_date= Utility.formatDate(RegistrationDate);
+                                subList.setRegistrationDate(reg_date);
+                                subList.setRate(Rate);
+                                subList.setFinancialYear(Financial_Year);
                                 //Toast.makeText(EnquiryActivity.this, "followup date: "+next_foll_date, Toast.LENGTH_SHORT).show();
                                 subListArrayList.add(subList);
 

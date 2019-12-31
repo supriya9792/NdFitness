@@ -192,10 +192,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/black"
-                        android:editable="false"
-                        android:focusableInTouchMode="false"
                         android:hint="@string/hint_duration"
-                        android:inputType="text"
+                        android:inputType="number"
                         android:textColor="@color/black"
                         android:textColorHint="@color/black" />
                 </android.support.design.widget.TextInputLayout>
@@ -211,7 +209,7 @@
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/black"
                         android:hint="@string/hint_session"
-                        android:inputType="text"
+                        android:inputType="number"
                         android:textColor="@color/black"
                         android:textColorHint="@color/black" />
                 </android.support.design.widget.TextInputLayout>
@@ -371,7 +369,7 @@
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/black"
                         android:hint="@string/hint_rack_amt"
-                        android:inputType="text"
+                        android:inputType="number"
                         android:singleLine="true"
                         android:textColor="@color/black"
                         android:textColorHint="@color/black" />

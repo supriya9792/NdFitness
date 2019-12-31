@@ -200,7 +200,8 @@
     <string name="err_msg_pay_details">Enter your Pay Details</string>
     <string name="err_msg_package_name">Enter your Package Name</string>
     <string name="err_msg_duration">Enter your Duration</string>
-    <string name="err_msg_session">Enter your Sessino</string>
+    <string name="err_msg_session">Enter your Session</string>
+    <string name="err_msg_tax">Enter your Tax</string>
     <string name="err_msg_rack_amt">Enter your Rack Amount</string>
     <string name="err_msg_max_disc">Enter your Max Discount</string>
     <!--Spinner arrays -->
