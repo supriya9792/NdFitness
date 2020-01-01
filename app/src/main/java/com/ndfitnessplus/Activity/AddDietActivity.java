@@ -1115,10 +1115,6 @@ public class AddDietActivity extends AppCompatActivity {
                                // textContact.setDropDownBackgroundResource(R.drawable.search_background);
                                 inputContact.setThreshold(1);
 
-                                //searchnameadapter = new SearchAdapter(MainNavigationActivity.this, searchArrayList);
-                                //text.setAdapter(searchnameadapter);
-                                // text.setDropDownBackgroundResource(R.drawable.layoutborder);
-                                // text.setThreshold(1);
 
 
                             }

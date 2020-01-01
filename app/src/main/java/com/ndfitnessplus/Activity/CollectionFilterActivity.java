@@ -833,10 +833,6 @@ public class CollectionFilterActivity extends AppCompatActivity {
                         System.out.println("No records found");
                     }
                 }
-
-                // showCustomDialog();
-
-                //inputEmail, inputPhone,inputAdd,inputReq,inputFollowupdate;
             }
 
 

@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -34,6 +35,7 @@ import com.ndfitnessplus.Activity.MainActivity;
 import com.ndfitnessplus.Activity.NotificationActivity;
 import com.ndfitnessplus.Adapter.BalanceReceiptAdapter;
 import com.ndfitnessplus.Adapter.CourseAdapter;
+import com.ndfitnessplus.Listeners.PaginationScrollListener;
 import com.ndfitnessplus.Model.CourseList;
 import com.ndfitnessplus.R;
 import com.ndfitnessplus.Utility.ServerClass;
@@ -55,10 +57,11 @@ import java.util.HashMap;
 
 import static com.ndfitnessplus.Utility.HTTPRequestQueue.isOnline;
 
-public class PaymentDateActivity extends AppCompatActivity {
+public class PaymentDateActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
     public static String TAG = PaymentDateActivity.class.getName();
     private ProgressDialog pd;
 
+    SwipeRefreshLayout swipeRefresh;
     private RecyclerView recyclerView;
     private LinearLayoutManager layoutManager;
     ProgressBar progressBar;
@@ -78,6 +81,15 @@ public class PaymentDateActivity extends AppCompatActivity {
     Button BtnSearch;
     private int mYear, mMonth, mDay;
     TextView ttl_pay_date;
+
+    //paginnation parameters
+    public static final int PAGE_START = 1;
+    private int currentPage = PAGE_START;
+    private boolean isLastPage = false;
+    private int totalPage = 2;
+    private boolean isLoading = false;
+    int itemCount = 0;
+    int offset = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -113,6 +125,9 @@ public class PaymentDateActivity extends AppCompatActivity {
         fromDateBtn=findViewById(R.id.btn_from_date);
         toDatebtn=findViewById(R.id.btn_to_date);
         BtnSearch=findViewById(R.id.btn_search);
+
+        swipeRefresh=findViewById(R.id.swipeRefresh);
+        swipeRefresh.setOnRefreshListener(this);
 
         String firstday= Utility.getFirstDayofMonth();
         todate.setText(firstday);
@@ -178,6 +193,32 @@ public class PaymentDateActivity extends AppCompatActivity {
                 if(adapter !=null)
                     adapter.clear();
                 searchactivememberclass();
+            }
+        });
+        recyclerView.addOnScrollListener(new PaginationScrollListener(layoutManager) {
+            @Override
+            protected void loadMoreItems() {
+                isLoading = true;
+                currentPage++;
+                Log.d(TAG, "prepare called current item: " + currentPage+"Total page"+totalPage);
+                if(currentPage<=totalPage){
+                    //currentPage = PAGE_START;
+                    Log.d(TAG, "currentPage: " + currentPage);
+                    isLastPage = false;
+                    preparedListItem();
+                }
+
+
+            }
+
+            @Override
+            public boolean isLastPage() {
+                return isLastPage;
+            }
+
+            @Override
+            public boolean isLoading() {
+                return isLoading;
             }
         });
 //        adapter = new EnquiryAdapter( new ArrayList<EnquiryList>(),EnquiryActivity.this);
@@ -304,6 +345,28 @@ public class PaymentDateActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+    private void preparedListItem() {
+        offset=offset+100;
+
+        if (isOnline(PaymentDateActivity.this)) {
+            todaysPaymentdateOffsetclass();// check login details are valid or not from server
+        }
+        else {
+            Toast.makeText(PaymentDateActivity.this, R.string.internet_unavailable, Toast.LENGTH_LONG).show();
+            android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(PaymentDateActivity.this);
+            builder.setMessage(R.string.internet_unavailable);
+            builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.dismiss();
+                }
+            });
+            android.app.AlertDialog dialog = builder.create();
+            dialog.setCancelable(false);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.show();
+        }
+    }
+
     private void showProgressDialog() {
         Log.v(TAG, String.format("showProgressDialog"));
         pd = new ProgressDialog(PaymentDateActivity.this);
@@ -324,6 +387,14 @@ public class PaymentDateActivity extends AppCompatActivity {
     private void todaysPaymentdateclass() {
         PaymentDateActivity.  PaymentDateTrackclass ru = new PaymentDateActivity.  PaymentDateTrackclass();
         ru.execute("5");
+    }
+
+    @Override
+    public void onRefresh() {
+        itemCount = 0;
+        currentPage = PAGE_START;
+        isLastPage = false;
+        swipeRefresh.setRefreshing(false);
     }
 
     class   PaymentDateTrackclass extends AsyncTask<String, Void, String> {
@@ -357,6 +428,7 @@ public class PaymentDateActivity extends AppCompatActivity {
             HashMap<String, String> PaymentDateDetails = new HashMap<String, String>();
             PaymentDateDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(PaymentDateActivity.this));
             Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(PaymentDateActivity.this)));
+            PaymentDateDetails.put("offset", String.valueOf(offset));
             PaymentDateDetails.put("action","show_payment_date_list");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(PaymentDateActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL,   PaymentDateDetails);
@@ -382,10 +454,8 @@ public class PaymentDateActivity extends AppCompatActivity {
                     progressBar.setVisibility(View.GONE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
-                        ttl_pay_date.setText(String.valueOf(jsonArrayResult.length()));
+                        String ttl_enq = object.getString("ttl_payment_date");
+                        ttl_pay_date.setText(ttl_enq);
                         ArrayList<CourseList> item = new ArrayList<CourseList>();
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
 
@@ -464,8 +534,10 @@ public class PaymentDateActivity extends AppCompatActivity {
                                     adapter = new BalanceReceiptAdapter( item,PaymentDateActivity.this);
                                     recyclerView.setAdapter(adapter);
 
+
                                 }
                             }
+
                         } else if (jsonArrayResult.length() == 0) {
                             System.out.println("No records found");
                         }
@@ -492,11 +564,191 @@ public class PaymentDateActivity extends AppCompatActivity {
             }
         }
     }
+
+    private void todaysPaymentdateOffsetclass() {
+        PaymentDateActivity.PaymentDateOffsetTrackclass ru = new PaymentDateActivity.  PaymentDateOffsetTrackclass();
+        ru.execute("5");
+    }
+
+    class   PaymentDateOffsetTrackclass extends AsyncTask<String, Void, String> {
+
+
+        ServerClass ruc = new ServerClass();
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Log.v(TAG, "onPreExecute");
+            //  showProgressDialog();
+            viewDialog.showDialog();
+        }
+
+        @Override
+        protected void onPostExecute(String response) {
+            super.onPostExecute(response);
+            Log.v(TAG, String.format("onPostExecute :: show_balance_trasaction_details = %s", response));
+            //dismissProgressDialog();
+            viewDialog.hideDialog();
+            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
+            PaymentDateOffsetDetails(response);
+
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+            HashMap<String, String> PaymentDateOffsetDetails = new HashMap<String, String>();
+            PaymentDateOffsetDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(PaymentDateActivity.this));
+            Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(PaymentDateActivity.this)));
+            PaymentDateOffsetDetails.put("offset", String.valueOf(offset));
+            PaymentDateOffsetDetails.put("action","show_payment_date_list");
+            String domainurl=SharedPrefereneceUtil.getDomainUrl(PaymentDateActivity.this);
+            String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL,   PaymentDateOffsetDetails);
+            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
+            return loginResult;
+        }
+
+
+    }
+
+    private void   PaymentDateOffsetDetails(String jsonResponse) {
+
+        Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
+//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
+        if (jsonResponse != null) {
+
+
+            try {
+                Log.v(TAG, "JsonResponseOpeartion :: test");
+                JSONObject object = new JSONObject(jsonResponse);
+                String success = object.getString(getResources().getString(R.string.success));
+                if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
+                    progressBar.setVisibility(View.GONE);
+                    if (object != null) {
+                        JSONArray jsonArrayResult = object.getJSONArray("result");
+                          String ttl_enq = object.getString("ttl_payment_date");
+                        ttl_pay_date.setText(ttl_enq);
+                        ArrayList<CourseList> item = new ArrayList<CourseList>();
+                        if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
+
+                            for (int i = 0; i < jsonArrayResult.length(); i++) {
+
+
+                                subList = new CourseList();
+                                Log.d(TAG, "i: " + i);
+
+                                Log.v(TAG, "JsonResponseOpeartion ::");
+                                JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
+                                if (jsonObj != null) {
+
+                                    String name = jsonObj.getString("Name");
+                                    String RegistrationDate = jsonObj.getString("RegistrationDate");
+                                    String Contact = jsonObj.getString("Contact");
+                                    String Package_Name = jsonObj.getString("Package_Name");
+                                    String ExecutiveName = jsonObj.getString("ExecutiveName");
+                                    String Duration_Days = jsonObj.getString("Duration_Days");
+                                    String Session = jsonObj.getString("Session");
+                                    String Member_ID = jsonObj.getString("Member_ID");
+                                    String Start_Date = jsonObj.getString("Start_Date");
+                                    String End_Date = jsonObj.getString("End_Date");
+                                    String Rate = jsonObj.getString("Rate");
+                                    String Final_paid = jsonObj.getString("Final_paid");
+                                    String Final_Balance = jsonObj.getString("Final_Balance");
+                                    String Image = jsonObj.getString("Image");
+                                    String Invoice_ID = jsonObj.getString("Invoice_ID");
+                                    String Tax = jsonObj.getString("Tax");
+                                    String Member_Email_ID = jsonObj.getString("Member_Email_ID");
+                                    String Financial_Year = jsonObj.getString("Financial_Year");
+                                    String NextPaymentDate = jsonObj.getString("NextPaymentDate");
+
+
+                                    //  for (int j = 0; j < 5; j++) {
+
+                                    subList.setName(name);
+                                    String sdate= Utility.formatDate(Start_Date);
+                                    String edate=Utility.formatDate(End_Date);
+                                    String todate=sdate+" to "+edate;
+                                    subList.setStartToEndDate(todate);
+                                    String cont=Utility.lastFour(Contact);
+                                    subList.setContact(Contact);
+                                    subList.setContactEncrypt(cont);
+//                                    String pack=Package_Name;
+                                    subList.setPackageName(Package_Name);
+                                    subList.setExecutiveName(ExecutiveName);
+                                    subList.setTax(Tax);
+                                    String dur_sess="Duration:"+Duration_Days+","+"Session:"+Session;
+                                    subList.setPackageNameWithDS(dur_sess);
+                                    String reg_date= Utility.formatDate(RegistrationDate);
+                                    subList.setRegistrationDate(reg_date);
+                                    subList.setID(Member_ID);
+                                    subList.setInvoiceID(Invoice_ID);
+
+                                    subList.setRate(Rate);
+                                    // String fpaid="₹ "+Final_paid;
+                                    subList.setPaid(Final_paid);
+                                    if(Final_Balance.equals(".00")){
+                                        Final_Balance="0.00";
+                                    }
+                                    //String fbalance="₹ "+Final_Balance;
+                                    subList.setBalance(Final_Balance);
+                                    Image.replace("\"", "");
+                                    subList.setImage(Image);
+                                    subList.setEmail(Member_Email_ID);
+                                    subList.setFinancialYear(Financial_Year);
+                                    subList.setFollowuptype("Payment");
+                                    String nextpaydate=Utility.formatDate(NextPaymentDate);
+                                    subList.setNextPaymentdate(nextpaydate);
+                                    //Toast.makeText(CourseActivity.this, "followup date: "+next_foll_date, Toast.LENGTH_SHORT).show();
+
+                                    item.add(subList);
+
+
+                                }
+                            }
+                            if (currentPage != PAGE_START) adapter.removeLoading();
+                            adapter.addAll(item);
+                            swipeRefresh.setRefreshing(false);
+                            if (currentPage < totalPage) adapter.addLoading();
+                            else isLastPage = true;
+                            isLoading = false;
+                        } else if (jsonArrayResult.length() == 0) {
+                            System.out.println("No records found");
+                        }
+                    }
+                }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
+                    ttl_pay_date.setText("0");
+                    nodata.setVisibility(View.VISIBLE);
+
+                    progressBar.setVisibility(View.GONE);
+                    if (currentPage != PAGE_START)
+                        adapter.removeblank();
+                    //adapter.addAll(subListArrayList);
+                    swipeRefresh.setRefreshing(false);
+                    isLoading = false;
+                    // recyclerView.setVisibility(View.GONE);
+                }
+            } catch (JSONException e) {
+                Log.v(TAG, "JsonResponseOpeartion :: catch");
+                e.printStackTrace();
+                android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(PaymentDateActivity.this);
+                builder.setMessage(R.string.server_exception);
+                builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                });
+                android.app.AlertDialog dialog = builder.create();
+                dialog.setCancelable(false);
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.show();
+            }
+        }
+    }
     private void searchactivememberclass() {
         PaymentDateActivity. SearchActiveMemberTrackclass ru = new PaymentDateActivity. SearchActiveMemberTrackclass();
         ru.execute("5");
     }
-
     class  SearchActiveMemberTrackclass extends AsyncTask<String, Void, String> {
 
 

@@ -132,7 +132,7 @@ public class StaffAttendanceActivity extends AppCompatActivity implements SwipeR
             recyclerView.setAdapter(adapter);
         }else{
             if (isOnline(StaffAttendanceActivity.this)) {
-                measurementclass();// check login details are valid or not from server
+                staffAttendanceclass();// check login details are valid or not from server
             }
             else {
                 frame.setVisibility(View.GONE);
@@ -169,7 +169,7 @@ public class StaffAttendanceActivity extends AppCompatActivity implements SwipeR
             @Override
             public void onClick(View v) {
                 if(inputsearch.getText().length()>0){
-                    measurementsearchclass();
+                    staffAttendancesearchclass();
                 }else{
                     Toast.makeText(StaffAttendanceActivity.this,"Please enter text to search", Toast.LENGTH_LONG).show();
                 }
@@ -211,7 +211,7 @@ public class StaffAttendanceActivity extends AppCompatActivity implements SwipeR
                 if(inputsearch.getText().length()==0) {
                     //do your work here
                     // Toast.makeText(AddEnquiryActivity.this ,"Text vhanged count  is 10 then: " , Toast.LENGTH_LONG).show();
-                    measurementclass();
+                    staffAttendanceclass();
                 }
 
             }
@@ -260,11 +260,11 @@ public class StaffAttendanceActivity extends AppCompatActivity implements SwipeR
         onRestart();
     }
     // Asycc class for loading data for database
-    private void measurementclass() {
-        StaffAttendanceActivity.MeasurementTrackclass ru = new StaffAttendanceActivity.MeasurementTrackclass();
+    private void staffAttendanceclass() {
+        StaffAttendanceActivity.StaffAttendanceTrackclass ru = new StaffAttendanceActivity.StaffAttendanceTrackclass();
         ru.execute("5");
     }
-    class MeasurementTrackclass extends AsyncTask<String, Void, String> {
+    class StaffAttendanceTrackclass extends AsyncTask<String, Void, String> {
 
         ServerClass ruc = new ServerClass();
 
@@ -282,26 +282,26 @@ public class StaffAttendanceActivity extends AppCompatActivity implements SwipeR
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
             //dismissProgressDialog();
             //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
-            MeasurementDetails(response);
+            StaffAttendanceDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
             //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
-            HashMap<String, String> MeasurementDetails = new HashMap<String, String>();
-            MeasurementDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(StaffAttendanceActivity.this));
+            HashMap<String, String> StaffAttendanceDetails = new HashMap<String, String>();
+            StaffAttendanceDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(StaffAttendanceActivity.this));
             Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(StaffAttendanceActivity.this)));
-            MeasurementDetails.put("action","show_staff_attendance_list");
+            StaffAttendanceDetails.put("action","show_staff_attendance_list");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(StaffAttendanceActivity.this);
-            String loginResult = ruc.sendPostRequest(domainurl+ ServiceUrls.LOGIN_URL, MeasurementDetails);
+            String loginResult = ruc.sendPostRequest(domainurl+ ServiceUrls.LOGIN_URL, StaffAttendanceDetails);
             //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
 
     }
 
-    private void MeasurementDetails(String jsonResponse) {
+    private void StaffAttendanceDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
 //        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
@@ -390,9 +390,6 @@ public class StaffAttendanceActivity extends AppCompatActivity implements SwipeR
                                     subList.setImage(Image);
 
                                     item.add(subList);
-                                    //Toast.makeText(StaffAttendanceActivity.this, "followup date: "+next_foll_date, Toast.LENGTH_SHORT).show();
-
-                                    //Toast.makeText(MainActivity.this, "j "+j, Toast.LENGTH_SHORT).show();
 
                                     adapter = new StaffAttendanceAdapter(StaffAttendanceActivity.this, item);
                                     recyclerView.setAdapter(adapter);
@@ -424,11 +421,11 @@ public class StaffAttendanceActivity extends AppCompatActivity implements SwipeR
             }
         }
     }
-    private void measurementsearchclass() {
-        StaffAttendanceActivity.MeasurementSearchTrackclass ru = new StaffAttendanceActivity.MeasurementSearchTrackclass();
+    private void staffAttendancesearchclass() {
+        StaffAttendanceActivity.StaffAttendanceSearchTrackclass ru = new StaffAttendanceActivity.StaffAttendanceSearchTrackclass();
         ru.execute("5");
     }
-    class MeasurementSearchTrackclass extends AsyncTask<String, Void, String> {
+    class StaffAttendanceSearchTrackclass extends AsyncTask<String, Void, String> {
 
         ServerClass ruc = new ServerClass();
 
@@ -448,28 +445,26 @@ public class StaffAttendanceActivity extends AppCompatActivity implements SwipeR
             // dismissProgressDialog();
             viewDialog.hideDialog();
             //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
-            MeasurementSearchDetails(response);
+            StaffAttendanceSearchDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
             //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
-            HashMap<String, String> MeasurementSearchDetails = new HashMap<String, String>();
-            MeasurementSearchDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(StaffAttendanceActivity.this));
-            MeasurementSearchDetails.put("text", inputsearch.getText().toString());
+            HashMap<String, String> StaffAttendanceSearchDetails = new HashMap<String, String>();
+            StaffAttendanceSearchDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(StaffAttendanceActivity.this));
+            StaffAttendanceSearchDetails.put("text", inputsearch.getText().toString());
             Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(StaffAttendanceActivity.this)));
-            MeasurementSearchDetails.put("action","show_search_staff_attendance");
+            StaffAttendanceSearchDetails.put("action","show_search_staff_attendance");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(StaffAttendanceActivity.this);
-            String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, MeasurementSearchDetails);
+            String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, StaffAttendanceSearchDetails);
             //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
-
-
     }
 
-    private void MeasurementSearchDetails(String jsonResponse) {
+    private void StaffAttendanceSearchDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
 //        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
@@ -568,8 +563,8 @@ public class StaffAttendanceActivity extends AppCompatActivity implements SwipeR
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
                     // nodata.setVisibility(View.VISIBLE);
-//                    nodata.setVisibility(View.VISIBLE);
-//                    swipeRefresh.setVisibility(View.GONE);
+                     nodata.setVisibility(View.VISIBLE);
+                    swipeRefresh.setVisibility(View.GONE);
                     progressBar.setVisibility(View.GONE);
                     Toast.makeText(StaffAttendanceActivity.this, "NO Record Found", Toast.LENGTH_SHORT).show();
                     //frame.setVisibility(View.GONE);

@@ -436,8 +436,7 @@ public class AddWorkoutActivity extends AppCompatActivity {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
+
             WorkoutLevelDetails(response);
 
         }
@@ -478,8 +477,7 @@ public class AddWorkoutActivity extends AppCompatActivity {
                         workoutLevellist.setName(getResources().getString(R.string.workout_level));
                         workoutLevelArrayList.add(0,workoutLevellist);
                         if (jsonArrayCountry != null && jsonArrayCountry.length() > 0){
-//                            workoutLevellist.setName(getResources().getString(R.string.na));
-//                            workoutLevelArrayList.add(1,workoutLevellist);
+//
                             for (int i = 0; i < jsonArrayCountry.length(); i++) {
                                 workoutLevellist = new Spinner_List();
                                 Log.v(TAG, "JsonResponseOpeartion ::");
@@ -489,10 +487,7 @@ public class AddWorkoutActivity extends AppCompatActivity {
                                     String WorkoutplanName     = jsonObj.getString("WorkoutplanName");
 
                                     String id=jsonObj.getString("Auto_Id");
-//                               if(i==0){
-//                                   workoutLevellist.setName(getResources().getString(R.string.promt_country));
-//                                   enqF.add(0,workoutLevellist);
-//                               }
+//
                                     workoutLevellist.setName(WorkoutplanName);
                                     workoutLevellist.setId(id);
 
@@ -541,8 +536,6 @@ public class AddWorkoutActivity extends AppCompatActivity {
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
 
-                    //forumCount.setVisibility(View.INVISBLE);
-                    // queCount.setVisibility(View.INVISIBLE);
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");
@@ -581,7 +574,7 @@ public class AddWorkoutActivity extends AppCompatActivity {
             // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> InstructorNameDetails = new HashMap<String, String>();
             InstructorNameDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(AddWorkoutActivity.this));
-            InstructorNameDetails.put("action", "show_dietition_name_list");
+            InstructorNameDetails.put("action", "show_instructor_name_list");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(AddWorkoutActivity.this);
             //InstructorNameloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(InstructorNameloyee.this));
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, InstructorNameDetails);
@@ -763,10 +756,6 @@ public class AddWorkoutActivity extends AppCompatActivity {
                                 String Email = jsonObj.getString("Email");
                                 String Gender = jsonObj.getString("Gender");
 
-
-                                //  String email = jsonObj.getString("email");
-                                // String phn_no = jsonObj.getString("mobile");
-
                                String namec=Name+"-"+Contact;
                                 searchModel.setCustName(Name);
                                 searchModel.setCustContact(Contact);
@@ -787,12 +776,6 @@ public class AddWorkoutActivity extends AppCompatActivity {
                                 inputContact.setAdapter(searchcontactadapter);
                                 // textContact.setDropDownBackgroundResource(R.drawable.search_background);
                                 inputContact.setThreshold(1);
-
-                                //searchnameadapter = new SearchAdapter(MainNavigationActivity.this, searchArrayList);
-                                //text.setAdapter(searchnameadapter);
-                                // text.setDropDownBackgroundResource(R.drawable.layoutborder);
-                                // text.setThreshold(1);
-
 
                             }
                         }}else if(jsonArrayResult.length()==0){
@@ -1063,10 +1046,7 @@ private void workout_detailsclass() {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            // dismissProgressDialog();
-            //viewDialog.hideDialog();
-            //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
-            //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
+
             AddWorkoutDetails(response);
 
         }
@@ -1146,21 +1126,15 @@ private void workout_detailsclass() {
             if (success.equalsIgnoreCase(getResources().getString(R.string.two))||success.equalsIgnoreCase(getResources().getString(R.string.one))) {
                 Toast.makeText(AddWorkoutActivity.this,"Workout added succesfully",Toast.LENGTH_SHORT).show();
 
-               // int result=db.remove_from_cart(cartarrayList);
-                //Log.v(TAG, String.format("response :: result= %s",result));
                 EmailLoginClass();
                 //finish();
                 Intent intent=new Intent(AddWorkoutActivity.this, AddWorkoutActivity.class);
                 startActivity(intent);
-                // showCustomDialog();
-
-                //inputEmail, inputPhone,inputAdd,inputReq,inputFollowupdate;
             }
             else if (success.equalsIgnoreCase(getResources().getString(R.string.zero)))
             {
                 Toast.makeText(AddWorkoutActivity.this,"Something went wrong",Toast.LENGTH_SHORT).show();
-                //inputContact.getText().clear();
-                // Toast.makeText(AddWorkoutActivity.this,"Please Enter New Mobile Number",Toast.LENGTH_SHORT).show();
+
             }
 
         } catch (JSONException e) {
@@ -1361,12 +1335,6 @@ private void workout_detailsclass() {
                                           //  }
                                         }
 
-                                   // }
-
-
-
-
-
                                     final String messagehtml = "<!DOCTYPE html>\n" +
                                             "\n" +
                                             "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n" +
@@ -1420,72 +1388,6 @@ private void workout_detailsclass() {
                                             "                </div>\n" +
                                             "      </div>\n" +
                                             "\n" +
-//                                            "        <div  >\n" +
-//                                            "\n" +
-//                                            "            <div >\n" +
-//                                            "                <div >\n" +
-//                                            "                    <div  >\n" +
-//                                            "                        <h3 ><strong>Package Summary</strong></h3>\n" +
-//                                            "                    </div>\n" +
-//                                            "                    <div  >\n" +
-//                                            "                        <div  >\n" +
-//                                            "   <table border = '1' cellpadding=\"6\"  width=\"100%\" >\n" +
-//                                            "                             <thead height=\"100\" >\n" +
-//                                            "                                    <tr height=\"100\" >\n" +
-//                                            "                                      <th ><strong>Package</strong></th>\n" +
-//                                            "                                       <th ><strong>Duration</strong></th>\n" +
-//                                            "                                       <th ><strong>Session</strong></th>                                    \n" +
-//                                            "                                       <th ><strong>StartDate</strong></th>\n" +
-//                                            "                                       <th ><strong>EndDate</strong></th>\n" +
-//                                            "                                       <th ><strong>Time</strong></th>\n" +
-//                                            "                                       <th ><strong>Instructor</strong></th>\n" +
-//                                            "                                       <th ><strong>Package Fees</strong></th>\n" +
-//                                            "                                    </tr>\n" +
-//                                            "                                </thead>\n" +
-//                                            "                               <tbody height=\"100\" >\n" +
-//                                            "                                    <tr height=\"100\" >\n" +
-//                                            "                                        <td >"+Package_Name+"</td>\n" +
-//                                            "                                         <td >"+Duration_Days+"</td>\n" +
-//                                            "                                        <td >"+Session+"</td>                                       \n" +
-//                                            "                                        <td >"+start_date+"</td>\n" +
-//                                            "                                        <td >"+end_date+"</td>\n" +
-//                                            "                                        <td >"+Time+"</td>\n" +
-//                                            "                                        <td >"+Instructor_Name+"</td>\n" +
-//                                            "                                        <td >"+Package_Fees+"</td>\n" +
-//                                            "                                    </tr>\n" +
-//                                            "                                </tbody>\n" +
-//                                            "                            </table>\n" +
-//                                            "                        </div>\n" +
-//                                            "                    </div>\n" +
-//                                            "                    <div >\n" +
-//                                            "                        <div  >\n" +
-//                                            "                            <table border = '1' cellpadding=\"6\"  width=\"100%\" >\n" +
-//                                            "                                <thead height=\"100\">\n" +
-//                                            "                                    <tr height=\"100\" >\n" +
-//                                            "                                        <th ><strong>Discount</strong></th>\n" +
-//                                            "                                        <th ><strong>Reg Fees</strong></th>\n" +
-//                                            "                                        <th ><strong>Total Amount</strong></th>\n" +
-//                                            "                                        <th ><strong>Paid Amount</strong></th>\n" +
-//                                            "                                        <th ><strong>Balance</strong></th>\n" +
-//                                            "                                    </tr>\n" +
-//                                            "                                </thead>\n" +
-//                                            "                                <tbody >\n" +
-//                                            "                                    <tr>\n" +
-//                                            "                                        <td >"+Discount+"</td>\n" +
-//                                            "                                        <td >"+Registration_Fees+"</td>\n" +
-//                                            "                                       \n" +
-//                                            "                                        <td >"+Rate+"</td>\n" +
-//                                            "                                        <td >"+Final_paid+"</td>\n" +
-//                                            "                                        <td >"+Final_Balance+"</td>\n" +
-//                                            "                                    </tr>\n" +
-//                                            "                                </tbody>\n" +
-//                                            "                            </table>\n" +
-//                                            "                        </div>\n" +
-//                                            "                    </div>\n" +
-//                                            "\n" +
-//                                            "                </div>\n" +
-//                                            "            </div>\n" +
-//                                            "        </div>\n" +
                                             "\n" +
                                             "       \n" +
                                             " <div  >\n" +
