@@ -452,6 +452,8 @@ public class PaymentDateActivity extends AppCompatActivity implements SwipeRefre
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
                     progressBar.setVisibility(View.GONE);
+                    nodata.setVisibility(View.GONE);
+                    swipeRefresh.setVisibility(View.VISIBLE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
                         String ttl_enq = object.getString("ttl_payment_date");
@@ -545,7 +547,7 @@ public class PaymentDateActivity extends AppCompatActivity implements SwipeRefre
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
                     ttl_pay_date.setText("0");
                     nodata.setVisibility(View.VISIBLE);
-                    // recyclerView.setVisibility(View.GONE);
+                     swipeRefresh.setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");
@@ -625,6 +627,8 @@ public class PaymentDateActivity extends AppCompatActivity implements SwipeRefre
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
                     progressBar.setVisibility(View.GONE);
+                    nodata.setVisibility(View.GONE);
+                    swipeRefresh.setVisibility(View.VISIBLE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
                           String ttl_enq = object.getString("ttl_payment_date");
@@ -719,7 +723,7 @@ public class PaymentDateActivity extends AppCompatActivity implements SwipeRefre
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
                     ttl_pay_date.setText("0");
                     nodata.setVisibility(View.VISIBLE);
-
+                    swipeRefresh.setVisibility(View.GONE);
                     progressBar.setVisibility(View.GONE);
                     if (currentPage != PAGE_START)
                         adapter.removeblank();
@@ -808,7 +812,7 @@ public class PaymentDateActivity extends AppCompatActivity implements SwipeRefre
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
-                    recyclerView.setVisibility(View.VISIBLE);
+                    swipeRefresh.setVisibility(View.VISIBLE);
                     nodata.setVisibility(View.GONE);
                     progressBar.setVisibility(View.GONE);
                     if (object != null) {
@@ -903,7 +907,7 @@ public class PaymentDateActivity extends AppCompatActivity implements SwipeRefre
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
                     ttl_pay_date.setText("0");
                     nodata.setVisibility(View.VISIBLE);
-                    recyclerView.setVisibility(View.GONE);
+                    swipeRefresh.setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");

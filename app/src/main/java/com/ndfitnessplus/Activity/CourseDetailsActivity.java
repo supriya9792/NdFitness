@@ -179,6 +179,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_course_details);
         initToolbar();
         requestPermission();
+        initializeFonts();
 //        if (!isExternalStorageAvailable() || isExternalStorageReadOnly()) {
 //            Log.v(LOG_TAG, "External Storage not available or you don't have permission to write");
 //        }
