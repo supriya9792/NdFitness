@@ -148,6 +148,34 @@ public class AddStaffAttendanceActivity extends AppCompatActivity {
             }
         });
 
+//        inputStaffId.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//
+//                if(inputContact.getText().length()>0){
+//                    CheckStaffIdClass();
+//                }
+//            }
+//        });
+//        inputContact.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//
+//                if(inputContact.getText().length()>0){
+//                    CheckContactClass();
+//                }
+//            }
+//        });
+//        inputName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//
+//                if(inputContact.getText().length()>0){
+//                    CheckNameClass();
+//                }
+//            }
+//        });
+
         inputName.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -347,8 +375,6 @@ public class AddStaffAttendanceActivity extends AppCompatActivity {
                                 String Image = jsonObj.getString("Image");
 
 
-                                //  String email = jsonObj.getString("email");
-                                // String phn_no = jsonObj.getString("mobile");
 
                                 String namec=Name+"-"+Contact;
                                 searchModel.setCustName(Name);
@@ -459,14 +485,273 @@ public class AddStaffAttendanceActivity extends AppCompatActivity {
             else if (success.equalsIgnoreCase(getResources().getString(R.string.one)))
             {
                 Toast.makeText(AddStaffAttendanceActivity.this,"Please try after 1 hour ,Your attendance is already marked",Toast.LENGTH_SHORT).show();
-                // inputContact.getText().clear();
-                //Toast.makeText(AttendanceActivity.this,"Please Enter New Mobile Number",Toast.LENGTH_SHORT).show();
+
             }
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
+    public void  CheckStaffIdClass() {
+        AddStaffAttendanceActivity.CheckStaffIdTrackClass ru = new AddStaffAttendanceActivity.CheckStaffIdTrackClass();
+        ru.execute("5");
+    }
+
+    class CheckStaffIdTrackClass extends AsyncTask<String, Void, String> {
+
+        ServerClass ruc = new ServerClass();
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Log.v(TAG, "onPreExecute");
+            //showProgressDialog();
+            // viewDialog.showDialog();
+        }
+
+        @Override
+        protected void onPostExecute(String response) {
+            super.onPostExecute(response);
+            Log.v(TAG, String.format("onPostExecute :: response = %s", response));
+            CheckStaffIdDetails(response);
+
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            //  Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+            HashMap<String, String> EnquiryForDetails = new HashMap<String, String>();
+
+            EnquiryForDetails.put("staff_id",inputStaffId.getText().toString() );
+            EnquiryForDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(AddStaffAttendanceActivity.this) );
+            EnquiryForDetails.put("action", "show_staff_details_by_id");
+            //EnquiryForloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(EnquiryForloyee.this));
+            String domainurl=SharedPrefereneceUtil.getDomainUrl(AddStaffAttendanceActivity.this);
+            String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EnquiryForDetails);
+            Log.v(TAG, String.format("doInBackground :: show_staff_details_by_id= %s", loginResult));
+            return loginResult;
+        }
+    }
+    private void CheckStaffIdDetails(String jsonResponse) {
+
+        Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
+//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
+        if (jsonResponse != null) {
+
+
+            try {
+                Log.v(TAG, "JsonResponseOpeartion :: test");
+                JSONObject object = new JSONObject(jsonResponse);
+                String success = object.getString(getResources().getString(R.string.success));
+                if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
+                    if (object != null) {
+                        JSONArray jsonArrayResult = object.getJSONArray("result");
+
+                        if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
+                            for (int i = 0; i < jsonArrayResult.length(); i++) {
+
+                                Log.v(TAG, "JsonResponseOpeartion ::");
+                                JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
+                                if (jsonObj != null) {
+
+                                    String Name = jsonObj.getString("Name");
+                                    String Contact = jsonObj.getString("Contact");
+                                    String Staff_Id = jsonObj.getString("Staff_Id");
+                                    String Email = jsonObj.getString("Email");
+                                    String Gender = jsonObj.getString("Gender");
+                                    String Image = jsonObj.getString("Image");
+
+                                    inputName.setText(Name);
+                                    inputContact.setText(Contact);
+                                    inputStaffId.setText(Staff_Id);
+
+                                }
+                            }
+                        } else if (jsonArrayResult.length() == 0) {
+                            System.out.println("No records found");
+                        }
+                    }
+                }
+                else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
+                    //nodata.setVisibility(View.VISIBLE);
+                    // recyclerView.setVisibility(View.GONE);
+                }
+            } catch (JSONException e) {
+                Log.v(TAG, "JsonResponseOpeartion :: catch");
+                e.printStackTrace();
+            }
+        }
+    }
+    public void  CheckContactClass() {
+        AddStaffAttendanceActivity.CheckContactTrackClass ru = new AddStaffAttendanceActivity.CheckContactTrackClass();
+        ru.execute("5");
+    }
+
+    class CheckContactTrackClass extends AsyncTask<String, Void, String> {
+
+        ServerClass ruc = new ServerClass();
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Log.v(TAG, "onPreExecute");
+            //showProgressDialog();
+            // viewDialog.showDialog();
+        }
+
+        @Override
+        protected void onPostExecute(String response) {
+            super.onPostExecute(response);
+            Log.v(TAG, String.format("onPostExecute :: response = %s", response));
+            CheckContactDetails(response);
+
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            //  Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+            HashMap<String, String> EnquiryForDetails = new HashMap<String, String>();
+
+            EnquiryForDetails.put("contact",inputContact.getText().toString() );
+            EnquiryForDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(AddStaffAttendanceActivity.this) );
+            EnquiryForDetails.put("action", "show_staff_details_by_contact");
+            //EnquiryForloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(EnquiryForloyee.this));
+            String domainurl=SharedPrefereneceUtil.getDomainUrl(AddStaffAttendanceActivity.this);
+            String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EnquiryForDetails);
+            Log.v(TAG, String.format("doInBackground :: show_staff_details_by_contact= %s", loginResult));
+            return loginResult;
+        }
+    }
+    private void CheckContactDetails(String jsonResponse) {
+
+        Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
+//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
+        if (jsonResponse != null) {
+
+
+            try {
+                Log.v(TAG, "JsonResponseOpeartion :: test");
+                JSONObject object = new JSONObject(jsonResponse);
+                String success = object.getString(getResources().getString(R.string.success));
+                if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
+                if (object != null) {
+                    JSONArray jsonArrayResult = object.getJSONArray("result");
+
+                    if (jsonArrayResult != null && jsonArrayResult.length() > 0){
+                        for (int i = 0; i < jsonArrayResult.length(); i++) {
+
+                            Log.v(TAG, "JsonResponseOpeartion ::");
+                            JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
+                            if (jsonObj != null) {
+
+                                String Name     = jsonObj.getString("Name");
+                                String Contact     = jsonObj.getString("Contact");
+                                String Staff_Id     = jsonObj.getString("Staff_Id");
+                                String Email = jsonObj.getString("Email");
+                                String Gender = jsonObj.getString("Gender");
+                                String Image = jsonObj.getString("Image");
+
+                                inputName.setText(Name);
+                                inputContact.setText(Contact);
+                                inputStaffId.setText(Staff_Id);
+                            }
+                        }}else if(jsonArrayResult.length()==0){
+                        System.out.println("No records found");
+                    }
+                }}
+            } catch (JSONException e) {
+                Log.v(TAG, "JsonResponseOpeartion :: catch");
+                e.printStackTrace();
+            }
+        }
+    }
+    public void  CheckNameClass() {
+        AddStaffAttendanceActivity.CheckNameTrackClass ru = new AddStaffAttendanceActivity.CheckNameTrackClass();
+        ru.execute("5");
+    }
+
+    class CheckNameTrackClass extends AsyncTask<String, Void, String> {
+
+        ServerClass ruc = new ServerClass();
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Log.v(TAG, "onPreExecute");
+            //showProgressDialog();
+            // viewDialog.showDialog();
+        }
+
+        @Override
+        protected void onPostExecute(String response) {
+            super.onPostExecute(response);
+            Log.v(TAG, String.format("onPostExecute :: response = %s", response));
+            CheckNameDetails(response);
+
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            //  Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+            HashMap<String, String> EnquiryForDetails = new HashMap<String, String>();
+
+            EnquiryForDetails.put("name",inputName.getText().toString() );
+            EnquiryForDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(AddStaffAttendanceActivity.this) );
+            EnquiryForDetails.put("action", "show_staff_details_by_name");
+            //EnquiryForloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(EnquiryForloyee.this));
+            String domainurl=SharedPrefereneceUtil.getDomainUrl(AddStaffAttendanceActivity.this);
+            String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EnquiryForDetails);
+            Log.v(TAG, String.format("doInBackground :: show_staff_details_by_name= %s", loginResult));
+            return loginResult;
+        }
+    }
+    private void CheckNameDetails(String jsonResponse) {
+
+        Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
+//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
+        if (jsonResponse != null) {
+
+
+            try {
+                Log.v(TAG, "JsonResponseOpeartion :: test");
+                JSONObject object = new JSONObject(jsonResponse);
+                String success = object.getString(getResources().getString(R.string.success));
+                if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
+                if (object != null) {
+                    JSONArray jsonArrayResult = object.getJSONArray("result");
+
+                    if (jsonArrayResult != null && jsonArrayResult.length() > 0){
+                        for (int i = 0; i < jsonArrayResult.length(); i++) {
+
+                            Log.v(TAG, "JsonResponseOpeartion ::");
+                            JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
+                            if (jsonObj != null) {
+
+                                String Name     = jsonObj.getString("Name");
+                                String Contact     = jsonObj.getString("Contact");
+                                String Staff_Id     = jsonObj.getString("Staff_Id");
+                                String Email = jsonObj.getString("Email");
+                                String Gender = jsonObj.getString("Gender");
+                                String Image = jsonObj.getString("Image");
+
+                                inputName.setText(Name);
+                                inputContact.setText(Contact);
+                                inputStaffId.setText(Staff_Id);
+                            }
+                        }}else if(jsonArrayResult.length()==0){
+                        System.out.println("No records found");
+                    }
+                }}
+            } catch (JSONException e) {
+                Log.v(TAG, "JsonResponseOpeartion :: catch");
+                e.printStackTrace();
+            }
+        }
+    }
+
     @Override
     public boolean onSupportNavigateUp(){
         Intent intent=new Intent(AddStaffAttendanceActivity.this, MainActivity.class);

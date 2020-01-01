@@ -437,11 +437,6 @@ public class CourseDetailsActivity extends AppCompatActivity {
         dialog.setContentView(R.layout.balance_payment_popup);
         dialog.setCancelable(true);
 
-//        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-//        lp.copyFrom(dialog.getWindow().getAttributes());
-//        lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
-//        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
-
         spinPaymentype = (Spinner) dialog.findViewById(R.id.spinner_payment_type);
         inputComment = (EditText) dialog.findViewById(R.id.input_enquiry_comment);
         //final EditText veri_otp=(EditText)dialog.findViewById(R.id.et_otp);
@@ -456,10 +451,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
         String curr_date = Utility.getCurrentDate();
         inputNextFollDate.setText(curr_date);
         // *********** validation *************
-        //awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
 
-
-        //  awesomeValidation.addValidation(this, R.id.input_paid, RegexTemplate.NOT_EMPTY, R.string.err_msg_paid);
         ((ImageButton) dialog.findViewById(R.id.bt_close)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -649,13 +641,10 @@ public class CourseDetailsActivity extends AppCompatActivity {
                     }
 
                 }
-
-
             }
         });
 
         dialog.show();
-        //dialog.getWindow().setAttributes(lp);
     }
 
     public void SetSpinner() {
@@ -695,11 +684,6 @@ public class CourseDetailsActivity extends AppCompatActivity {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE); // before
         dialog.setContentView(R.layout.take_all_followup_popup);
         dialog.setCancelable(true);
-
-//        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-//        lp.copyFrom(dialog.getWindow().getAttributes());
-//        lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
-//        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
         spinCallResponce = (Spinner) dialog.findViewById(R.id.spinner_call_res);
         spinRating = (Spinner) dialog.findViewById(R.id.spinner_rating);
         spinFollType = (Spinner) dialog.findViewById(R.id.spinner_folltype);
@@ -795,7 +779,6 @@ public class CourseDetailsActivity extends AppCompatActivity {
         });
 
         dialog.show();
-        //dialog.getWindow().setAttributes(lp);
     }
 
     @Override
