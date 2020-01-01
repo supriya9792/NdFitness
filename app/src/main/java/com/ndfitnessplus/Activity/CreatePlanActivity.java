@@ -10,6 +10,8 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -265,6 +267,65 @@ public class CreatePlanActivity extends AppCompatActivity {
                 return false;
             }
         }) ;
+        inputMaxDiscount.addTextChangedListener(new TextWatcher() {
+
+            public void onTextChanged(CharSequence s, int start, int before,
+                                      int count) {
+            }
+
+
+
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+
+            }
+
+            public void afterTextChanged(Editable s) {
+                if(inputMaxDiscount.getText().length()>0) {
+                    double rate=0;
+                    if(inputRackAmount.getText().length()>0){
+                        rate=Double.parseDouble(inputRackAmount.getText().toString());
+                    }
+
+                    double purchaseamt=Double.parseDouble(inputMaxDiscount.getText().toString());
+
+                    if(purchaseamt>rate){
+                        Toast.makeText(CreatePlanActivity.this,"Max Discount shound not be greater than Rack Amount!",Toast
+                                .LENGTH_SHORT).show();
+                        awesomeValidation.clear();
+                        inputMaxDiscount.getText().clear();
+                    }
+                }
+
+            }
+        });
+        inputDuration.addTextChangedListener(new TextWatcher() {
+
+            public void onTextChanged(CharSequence s, int start, int before,
+                                      int count) {
+            }
+
+
+
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+
+            }
+
+            public void afterTextChanged(Editable s) {
+                if(inputDuration.getText().length()>0) {
+                    double duration=Double.parseDouble(inputDuration.getText().toString());
+
+                    if(duration==0){
+                        Toast.makeText(CreatePlanActivity.this,"Duration Must be Greater than zero",Toast
+                                .LENGTH_SHORT).show();
+                        inputDuration.setError(null);
+                        inputDuration.getText().clear();
+                    }
+                }
+
+            }
+        });
         Days.setLength(0);
         All.setOnCheckedChangeListener(new
                          CompoundButton.OnCheckedChangeListener() {
@@ -370,15 +431,15 @@ public class CreatePlanActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
     private void submitForm() {
-        //first validate the form then move ahead
-        //if this becomes true that means validation is successfull
-        //if(inputPassword.getText().toString().equals(inputCfmPassword.getText().toString())){
+
         if (awesomeValidation.validate()) {
                 if(packageType.equals(getResources().getString(R.string.hint_packagetype)) || packageStatus.equals(getResources().getString(R.string.hint_package_name))
                         ){
                     Toast.makeText(this, "Please fill Package type or Package Status", Toast.LENGTH_LONG).show();
                 }else{
+                    if(Days.length()>0){
                         AddPackageClass();
+                    }
                 }
             }
     }
@@ -413,12 +474,12 @@ public class CreatePlanActivity extends AppCompatActivity {
         protected String doInBackground(String... params) {
             // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> PackageTypeDetails = new HashMap<String, String>();
-            PackageTypeDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(CreatePlanActivity.this));
-            PackageTypeDetails.put("action", "show_package_type");
+           // PackageTypeDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(CreatePlanActivity.this));
+            PackageTypeDetails.put("action", "show_master_package_type");
             String domainurl= SharedPrefereneceUtil.getDomainUrl(CreatePlanActivity.this);
             //PackageTypeloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(PackageTypeloyee.this));
             String loginResult = ruc.sendPostRequest(domainurl+ ServiceUrls.LOGIN_URL, PackageTypeDetails);
-            Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
+            Log.v(TAG, String.format("doInBackground :: show_master_package_type= %s", loginResult));
             return loginResult;
         }
 
@@ -454,10 +515,6 @@ public class CreatePlanActivity extends AppCompatActivity {
 
                                     String PackageType     = jsonObj.getString("PackageType");
 
-//                               if(i==0){
-//                                   packagetypelist.setName(getResources().getString(R.string.promt_country));
-//                                   enqF.add(0,packagetypelist);
-//                               }
                                     packagetypelist.setName(PackageType);
 
                                     packageTypeArrayList.add(packagetypelist);

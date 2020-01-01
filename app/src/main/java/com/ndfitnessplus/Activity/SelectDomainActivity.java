@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.ndfitnessplus.R;
 import com.ndfitnessplus.Utility.SharedPrefereneceUtil;
@@ -18,12 +19,12 @@ public class SelectDomainActivity extends AppCompatActivity {
     public static String TAG = SelectDomainActivity.class.getName();
 
     Button btn_save;
-    TextInputEditText domain;
+    EditText domain;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
-                WindowManager.LayoutParams.FLAG_SECURE);
+//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
+//                WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_select_domain);
         initToolbar();
         initComponent();
@@ -37,7 +38,7 @@ public class SelectDomainActivity extends AppCompatActivity {
 
     private void initComponent() {
        btn_save=findViewById(R.id.save);
-       domain=findViewById(R.id.domainurl);
+       domain=(EditText) findViewById(R.id.domainurl);
 
         domain.setSelection(7);
        String domain_url= SharedPrefereneceUtil.getDomainUrl(SelectDomainActivity.this);

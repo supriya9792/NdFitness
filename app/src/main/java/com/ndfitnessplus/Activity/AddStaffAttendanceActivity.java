@@ -754,14 +754,14 @@ public class AddStaffAttendanceActivity extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp(){
-        Intent intent=new Intent(AddStaffAttendanceActivity.this, MainActivity.class);
+        Intent intent=new Intent(AddStaffAttendanceActivity.this, StaffAttendanceActivity.class);
         startActivity(intent);
         return true;
     }
 
     @Override
     public void onBackPressed() {
-        Intent intent=new Intent(AddStaffAttendanceActivity.this, MainActivity.class);
+        Intent intent=new Intent(AddStaffAttendanceActivity.this, StaffAttendanceActivity.class);
         startActivity(intent);
     }
 }

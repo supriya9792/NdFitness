@@ -1302,9 +1302,45 @@ public class AddEnquiryActivity extends AppCompatActivity  {
                         }
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
+                    enqForArrayList.clear();
+                    enqForList = new Spinner_List();
+                    enqForList.setName(getResources().getString(R.string.enq_for));
+                    enqForArrayList.add(0,enqForList);
+                    enqForList.setName("NA");
+                    enqForArrayList.add(1,enqForList);
+                    enqforadapter = new AddEnquirySpinnerAdapter(AddEnquiryActivity.this, enqForArrayList){
+                        @Override
+                        public boolean isEnabled(int position){
+                            if(position == 0)
+                            {
+                                // Disable the first item from Spinner
+                                // First item will be use for hint
+                                return false;
+                            }
+                            else
+                            {
+                                return true;
+                            }
+                        }
+                        @Override
+                        public View getDropDownView(int position, View convertView,
+                                                    ViewGroup parent) {
+                            View view = super.getDropDownView(position, convertView, parent);
+                            TextView tv = (TextView) view.findViewById(R.id.tv_Name);
+                            if(position == 0){
+                                // Set the hint text color gray
+                                tv.setTextColor(Color.GRAY);
+                                tv.setText(getResources().getString(R.string.prompt_enq_for));
+                                // tv.setTextColor(Color.GRAY);
+                            }
+                            else {
+                                tv.setTextColor(Color.BLACK);
+                            }
+                            return view;
+                        }
 
-                    //forumCount.setVisibility(View.INVISBLE);
-                    // queCount.setVisibility(View.INVISIBLE);
+                    };
+                    spinEnqFor.setAdapter(enqforadapter);
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");
@@ -1441,8 +1477,45 @@ public class AddEnquiryActivity extends AppCompatActivity  {
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
 
-                    //forumCount.setVisibility(View.INVISBLE);
-                    // queCount.setVisibility(View.INVISIBLE);
+                    enquiryTypeArrayList.clear();
+                    enquirytypelist = new Spinner_List();
+                    enquirytypelist.setName(getResources().getString(R.string.enquiry_type));
+                    enquiryTypeArrayList.add(0,enquirytypelist);
+                    enquirytypelist.setName(getResources().getString(R.string.na));
+                    enquiryTypeArrayList.add(1,enquirytypelist);
+                    enquirytypeadapter = new AddEnquirySpinnerAdapter(AddEnquiryActivity.this, enquiryTypeArrayList){
+                        @Override
+                        public boolean isEnabled(int position){
+                            if(position == 0)
+                            {
+                                // Disable the first item from Spinner
+                                // First item will be use for hint
+                                return false;
+                            }
+                            else
+                            {
+                                return true;
+                            }
+                        }
+                        @Override
+                        public View getDropDownView(int position, View convertView,
+                                                    ViewGroup parent) {
+                            View view = super.getDropDownView(position, convertView, parent);
+                            TextView tv = (TextView) view.findViewById(R.id.tv_Name);
+                            if(position == 0){
+                                // Set the hint text color gray
+                                tv.setTextColor(Color.GRAY);
+                                tv.setText(getResources().getString(R.string.prompt_enquiry_type));
+                                // tv.setTextColor(Color.GRAY);
+                            }
+                            else {
+                                tv.setTextColor(Color.BLACK);
+                            }
+                            return view;
+                        }
+
+                    };
+                    spinEnquiryType.setAdapter(enquirytypeadapter);
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");
@@ -1577,8 +1650,45 @@ public class AddEnquiryActivity extends AppCompatActivity  {
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
 
-                    //forumCount.setVisibility(View.INVISBLE);
-                    // queCount.setVisibility(View.INVISIBLE);
+                    enquirySourceArrayList.clear();
+                    enquirySourcelist = new Spinner_List();
+                    enquirySourcelist.setName(getResources().getString(R.string.enquiry_source));
+                    enquirySourceArrayList.add(0,enquirySourcelist);
+                    enquirySourcelist.setName(getResources().getString(R.string.na));
+                    enquirySourceArrayList.add(1,enquirySourcelist);
+                    enquirySourceadapter = new AddEnquirySpinnerAdapter(AddEnquiryActivity.this, enquirySourceArrayList){
+                        @Override
+                        public boolean isEnabled(int position){
+                            if(position == 0)
+                            {
+                                // Disable the first item from Spinner
+                                // First item will be use for hint
+                                return false;
+                            }
+                            else
+                            {
+                                return true;
+                            }
+                        }
+                        @Override
+                        public View getDropDownView(int position, View convertView,
+                                                    ViewGroup parent) {
+                            View view = super.getDropDownView(position, convertView, parent);
+                            TextView tv = (TextView) view.findViewById(R.id.tv_Name);
+                            if(position == 0){
+                                // Set the hint text color gray
+                                tv.setTextColor(Color.GRAY);
+                                tv.setText(getResources().getString(R.string.prompt_enquiry_source));
+                                // tv.setTextColor(Color.GRAY);
+                            }
+                            else {
+                                tv.setTextColor(Color.BLACK);
+                            }
+                            return view;
+                        }
+
+                    };
+                    spinEnquirySource.setAdapter(enquirySourceadapter);
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");
@@ -1711,8 +1821,46 @@ public class AddEnquiryActivity extends AppCompatActivity  {
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
 
-                    //forumCount.setVisibility(View.INVISBLE);
-                    // queCount.setVisibility(View.INVISIBLE);
+                    occupationArraylist.clear();
+                    occupationList = new Spinner_List();
+                    occupationList.setName(getResources().getString(R.string.occupation));
+                    occupationArraylist.add(0,occupationList);
+                    occupationList.setName(getResources().getString(R.string.na));
+                    occupationArraylist.add(1,occupationList);
+                    occupationAdapter = new AddEnquirySpinnerAdapter(AddEnquiryActivity.this, occupationArraylist){
+                        @Override
+                        public boolean isEnabled(int position){
+                            if(position == 0)
+                            {
+                                // Disable the first item from Spinner
+                                // First item will be use for hint
+                                return false;
+                            }
+                            else
+                            {
+                                return true;
+                            }
+                        }
+                        @Override
+                        public View getDropDownView(int position, View convertView,
+                                                    ViewGroup parent) {
+                            View view = super.getDropDownView(position, convertView, parent);
+                            TextView tv = (TextView) view.findViewById(R.id.tv_Name);
+
+                            if(position == 0){
+                                // Set the hint text color gray
+                                tv.setTextColor(Color.GRAY);
+                                tv.setText(getResources().getString(R.string.prompt_occupation));
+                                // tv.setTextColor(Color.GRAY);
+                            }
+                            else {
+                                tv.setTextColor(Color.BLACK);
+                            }
+                            return view;
+                        }
+
+                    };
+                    spinOccupation.setAdapter(occupationAdapter);
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");
@@ -1841,9 +1989,45 @@ public class AddEnquiryActivity extends AppCompatActivity  {
                         }
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
+                    CallResArrayList.clear();
+                    spinCallReslist = new Spinner_List();
+                    spinCallReslist.setName(getResources().getString(R.string.call_res));
+                    CallResArrayList.add(0,spinCallReslist);
+                    spinCallReslist.setName(getResources().getString(R.string.na));
+                    CallResArrayList.add(1,spinCallReslist);
+                    callresadapter = new AddEnquirySpinnerAdapter(AddEnquiryActivity.this, CallResArrayList){
+                        @Override
+                        public boolean isEnabled(int position){
+                            if(position == 0)
+                            {
+                                // Disable the first item from Spinner
+                                // First item will be use for hint
+                                return false;
+                            }
+                            else
+                            {
+                                return true;
+                            }
+                        }
+                        @Override
+                        public View getDropDownView(int position, View convertView,
+                                                    ViewGroup parent) {
+                            View view = super.getDropDownView(position, convertView, parent);
+                            TextView tv = (TextView) view.findViewById(R.id.tv_Name);
+                            if(position == 0){
+                                // Set the hint text color gray
+                                tv.setTextColor(Color.GRAY);
+                                tv.setText(getResources().getString(R.string.prompt_call_res));
+                                // tv.setTextColor(Color.GRAY);
+                            }
+                            else {
+                                tv.setTextColor(Color.BLACK);
+                            }
+                            return view;
+                        }
 
-                    //forumCount.setVisibility(View.INVISBLE);
-                    // queCount.setVisibility(View.INVISIBLE);
+                    };
+                    spinCallResponce.setAdapter(callresadapter);
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");

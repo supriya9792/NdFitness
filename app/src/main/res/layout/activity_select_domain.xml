@@ -32,17 +32,15 @@
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
         android:textColor="@color/blue_grey_800" />
 
-    <android.support.design.widget.TextInputEditText
+    <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/domainurl"
         android:inputType="text"
-        android:maxLines="1"
         android:hint="@string/enter_url"
         android:text="@string/url_hint"
         android:drawableStart="@drawable/ic_web"
-        android:singleLine="true"
-        android:textColor="@color/black"
+        android:textColor="@android:color/black"
         />
     <Button
         android:layout_width="match_parent"

@@ -30,6 +30,7 @@ import android.os.StrictMode;
 import android.provider.ContactsContract;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -73,6 +74,7 @@ import com.itextpdf.text.html.simpleparser.HTMLWorker;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.tool.xml.XMLWorkerHelper;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.ndfitnessplus.Adapter.AddEnquirySpinnerAdapter;
 import com.ndfitnessplus.Adapter.BalanceTrasactionAdapter;
@@ -91,10 +93,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.StringReader;
 import java.lang.reflect.Method;
 import java.net.URL;
@@ -833,6 +838,8 @@ public class CourseDetailsActivity extends AppCompatActivity {
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
+                    }else{
+                        sendIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(pdfFile));
                     }
                     sendIntent.putExtra("jid", toNumber + "@s.whatsapp.net");
 //                      sendIntent.putExtra(Intent.ACTION_VIEW, uri);
@@ -3492,7 +3499,8 @@ public class CourseDetailsActivity extends AppCompatActivity {
 
                                     try {
 
-                                        PdfWriter docWriter = PdfWriter.getInstance(document, new FileOutputStream(pdfFile));
+                                        OutputStream file = new FileOutputStream(pdfFile);
+                                        PdfWriter docWriter = PdfWriter.getInstance(document, file);
                                         document.open();
 
                                         PdfContentByte cb = docWriter.getDirectContent();
@@ -3532,10 +3540,13 @@ public class CourseDetailsActivity extends AppCompatActivity {
 
                                         createHeadings(cb,435,735,"Invoice Date :"+invoice_date);
                                         createHeadings(cb,435,720,"Invoice No : "+Invoice_ID);
+//                                        InputStream is = new ByteArrayInputStream(messagehtml.getBytes());
+//                                        XMLWorkerHelper.getInstance().parseXHtml(docWriter, document, is);
 
                                         HTMLWorker htmlWorker = new HTMLWorker(document);
                                         htmlWorker.parse(new StringReader(messagehtml));
                                         document.close();
+                                        file.close();
                                     }
                                     catch(Exception e){
                                         e.printStackTrace();

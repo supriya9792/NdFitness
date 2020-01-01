@@ -444,14 +444,14 @@ public class StaffAttendanceFilterActivity extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp(){
-        Intent intent=new Intent(StaffAttendanceFilterActivity.this, AttendenceActivity.class);
+        Intent intent=new Intent(StaffAttendanceFilterActivity.this, StaffAttendanceActivity.class);
         startActivity(intent);
         return true;
     }
 
     @Override
     public void onBackPressed() {
-        Intent intent=new Intent(StaffAttendanceFilterActivity.this,AttendenceActivity.class);
+        Intent intent=new Intent(StaffAttendanceFilterActivity.this,StaffAttendanceActivity.class);
         startActivity(intent);
     }
 }
