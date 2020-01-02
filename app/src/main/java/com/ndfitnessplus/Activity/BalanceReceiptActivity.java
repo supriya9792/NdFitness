@@ -1414,8 +1414,8 @@ public class BalanceReceiptActivity extends AppCompatActivity {
 
                                     String Name = inputName.getText().toString();
                                     String Member_Contact = inputContact.getText().toString();
-                                    //String Invoice_date = jsonObj.getString("Invoice_date");
-                                    String invoice_date= Utility.getCurrentDate();
+                                    String Invoice_date = jsonObj.getString("Invoice_date");
+                                    String invoice_date= Utility.formatDate(Invoice_date);
                                     String Package_Name = jsonObj.getString("Package_Name");
                                     String Duration_Days =jsonObj.getString("Duration_Days");
                                     String Session = jsonObj.getString("Session");

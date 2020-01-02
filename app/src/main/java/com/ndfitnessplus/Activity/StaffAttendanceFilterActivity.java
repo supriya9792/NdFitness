@@ -424,9 +424,6 @@ public class StaffAttendanceFilterActivity extends AppCompatActivity {
                     }
                 }
 
-                // showCustomDialog();
-
-                //inputEmail, inputPhone,inputAdd,inputReq,inputFollowupdate;
             }
 
 

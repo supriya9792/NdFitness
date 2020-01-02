@@ -164,8 +164,6 @@ public class CourseWiseAttendanceDetailsActivity extends AppCompatActivity {
             //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
-
-
     }
 
     private void  CourseDetailsDetails(String jsonResponse) {
@@ -229,10 +227,6 @@ public class CourseWiseAttendanceDetailsActivity extends AppCompatActivity {
                                     packagenameTV.setText(Package_Name);
                                     durationTv.setText(dur_sess);
 
-//                                    String sdate=Utility.formatDate(Start_Date);
-//                                    String edate=Utility.formatDate(End_Date);
-//                                    String todate=sdate+" to "+edate;
-//                                    start_to_end_dateTV.setText(todate);
                                     paidTV.setText(fpaid);
                                     executiveNameTV.setText(ExecutiveName);
                                     balanceTV.setText(Final_Balance);

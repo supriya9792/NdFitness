@@ -445,7 +445,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
-                android:layout_margin="@dimen/spacing_mxlarge"
+                android:layout_marginLeft="@dimen/spacing_mxlarge"
                 android:orientation="vertical">
                 <CheckBox
                     android:id="@+id/chk_all"

@@ -415,7 +415,7 @@
     <string name="hint_rack_amt">Rack Amount*</string>
     <string name="hint_max_disc">Max Discount*</string>
     <string-array name="package_status_array">
-        <item>Select Status </item>
+        <item>Package Status </item>
         <item>Active</item>
         <item>Inactive</item>
     </string-array>

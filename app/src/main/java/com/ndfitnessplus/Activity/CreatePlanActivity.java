@@ -212,7 +212,7 @@ public class CreatePlanActivity extends AppCompatActivity {
                     if (position == 0) {
                         // Set the hint text color gray
                         tv.setTextColor(Color.GRAY);
-                        tv.setText(getResources().getString(R.string.prompt_status));
+                        tv.setText(getResources().getString(R.string.hint_package_status));
                         // tv.setTextColor(Color.GRAY);
                     } else {
                         tv.setTextColor(Color.BLACK);
@@ -326,6 +326,33 @@ public class CreatePlanActivity extends AppCompatActivity {
 
             }
         });
+        inputSession.addTextChangedListener(new TextWatcher() {
+
+            public void onTextChanged(CharSequence s, int start, int before,
+                                      int count) {
+            }
+
+
+
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+
+            }
+
+            public void afterTextChanged(Editable s) {
+                if(inputSession.getText().length()>0) {
+                    double session=Double.parseDouble(inputSession.getText().toString());
+
+                    if(session==0){
+                        Toast.makeText(CreatePlanActivity.this,"Session Must be Greater than zero",Toast
+                                .LENGTH_SHORT).show();
+                        inputSession.setError(null);
+                        inputSession.getText().clear();
+                    }
+                }
+
+            }
+        });
         Days.setLength(0);
         All.setOnCheckedChangeListener(new
                          CompoundButton.OnCheckedChangeListener() {
@@ -433,12 +460,14 @@ public class CreatePlanActivity extends AppCompatActivity {
     private void submitForm() {
 
         if (awesomeValidation.validate()) {
-                if(packageType.equals(getResources().getString(R.string.hint_packagetype)) || packageStatus.equals(getResources().getString(R.string.hint_package_name))
+                if(packageType.equals(getResources().getString(R.string.hint_packagetype)) || packageStatus.equals(getResources().getString(R.string.hint_package_status))
                         ){
                     Toast.makeText(this, "Please fill Package type or Package Status", Toast.LENGTH_LONG).show();
                 }else{
                     if(Days.length()>0){
                         AddPackageClass();
+                    }else{
+                        Toast.makeText(this, "Please select Days", Toast.LENGTH_LONG).show();
                     }
                 }
             }

@@ -222,7 +222,7 @@
         <activity
             android:name=".Activity.MemberDetailsActivity"
             android:configChanges="keyboard|orientation|screenSize"
-            android:windowSoftInputMode="stateVisible|adjustResize" />
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
         <activity
             android:name=".Activity.CourseActivity"
             android:configChanges="keyboard|orientation|screenSize"

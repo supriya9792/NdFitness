@@ -888,54 +888,6 @@ public class CourseDetailsActivity extends AppCompatActivity {
                         final  String strurl= domainurl+ServiceUrls.IMAGES_URL + Logo;
                         Log.e("Imageurl", strurl);
 
-//                        RequestOptions requestOptions = new RequestOptions();
-//                        requestOptions.placeholder(R.drawable.nouser);
-//                        requestOptions.error(R.drawable.nouser);
-//
-//
-//                        Glide.with(this)
-//                                .setDefaultRequestOptions(requestOptions)
-//                                .load(strurl).into(compLogo);
-//                runOnUiThread(new Runnable() {
-//                    public void run() {
-//                        (new AsyncTask<String, String, Void>() {
-//
-//
-//                          @Override
-//                          protected Void doInBackground(String... params) {
-//                              try {
-//                                  URL url = new URL(strurl);
-//                                  Bitmap image = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-//                                  RoundedBitmapDrawable drawable = RoundedBitmapDrawableFactory.create(
-//                                          getResources(), Bitmap.createScaledBitmap(image, 50, 50, false));
-//                                  drawable.setCircular(true);
-//                                  compLogo.setImageDrawable(drawable);
-//                              } catch (IOException e){
-//                                System.out.println(e);
-//                            }
-//                            return null;
-//                          }
-//
-//                          @Override
-//                          protected void onPostExecute(Void aVoid) {
-//                              super.onPostExecute(aVoid);
-//
-//
-//                          }
-//                      }).execute();
-//
-//
-//                    }
-//                });
-//
-//            } catch(IOException e) {
-//                System.out.println(e);
-//            }
-//
-//                        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(500, 300);
-//            wrapper.addView(shareview);
-//                        shareview.setLayoutParams(layoutParams);
-//            shareview.measure(display.getWidth(), display.getHeight());
                         shareview.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
                         shareview.layout(0,0,0,0);
 
@@ -1144,11 +1096,11 @@ public class CourseDetailsActivity extends AppCompatActivity {
                         } else {
                             inputNextFollowupdate.setEnabled(true);
                         }
-                        if(FollowupType.equals("Payment")&&(Rating.equals("Not Interested"))){
-                            inputNextFollowupdate.setEnabled(true);
-                            String curr_date = Utility.getCurrentDate();
-                            inputNextFollowupdate.setText(curr_date);
-                        }
+//                        if(FollowupType.equals("Payment")&&(Rating.equals("Not Interested"))){
+//                            inputNextFollowupdate.setEnabled(true);
+//                            String curr_date = Utility.getCurrentDate();
+//                            inputNextFollowupdate.setText(curr_date);
+//                        }
                     }
                 }
             }
@@ -1230,18 +1182,18 @@ public class CourseDetailsActivity extends AppCompatActivity {
                         } else {
                             inputNextFollowupdate.setEnabled(true);
                         }
-                        if(FollowupType.equals("Payment")&&(Rating.equals("Not Interested"))){
-                            inputNextFollowupdate.setEnabled(true);
-                            String curr_date = Utility.getCurrentDate();
-                            inputNextFollowupdate.setText(curr_date);
-                        }else{
+//                        if(FollowupType.equals("Payment")&&(Rating.equals("Not Interested"))){
+//                            inputNextFollowupdate.setEnabled(true);
+//                            String curr_date = Utility.getCurrentDate();
+//                            inputNextFollowupdate.setText(curr_date);
+//                        }else{
                             if (Rating.equals("Not Interested") || Rating.equals("Converted")) {
                                 //Toast.makeText(parent.getContext(), "no interetsed: ", Toast.LENGTH_LONG).show();
                                 inputNextFollowupdate.setText("");
                                 inputNextFollowupdate.setEnabled(false);
                                 inputNextFollowupdate.setKeyListener(null);
                             }
-                        }
+//                        }
                     }
                     if(index==0){
                         txtrating.setVisibility(View.VISIBLE);
@@ -2183,8 +2135,8 @@ public class CourseDetailsActivity extends AppCompatActivity {
 
                                     String Name = nameTV.getText().toString();
                                     String Member_Contact = contactTV.getText().toString();
-                                    //String Invoice_date = jsonObj.getString("Invoice_date");
-                                    String invoice_date= Utility.getCurrentDate();
+                                    String Invoice_date = jsonObj.getString("Invoice_date");
+                                    String invoice_date= Utility.formatDate(Invoice_date);
                                     String Package_Name = jsonObj.getString("Package_Name");
                                     String Duration_Days =jsonObj.getString("Duration_Days");
                                     String Session = jsonObj.getString("Session");
@@ -2286,9 +2238,9 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                             "                    <div >\n" +
                                             "                        <address>\n" +
                                             "                            <strong style=\"font: 700;\">\n" +
-                                            "                               </strong><br></br>" +
-                                            "                          <br></br>" +
-                                            "                           <br></br>" +
+                                            "                               </strong><br/>" +
+                                            "                          <br/>" +
+                                            "                           <br/>" +
                                             "                        </address>" +
                                             "                    </div>" +
                                             "                    <div >" +
@@ -2301,16 +2253,16 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                             "                <div class=\"column\" >\n" +
                                             "                    <div  >\n" +
                                             "                        <address>\n" +
-                                            "                            <strong></strong><br></br>\n" +
-                                            "                            <strong style=\"font: 900;\">"+"</strong><br></br>\n" +
-                                            "                           <br></br>\n" +
+                                            "                            <strong></strong><br/>\n" +
+                                            "                            <strong style=\"font: 900;\">"+"</strong><br/>\n" +
+                                            "                           <br/>\n" +
                                             "                        </address>\n" +
                                             "                    </div>" +
                                             "                    <div >" +
                                             "                        <address>" +
-                                            "                            <strong>"+"</strong><br></br>\n" +
+                                            "                            <strong>"+"</strong><br/>\n" +
                                             "\n" +
-                                            "                            <strong> "+"</strong><br></br>\n" +
+                                            "                            <strong> "+"</strong><br/>\n" +
                                             "                            <strong>  "+"</strong>\n" +
                                             "                        </address>\n" +
                                             "                    </div>\n" +
@@ -2349,8 +2301,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                             "                     \n" +
                                             "      </div>\n" +
                                             "     </div>\n" +
-                                            "  </div>\n" +
-                                            "                           <br></br>\n" +
+                                            "                           <br/>\n" +
                                             "\n" +
                                             "        <div  >\n" +
                                             "\n" +
@@ -2419,7 +2370,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                             "            </div>\n" +
                                             "        </div>\n" +
                                             "\n" +
-                                            "                           <br></br>\n" +
+                                            "                           <br/>\n" +
                                             "       \n" +
                                             " <div  >\n" +
                                             "\n" +
@@ -2455,7 +2406,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                             "     </div>\n" +
                                             "  </div>\n" +
                                             "\n" +
-                                            "      \n" + "                           <br></br>\n" +
+                                            "      \n" + "                           <br/>\n" +
                                             "\n" +
                                             "  <div  >\n" +
                                             "    <div >\n" +
@@ -2470,7 +2421,6 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                             "            </div>\n" +
                                             "        </div>\n" +
                                             "\n" +
-                                            "    </div>\n" +
                                             "        </form>\n" +
                                             "</body>\n" +
                                             "</html>";
@@ -3308,9 +3258,9 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                             "                    <div >\n" +
                                             "                        <address>\n" +
                                             "                            <strong style=\"font: 700;\">\n" +
-                                            "                               </strong><br></br>" +
-                                            "                          <br></br>" +
-                                            "                           <br></br>" +
+                                            "                               </strong><br/>" +
+                                            "                          <br/>" +
+                                            "                           <br/>" +
                                             "                        </address>" +
                                             "                    </div>" +
                                             "                    <div >" +
@@ -3323,16 +3273,16 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                             "                <div class=\"column\" >\n" +
                                             "                    <div  >\n" +
                                             "                        <address>\n" +
-                                            "                            <strong></strong><br></br>\n" +
-                                            "                            <strong style=\"font: 900;\">"+"</strong><br></br>\n" +
-                                            "                           <br></br>\n" +
+                                            "                            <strong></strong><br/>\n" +
+                                            "                            <strong style=\"font: 900;\">"+"</strong><br/>\n" +
+                                            "                           <br/>\n" +
                                             "                        </address>\n" +
                                             "                    </div>" +
                                             "                    <div >" +
                                             "                        <address>" +
-                                            "                            <strong>"+"</strong><br></br>\n" +
+                                            "                            <strong>"+"</strong><br/>\n" +
                                             "\n" +
-                                            "                            <strong> "+"</strong><br></br>\n" +
+                                            "                            <strong> "+"</strong><br/>\n" +
                                             "                            <strong>  "+"</strong>\n" +
                                             "                        </address>\n" +
                                             "                    </div>\n" +
@@ -3371,8 +3321,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                             "                     \n" +
                                             "      </div>\n" +
                                             "     </div>\n" +
-                                            "  </div>\n" +
-                                            "                           <br></br>\n" +
+                                            "                           <br/>\n" +
                                             "\n" +
                                             "        <div  >\n" +
                                             "\n" +
@@ -3440,7 +3389,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                             "                </div>\n" +
                                             "            </div>\n" +
                                             "        </div>\n" +
-                                            "\n" +  "                           <br></br>\n" +
+                                            "\n" +  "                           <br/>\n" +
                                             "       \n" +
                                             " <div  >\n" +
                                             "\n" +
@@ -3475,7 +3424,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                             "      </div>\n" +
                                             "     </div>\n" +
                                             "  </div>\n" +
-                                            "\n" +  "                           <br></br>\n" +
+                                            "\n" +  "                           <br/>\n" +
                                             "      \n" +
                                             "\n" +
                                             "  <div  >\n" +
@@ -3491,7 +3440,6 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                             "            </div>\n" +
                                             "        </div>\n" +
                                             "\n" +
-                                            "    </div>\n" +
                                             "        </form>\n" +
                                             "</body>\n" +
                                             "</html>";
@@ -3540,6 +3488,11 @@ public class CourseDetailsActivity extends AppCompatActivity {
 
                                         createHeadings(cb,435,735,"Invoice Date :"+invoice_date);
                                         createHeadings(cb,435,720,"Invoice No : "+Invoice_ID);
+
+//                                        StringBuilder htmlString = new StringBuilder();
+//                                        htmlString.append(new String("<html><body> This is HMTL to PDF conversion Example<table border='2' align='center'> "));
+//                                        htmlString.append(new String("<tr><td>JavaCodeGeeks</td><td><a href='examples.javacodegeeks.com'>JavaCodeGeeks</a> </td></tr>"));
+//                                        htmlString.append(new String("<tr> <td> Google Here </td> <td><a href='www.google.com'>Google</a> </td> </tr></table></body></html>"));
 //                                        InputStream is = new ByteArrayInputStream(messagehtml.getBytes());
 //                                        XMLWorkerHelper.getInstance().parseXHtml(docWriter, document, is);
 

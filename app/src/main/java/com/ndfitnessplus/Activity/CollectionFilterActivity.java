@@ -834,12 +834,8 @@ public class CollectionFilterActivity extends AppCompatActivity {
                     }
                 }
             }
-
-
             else if (success.equalsIgnoreCase(getResources().getString(R.string.zero)))
             {
-                //Toast.makeText(CollectionFilterActivity.this,"Mobile Number Already Exits",Toast.LENGTH_SHORT).show();
-                //inputContact.getText().clear();
                 Toast.makeText(CollectionFilterActivity.this,"No Records Found",Toast.LENGTH_SHORT).show();
             }
 

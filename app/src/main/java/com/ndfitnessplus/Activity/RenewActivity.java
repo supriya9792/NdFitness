@@ -2614,9 +2614,9 @@ public class RenewActivity extends AppCompatActivity {
                                             "                    <div >\n" +
                                             "                        <address>\n" +
                                             "                            <strong style=\"font: 700;\">\n" +
-                                            "                               </strong><br></br>" +
-                                            "                          <br></br>" +
-                                            "                           <br></br>" +
+                                            "                               </strong><br/>" +
+                                            "                          <br/>" +
+                                            "                           <br/>" +
                                             "                        </address>" +
                                             "                    </div>" +
                                             "                    <div >" +
@@ -2629,16 +2629,16 @@ public class RenewActivity extends AppCompatActivity {
                                             "                <div class=\"column\" >\n" +
                                             "                    <div  >\n" +
                                             "                        <address>\n" +
-                                            "                            <strong></strong><br></br>\n" +
-                                            "                            <strong style=\"font: 900;\">"+"</strong><br></br>\n" +
-                                            "                           <br></br>\n" +
+                                            "                            <strong></strong><br/>\n" +
+                                            "                            <strong style=\"font: 900;\">"+"</strong><br/>\n" +
+                                            "                           <br/>\n" +
                                             "                        </address>\n" +
                                             "                    </div>" +
                                             "                    <div >" +
                                             "                        <address>" +
-                                            "                            <strong>"+"</strong><br></br>\n" +
+                                            "                            <strong>"+"</strong><br/>\n" +
                                             "\n" +
-                                            "                            <strong> "+"</strong><br></br>\n" +
+                                            "                            <strong> "+"</strong><br/>\n" +
                                             "                            <strong>  "+"</strong>\n" +
                                             "                        </address>\n" +
                                             "                    </div>\n" +
@@ -2679,8 +2679,7 @@ public class RenewActivity extends AppCompatActivity {
                                             "                     \n" +
                                             "      </div>\n" +
                                             "     </div>\n" +
-                                            "  </div>\n" +
-                                            "                           <br></br>\n" +
+                                            "                           <br/>\n" +
                                             "        <div  >\n" +
                                             "\n" +
                                             "            <div >\n" +
@@ -2748,7 +2747,7 @@ public class RenewActivity extends AppCompatActivity {
                                             "            </div>\n" +
                                             "        </div>\n" +
                                             "\n" +
-                                            "                           <br></br>\n" +
+                                            "                           <br/>\n" +
                                             " <div  >\n" +
                                             "\n" +
                                             "    <div >\n" +
@@ -2786,7 +2785,7 @@ public class RenewActivity extends AppCompatActivity {
                                             "     </div>\n" +
                                             "  </div>\n" +
                                             "\n" +
-                                            "                           <br></br>\n" +
+                                            "                           <br/>\n" +
                                             "\n" +
                                             "  <div  >\n" +
                                             "    <div >\n" +
@@ -2801,7 +2800,6 @@ public class RenewActivity extends AppCompatActivity {
                                             "            </div>\n" +
                                             "        </div>\n" +
                                             "\n" +
-                                            "    </div>\n" +
                                             "        </form>\n" +
                                             "</body>\n" +
                                             "</html>";
