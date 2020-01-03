@@ -87,10 +87,10 @@ public class BalanceReceiptFilterActivity extends AppCompatActivity {
     private void initComponent() {
 
         spinDateWise = findViewById(R.id.spinner_date_wise);
-        spinPackageType = (Spinner) findViewById(R.id.spinner_package_type);
-        spinPackageName = (Spinner) findViewById(R.id.spinner_package_name);
-        spinInstructor=(Spinner)findViewById(R.id.spinner_instructor_name);
-        spinSalesExecutive = (Spinner) findViewById(R.id.spinner_sales_executive);
+        spinPackageType = findViewById(R.id.spinner_package_type);
+        spinPackageName = findViewById(R.id.spinner_package_name);
+        spinInstructor=findViewById(R.id.spinner_instructor_name);
+        spinSalesExecutive = findViewById(R.id.spinner_sales_executive);
 
         viewDialog = new ViewDialog(this);
 
