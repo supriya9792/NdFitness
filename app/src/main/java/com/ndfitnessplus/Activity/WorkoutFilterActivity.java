@@ -331,8 +331,8 @@ public class WorkoutFilterActivity extends AppCompatActivity {
                         levelList.setName(getResources().getString(R.string.workout_level_filters));
                         levelArrayList.add(0,levelList);
                         if (jsonArrayCountry != null && jsonArrayCountry.length() > 0){
-//                            levelList.setName(getResources().getString(R.string.na));
-//                            levelArrayList.add(1,levelList);
+                            levelList.setName(getResources().getString(R.string.all));
+                            levelArrayList.add(1,levelList);
                             for (int i = 0; i < jsonArrayCountry.length(); i++) {
                                 levelList = new Spinner_List();
                                 Log.v(TAG, "JsonResponseOpeartion ::");
@@ -393,9 +393,45 @@ public class WorkoutFilterActivity extends AppCompatActivity {
                         }
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
+                    levelArrayList.clear();
+                    levelList = new Spinner_List();
+                    levelList.setName(getResources().getString(R.string.workout_level_filters));
+                    levelArrayList.add(0,levelList);
+                    levelList.setName(getResources().getString(R.string.all));
+                    levelArrayList.add(1,levelList);
+                    leveladapter = new SpinnerAdapter(WorkoutFilterActivity.this, levelArrayList){
+                        @Override
+                        public boolean isEnabled(int position){
+                            if(position == 0)
+                            {
+                                // Disable the first item from Spinner
+                                // First item will be use for hint
+                                return false;
+                            }
+                            else
+                            {
+                                return true;
+                            }
+                        }
+                        @Override
+                        public View getDropDownView(int position, View convertView,
+                                                    ViewGroup parent) {
+                            View view = super.getDropDownView(position, convertView, parent);
+                            TextView tv = (TextView) view.findViewById(R.id.tv_Name);
+                            if(position == 0){
+                                // Set the hint text color gray
+                                tv.setTextColor(Color.GRAY);
+                                tv.setText(getResources().getString(R.string.prompt_workout_level));
+                                // tv.setTextColor(Color.GRAY);
+                            }
+                            else {
+                                tv.setTextColor(Color.BLACK);
+                            }
+                            return view;
+                        }
 
-                    //forumCount.setVisibility(View.INVISBLE);
-                    // queCount.setVisibility(View.INVISIBLE);
+                    };
+                    spinLevel.setAdapter(leveladapter);
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");
@@ -524,19 +560,43 @@ public class WorkoutFilterActivity extends AppCompatActivity {
                         }
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
-                    android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(WorkoutFilterActivity.this);
-                    builder.setMessage("Add Staff First");
-                    builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.dismiss();
+                    instructorNameArrayList.clear();
+                    instructorNamelist = new Spinner_List();
+                    instructorNamelist.setName(getResources().getString(R.string.hint_instructor));
+                    instructorNameArrayList.add(0,instructorNamelist);
+                    instructorNameadapter = new SpinnerAdapter(WorkoutFilterActivity.this, instructorNameArrayList){
+                        @Override
+                        public boolean isEnabled(int position){
+                            if(position == 0)
+                            {
+                                // Disable the first item from Spinner
+                                // First item will be use for hint
+                                return false;
+                            }
+                            else
+                            {
+                                return true;
+                            }
                         }
-                    });
-                    android.app.AlertDialog dialog = builder.create();
-                    dialog.setCancelable(false);
-                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                    dialog.show();
-                    //forumCount.setVisibility(View.INVISBLE);
-                    // queCount.setVisibility(View.INVISIBLE);
+                        @Override
+                        public View getDropDownView(int position, View convertView,
+                                                    ViewGroup parent) {
+                            View view = super.getDropDownView(position, convertView, parent);
+                            TextView tv = (TextView) view.findViewById(R.id.tv_Name);
+                            if(position == 0){
+                                // Set the hint text color gray
+                                tv.setTextColor(Color.GRAY);
+                                tv.setText(getResources().getString(R.string.prompt_instructor));
+                                // tv.setTextColor(Color.GRAY);
+                            }
+                            else {
+                                tv.setTextColor(Color.BLACK);
+                            }
+                            return view;
+                        }
+
+                    };
+                    spinInstructorName.setAdapter(instructorNameadapter);
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");

@@ -86,7 +86,7 @@ public class BalanceReceiptFilterActivity extends AppCompatActivity {
     }
     private void initComponent() {
 
-        spinDateWise = (Spinner) findViewById(R.id.spinner_date_wise);
+        spinDateWise = findViewById(R.id.spinner_date_wise);
         spinPackageType = (Spinner) findViewById(R.id.spinner_package_type);
         spinPackageName = (Spinner) findViewById(R.id.spinner_package_name);
         spinInstructor=(Spinner)findViewById(R.id.spinner_instructor_name);
@@ -543,9 +543,46 @@ public class BalanceReceiptFilterActivity extends AppCompatActivity {
                         }
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
+                    packageTypeArrayList.clear();
+                    packagetypelist = new Spinner_List();
+                    packagetypelist.setName(getResources().getString(R.string.hint_packagetype_n));
+                    packageTypeArrayList.add(0,packagetypelist);
+                    packagetypelist.setName(getResources().getString(R.string.all));
 
-                    //forumCount.setVisibility(View.INVISBLE);
-                    // queCount.setVisibility(View.INVISIBLE);
+                    packageTypeArrayList.add(1,packagetypelist);
+                    packagetypeadapter = new SpinnerAdapter(BalanceReceiptFilterActivity.this, packageTypeArrayList){
+                        @Override
+                        public boolean isEnabled(int position){
+                            if(position == 0)
+                            {
+                                // Disable the first item from Spinner
+                                // First item will be use for hint
+                                return false;
+                            }
+                            else
+                            {
+                                return true;
+                            }
+                        }
+                        @Override
+                        public View getDropDownView(int position, View convertView,
+                                                    ViewGroup parent) {
+                            View view = super.getDropDownView(position, convertView, parent);
+                            TextView tv = (TextView) view.findViewById(R.id.tv_Name);
+                            if(position == 0){
+                                // Set the hint text color gray
+                                tv.setTextColor(Color.GRAY);
+                                tv.setText(getResources().getString(R.string.prompt_packagetype));
+                                // tv.setTextColor(Color.GRAY);
+                            }
+                            else {
+                                tv.setTextColor(Color.BLACK);
+                            }
+                            return view;
+                        }
+
+                    };
+                    spinPackageType.setAdapter(packagetypeadapter);
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");
@@ -676,9 +713,46 @@ public class BalanceReceiptFilterActivity extends AppCompatActivity {
                         }
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
+                    packagenameArrayList.clear();
+                    packageNamelist = new Spinner_List();
+                    packageNamelist.setName(getResources().getString(R.string.hint_package_name_n));
+                    packagenameArrayList.add(0,packageNamelist);
+                    packageNamelist.setName(getResources().getString(R.string.all));
 
-                    //forumCount.setVisibility(View.INVISBLE);
-                    // queCount.setVisibility(View.INVISIBLE);
+                    packagenameArrayList.add(1,packageNamelist);
+                    packagenameadapter = new SpinnerAdapter(BalanceReceiptFilterActivity.this, packagenameArrayList){
+                        @Override
+                        public boolean isEnabled(int position){
+                            if(position == 0)
+                            {
+                                // Disable the first item from Spinner
+                                // First item will be use for hint
+                                return false;
+                            }
+                            else
+                            {
+                                return true;
+                            }
+                        }
+                        @Override
+                        public View getDropDownView(int position, View convertView,
+                                                    ViewGroup parent) {
+                            View view = super.getDropDownView(position, convertView, parent);
+                            TextView tv = (TextView) view.findViewById(R.id.tv_Name);
+                            if(position == 0){
+                                // Set the hint text color gray
+                                tv.setTextColor(Color.GRAY);
+                                tv.setText(getResources().getString(R.string.prompt_package_name));
+                                // tv.setTextColor(Color.GRAY);
+                            }
+                            else {
+                                tv.setTextColor(Color.BLACK);
+                            }
+                            return view;
+                        }
+
+                    };
+                    spinPackageName.setAdapter(packagenameadapter);
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");
@@ -820,9 +894,49 @@ public class BalanceReceiptFilterActivity extends AppCompatActivity {
                         }
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
+                    SalesExecutiveArrayList.clear();
+                    //for(int j=0;j<2;j++){
+                    saleExecutiveList = new Spinner_List();
 
-                    //forumCount.setVisibility(View.INVISBLE);
-                    // queCount.setVisibility(View.INVISIBLE);
+                    saleExecutiveList.setName(getResources().getString(R.string.prompt_executive));
+
+                    SalesExecutiveArrayList.add(0,saleExecutiveList);
+                    saleExecutiveList.setName(getResources().getString(R.string.all));
+
+                    SalesExecutiveArrayList.add(1,saleExecutiveList);
+                    salesExecutiveAdapter = new SpinnerAdapter(BalanceReceiptFilterActivity.this, SalesExecutiveArrayList){
+                        @Override
+                        public boolean isEnabled(int position){
+                            if(position == 0)
+                            {
+                                // Disable the first item from Spinner
+                                // First item will be use for hint
+                                return false;
+                            }
+                            else
+                            {
+                                return true;
+                            }
+                        }
+                        @Override
+                        public View getDropDownView(int position, View convertView,
+                                                    ViewGroup parent) {
+                            View view = super.getDropDownView(position, convertView, parent);
+                            TextView tv = (TextView) view.findViewById(R.id.tv_Name);
+                            if(position == 0){
+                                // Set the hint text color gray
+                                tv.setTextColor(Color.GRAY);
+                                tv.setText(getResources().getString(R.string.prompt_executive));
+                                // tv.setTextColor(Color.GRAY);
+                            }
+                            else {
+                                tv.setTextColor(Color.BLACK);
+                            }
+                            return view;
+                        }
+
+                    };
+                    spinSalesExecutive.setAdapter(salesExecutiveAdapter);
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");
@@ -1171,9 +1285,6 @@ public class BalanceReceiptFilterActivity extends AppCompatActivity {
                     }
                 }
 
-                // showCustomDialog();
-
-                //inputEmail, inputPhone,inputAdd,inputReq,inputFollowupdate;
             }
 
 

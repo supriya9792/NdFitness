@@ -465,9 +465,45 @@ public class ExpenseFilterActivity extends AppCompatActivity {
                         }
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
+                    PaymenttypeArrayList.clear();
+                    paymentTypeList = new Spinner_List();
+                    paymentTypeList.setName(getResources().getString(R.string.payment_type));
+                    PaymenttypeArrayList.add(0,paymentTypeList);
+                    paymentTypeList.setName(getResources().getString(R.string.all));
+                    PaymenttypeArrayList.add(1,paymentTypeList);
+                    paymenttypeadapter = new SpinnerAdapter(ExpenseFilterActivity.this, PaymenttypeArrayList){
+                        @Override
+                        public boolean isEnabled(int position){
+                            if(position == 0)
+                            {
+                                // Disable the first item from Spinner
+                                // First item will be use for hint
+                                return false;
+                            }
+                            else
+                            {
+                                return true;
+                            }
+                        }
+                        @Override
+                        public View getDropDownView(int position, View convertView,
+                                                    ViewGroup parent) {
+                            View view = super.getDropDownView(position, convertView, parent);
+                            TextView tv = (TextView) view.findViewById(R.id.tv_Name);
+                            if(position == 0){
+                                // Set the hint text color gray
+                                tv.setTextColor(Color.GRAY);
+                                tv.setText(getResources().getString(R.string.prompt_payment_type));
+                                // tv.setTextColor(Color.GRAY);
+                            }
+                            else {
+                                tv.setTextColor(Color.BLACK);
+                            }
+                            return view;
+                        }
 
-                    //forumCount.setVisibility(View.INVISBLE);
-                    // queCount.setVisibility(View.INVISIBLE);
+                    };
+                    spinPaymentType.setAdapter(paymenttypeadapter);
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");
@@ -609,9 +645,49 @@ public class ExpenseFilterActivity extends AppCompatActivity {
                         }
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
+                    ExecutiveNameArrayList.clear();
+                    //for(int j=0;j<2;j++){
+                    ExecutiveNameList = new Spinner_List();
 
-                    //forumCount.setVisibility(View.INVISBLE);
-                    // queCount.setVisibility(View.INVISIBLE);
+                    ExecutiveNameList.setName(getResources().getString(R.string.prompt_executive));
+
+                    ExecutiveNameArrayList.add(0,ExecutiveNameList);
+                    ExecutiveNameList.setName(getResources().getString(R.string.all));
+
+                    ExecutiveNameArrayList.add(1,ExecutiveNameList);
+                    executivenameadapter = new SpinnerAdapter(ExpenseFilterActivity.this, ExecutiveNameArrayList){
+                        @Override
+                        public boolean isEnabled(int position){
+                            if(position == 0)
+                            {
+                                // Disable the first item from Spinner
+                                // First item will be use for hint
+                                return false;
+                            }
+                            else
+                            {
+                                return true;
+                            }
+                        }
+                        @Override
+                        public View getDropDownView(int position, View convertView,
+                                                    ViewGroup parent) {
+                            View view = super.getDropDownView(position, convertView, parent);
+                            TextView tv = (TextView) view.findViewById(R.id.tv_Name);
+                            if(position == 0){
+                                // Set the hint text color gray
+                                tv.setTextColor(Color.GRAY);
+                                tv.setText(getResources().getString(R.string.prompt_executive));
+                                // tv.setTextColor(Color.GRAY);
+                            }
+                            else {
+                                tv.setTextColor(Color.BLACK);
+                            }
+                            return view;
+                        }
+
+                    };
+                    spinExecutive.setAdapter(executivenameadapter);
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");
@@ -693,10 +769,6 @@ public class ExpenseFilterActivity extends AppCompatActivity {
                                     String Exepense     = jsonObj.getString("Exepense");
 
                                     String id=jsonObj.getString("Auto_Id");
-//                               if(i==0){
-//                                   group_of_Expenselist.setName(getResources().getString(R.string.promt_country));
-//                                   enqF.add(0,group_of_Expenselist);
-//                               }
                                     group_of_Expenselist.setName(Exepense);
                                     group_of_Expenselist.setId(id);
 
@@ -744,9 +816,46 @@ public class ExpenseFilterActivity extends AppCompatActivity {
                         }
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
+                    groupofExpenseArrayList.clear();
+                    group_of_Expenselist = new Spinner_List();
+                    group_of_Expenselist.setName(getResources().getString(R.string.prompt_expense_grp));
+                    groupofExpenseArrayList.add(0,group_of_Expenselist);
+                    group_of_Expenselist.setName(getResources().getString(R.string.all));
 
-                    //forumCount.setVisibility(View.INVISBLE);
-                    // queCount.setVisibility(View.INVISIBLE);
+                    groupofExpenseArrayList.add(1,group_of_Expenselist);
+                    GroupOfExpenseadapter = new SpinnerAdapter(ExpenseFilterActivity.this, groupofExpenseArrayList){
+                        @Override
+                        public boolean isEnabled(int position){
+                            if(position == 0)
+                            {
+                                // Disable the first item from Spinner
+                                // First item will be use for hint
+                                return false;
+                            }
+                            else
+                            {
+                                return true;
+                            }
+                        }
+                        @Override
+                        public View getDropDownView(int position, View convertView,
+                                                    ViewGroup parent) {
+                            View view = super.getDropDownView(position, convertView, parent);
+                            TextView tv = (TextView) view.findViewById(R.id.tv_Name);
+                            if(position == 0){
+                                // Set the hint text color gray
+                                tv.setTextColor(Color.GRAY);
+                                tv.setText(getResources().getString(R.string.prompt_expense_grp));
+                                // tv.setTextColor(Color.GRAY);
+                            }
+                            else {
+                                tv.setTextColor(Color.BLACK);
+                            }
+                            return view;
+                        }
+
+                    };
+                    spinGroupofExpense.setAdapter(GroupOfExpenseadapter);
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");
@@ -879,9 +988,46 @@ public class ExpenseFilterActivity extends AppCompatActivity {
                         }
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
+                    ttlExpenseArrayList.clear();
+                    ttlExpenselist = new Spinner_List();
+                    ttlExpenselist.setName(getResources().getString(R.string.prompt_ttl_expense));
+                    ttlExpenseArrayList.add(0,ttlExpenselist);
+                    ttlExpenselist.setName(getResources().getString(R.string.all));
 
-                    //forumCount.setVisibility(View.INVISBLE);
-                    // queCount.setVisibility(View.INVISIBLE);
+                    ttlExpenseArrayList.add(1,ttlExpenselist);
+                    ttlExpenseadapter = new SpinnerAdapter(ExpenseFilterActivity.this, ttlExpenseArrayList){
+                        @Override
+                        public boolean isEnabled(int position){
+                            if(position == 0)
+                            {
+                                // Disable the first item from Spinner
+                                // First item will be use for hint
+                                return false;
+                            }
+                            else
+                            {
+                                return true;
+                            }
+                        }
+                        @Override
+                        public View getDropDownView(int position, View convertView,
+                                                    ViewGroup parent) {
+                            View view = super.getDropDownView(position, convertView, parent);
+                            TextView tv = (TextView) view.findViewById(R.id.tv_Name);
+                            if(position == 0){
+                                // Set the hint text color gray
+                                tv.setTextColor(Color.GRAY);
+                                tv.setText(getResources().getString(R.string.prompt_ttl_expense));
+                                // tv.setTextColor(Color.GRAY);
+                            }
+                            else {
+                                tv.setTextColor(Color.BLACK);
+                            }
+                            return view;
+                        }
+
+                    };
+                    spinTitleExpense.setAdapter(ttlExpenseadapter);
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");

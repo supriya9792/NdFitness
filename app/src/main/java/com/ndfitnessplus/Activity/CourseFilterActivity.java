@@ -225,9 +225,6 @@ public class CourseFilterActivity extends AppCompatActivity {
                             (Datewise.equals(getResources().getString(R.string.all)))) {
                         Datewise = "";
                     }
-                    // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.white));
-                    // Showing selected spinner item
-                    //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
                 }
             }
             @Override
@@ -258,9 +255,7 @@ public class CourseFilterActivity extends AppCompatActivity {
                         packageType = "";
                     }
                 }
-                // ((TextView) spinPackageType.getSelectedView()).setTextColor(getResources().getColor(R.color.black));
-                // Showing selected spinner item
-                //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+
             }
 
             @Override
@@ -500,10 +495,6 @@ public class CourseFilterActivity extends AppCompatActivity {
 
                                     String PackageType     = jsonObj.getString("PackageType");
 
-//                               if(i==0){
-//                                   packagetypelist.setName(getResources().getString(R.string.promt_country));
-//                                   enqF.add(0,packagetypelist);
-//                               }
                                     packagetypelist.setName(PackageType);
 
                                     packageTypeArrayList.add(packagetypelist);
@@ -551,8 +542,47 @@ public class CourseFilterActivity extends AppCompatActivity {
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
 
-                    //forumCount.setVisibility(View.INVISBLE);
-                    // queCount.setVisibility(View.INVISIBLE);
+                    packageTypeArrayList.clear();
+                    packagetypelist = new Spinner_List();
+                    packagetypelist.setName(getResources().getString(R.string.hint_package_name_n));
+                    packageTypeArrayList.add(0,packagetypelist);
+                    packagetypelist.setName(getResources().getString(R.string.all));
+
+                    packageTypeArrayList.add(1,packagetypelist);
+                    packagetypeadapter = new SpinnerAdapter(CourseFilterActivity.this, packageTypeArrayList){
+                        @Override
+                        public boolean isEnabled(int position){
+                            if(position == 0)
+                            {
+                                // Disable the first item from Spinner
+                                // First item will be use for hint
+                                return false;
+                            }
+                            else
+                            {
+                                return true;
+                            }
+                        }
+                        @Override
+                        public View getDropDownView(int position, View convertView,
+                                                    ViewGroup parent) {
+                            View view = super.getDropDownView(position, convertView, parent);
+                            TextView tv = (TextView) view.findViewById(R.id.tv_Name);
+                            if(position == 0){
+                                // Set the hint text color gray
+                                tv.setTextColor(Color.GRAY);
+                                tv.setText(getResources().getString(R.string.prompt_packagetype));
+                                // tv.setTextColor(Color.GRAY);
+                            }
+                            else {
+                                tv.setTextColor(Color.BLACK);
+                            }
+                            return view;
+                        }
+
+                    };
+                    spinPackageType.setAdapter(packagetypeadapter);
+
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");
@@ -683,9 +713,46 @@ public class CourseFilterActivity extends AppCompatActivity {
                         }
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
+                    packagenameArrayList.clear();
+                    packageNamelist = new Spinner_List();
+                    packageNamelist.setName(getResources().getString(R.string.hint_package_name));
+                    packagenameArrayList.add(0,packageNamelist);
+                    packageNamelist.setName(getResources().getString(R.string.all));
 
-                    //forumCount.setVisibility(View.INVISBLE);
-                    // queCount.setVisibility(View.INVISIBLE);
+                    packagenameArrayList.add(1,packageNamelist);
+                    packagenameadapter = new SpinnerAdapter(CourseFilterActivity.this, packagenameArrayList){
+                        @Override
+                        public boolean isEnabled(int position){
+                            if(position == 0)
+                            {
+                                // Disable the first item from Spinner
+                                // First item will be use for hint
+                                return false;
+                            }
+                            else
+                            {
+                                return true;
+                            }
+                        }
+                        @Override
+                        public View getDropDownView(int position, View convertView,
+                                                    ViewGroup parent) {
+                            View view = super.getDropDownView(position, convertView, parent);
+                            TextView tv = (TextView) view.findViewById(R.id.tv_Name);
+                            if(position == 0){
+                                // Set the hint text color gray
+                                tv.setTextColor(Color.GRAY);
+                                tv.setText(getResources().getString(R.string.prompt_package_name));
+                                // tv.setTextColor(Color.GRAY);
+                            }
+                            else {
+                                tv.setTextColor(Color.BLACK);
+                            }
+                            return view;
+                        }
+
+                    };
+                    spinPackageName.setAdapter(packagenameadapter);
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");
@@ -774,13 +841,6 @@ public class CourseFilterActivity extends AppCompatActivity {
                                 if (jsonObj != null) {
 
                                     String EnquiryOwnerExecutive     = jsonObj.getString("EnquiryOwnerExecutive");
-
-//                               if(i==0){
-//                                   saleExecutiveList.setName(getResources().getString(R.string.promt_country));
-//                                   enqF.add(0,saleExecutiveList);
-//                               }
-
-
                                     saleExecutiveList.setName(EnquiryOwnerExecutive);
 
                                     SalesExecutiveArrayList.add(saleExecutiveList);
@@ -828,8 +888,49 @@ public class CourseFilterActivity extends AppCompatActivity {
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
 
-                    //forumCount.setVisibility(View.INVISBLE);
-                    // queCount.setVisibility(View.INVISIBLE);
+                    SalesExecutiveArrayList.clear();
+                    //for(int j=0;j<2;j++){
+                    saleExecutiveList = new Spinner_List();
+
+                    saleExecutiveList.setName(getResources().getString(R.string.prompt_executive));
+
+                    SalesExecutiveArrayList.add(0,saleExecutiveList);
+                    saleExecutiveList.setName(getResources().getString(R.string.all));
+
+                    SalesExecutiveArrayList.add(1,saleExecutiveList);
+                    salesExecutiveAdapter = new SpinnerAdapter(CourseFilterActivity.this, SalesExecutiveArrayList){
+                        @Override
+                        public boolean isEnabled(int position){
+                            if(position == 0)
+                            {
+                                // Disable the first item from Spinner
+                                // First item will be use for hint
+                                return false;
+                            }
+                            else
+                            {
+                                return true;
+                            }
+                        }
+                        @Override
+                        public View getDropDownView(int position, View convertView,
+                                                    ViewGroup parent) {
+                            View view = super.getDropDownView(position, convertView, parent);
+                            TextView tv = (TextView) view.findViewById(R.id.tv_Name);
+                            if(position == 0){
+                                // Set the hint text color gray
+                                tv.setTextColor(Color.GRAY);
+                                tv.setText(getResources().getString(R.string.prompt_executive));
+                                // tv.setTextColor(Color.GRAY);
+                            }
+                            else {
+                                tv.setTextColor(Color.BLACK);
+                            }
+                            return view;
+                        }
+
+                    };
+                    spinSalesExecutive.setAdapter(salesExecutiveAdapter);
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");
@@ -1189,17 +1290,12 @@ public class CourseFilterActivity extends AppCompatActivity {
                         System.out.println("No records found");
                     }
                 }
-
-                // showCustomDialog();
-
-                //inputEmail, inputPhone,inputAdd,inputReq,inputFollowupdate;
             }
 
 
             else if (success.equalsIgnoreCase(getResources().getString(R.string.zero)))
             {
-                //Toast.makeText(CourseFilterActivity.this,"Mobile Number Already Exits",Toast.LENGTH_SHORT).show();
-                //inputContact.getText().clear();
+
                 Toast.makeText(CourseFilterActivity.this,"No Records Found",Toast.LENGTH_SHORT).show();
             }
 

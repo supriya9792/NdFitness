@@ -447,9 +447,49 @@ public class MeasurementFilterActivity extends AppCompatActivity {
                         }
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
+                    ExecutiveArrayList.clear();
+                    //for(int j=0;j<2;j++){
+                    ExecutiveList = new Spinner_List();
 
-                    //forumCount.setVisibility(View.INVISBLE);
-                    // queCount.setVisibility(View.INVISIBLE);
+                    ExecutiveList.setName(getResources().getString(R.string.prompt_executive));
+
+                    ExecutiveArrayList.add(0,ExecutiveList);
+                    ExecutiveList.setName(getResources().getString(R.string.all));
+
+                    ExecutiveArrayList.add(1,ExecutiveList);
+                    ExecutiveAdapter = new SpinnerAdapter(MeasurementFilterActivity.this, ExecutiveArrayList){
+                        @Override
+                        public boolean isEnabled(int position){
+                            if(position == 0)
+                            {
+                                // Disable the first item from Spinner
+                                // First item will be use for hint
+                                return false;
+                            }
+                            else
+                            {
+                                return true;
+                            }
+                        }
+                        @Override
+                        public View getDropDownView(int position, View convertView,
+                                                    ViewGroup parent) {
+                            View view = super.getDropDownView(position, convertView, parent);
+                            TextView tv = (TextView) view.findViewById(R.id.tv_Name);
+                            if(position == 0){
+                                // Set the hint text color gray
+                                tv.setTextColor(Color.GRAY);
+                                tv.setText(getResources().getString(R.string.prompt_executive));
+                                // tv.setTextColor(Color.GRAY);
+                            }
+                            else {
+                                tv.setTextColor(Color.BLACK);
+                            }
+                            return view;
+                        }
+
+                    };
+                    spinExecutive.setAdapter(ExecutiveAdapter);
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");

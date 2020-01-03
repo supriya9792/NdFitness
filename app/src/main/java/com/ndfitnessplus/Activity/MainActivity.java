@@ -8,9 +8,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
@@ -387,6 +389,11 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent intent = new Intent();
+            intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+            Uri uri = Uri.fromParts("package",getPackageName(), null);
+            intent.setData(uri);
+            startActivity(intent);
             return true;
         }
 
@@ -515,7 +522,6 @@ public class MainActivity extends AppCompatActivity
                 // showCustomDialog();
                 Intent intent=new Intent(MainActivity.this,BranchSelectionActivity.class);
                 startActivity(intent);
-                //inputEmail, inputPhone,inputAdd,inputReq,inputFollowupdate;
             }
             else if (success.equalsIgnoreCase(getResources().getString(R.string.two)))
             {
@@ -661,10 +667,6 @@ public class MainActivity extends AppCompatActivity
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
-            //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
-            // Toast.makeText(Drawer.this, response, Toast.LENGTH_LONG).show();
-            //registerDeviceDetails(response);
 
         }
 

@@ -753,9 +753,49 @@ public class MemberFilterActivity extends AppCompatActivity {
                         }
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
+                    OccupationArrayList.clear();
+                    //for(int j=0;j<2;j++){
+                    Occupationlist = new Spinner_List();
 
-                    //forumCount.setVisibility(View.INVISBLE);
-                    // queCount.setVisibility(View.INVISIBLE);
+                    Occupationlist.setName(getResources().getString(R.string.prompt_occupation));
+
+                    OccupationArrayList.add(0,Occupationlist);
+                    Occupationlist.setName(getResources().getString(R.string.all));
+
+                    OccupationArrayList.add(1,Occupationlist);
+                    occupationadpater = new SpinnerAdapter(MemberFilterActivity.this, OccupationArrayList){
+                        @Override
+                        public boolean isEnabled(int position){
+                            if(position == 0)
+                            {
+                                // Disable the first item from Spinner
+                                // First item will be use for hint
+                                return false;
+                            }
+                            else
+                            {
+                                return true;
+                            }
+                        }
+                        @Override
+                        public View getDropDownView(int position, View convertView,
+                                                    ViewGroup parent) {
+                            View view = super.getDropDownView(position, convertView, parent);
+                            TextView tv = (TextView) view.findViewById(R.id.tv_Name);
+                            if(position == 0){
+                                // Set the hint text color gray
+                                tv.setTextColor(Color.GRAY);
+                                tv.setText(getResources().getString(R.string.prompt_occupation));
+                                // tv.setTextColor(Color.GRAY);
+                            }
+                            else {
+                                tv.setTextColor(Color.BLACK);
+                            }
+                            return view;
+                        }
+
+                    };
+                    spinOccupation.setAdapter(occupationadpater);
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");
@@ -896,9 +936,49 @@ public class MemberFilterActivity extends AppCompatActivity {
                         }
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
+                    EnqExecutiveNameArrayList.clear();
+                    //for(int j=0;j<2;j++){
+                    EnqExecutiveNameList = new Spinner_List();
 
-                    //forumCount.setVisibility(View.INVISBLE);
-                    // queCount.setVisibility(View.INVISIBLE);
+                    EnqExecutiveNameList.setName(getResources().getString(R.string.prompt_enq_executive));
+
+                    EnqExecutiveNameArrayList.add(0,EnqExecutiveNameList);
+                    EnqExecutiveNameList.setName(getResources().getString(R.string.all));
+
+                    EnqExecutiveNameArrayList.add(1,EnqExecutiveNameList);
+                    enqExecutiveadapter = new SpinnerAdapter(MemberFilterActivity.this, EnqExecutiveNameArrayList){
+                        @Override
+                        public boolean isEnabled(int position){
+                            if(position == 0)
+                            {
+                                // Disable the first item from Spinner
+                                // First item will be use for hint
+                                return false;
+                            }
+                            else
+                            {
+                                return true;
+                            }
+                        }
+                        @Override
+                        public View getDropDownView(int position, View convertView,
+                                                    ViewGroup parent) {
+                            View view = super.getDropDownView(position, convertView, parent);
+                            TextView tv = (TextView) view.findViewById(R.id.tv_Name);
+                            if(position == 0){
+                                // Set the hint text color gray
+                                tv.setTextColor(Color.GRAY);
+                                tv.setText(getResources().getString(R.string.prompt_enq_executive));
+                                // tv.setTextColor(Color.GRAY);
+                            }
+                            else {
+                                tv.setTextColor(Color.BLACK);
+                            }
+                            return view;
+                        }
+
+                    };
+                    spinEnqExecutive.setAdapter(enqExecutiveadapter);
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");
@@ -1039,9 +1119,49 @@ public class MemberFilterActivity extends AppCompatActivity {
                         }
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
+                    MemExecutiveNameArrayList.clear();
+                    //for(int j=0;j<2;j++){
+                    spinMemExecutiveNameList = new Spinner_List();
 
-                    //forumCount.setVisibility(View.INVISBLE);
-                    // queCount.setVisibility(View.INVISIBLE);
+                    spinMemExecutiveNameList.setName(getResources().getString(R.string.prompt_mem_executive));
+
+                    MemExecutiveNameArrayList.add(0,spinMemExecutiveNameList);
+                    spinMemExecutiveNameList.setName(getResources().getString(R.string.all));
+
+                    MemExecutiveNameArrayList.add(1,spinMemExecutiveNameList);
+                    memExecutiveAdapter = new SpinnerAdapter(MemberFilterActivity.this, MemExecutiveNameArrayList){
+                        @Override
+                        public boolean isEnabled(int position){
+                            if(position == 0)
+                            {
+                                // Disable the first item from Spinner
+                                // First item will be use for hint
+                                return false;
+                            }
+                            else
+                            {
+                                return true;
+                            }
+                        }
+                        @Override
+                        public View getDropDownView(int position, View convertView,
+                                                    ViewGroup parent) {
+                            View view = super.getDropDownView(position, convertView, parent);
+                            TextView tv = (TextView) view.findViewById(R.id.tv_Name);
+                            if(position == 0){
+                                // Set the hint text color gray
+                                tv.setTextColor(Color.GRAY);
+                                tv.setText(getResources().getString(R.string.prompt_mem_executive));
+                                // tv.setTextColor(Color.GRAY);
+                            }
+                            else {
+                                tv.setTextColor(Color.BLACK);
+                            }
+                            return view;
+                        }
+
+                    };
+                    spinMemExecutive.setAdapter(memExecutiveAdapter);
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");

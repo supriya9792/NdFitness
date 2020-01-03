@@ -320,7 +320,7 @@ public class StaffAttendanceFilterActivity extends AppCompatActivity {
             SearchAttendanceDetails.put("from_date",fromdate.getText().toString());
             Log.v(TAG, String.format("doInBackground :: from_date = %s", fromdate.getText().toString()));
             SearchAttendanceDetails.put("attendance_mode",AttendaceModeName);
-            Log.v(TAG, String.format("doInBackground :: exe_name = %s",AttendaceModeName));
+            Log.v(TAG, String.format("doInBackground :: attendance_mode = %s",AttendaceModeName));
             SearchAttendanceDetails.put("action", "search_staff_attendance_filter");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(StaffAttendanceFilterActivity.this);
             String loginResult2 = ruc.sendPostRequest(domainurl+ ServiceUrls.LOGIN_URL, SearchAttendanceDetails);

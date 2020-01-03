@@ -426,10 +426,7 @@ public class CollectionFilterActivity extends AppCompatActivity {
                                     String PaymentType     = jsonObj.getString("PaymentType");
 
                                     String id=jsonObj.getString("Auto_Id");
-//                               if(i==0){
-//                                   paymenttypelist.setName(getResources().getString(R.string.promt_country));
-//                                   enqF.add(0,paymenttypelist);
-//                               }
+
                                     paymenttypelist.setName(PaymentType);
                                     paymenttypelist.setId(id);
 
@@ -479,8 +476,46 @@ public class CollectionFilterActivity extends AppCompatActivity {
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
 
-                    //forumCount.setVisibility(View.INVISBLE);
-                    // queCount.setVisibility(View.INVISIBLE);
+                    paymentTypeArrayList.clear();
+                    paymenttypelist = new Spinner_List();
+                    paymenttypelist.setName(getResources().getString(R.string.payment_type));
+                    paymentTypeArrayList.add(0,paymenttypelist);
+                    paymenttypelist.setName(getResources().getString(R.string.all));
+                    paymentTypeArrayList.add(1,paymenttypelist);
+                    paymenttypeadapter = new SpinnerAdapter(CollectionFilterActivity.this,
+                            paymentTypeArrayList){
+                        @Override
+                        public boolean isEnabled(int position){
+                            if(position == 0)
+                            {
+                                // Disable the first item from Spinner
+                                // First item will be use for hint
+                                return false;
+                            }
+                            else
+                            {
+                                return true;
+                            }
+                        }
+                        @Override
+                        public View getDropDownView(int position, View convertView,
+                                                    ViewGroup parent) {
+                            View view = super.getDropDownView(position, convertView, parent);
+                            TextView tv = (TextView) view.findViewById(R.id.tv_Name);
+                            if(position == 0){
+                                // Set the hint text color gray
+                                tv.setTextColor(Color.GRAY);
+                                tv.setText(getResources().getString(R.string.prompt_payment_type));
+                                // tv.setTextColor(Color.GRAY);
+                            }
+                            else {
+                                tv.setTextColor(Color.BLACK);
+                            }
+                            return view;
+                        }
+
+                    };
+                    spinPaymentType.setAdapter(paymenttypeadapter);
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");
@@ -623,8 +658,49 @@ public class CollectionFilterActivity extends AppCompatActivity {
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
 
-                    //forumCount.setVisibility(View.INVISBLE);
-                    // queCount.setVisibility(View.INVISIBLE);
+                    SalesExecutiveArrayList.clear();
+                    //for(int j=0;j<2;j++){
+                    saleExecutiveList = new Spinner_List();
+
+                    saleExecutiveList.setName(getResources().getString(R.string.prompt_executive));
+
+                    SalesExecutiveArrayList.add(0,saleExecutiveList);
+                    saleExecutiveList.setName(getResources().getString(R.string.all));
+
+                    SalesExecutiveArrayList.add(1,saleExecutiveList);
+                    salesExecutiveAdapter = new SpinnerAdapter(CollectionFilterActivity.this, SalesExecutiveArrayList){
+                        @Override
+                        public boolean isEnabled(int position){
+                            if(position == 0)
+                            {
+                                // Disable the first item from Spinner
+                                // First item will be use for hint
+                                return false;
+                            }
+                            else
+                            {
+                                return true;
+                            }
+                        }
+                        @Override
+                        public View getDropDownView(int position, View convertView,
+                                                    ViewGroup parent) {
+                            View view = super.getDropDownView(position, convertView, parent);
+                            TextView tv = (TextView) view.findViewById(R.id.tv_Name);
+                            if(position == 0){
+                                // Set the hint text color gray
+                                tv.setTextColor(Color.GRAY);
+                                tv.setText(getResources().getString(R.string.prompt_executive));
+                                // tv.setTextColor(Color.GRAY);
+                            }
+                            else {
+                                tv.setTextColor(Color.BLACK);
+                            }
+                            return view;
+                        }
+
+                    };
+                    spinSalesExecutive.setAdapter(salesExecutiveAdapter);
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");
@@ -655,10 +731,7 @@ public class CollectionFilterActivity extends AppCompatActivity {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-           // dismissProgressDialog();
             viewDialog.hideDialog();
-            //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
-            //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
             SearchCollectionDetails(response);
 
         }
