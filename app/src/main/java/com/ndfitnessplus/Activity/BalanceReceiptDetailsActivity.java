@@ -278,35 +278,7 @@ public class BalanceReceiptDetailsActivity extends AppCompatActivity  implements
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.show();
         }
-//        final ArrayList<CourseList> items = new ArrayList<>();
-//        new Handler().postDelayed(new Runnable() {
-//
-//            @Override
-//            public void run() {
-//
-//                for (int i = 0; i < 5; i++) {
-//                    itemCount++;
-//                    Log.d(TAG, "prepare called : " + itemCount);
-//
-//                    CourseList postItem = subListArrayList.get(i);
-//                    subList.setExecutiveName(postItem.getExecutiveName());
-//                    subList.setName(postItem.getName());
-//                    subList.setGender(postItem.getGender());
-//                    subList.setContact(postItem.getContact());
-//                    subList.setAddress(postItem.getAddress());
-//                    subList.setComment(postItem.getComment());
-//                    subList.setNextFollowUpDate(postItem.getNextFollowUpDate());
-//                    items.add(subList);
-//                }
-//                if (currentPage != PAGE_START) adapter.removeLoading();
-//                adapter.addAll(items);
-//                swipeRefresh.setRefreshing(false);
-//                if (currentPage < totalPage) adapter.addLoading();
-//                else isLastPage = true;
-//                isLoading = false;
-//
-//            }
-//        }, 2000);
+
     }
     //Showing progress dialog
     private void showProgressDialog() {

@@ -353,6 +353,33 @@ public class CreatePlanActivity extends AppCompatActivity {
 
             }
         });
+        inputRackAmount.addTextChangedListener(new TextWatcher() {
+
+            public void onTextChanged(CharSequence s, int start, int before,
+                                      int count) {
+            }
+
+
+
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+
+            }
+
+            public void afterTextChanged(Editable s) {
+                if(inputRackAmount.getText().length()>0) {
+                    double session=Double.parseDouble(inputRackAmount.getText().toString());
+
+                    if(session==0){
+                        Toast.makeText(CreatePlanActivity.this,"Rack Amount Must be Greater than zero",Toast
+                                .LENGTH_SHORT).show();
+                        inputRackAmount.setError(null);
+                        inputRackAmount.getText().clear();
+                    }
+                }
+
+            }
+        });
         Days.setLength(0);
         All.setOnCheckedChangeListener(new
                          CompoundButton.OnCheckedChangeListener() {

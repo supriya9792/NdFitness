@@ -294,7 +294,7 @@ public class EnquiryActivity extends AppCompatActivity implements SwipeRefreshLa
 
 
     private void preparedListItem() {
-        offset=offset+100;
+        offset=offset+1000;
 
         if (isOnline(EnquiryActivity.this)) {
             enquiryoffsetclass();// check login details are valid or not from server

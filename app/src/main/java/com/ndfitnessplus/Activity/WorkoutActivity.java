@@ -92,7 +92,7 @@ public class WorkoutActivity extends AppCompatActivity  implements SwipeRefreshL
         FloatingActionButton addenquiry=findViewById(R.id.fab);
         progressBar=findViewById(R.id.progressBar);
         swipeRefresh=findViewById(R.id.swipeRefresh);
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        recyclerView =  findViewById(R.id.recycler_view);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);

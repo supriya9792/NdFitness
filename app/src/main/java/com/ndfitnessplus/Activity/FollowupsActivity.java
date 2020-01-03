@@ -81,7 +81,7 @@ public class FollowupsActivity extends AppCompatActivity implements SwipeRefresh
         initToolbar();
     }
     private void initToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(getResources().getString(R.string.enquiry));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -91,15 +91,14 @@ public class FollowupsActivity extends AppCompatActivity implements SwipeRefresh
         FloatingActionButton addenquiry=findViewById(R.id.fab);
         progressBar=findViewById(R.id.progressBar);
         swipeRefresh=findViewById(R.id.swipeRefresh);
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        recyclerView = findViewById(R.id.recycler_view);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
         viewDialog = new ViewDialog(this);
 
         nodata=findViewById(R.id.nodata);
-//        adapter = new EnquiryAdapter( new ArrayList<EnquiryList>(),FollowupsActivity.this);
-//        recyclerView.setAdapter(adapter);
+
 
             if (isOnline(FollowupsActivity.this)) {
                 followupclass();// check login details are valid or not from server
