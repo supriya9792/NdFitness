@@ -194,10 +194,7 @@ public class BalanceReceiptDetailsActivity extends AppCompatActivity  implements
             public void afterTextChanged(final Editable arg0) {
                 // TODO Auto-generated method stub
                 if (BalanceReceiptDetailsActivity.this.adapter == null){
-                    // some print statement saying it is null
-//                   // Toast toast = Toast.makeText(BalanceReceiptDetailsActivity.this,"no record found", Toast.LENGTH_SHORT);
-//                    toast.setGravity(Gravity.CENTER, 0, 0);
-//                    toast.show();
+
                 }
                 else
                 {

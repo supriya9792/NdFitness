@@ -52,10 +52,6 @@ public class WorkoutDetailsDescriptionActivity extends AppCompatActivity impleme
     }
     private void initToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        toolbar.setTitle(getResources().getString(R.string.menu_workout));
-//        toolbar.setTitleTextColor(getResources().getColor(R.color.white));
-
-//        setActionBar(toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(getResources().getString(R.string.action_workout));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -73,9 +69,6 @@ public class WorkoutDetailsDescriptionActivity extends AppCompatActivity impleme
         videoViewLyt=findViewById(R.id.lay_videoView);
 
 
-        //videoView=findViewById(R.id.video);
-//        youTubeView = (YouTubePlayerView) findViewById(R.id.youtube_view);
-//        youTubeView.initialize(Config.YOUTUBE_API_KEY, this);
 //
         playerStateChangeListener = new MyPlayerStateChangeListener();
         playbackEventListener = new MyPlaybackEventListener();
@@ -113,11 +106,7 @@ public class WorkoutDetailsDescriptionActivity extends AppCompatActivity impleme
             requestOptions.placeholder(R.drawable.nouser);
             requestOptions.error(R.drawable.nouser);
             int skipToSecs = Integer.valueOf("2000");
-            //  player.seekToMillis(2000 * 1000);
 
-//            Glide.with(this)
-//                    .setDefaultRequestOptions(requestOptions)
-//                    .load(url).into(image);
 
             String vurl= filterArrayList.getVideoLink();
             Log.e("Video Url", vurl);

@@ -262,10 +262,16 @@ public class AddDietActivity extends AppCompatActivity {
                         Toast.makeText(AddDietActivity.this,"No of Meals should not be greater than 10",Toast
                                 .LENGTH_SHORT).show();
 
-                    }
+                    }else if(discount == 0){
+
+                    } Toast.makeText(AddDietActivity.this,"No of Meals Must be Greater than zero",Toast
+                            .LENGTH_SHORT).show();
+                    inputNoOfMeals.setError(null);
+                    inputNoOfMeals.getText().clear();
                 }
             }
         });
+
         spinDietitionName.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

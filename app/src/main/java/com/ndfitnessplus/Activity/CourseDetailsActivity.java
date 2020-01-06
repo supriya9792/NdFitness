@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -796,7 +797,16 @@ public class CourseDetailsActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_print) {
-
+//            Intent pdfOpenintent = new Intent(Intent.ACTION_VIEW);
+//            pdfOpenintent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//            pdfOpenintent.setDataAndType(Uri.fromFile(pdfFile), "application/pdf");
+//            try {
+//                startActivity(pdfOpenintent);
+//            }
+//            catch (ActivityNotFoundException e) {
+//                Toast.makeText(CourseDetailsActivity.this, "App not found to preview Pdf", Toast.LENGTH_SHORT)
+//                        .show();
+//            }
 
             return true;
         } else if (id == R.id.whatsapp) {
@@ -841,6 +851,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                     }else{
                         sendIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(pdfFile));
                     }
+                   //  sendIntent.setComponent(new ComponentName("com.whatsapp","com.whatsapp.Conversation"));
                     sendIntent.putExtra("jid", toNumber + "@s.whatsapp.net");
 //                      sendIntent.putExtra(Intent.ACTION_VIEW, uri);
 //                    sendIntent.putExtra("jid", toNumber + "@s.whatsapp.net");
@@ -880,9 +891,12 @@ public class CourseDetailsActivity extends AppCompatActivity {
                         CompanyName.setText(comp_name);
                         String bal="₹ "+balanceTV.getText().toString();
                         Balance.setText(bal);
-                        String folldate=Utility.formatDate(NextPaymentDate);
-                        String pdate="As of "+folldate;
-                        payment_date.setText(pdate);
+                        if(NextPaymentDate !=""){
+                            String folldate=Utility.formatDate(NextPaymentDate);
+                            String pdate="As of "+folldate;
+                            payment_date.setText(pdate);
+                        }
+
 //            try {
                         String domainurl= SharedPrefereneceUtil.getDomainUrl(CourseDetailsActivity.this);
                         final  String strurl= domainurl+ServiceUrls.IMAGES_URL + Logo;
@@ -979,7 +993,10 @@ public class CourseDetailsActivity extends AppCompatActivity {
                 }catch(Exception e){
                     e.printStackTrace();
                 }
+            }else{
+                sendIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(pdfFile));
             }
+           // sendIntent.setComponent(new  ComponentName("com.whatsapp","com.whatsapp.Conversation"));
             sendIntent.putExtra("jid", PhoneNumberUtils.stripSeparators(toNumber) + "@s.whatsapp.net");
 //            sendIntent.putExtra(Intent.ACTION_VIEW, uri);
 //                sendIntent.setType("*/*");
@@ -3161,7 +3178,8 @@ public class CourseDetailsActivity extends AppCompatActivity {
 
                                     String Name = nameTV.getText().toString();
                                     String Member_Contact = contactTV.getText().toString();
-                                    String invoice_date= Utility.getCurrentDate();
+                                    String Invoice_date = jsonObj.getString("Invoice_date");
+                                    String invoice_date= Utility.formatDate(Invoice_date);
                                     String Package_Name = jsonObj.getString("Package_Name");
                                     String Duration_Days =jsonObj.getString("Duration_Days");
                                     String Session = jsonObj.getString("Session");

@@ -2495,8 +2495,9 @@ public class RenewActivity extends AppCompatActivity {
 
                                     String Name = inputName.getText().toString();
                                     String Member_Contact = inputContact.getText().toString();
-                                    //String Invoice_date = jsonObj.getString("Invoice_date");
-                                    String invoice_date= Utility.getCurrentDate();
+                                    String Invoice_date = jsonObj.getString("Invoice_date");
+                                    String invoice_date= Utility.formatDate(Invoice_date);
+//                                    String invoice_date= Utility.getCurrentDate();
                                     String Package_Name = packagename;
                                     String Duration_Days =inputDuration.getText().toString();
                                     String Session = inputSession.getText().toString();
