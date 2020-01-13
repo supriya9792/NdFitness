@@ -90,6 +90,7 @@ public class PaymentDateActivity extends AppCompatActivity implements SwipeRefre
     private boolean isLoading = false;
     int itemCount = 0;
     int offset = 0;
+    int count=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -201,7 +202,7 @@ public class PaymentDateActivity extends AppCompatActivity implements SwipeRefre
                 isLoading = true;
                 currentPage++;
                 Log.d(TAG, "prepare called current item: " + currentPage+"Total page"+totalPage);
-                if(currentPage<=totalPage){
+                if(currentPage<=totalPage && count >100 ){
                     //currentPage = PAGE_START;
                     Log.d(TAG, "currentPage: " + currentPage);
                     isLastPage = false;
@@ -820,6 +821,7 @@ public class PaymentDateActivity extends AppCompatActivity implements SwipeRefre
 //                        if(jsonArrayResult.length() >10){
 //                            totalPage=jsonArrayResult.length()/10;
 //                        }
+                        count=jsonArrayResult.length();
                         ttl_pay_date.setText(String.valueOf(jsonArrayResult.length()));
                         ArrayList<CourseList> item = new ArrayList<CourseList>();
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {

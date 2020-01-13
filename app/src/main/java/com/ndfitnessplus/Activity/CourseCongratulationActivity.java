@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +45,7 @@ public class CourseCongratulationActivity extends AppCompatActivity {
     TextView Name,Packagename,StartDate,EndDate,PaymentMode,Paid,InvoiceId,Date,SessionTv,DurationTv,MobileNo,BalanceTV,Total,MemberID;
     CircularImageView imageView;
     public static String TAG = CourseDetailsActivity.class.getName();
+    ImageView sendWhatsapp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +68,7 @@ public class CourseCongratulationActivity extends AppCompatActivity {
         MemberID=findViewById(R.id.member_id);
         //Total=findViewById(R.id.total);
         imageView=findViewById(R.id.user_image);
+        sendWhatsapp=findViewById(R.id.send_to_whatsapp);
 
         Intent intent = getIntent();
         Bundle args = intent.getBundleExtra("BUNDLE");
@@ -83,47 +86,53 @@ public class CourseCongratulationActivity extends AppCompatActivity {
                // dismiss();
                 Intent intent = new Intent(CourseCongratulationActivity.this, CourseActivity.class);
                 startActivity(intent);
-//                try {
-//                    File outputFile = new File(filepath);
-////                Uri uri = Uri.fromFile(outputFile);
-////
-////                Intent share = new Intent();
-////                share.setAction(Intent.ACTION_SEND);
-////                share.setType("application/pdf");
-////                share.putExtra(Intent.EXTRA_STREAM, uri);
-////                share.setPackage("com.whatsapp");
-////                startActivity(share);
+
+            }
+        });
+        sendWhatsapp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                                try {
+                    File outputFile = new File(filepath);
+//                Uri uri = Uri.fromFile(outputFile);
 //
-//
-//                    String toNumber = "+91 9860562507"; // contains spaces.
-//                    toNumber = toNumber.replace("+", "").replace(" ", "");
-//
-//                    Intent sendIntent = new Intent("android.intent.action.MAIN");
-//                    if(Build.VERSION.SDK_INT>=24){
-//                        try{
-//                            Method m = StrictMode.class.getMethod("disableDeathOnFileUriExposure");
-//                            m.invoke(null);
-//                            sendIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(outputFile));
-////                            shareImage(Uri.fromFile(new File(Path)));
-//                        }catch(Exception e){
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                    sendIntent.putExtra("jid", toNumber + "@s.whatsapp.net");
-////                sendIntent.setType("*/*");
-////                String[] mimetypes = {"image/*", "text/plain"};
-////                sendIntent.putExtra(Intent.EXTRA_MIME_TYPES, mimetypes);       Image with message
-//                    sendIntent.setAction(Intent.ACTION_SEND);
-//                    sendIntent.setPackage("com.whatsapp");
-//                    sendIntent.setType("application/pdf");
-//                    startActivity(sendIntent);
-//
-//                }  catch (ActivityNotFoundException e) {
-//                    Toast.makeText(CourseCongratulationActivity.this, "WhatsApp not Installed", Toast.LENGTH_SHORT)
-//                            .show();
-//                }catch (Exception e){
-//                    e.printStackTrace();
-//                }
+//                Intent share = new Intent();
+//                share.setAction(Intent.ACTION_SEND);
+//                share.setType("application/pdf");
+//                share.putExtra(Intent.EXTRA_STREAM, uri);
+//                share.setPackage("com.whatsapp");
+//                startActivity(share);
+
+
+                    String toNumber = "+91"+MobileNo.getText().toString(); // contains spaces.
+                    toNumber = toNumber.replace("+", "").replace(" ", "");
+
+                    Intent sendIntent = new Intent("android.intent.action.MAIN");
+                    if(Build.VERSION.SDK_INT>=24){
+                        try{
+                            Method m = StrictMode.class.getMethod("disableDeathOnFileUriExposure");
+                            m.invoke(null);
+                            sendIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(outputFile));
+//                            shareImage(Uri.fromFile(new File(Path)));
+                        }catch(Exception e){
+                            e.printStackTrace();
+                        }
+                    }
+                    sendIntent.putExtra("jid", toNumber + "@s.whatsapp.net");
+//                sendIntent.setType("*/*");
+//                String[] mimetypes = {"image/*", "text/plain"};
+//                sendIntent.putExtra(Intent.EXTRA_MIME_TYPES, mimetypes);       Image with message
+                    sendIntent.setAction(Intent.ACTION_SEND);
+                    sendIntent.setPackage("com.whatsapp");
+                    sendIntent.setType("application/pdf");
+                    startActivity(sendIntent);
+
+                }  catch (ActivityNotFoundException e) {
+                    Toast.makeText(CourseCongratulationActivity.this, "WhatsApp not Installed", Toast.LENGTH_SHORT)
+                            .show();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
         });
     }

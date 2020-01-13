@@ -730,6 +730,7 @@ public class EnquiryActivity extends AppCompatActivity implements SwipeRefreshLa
 //                        if(jsonArrayResult.length() >10){
 //                            totalPage=jsonArrayResult.length()/10;
 //                        }
+                        count=jsonArrayResult.length();
                         String ttl_enq = String.valueOf(jsonArrayResult.length());
                         total_enquiry.setText(ttl_enq);
                      final   ArrayList<EnquiryList> subListArrayList = new ArrayList<EnquiryList>();

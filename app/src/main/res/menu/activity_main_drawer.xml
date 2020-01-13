@@ -42,6 +42,10 @@
       >
         <menu>
         <group android:checkableBehavior="single">
+<!--            <item-->
+<!--                android:id="@+id/nav_upload_logo"-->
+<!--                android:icon="@drawable/switchbranch"-->
+<!--                android:title="@string/menu_upload_logo" />-->
             <item
             android:id="@+id/nav_switch_branch"
             android:icon="@drawable/switchbranch"

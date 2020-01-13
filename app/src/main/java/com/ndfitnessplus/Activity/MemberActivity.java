@@ -235,7 +235,7 @@ public class MemberActivity extends AppCompatActivity implements SwipeRefreshLay
                 isLoading = true;
 
                 Log.d(TAG, "prepare called current item: " + currentPage+"Total page"+totalPage);
-                if(currentPage<=totalPage && length<=0){
+                if(currentPage<=totalPage && length>100){
                    // currentPage = PAGE_START;
                     Log.d(TAG, "currentPage: " + currentPage);
                     isLastPage = false;

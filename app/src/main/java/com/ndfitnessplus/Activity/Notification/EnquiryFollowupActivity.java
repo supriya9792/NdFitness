@@ -90,6 +90,7 @@ public class EnquiryFollowupActivity extends AppCompatActivity implements SwipeR
     Button BtnSearch;
     private int mYear, mMonth, mDay;
     TextView ttl_followups;
+    int count=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -259,7 +260,7 @@ public class EnquiryFollowupActivity extends AppCompatActivity implements SwipeR
                 isLoading = true;
                 currentPage++;
                 Log.d(TAG, "prepare called current item: " + currentPage+"Total page"+totalPage);
-                if(currentPage<=totalPage){
+                if(currentPage<=totalPage && count >100){
                     //currentPage = PAGE_START;
                     Log.d(TAG, "currentPage: " + currentPage);
                     isLastPage = false;
@@ -774,6 +775,7 @@ public class EnquiryFollowupActivity extends AppCompatActivity implements SwipeR
 //                        if(jsonArrayResult.length() >10){
 //                            totalPage=jsonArrayResult.length()/10;
 //                        }
+                        count=jsonArrayResult.length();
                         ttl_followups.setText(String.valueOf(jsonArrayResult.length()));
                         ArrayList<FollowupList> item = new ArrayList<FollowupList>();
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
@@ -912,7 +914,7 @@ public class EnquiryFollowupActivity extends AppCompatActivity implements SwipeR
                     swipeRefresh.setVisibility(View.VISIBLE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//
+                        count=jsonArrayResult.length();
                         final   ArrayList<FollowupList> subListArrayList = new ArrayList<FollowupList>();
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
                             for (int i = 0; i < jsonArrayResult.length(); i++) {

@@ -1,6 +1,8 @@
 package com.ndfitnessplus.Activity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -8,16 +10,19 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.telephony.TelephonyManager;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -51,11 +56,15 @@ import com.ndfitnessplus.Utility.SharedPrefManager;
 import com.ndfitnessplus.Utility.SharedPrefereneceUtil;
 import com.ndfitnessplus.Utility.Utility;
 import com.ndfitnessplus.Utility.ViewDialog;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Timer;
@@ -85,6 +94,8 @@ public class MainActivity extends AppCompatActivity
     public  String ImeiNo;
     TelephonyManager telephonyManager;
     AdSliderList subList;
+    private Uri mCropImageUri;
+    Bitmap bitmap;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -304,6 +315,12 @@ public class MainActivity extends AppCompatActivity
                 } else {
                     Toast.makeText(MainActivity.this,"Without permission we check",Toast.LENGTH_LONG).show();
                 }
+                if (mCropImageUri != null && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // required permissions granted, start crop image activity
+                    startCropImageActivity(mCropImageUri);
+                } else {
+                    //  Toast.makeText(this, "Cancelling, required permissions are not granted", Toast.LENGTH_LONG).show();
+                }
                 break;
             default:
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -443,9 +460,151 @@ public class MainActivity extends AppCompatActivity
             startActivity(intent);
             finish();
         }
+//        else if(id==R.id.nav_upload_logo){
+//            CropImage.startPickImageActivity(MainActivity.this);
+//        }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+    //Upload Logo
+
+    @Override
+    @SuppressLint("NewApi")
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        // handle result of pick image chooser
+        if (requestCode == CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            Uri imageUri = CropImage.getPickImageResultUri(this, data);
+
+            // For API >= 23 we need to check specifically that we have permissions to read external storage.
+            if (CropImage.isReadExternalStoragePermissionsRequired(this, imageUri)) {
+                // request permissions and handle the result in onRequestPermissionsResult()
+                mCropImageUri = imageUri;
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
+            } else {
+                // no permissions required or already grunted, can start crop image activity
+                startCropImageActivity(imageUri);
+            }
+        }
+
+        // handle result of CropImageActivity
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+//                CapturedImage.setVisibility(View.VISIBLE);
+//                // ((ImageButton) findViewById(R.id.quick_start_cropped_image)).setImageURI(result.getUri());
+//                CapturedImage.setImageURI(result.getUri());
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), result.getUri());
+                    uploadimageClass();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                //  Toast.makeText(this, "Cropping successful, Sample: " + result.getSampleSize(), Toast.LENGTH_LONG).show();
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Toast.makeText(this, "Cropping failed: " + result.getError(), Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+
+    /**
+     * Start crop image activity for the given image.
+     */
+    private void startCropImageActivity(Uri imageUri) {
+        CropImage.activity(imageUri)
+                .setGuidelines(CropImageView.Guidelines.ON)
+                .setMultiTouchEnabled(true)
+                .setAspectRatio(1,1)
+                .setFixAspectRatio(true)
+                .start(this);
+    }
+    private void uploadimageClass() {
+
+        ByteArrayOutputStream byteArrayOutputStreamObject ;
+
+        byteArrayOutputStreamObject = new ByteArrayOutputStream();
+
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 70, byteArrayOutputStreamObject);
+
+        byte[] byteArrayVar = byteArrayOutputStreamObject.toByteArray();
+
+        final String  ConvertImage = Base64.encodeToString(byteArrayVar, Base64.DEFAULT);
+        Log.v(TAG, String.format(" ConvertImage= %s", ConvertImage));
+
+
+
+        class UploadImageTrackClass extends AsyncTask<String, Void, String> {
+
+            ServerClass ruc = new ServerClass();
+
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                Log.v(TAG, "onPreExecute");
+                // showProgressDialog();
+                viewDialog.showDialog();
+            }
+
+            @Override
+            protected void onPostExecute(String response) {
+                super.onPostExecute(response);
+                Log.v(TAG, String.format("onPostExecute :: response = %s", response));
+                // dismissProgressDialog();
+                viewDialog.hideDialog();
+                //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
+                ProfileDetails(response);
+
+            }
+            private void ProfileDetails(String response) {
+                Log.v(TAG, String.format("uploadResponse :: response = %s", response));
+
+                JSONObject jsonObjLoginResponse = null;
+                try {
+                    jsonObjLoginResponse = new JSONObject(response);
+                    String success = jsonObjLoginResponse.getString(getResources().getString(R.string.success));
+
+                    if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
+                        Toast.makeText(getApplicationContext(), "Uploaded Successfully", Toast.LENGTH_LONG).show();
+                       // finish();
+                        // SharedPrefereneceUtil.setCode(ChatRoomActivity.this,code);
+
+                    }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero)))
+                    {
+
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            @Override
+            protected String doInBackground(String... params) {
+                // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+                HashMap<String, String> ProfileDetails = new HashMap<String, String>();
+                // ProfileDetails.put("image_name", GetImageNameEditText);
+                ProfileDetails.put("image_data", ConvertImage);
+                Log.d(TAG, "do in background image_data: "+ConvertImage);
+                ProfileDetails.put("contact", SharedPrefereneceUtil.getCompanyName(MainActivity.this));
+                Log.d(TAG, "contact: "+SharedPrefereneceUtil.getCompanyName(MainActivity.this));
+                ProfileDetails.put("id", SharedPrefereneceUtil.getSelectedBranchId(MainActivity.this));
+                Log.d(TAG, "id: "+SharedPrefereneceUtil.getSelectedBranchId(MainActivity.this));
+                ProfileDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(MainActivity.this));
+                Log.d(TAG, "comp_id: "+SharedPrefereneceUtil.getSelectedBranchId(MainActivity.this));
+                ProfileDetails.put("user", "Company");
+                Log.d(TAG, "user: "+"Company");
+                ProfileDetails.put("action", "upload_image");
+                String domainurl=SharedPrefereneceUtil.getDomainUrl(MainActivity.this);
+                //EmployeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(Employee.this));
+                String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, ProfileDetails);
+                Log.v(TAG, String.format("doInBackground :: upload result= %s", loginResult));
+                return loginResult;
+            }
+        }
+        UploadImageTrackClass ru = new UploadImageTrackClass();
+        ru.execute("5");
     }
     private void showProgressDialog() {
         Log.v(TAG, String.format("showProgressDialog"));
@@ -812,9 +971,7 @@ public class MainActivity extends AppCompatActivity
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //  dismissProgressDialog();
-            //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
-            //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
+
             AdvertisenDetails(response);
 
         }
@@ -870,9 +1027,7 @@ public class MainActivity extends AppCompatActivity
                                 subList.setAdTitle(Company_Name);
                                 subList.setAdDisc(Discription);
                                 subList.setUrl(Website_Url);
-                                //Toast.makeText(EnquiryActivity.this, "followup date: "+next_foll_date, Toast.LENGTH_SHORT).show();
 
-                                //Toast.makeText(MainActivity.this, "j "+j, Toast.LENGTH_SHORT).show();
                                 data.add(subList);
 
                                 adapter = new AdSliderAdapter(MainActivity.this,data);

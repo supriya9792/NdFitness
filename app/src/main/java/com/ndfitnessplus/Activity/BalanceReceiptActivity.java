@@ -1733,7 +1733,7 @@ public class BalanceReceiptActivity extends AppCompatActivity {
                                             public void run() {
                                                 try  {
                                                     Image image = Image.getInstance(new URL(imgurl));
-                                                    image.setAbsolutePosition(510,750);
+                                                    image.setAbsolutePosition(440,750);
                                                     image.scalePercent(50);
 //                                                    //Set absolute position for image in PDF (or fixed)
 //                                                    image.setAbsolutePosition(100, 500);

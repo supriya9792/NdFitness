@@ -425,7 +425,7 @@
                     android:layout_marginTop="@dimen/spacing_mlarge"
                     android:background="@android:color/transparent"
                     android:tint="@color/grey_60"
-                    app:srcCompat="@drawable/rate" />
+                    app:srcCompat="@drawable/ic_event" />
 
                 <View
                     android:layout_width="@dimen/spacing_large"

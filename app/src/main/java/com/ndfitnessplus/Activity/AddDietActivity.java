@@ -263,11 +263,11 @@ public class AddDietActivity extends AppCompatActivity {
                                 .LENGTH_SHORT).show();
 
                     }else if(discount == 0){
-
-                    } Toast.makeText(AddDietActivity.this,"No of Meals Must be Greater than zero",Toast
-                            .LENGTH_SHORT).show();
-                    inputNoOfMeals.setError(null);
-                    inputNoOfMeals.getText().clear();
+                        Toast.makeText(AddDietActivity.this,"No of Meals Must be Greater than zero",Toast
+                                .LENGTH_SHORT).show();
+                        inputNoOfMeals.setError(null);
+                        inputNoOfMeals.getText().clear();
+                    }
                 }
             }
         });

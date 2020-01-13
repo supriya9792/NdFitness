@@ -386,7 +386,7 @@ public class StaffAttendanceFilterActivity extends AppCompatActivity {
 
                                     if(timearr[1]!=null)
                                         _24HourDt = _24HourSDF.parse(timearr[1]);
-                                    if(!OutTime.equals("null")){
+                                    if(!OutTime.equals("")){
                                         outtimearr=OutTime.split(" ");
                                         if(outtimearr[1]!=null) {
                                             _24HourDtOut = _24HourSDF.parse(outtimearr[1]);

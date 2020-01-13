@@ -48,6 +48,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class CreatePlanActivity extends AppCompatActivity {
     public EditText inputPackageName,inputDuration,inputSession,inputDescription,inputTax,inputMaxDiscount,inputRackAmount;
@@ -69,6 +70,9 @@ public class CreatePlanActivity extends AppCompatActivity {
     CheckBox Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,All;
     ViewDialog viewDialog;
     StringBuilder Days=new StringBuilder();
+    List<String> days = new ArrayList<>();
+
+    boolean allchecked=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -223,7 +227,7 @@ public class CreatePlanActivity extends AppCompatActivity {
             };
             spinPackageStatus.setAdapter(packageStatusadapter);
         }
-
+         spinPackageStatus.setSelection(1);
         // *********************** Package Name **********************
         spinPackageStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -381,36 +385,73 @@ public class CreatePlanActivity extends AppCompatActivity {
             }
         });
         Days.setLength(0);
-        All.setOnCheckedChangeListener(new
-                         CompoundButton.OnCheckedChangeListener() {
-                             @Override
-                             public void onCheckedChanged(CompoundButton buttonView, boolean
-                                     isChecked) {
-                                 if (isChecked) {
-                                     Sunday.setChecked(true);
-                                     Monday.setChecked(true);
-                                     Tuesday.setChecked(true);
-                                     Wednesday.setChecked(true);
-                                     Thursday.setChecked(true);
-                                     Friday.setChecked(true);
-                                     Saturday.setChecked(true);
-                                 }else {
-                                     Days.setLength(0);
-                                     Sunday.setChecked(false);
-                                     Monday.setChecked(false);
-                                     Tuesday.setChecked(false);
-                                     Wednesday.setChecked(false);
-                                     Thursday.setChecked(false);
-                                     Friday.setChecked(false);
-                                     Saturday.setChecked(false);
-                                 }
-                             }
-                         });
-          Sunday.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+//        All.setOnCheckedChangeListener(new
+//                         CompoundButton.OnCheckedChangeListener() {
+//                             @Override
+//                             public void onCheckedChanged(CompoundButton buttonView, boolean
+//                                     isChecked) {
+//                                 if (isChecked) {
+//                                     allchecked=true;
+//                                     Sunday.setChecked(true);
+//                                     Monday.setChecked(true);
+//                                     Tuesday.setChecked(true);
+//                                     Wednesday.setChecked(true);
+//                                     Thursday.setChecked(true);
+//                                     Friday.setChecked(true);
+//                                     Saturday.setChecked(true);
+//                                 }else {
+//                                     Days.setLength(0);
+////                                     Sunday.setChecked(false);
+////                                     Monday.setChecked(false);
+////                                     Tuesday.setChecked(false);
+////                                     Wednesday.setChecked(false);
+////                                     Thursday.setChecked(false);
+////                                     Friday.setChecked(false);
+////                                     Saturday.setChecked(false);
+//                                 }
+//                             }
+//                         });
+        All.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if (All.isChecked())
+                {
+                    Sunday.setChecked(true);
+                    Monday.setChecked(true);
+                    Tuesday.setChecked(true);
+                    Wednesday.setChecked(true);
+                    Thursday.setChecked(true);
+                    Friday.setChecked(true);
+                    Saturday.setChecked(true);
+                }
+                else
+                {
+                     Days.setLength(0);
+                     days.clear();
+                     Sunday.setChecked(false);
+                     Monday.setChecked(false);
+                     Tuesday.setChecked(false);
+                     Wednesday.setChecked(false);
+                     Thursday.setChecked(false);
+                     Friday.setChecked(false);
+                     Saturday.setChecked(false);
+                    //Perform action when you touch on checkbox and it change to unselected state
+                }
+            }
+        });
+
+        Sunday.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
               @Override
               public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                   if(b){
-                     Days.append("Sunday,");
+                     //Days.append("Sunday,");
+                      days.add("Sunday");
+                  }else {
+                      days.remove(new String("Sunday"));
+                      All.setChecked(false);
                   }
               }
           });
@@ -418,7 +459,12 @@ public class CreatePlanActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(b){
-                    Days.append("Monday,");
+                  //  Days.append("Monday,");
+                    days.add("Monday");
+
+                }else {
+                    days.remove(new String("Monday"));
+                    All.setChecked(false);
                 }
             }
         });
@@ -426,7 +472,11 @@ public class CreatePlanActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(b){
-                    Days.append("Tuesday,");
+                  //  Days.append("Tuesday,");
+                    days.add("Tuesday");
+                }else {
+                    days.remove(new String("Tuesday"));
+                    All.setChecked(false);
                 }
             }
         });
@@ -434,7 +484,11 @@ public class CreatePlanActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(b){
-                    Days.append("Wednesday,");
+                   // Days.append("Wednesday,");
+                    days.add("Wednesday");
+                }else {
+                    days.remove(new String("Wednesday"));
+                    All.setChecked(false);
                 }
             }
         });
@@ -442,7 +496,11 @@ public class CreatePlanActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(b){
-                    Days.append("Thursday,");
+                   // Days.append("Thursday,");
+                    days.add("Thursday");
+                }else {
+                    days.remove(new String("Thursday"));
+                    All.setChecked(false);
                 }
             }
         });
@@ -450,7 +508,12 @@ public class CreatePlanActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(b){
-                    Days.append("Friday,");
+
+                  //  Days.append("Friday,");
+                    days.add("Friday");
+                }else {
+                    days.remove(new String("Friday"));
+                    All.setChecked(false);
                 }
             }
         });
@@ -458,7 +521,11 @@ public class CreatePlanActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(b){
-                    Days.append("Saturday");
+                    //Days.append("Saturday,");
+                    days.add("Saturday");
+                }else {
+                    days.remove(new String("Saturday"));
+                    All.setChecked(false);
                 }
             }
         });
@@ -491,7 +558,7 @@ public class CreatePlanActivity extends AppCompatActivity {
                         ){
                     Toast.makeText(this, "Please fill Package type or Package Status", Toast.LENGTH_LONG).show();
                 }else{
-                    if(Days.length()>0){
+                    if(days.size()>0){
                         AddPackageClass();
                     }else{
                         Toast.makeText(this, "Please select Days", Toast.LENGTH_LONG).show();
@@ -688,8 +755,8 @@ public class CreatePlanActivity extends AppCompatActivity {
             Log.v(TAG, String.format("doInBackground :: rack_amt = %s", inputRackAmount.getText().toString()));
             AddPackageDetails.put("max_disc", inputMaxDiscount.getText().toString());
             Log.v(TAG, String.format("doInBackground :: max_disc = %s", inputMaxDiscount.getText().toString()));
-            AddPackageDetails.put("days",Days.toString());
-            Log.v(TAG, String.format("doInBackground :: days = %s", Days.toString()));
+            AddPackageDetails.put("days",days.toString().replace("[", "").replace("]", ""));
+            Log.v(TAG, String.format("doInBackground :: days = %s", days.toString()));
             AddPackageDetails.put("package_status",packageStatus);
             Log.v(TAG, String.format("doInBackground :: package_type = %s", packageType));
             AddPackageDetails.put("mode","AdminApp");
@@ -720,7 +787,8 @@ public class CreatePlanActivity extends AppCompatActivity {
              }
             else if (success.equalsIgnoreCase(getResources().getString(R.string.one)))
             {
-                Toast.makeText(CreatePlanActivity.this,"Mobile Number Already Exits ,Please Enter New Mobile Number",Toast.LENGTH_SHORT).show();
+                inputPackageName.getText().clear();
+                Toast.makeText(CreatePlanActivity.this,"Package Name Already Exits ,Please Enter New Package Name",Toast.LENGTH_SHORT).show();
             }
 
         } catch (JSONException e) {

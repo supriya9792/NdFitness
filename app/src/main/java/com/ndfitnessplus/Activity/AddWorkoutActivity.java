@@ -404,8 +404,7 @@ public class AddWorkoutActivity extends AppCompatActivity {
     }
     private void submitForm() {
                 if (awesomeValidation.validate()) {
-                    if(workoutLevel.equals(getResources().getString(R.string.workout_level)) ||
-                            instructorName.equals(getResources().getString(R.string.hint_instructor))) {
+                    if(workoutLevel.equals(getResources().getString(R.string.workout_level)) || instructorName.equals(getResources().getString(R.string.hint_instructor_name))) {
                         Toast.makeText(this, "Please fill all fields", Toast.LENGTH_LONG).show();
                     }else{
                         if(subListArrayList.size()>0){

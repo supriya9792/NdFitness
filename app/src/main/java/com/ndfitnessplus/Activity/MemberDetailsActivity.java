@@ -500,11 +500,11 @@ public class MemberDetailsActivity extends AppCompatActivity {
                         }
 
                     }
-                    if(FollowupType.equals("Payment")&&(Rating.equals("Not Interested"))){
-                        inputNextFollowupdate.setEnabled(true);
-                        String curr_date = Utility.getCurrentDate();
-                        inputNextFollowupdate.setText(curr_date);
-                    }
+//                    if(FollowupType.equals("Payment")&&(Rating.equals("Not Interested"))){
+//                        inputNextFollowupdate.setEnabled(true);
+//                        String curr_date = Utility.getCurrentDate();
+//                        inputNextFollowupdate.setText(curr_date);
+//                    }
 
                     // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.black));
                     // Showing selected spinner item
@@ -594,18 +594,18 @@ public class MemberDetailsActivity extends AppCompatActivity {
                                 inputNextFollowupdate.setText(curr_date);
                             }
                         }
-                        if(FollowupType.equals("Payment")&&(Rating.equals("Not Interested"))){
-                            inputNextFollowupdate.setEnabled(true);
-                            String curr_date = Utility.getCurrentDate();
-                            inputNextFollowupdate.setText(curr_date);
-                        }else{
-                            if (Rating.equals("Not Interested") || Rating.equals("Converted")) {
-                                //Toast.makeText(parent.getContext(), "no interetsed: ", Toast.LENGTH_LONG).show();
-                                inputNextFollowupdate.setText("");
-                                inputNextFollowupdate.setEnabled(false);
-                                inputNextFollowupdate.setKeyListener(null);
-                            }
-                        }
+//                        if(FollowupType.equals("Payment")&&(Rating.equals("Not Interested"))){
+//                            inputNextFollowupdate.setEnabled(true);
+//                            String curr_date = Utility.getCurrentDate();
+//                            inputNextFollowupdate.setText(curr_date);
+//                        }else{
+//                            if (Rating.equals("Not Interested") || Rating.equals("Converted")) {
+//                                //Toast.makeText(parent.getContext(), "no interetsed: ", Toast.LENGTH_LONG).show();
+//                                inputNextFollowupdate.setText("");
+//                                inputNextFollowupdate.setEnabled(false);
+//                                inputNextFollowupdate.setKeyListener(null);
+//                            }
+//                        }
 
 
                     }

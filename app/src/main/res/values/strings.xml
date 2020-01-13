@@ -44,6 +44,7 @@
     <string name="menu_term_condi">Terms &amp; Conditions</string>
     <string name="menu_push_noti">Push Notifications</string>
     <string name="menu_logout">Logout</string>
+    <string name="menu_upload_logo">Upload Company Logo</string>
 
 
     <!--Main page String-->
@@ -382,6 +383,7 @@
     <string name="invoice_id">Invoice Id: </string>
     <string name="member_id">Member Id: </string>
     <string name="exi_course">Existing Bills</string>
+    <string name="send_receipt">Send Receipt On </string>
 
     <!-- Renew Admission Activity-->
     <string name="start_date">Start Date *</string>
@@ -478,6 +480,7 @@
     <string name="prompt_att_mode">Select Attendance Mode</string>
     <string-array name="attendance_mode_array">
         <item>Select Mode</item>
+        <item>All</item>
         <item>Web</item>
         <item>AdminApp</item>
         <item>MemberApp</item>
@@ -488,6 +491,7 @@
     <string name="attendance_filters">Attendance Filters</string>
     <string-array name="staff_attendance_mode_array">
         <item>Select Mode</item>
+        <item>All</item>
         <item>Web</item>
         <item>AdminApp</item>
         <item>AdminAppIos</item>

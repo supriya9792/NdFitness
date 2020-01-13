@@ -535,9 +535,8 @@ public class AddMemberActivity extends AppCompatActivity implements View.OnClick
 
         byteArrayOutputStreamObject = new ByteArrayOutputStream();
         if(bitmap != null) {
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStreamObject);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 70, byteArrayOutputStreamObject);
         }
-
 
         byte[] byteArrayVar = byteArrayOutputStreamObject.toByteArray();
 
@@ -633,8 +632,7 @@ public class AddMemberActivity extends AppCompatActivity implements View.OnClick
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            // dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
+
             OccupationDetails(response);
 
         }
@@ -686,10 +684,7 @@ public class AddMemberActivity extends AppCompatActivity implements View.OnClick
                                     String Occupation     = jsonObj.getString("Occupation");
 
                                     String id=jsonObj.getString("Auto_Id");
-//                               if(i==0){
-//                                   occupationList.setName(getResources().getString(R.string.promt_country));
-//                                   enqF.add(0,occupationList);
-//                               }
+//
                                     occupationList.setName(Occupation);
                                     occupationList.setId(id);
 
@@ -738,8 +733,7 @@ public class AddMemberActivity extends AppCompatActivity implements View.OnClick
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
 
-                    //forumCount.setVisibility(View.INVISBLE);
-                    // queCount.setVisibility(View.INVISIBLE);
+
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");
@@ -911,10 +905,7 @@ public class AddMemberActivity extends AppCompatActivity implements View.OnClick
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-           // dismissProgressDialog();
-//            viewDialog.hideDialog();
-            //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
-            //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
+
             CheckContactInEnquiryDetails(response);
 
         }
@@ -1120,7 +1111,6 @@ public class AddMemberActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
-
     private void AddMemberDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("loginServerResponse :: response = %s", jsonResponse));
@@ -1162,9 +1152,7 @@ public class AddMemberActivity extends AppCompatActivity implements View.OnClick
         if(bloodgroup.equals(getResources().getString(R.string.blood_group)) ){
             bloodgroup="NA";
         }
-        //first validate the form then move ahead
-        //if this becomes true that means validation is successfull
-        //if(inputPassword.getText().toString().equals(inputCfmPassword.getText().toString())){
+
         if((inputEmail.length()>0) ){
             awesomeValidation.addValidation(this, R.id.input_email, Patterns.EMAIL_ADDRESS, R.string.err_msg_email);
             if (awesomeValidation.validate()) {

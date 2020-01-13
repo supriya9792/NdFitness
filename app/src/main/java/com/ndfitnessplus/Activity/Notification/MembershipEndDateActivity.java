@@ -220,8 +220,9 @@ public class MembershipEndDateActivity extends AppCompatActivity {
                 else
                 {
                     //isLoading = false;
-                    MembershipEndDateActivity.this.adapter.filter(String.valueOf(arg0));
 
+                    int cnt= MembershipEndDateActivity.this.adapter.filter(String.valueOf(arg0));
+                    ttl_mem_end.setText(String.valueOf(cnt));
                 }
             }
             @Override

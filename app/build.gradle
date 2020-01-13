@@ -7,7 +7,7 @@ android {
         applicationId "com.ndfitnessplus"
         minSdkVersion 18
         targetSdkVersion 28
-        versionCode 16
+        versionCode 18
         versionName "1.0"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -76,6 +76,8 @@ dependencies {
     implementation 'sun.bob:mcalendarview:1.0.0'//Calendar
     implementation 'com.itextpdf:itextg:5.5.10'
     implementation 'com.itextpdf.tool:xmlworker:5.5.10'
+
+    implementation 'com.github.barteksc:android-pdf-viewer:2.0.3'   //pdf Viewer
 //    implementation 'com.itextpdf:html2pdf:2.1.2'
 ////    implementation 'itext:itext:4.2.1'
 ////    implementation 'com.itextpdf:itext7-core:7.0.2'

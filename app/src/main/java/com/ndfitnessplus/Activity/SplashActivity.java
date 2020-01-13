@@ -84,13 +84,6 @@ public void run() {
         }
 
 
-//                    if(logintype.equals("facebook")||logintype.equals("google")){
-//                        nextadminActivity();
-//                    }else{
-//                        loginActivity();
-//                    }
-
-
 
         } catch (Exception e) {
 

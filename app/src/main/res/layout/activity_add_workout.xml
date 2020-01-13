@@ -176,7 +176,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/hint_instructor"
+                        android:text="@string/hint_instructor_name"
                         android:id="@+id/txt_instructor_name"
                         android:paddingTop="@dimen/spacing_medium"
                         android:visibility="gone"

@@ -12,6 +12,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -26,8 +27,15 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CancellationSignal;
 import android.os.Environment;
+import android.os.ParcelFileDescriptor;
 import android.os.StrictMode;
+import android.print.PageRange;
+import android.print.PrintAttributes;
+import android.print.PrintDocumentAdapter;
+import android.print.PrintDocumentInfo;
+import android.print.PrintManager;
 import android.provider.ContactsContract;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -96,6 +104,7 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -186,37 +195,37 @@ public class CourseDetailsActivity extends AppCompatActivity {
         initToolbar();
         requestPermission();
         initializeFonts();
-//        if (!isExternalStorageAvailable() || isExternalStorageReadOnly()) {
-//            Log.v(LOG_TAG, "External Storage not available or you don't have permission to write");
-//        }
-//        else {
-//            String root = Environment.getExternalStorageDirectory().getPath();
-//            File myDir = new File(root + "/MyInvoices");
-//            myDir.mkdirs();
-//            long n = System.currentTimeMillis() / 1000L;
-//            String iname=SharedPrefereneceUtil.getSelectedBranchId(CourseDetailsActivity.this)+member_id;
-//            fname = "Invoice" + n + ".pdf";
-//            FilePath = root + "/MyInvoices/" + fname;
-//            pdfFile = new File(myDir, fname);
-//            if (pdfFile.exists())
-//                pdfFile.delete();
-//
-//            try {
-//                pdfFile.createNewFile();
-//                FileOutputStream out = new FileOutputStream(pdfFile);
-//                out.flush();
-//                out.close();
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//            MediaScannerConnection.scanFile(this, new String[]{pdfFile.toString()}, null,
-//                    new MediaScannerConnection.OnScanCompletedListener() {
-//                        public void onScanCompleted(String path, Uri uri) {
-//                            Log.i("ExternalStorage", "Scanned " + path + ":");
-//                            Log.i("ExternalStorage", "-> uri=" + uri);
-//                        }
-//                    });
-//        }
+        if (!isExternalStorageAvailable() || isExternalStorageReadOnly()) {
+            Log.v(LOG_TAG, "External Storage not available or you don't have permission to write");
+        }
+        else {
+            String root = Environment.getExternalStorageDirectory().getPath();
+            File myDir = new File(root + "/MyInvoices");
+            myDir.mkdirs();
+            long n = System.currentTimeMillis() / 1000L;
+            String iname=SharedPrefereneceUtil.getSelectedBranchId(CourseDetailsActivity.this)+member_id;
+            fname = "Invoice" + n + ".pdf";
+            FilePath = root + "/MyInvoices/" + fname;
+            pdfFile = new File(myDir, fname);
+            if (pdfFile.exists())
+                pdfFile.delete();
+
+            try {
+                pdfFile.createNewFile();
+                FileOutputStream out = new FileOutputStream(pdfFile);
+                out.flush();
+                out.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            MediaScannerConnection.scanFile(this, new String[]{pdfFile.toString()}, null,
+                    new MediaScannerConnection.OnScanCompletedListener() {
+                        public void onScanCompleted(String path, Uri uri) {
+                            Log.i("ExternalStorage", "Scanned " + path + ":");
+                            Log.i("ExternalStorage", "-> uri=" + uri);
+                        }
+                    });
+        }
     }
 
     private void initToolbar() {
@@ -315,42 +324,42 @@ public class CourseDetailsActivity extends AppCompatActivity {
                     .setDefaultRequestOptions(requestOptions)
                     .load(url).into(imageView);
 
+            pdfGenerationdataclass();
             folldetailsclass();
             balanceTrasactionclass();
             coursedetailsclass();
-            pdfGenerationdataclass();
         }
 //        requestPermission();
-        if (!isExternalStorageAvailable() || isExternalStorageReadOnly()) {
-            Log.v(LOG_TAG, "External Storage not available or you don't have permission to write");
-        } else {
-            String root = Environment.getExternalStorageDirectory().getPath();
-            File myDir = new File(root + "/MyInvoices");
-            myDir.mkdirs();
-            long n = System.currentTimeMillis() / 1000L;
-            String iname = SharedPrefereneceUtil.getSelectedBranchId(CourseDetailsActivity.this) + member_id;
-            fname = "Invoice" + n + ".pdf";
-            FilePath = root + "/MyInvoices/" + fname;
-            pdfFile = new File(myDir, fname);
-            if (pdfFile.exists())
-                pdfFile.delete();
-
-            try {
-                pdfFile.createNewFile();
-                FileOutputStream out = new FileOutputStream(pdfFile);
-                out.flush();
-                out.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            MediaScannerConnection.scanFile(this, new String[]{pdfFile.toString()}, null,
-                    new MediaScannerConnection.OnScanCompletedListener() {
-                        public void onScanCompleted(String path, Uri uri) {
-                            Log.i("ExternalStorage", "Scanned " + path + ":");
-                            Log.i("ExternalStorage", "-> uri=" + uri);
-                        }
-                    });
-        }
+//        if (!isExternalStorageAvailable() || isExternalStorageReadOnly()) {
+//            Log.v(LOG_TAG, "External Storage not available or you don't have permission to write");
+//        } else {
+//            String root = Environment.getExternalStorageDirectory().getPath();
+//            File myDir = new File(root + "/MyInvoices");
+//            myDir.mkdirs();
+//            long n = System.currentTimeMillis() / 1000L;
+//            String iname = SharedPrefereneceUtil.getSelectedBranchId(CourseDetailsActivity.this) + member_id;
+//            fname = "Invoice" + n + ".pdf";
+//            FilePath = root + "/MyInvoices/" + fname;
+//            pdfFile = new File(myDir, fname);
+//            if (pdfFile.exists())
+//                pdfFile.delete();
+//
+//            try {
+//                pdfFile.createNewFile();
+//                FileOutputStream out = new FileOutputStream(pdfFile);
+//                out.flush();
+//                out.close();
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//            MediaScannerConnection.scanFile(this, new String[]{pdfFile.toString()}, null,
+//                    new MediaScannerConnection.OnScanCompletedListener() {
+//                        public void onScanCompleted(String path, Uri uri) {
+//                            Log.i("ExternalStorage", "Scanned " + path + ":");
+//                            Log.i("ExternalStorage", "-> uri=" + uri);
+//                        }
+//                    });
+//        }
         phone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -797,16 +806,64 @@ public class CourseDetailsActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_print) {
-//            Intent pdfOpenintent = new Intent(Intent.ACTION_VIEW);
-//            pdfOpenintent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//            pdfOpenintent.setDataAndType(Uri.fromFile(pdfFile), "application/pdf");
-//            try {
-//                startActivity(pdfOpenintent);
-//            }
-//            catch (ActivityNotFoundException e) {
-//                Toast.makeText(CourseDetailsActivity.this, "App not found to preview Pdf", Toast.LENGTH_SHORT)
-//                        .show();
-//            }
+             if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            PrintManager printManager = (PrintManager) this.getSystemService(Context.PRINT_SERVICE);
+            String jobName = this.getString(R.string.app_name) + " Document";
+
+            PrintDocumentAdapter pda = new PrintDocumentAdapter() {
+
+                @Override
+                public void onWrite(PageRange[] pages, ParcelFileDescriptor destination, CancellationSignal cancellationSignal, WriteResultCallback callback) {
+                    InputStream input = null;
+                    OutputStream output = null;
+
+                    try {
+//                        AssetManager assetManager = getAssets();
+//                        String root = Environment.getExternalStorageDirectory().getPath();
+//                        String path=root+"/MyInvoices/Invoice1578297168.pdf";
+                        File file = new File(FilePath);
+                        input = new FileInputStream(file);
+                        output = new FileOutputStream(destination.getFileDescriptor());
+                        byte[] buf = new byte[1024];
+                        int bytesRead;
+
+                        while ((bytesRead = input.read(buf)) > 0) {
+                            output.write(buf, 0, bytesRead);
+                        }
+
+                        callback.onWriteFinished(new PageRange[]{PageRange.ALL_PAGES});
+
+                    } catch (FileNotFoundException ee) {
+                        //Catch exception
+                    } catch (Exception e) {
+                        //Catch exception
+                    } finally {
+                        try {
+                            input.close();
+                            output.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+                @Override
+                public void onLayout(PrintAttributes oldAttributes, PrintAttributes newAttributes, CancellationSignal cancellationSignal, LayoutResultCallback callback, Bundle extras) {
+
+                    if (cancellationSignal.isCanceled()) {
+                        callback.onLayoutCancelled();
+                        return;
+                    }
+
+                    // int pages = computePageCount(newAttributes);
+
+                    PrintDocumentInfo pdi = new PrintDocumentInfo.Builder("Name of file").setContentType(PrintDocumentInfo.CONTENT_TYPE_DOCUMENT).build();
+
+                    callback.onLayoutFinished(pdi, true);
+                }
+            };
+            printManager.print(jobName, pda, null);
+        }
 
             return true;
         } else if (id == R.id.whatsapp) {
@@ -849,7 +906,8 @@ public class CourseDetailsActivity extends AppCompatActivity {
                             e.printStackTrace();
                         }
                     }else{
-                        sendIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(pdfFile));
+                            sendIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(pdfFile));
+
                     }
                    //  sendIntent.setComponent(new ComponentName("com.whatsapp","com.whatsapp.Conversation"));
                     sendIntent.putExtra("jid", toNumber + "@s.whatsapp.net");
@@ -858,6 +916,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
 //                sendIntent.setType("*/*");
 //                String[] mimetypes = {"image/*", "text/plain"};
 //                sendIntent.putExtra(Intent.EXTRA_MIME_TYPES, mimetypes);       Image with message
+                    sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                     sendIntent.setAction(Intent.ACTION_SEND);
                     sendIntent.setPackage("com.whatsapp");
                     sendIntent.setType("application/pdf");
@@ -994,9 +1053,11 @@ public class CourseDetailsActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }else{
-                sendIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(pdfFile));
+                    sendIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
+//                            shareImage(Uri.fromFile(new File(Path)));
             }
            // sendIntent.setComponent(new  ComponentName("com.whatsapp","com.whatsapp.Conversation"));
+            sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             sendIntent.putExtra("jid", PhoneNumberUtils.stripSeparators(toNumber) + "@s.whatsapp.net");
 //            sendIntent.putExtra(Intent.ACTION_VIEW, uri);
 //                sendIntent.setType("*/*");
@@ -2774,7 +2835,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
             String domainurl= SharedPrefereneceUtil.getDomainUrl(CourseDetailsActivity.this);
              CourseDetailsDetails.put("action","show_course_details_by_member_id");
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL,  CourseDetailsDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
+            Log.v(TAG, String.format("doInBackground :: show_course_details_by_member_id= %s", loginResult));
             return loginResult;
         }
 
@@ -3150,14 +3211,14 @@ public class CourseDetailsActivity extends AppCompatActivity {
             PDFGenerationDataDetails.put("action","show_receipt_data");
             String domainurl= SharedPrefereneceUtil.getDomainUrl(CourseDetailsActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, PDFGenerationDataDetails);
-            Log.v(TAG, String.format("doInBackground :: show_receipt_data= %s", loginResult));
+            Log.v(TAG, String.format("doInBackground :: Pdf Generation= %s", loginResult));
             return loginResult;
         }
     }
 
     private void PDFGenerationDataDetails(String jsonResponse) {
 
-        Log.v(TAG, String.format("show_receipt_data :: jsonResponse = %s", jsonResponse));
+        Log.v(TAG, String.format("show_receipt_data :: Pdf Generation = %s", jsonResponse));
         if (jsonResponse != null) {
 
 
@@ -3461,13 +3522,13 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                             "        </form>\n" +
                                             "</body>\n" +
                                             "</html>";
-                                    final Document document = new Document(PageSize.A4);
+                                    final Document documentpdf = new Document(PageSize.A4);
 
                                     try {
 
                                         OutputStream file = new FileOutputStream(pdfFile);
-                                        PdfWriter docWriter = PdfWriter.getInstance(document, file);
-                                        document.open();
+                                        PdfWriter docWriter = PdfWriter.getInstance(documentpdf, file);
+                                        documentpdf.open();
 
                                         PdfContentByte cb = docWriter.getDirectContent();
                                         //initialize fonts for text printing
@@ -3479,9 +3540,9 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                             public void run() {
                                                 try  {
                                                     Image image = Image.getInstance(new URL(imgurl));
-                                                    image.setAbsolutePosition(510,750);
+                                                    image.setAbsolutePosition(440,750);
                                                     image.scalePercent(50);
-                                                    document.add(image);
+                                                    documentpdf.add(image);
                                                 } catch (Exception e) {
                                                     e.printStackTrace();
                                                 }
@@ -3512,11 +3573,11 @@ public class CourseDetailsActivity extends AppCompatActivity {
 //                                        htmlString.append(new String("<tr><td>JavaCodeGeeks</td><td><a href='examples.javacodegeeks.com'>JavaCodeGeeks</a> </td></tr>"));
 //                                        htmlString.append(new String("<tr> <td> Google Here </td> <td><a href='www.google.com'>Google</a> </td> </tr></table></body></html>"));
 //                                        InputStream is = new ByteArrayInputStream(messagehtml.getBytes());
-//                                        XMLWorkerHelper.getInstance().parseXHtml(docWriter, document, is);
+//                                        XMLWorkerHelper.getInstance().parseXHtml(docWriter, documentpdf, is);
 
-                                        HTMLWorker htmlWorker = new HTMLWorker(document);
+                                        HTMLWorker htmlWorker = new HTMLWorker(documentpdf);
                                         htmlWorker.parse(new StringReader(messagehtml));
-                                        document.close();
+                                        documentpdf.close();
                                         file.close();
                                     }
                                     catch(Exception e){

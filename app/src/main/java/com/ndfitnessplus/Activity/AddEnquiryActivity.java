@@ -902,7 +902,7 @@ public class AddEnquiryActivity extends AppCompatActivity  {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
                 CapturedImage.setVisibility(View.VISIBLE);
-               // ((ImageButton) findViewById(R.id.quick_start_cropped_image)).setImageURI(result.getUri());
+                // ((ImageButton) findViewById(R.id.quick_start_cropped_image)).setImageURI(result.getUri());
                 CapturedImage.setImageURI(result.getUri());
                 try {
                     bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), result.getUri());
@@ -910,7 +910,7 @@ public class AddEnquiryActivity extends AppCompatActivity  {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-              //  Toast.makeText(this, "Cropping successful, Sample: " + result.getSampleSize(), Toast.LENGTH_LONG).show();
+                //  Toast.makeText(this, "Cropping successful, Sample: " + result.getSampleSize(), Toast.LENGTH_LONG).show();
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Toast.makeText(this, "Cropping failed: " + result.getError(), Toast.LENGTH_LONG).show();
             }
@@ -923,7 +923,7 @@ public class AddEnquiryActivity extends AppCompatActivity  {
             // required permissions granted, start crop image activity
             startCropImageActivity(mCropImageUri);
         } else {
-          //  Toast.makeText(this, "Cancelling, required permissions are not granted", Toast.LENGTH_LONG).show();
+            //  Toast.makeText(this, "Cancelling, required permissions are not granted", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -1069,7 +1069,7 @@ public class AddEnquiryActivity extends AppCompatActivity  {
 
         byteArrayOutputStreamObject = new ByteArrayOutputStream();
        if(bitmap != null) {
-          bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStreamObject);
+          bitmap.compress(Bitmap.CompressFormat.JPEG, 70, byteArrayOutputStreamObject);
        }
         byte[] byteArrayVar = byteArrayOutputStreamObject.toByteArray();
 
@@ -1109,18 +1109,6 @@ public class AddEnquiryActivity extends AppCompatActivity  {
                // }
             }
 
-
-
-//            if(enquiryType.equals(getResources().getString(R.string.enquiry_type)) || enquirySource.equals(getResources().getString(R.string.enquiry_source))
-//                    || callResponce.equals(getResources().getString(R.string.call_res)) || Rating.equals(getResources().getString(R.string.rating))
-//            ||enquiryFor.equals(getResources().getString(R.string.enq_for)) ||occupation.equals(getResources().getString(R.string.occupation)) ){
-//                Toast.makeText(this, "Please fill all fields", Toast.LENGTH_LONG).show();
-//            }else{
-//                AddEnquiryClass();
-//            }
-            // Toast.makeText(this, "Validation Successfull", Toast.LENGTH_LONG).show();
-
-            // uploadimageClass();
             //process the data further
         }else{
 //            if(inputNextFollowupdate.getText().length()==0) {
@@ -1150,30 +1138,7 @@ public class AddEnquiryActivity extends AppCompatActivity  {
                     } else {
                         AddEnquiryClass();
                     }
-
-                    // awesomeValidation.clear();
-
-               // }
-//                else {
-//
-//                    if (enquiryType.equals(getResources().getString(R.string.enquiry_type)) || enquirySource.equals(getResources().getString(R.string.enquiry_source))
-//                            || callResponce.equals(getResources().getString(R.string.call_res)) || Rating.equals(getResources().getString(R.string.rating))
-//                            || enquiryFor.equals(getResources().getString(R.string.enq_for)) || occupation.equals(getResources().getString(R.string.occupation))) {
-//                        Toast.makeText(this, "Please fill all fields", Toast.LENGTH_LONG).show();
-//                    } else {
-//                        awesomeValidation.clear();
-//                        Toast.makeText(this, "Please enter comment", Toast.LENGTH_LONG).show();
-//                       if(inputComment.getText().length()>0){
-//                           AddEnquiryClass();
-//                       }
-//
-//                    }
-
-//                }
             }
-
-            // awesomeValidation.addValidation(this, R.id.input_cfn_password,RegexTemplate.NOT_EMPTY,R.string.err_msg_cfm_password);
-
         }
 
     }
