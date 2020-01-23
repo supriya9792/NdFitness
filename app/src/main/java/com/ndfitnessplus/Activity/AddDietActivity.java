@@ -175,7 +175,6 @@ public class AddDietActivity extends AppCompatActivity {
         spinDietitionName=(Spinner)findViewById(R.id.spinner_dietition_name);
         txtDietitionName=(TextView)findViewById(R.id.txt_dietition_name);
 
-
         //step Three
 //        inputLayoutMeal = (TextInputLayout) findViewById(R.id.input_layout_meal);
 //        inputLayoutTime = (TextInputLayout) findViewById(R.id.input_layout_time);
@@ -436,6 +435,7 @@ public class AddDietActivity extends AppCompatActivity {
                         int count = Integer.parseInt(inputNoOfMeals.getText().toString());
                         allEds = new ArrayList<MealEditTextList>();
                         strings = new String[allEds.size()];
+                        int k=11;
                         for (int i = 0; i < count; i++) {
                             MealEditTextList editTextList=new MealEditTextList();
                             LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -449,7 +449,8 @@ public class AddDietActivity extends AppCompatActivity {
                             inputTime = (EditText)rowView. findViewById(R.id.input_time);
                             message = (AppCompatEditText) rowView.findViewById(R.id.input_message);
                             inputTime.setId(i);
-                            //inputMeal.setId(i+1);
+
+                            inputMeal.setId(k);
                             String mhint = getResources().getString(R.string.meals) + " " + (i + 1);
                             inputLayoutMeal.setHint(mhint);
                             inputMeal.setHint(mhint);
@@ -469,9 +470,8 @@ public class AddDietActivity extends AppCompatActivity {
 
                                 }
                             });
-
-
                             final  int j=i;
+                            Log.v(TAG, String.format("meal id = %s", allEds.get(i).getInputMeal().getId()));
 
                             allEds.get(i).getInputMeal().addTextChangedListener(new TextWatcher() {
                                 //
@@ -487,11 +487,11 @@ public class AddDietActivity extends AppCompatActivity {
                                             //inputTime.setError("please enter time");
                                             stepThreeValation.addValidation(AddDietActivity.this,(idd-1), RegexTemplate.NOT_EMPTY, R.string.err_msg_time);
                                         }
+                                    }else{
+                                        stepThreeValation.addValidation(AddDietActivity.this, allEds.get(j).getInputMeal().getId(), RegexTemplate.NOT_EMPTY, R.string.err_msg_meal);
                                     }
+
                                 }
-
-
-
 
                                 public void beforeTextChanged(CharSequence s, int start, int count,
                                                               int after) {
@@ -502,11 +502,12 @@ public class AddDietActivity extends AppCompatActivity {
 
                                 }
                             });
+
                            // stepThreeValation.addValidation(AddDietActivity.this,i, RegexTemplate.NOT_EMPTY, R.string.err_msg_charges);
-
-
-
+                            k++;
                             parentLinearLayout.addView(rowView, parentLinearLayout.getChildCount() - 1);
+                            stepThreeValation.addValidation(AddDietActivity.this, allEds.get(j).getInputMeal().getId(), RegexTemplate.NOT_EMPTY, R.string.err_msg_meal);
+                            stepThreeValation.addValidation(AddDietActivity.this, allEds.get(j).getInputTime().getId(), RegexTemplate.NOT_EMPTY, R.string.err_msg_meal);
                         }
 
                     }
@@ -518,9 +519,7 @@ public class AddDietActivity extends AppCompatActivity {
 
                 if (stepThreeValation.validate()) {
                       step3process.setProgress(100);
-
                      collapseAndContinue(2);
-
                 }
 
                 break;
@@ -718,31 +717,10 @@ public class AddDietActivity extends AppCompatActivity {
                 // Toast.makeText(AddEnquiryActivity.this,"Please Enter New Mobile Number",Toast.LENGTH_SHORT).show();
             }else if (success.equalsIgnoreCase(getResources().getString(R.string.one)))
             {
-                JSONArray jsonArrayResult = object.getJSONArray("Data");
-
-                if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
-                    for (int i = 0; i < jsonArrayResult.length(); i++) {
-
-                        Log.v(TAG, "JsonResponseOpeartion ::");
-                        JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
-                        if (jsonObj != null) {
-
-                            MemberID = jsonObj.getString("MemberID");
-                            String Name = jsonObj.getString("Name");
-                            Email = jsonObj.getString("Email");
-                            gender = jsonObj.getString("Gender");
-                            inputName.setText(Name);
-
-                            if(gender.equals("Male"))
-                                radioGroup.check(R.id.radioButton);
-                            else
-                                radioGroup.check(R.id.radioButton2);
-
-                        }
-                    }
-                } else if (jsonArrayResult.length() == 0) {
-                    System.out.println("No records found");
-                }
+                Toast.makeText(AddDietActivity.this,"member has no active course.Please add course first",Toast.LENGTH_SHORT).show();
+                Intent intent=new Intent(AddDietActivity.this,RenewActivity.class);
+                intent.putExtra("contact",inputContact.getText().toString());
+                startActivity(intent);
                 // Toast.makeText(AddEnquiryActivity.this,"Please Enter New Mobile Number",Toast.LENGTH_SHORT).show();
             }
 

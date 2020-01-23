@@ -2024,7 +2024,7 @@ public class EnquiryFilterActivity extends AppCompatActivity {
                                 String address = jsonObj.getString("Address");
                                 String ExecutiveName = jsonObj.getString("ExecutiveName");
                                 String Comment = jsonObj.getString("Comment");
-                                String NextFollowup_Date = jsonObj.getString("NextFollowup_Date");
+                                String NextFollowup_Date = jsonObj.getString("NextFollowupDate");
                                 String Enquiry_ID = jsonObj.getString("Enquiry_ID");
                                 String Image = jsonObj.getString("Image");
                                 String CallResponse = jsonObj.getString("CallResponse");

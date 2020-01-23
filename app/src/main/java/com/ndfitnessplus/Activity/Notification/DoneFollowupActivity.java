@@ -447,6 +447,8 @@ public class DoneFollowupActivity extends AppCompatActivity implements SwipeRefr
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
+                    nodata.setVisibility(View.GONE);
+                    swipeRefresh.setVisibility(View.VISIBLE);
                     progressBar.setVisibility(View.GONE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
@@ -521,7 +523,7 @@ public class DoneFollowupActivity extends AppCompatActivity implements SwipeRefr
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
                     nodata.setVisibility(View.VISIBLE);
-                    recyclerView.setVisibility(View.GONE);
+                    swipeRefresh.setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");
@@ -595,6 +597,8 @@ public class DoneFollowupActivity extends AppCompatActivity implements SwipeRefr
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
+                    nodata.setVisibility(View.GONE);
+                    swipeRefresh.setVisibility(View.VISIBLE);
                     totalPage++;
                     progressBar.setVisibility(View.GONE);
                     if (object != null) {
@@ -742,6 +746,8 @@ public class DoneFollowupActivity extends AppCompatActivity implements SwipeRefr
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
+                    nodata.setVisibility(View.GONE);
+                    swipeRefresh.setVisibility(View.VISIBLE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
 //                        if(jsonArrayResult.length() >10){
@@ -807,6 +813,8 @@ public class DoneFollowupActivity extends AppCompatActivity implements SwipeRefr
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
                     // nodata.setVisibility(View.VISIBLE);
+                    nodata.setVisibility(View.VISIBLE);
+                    swipeRefresh.setVisibility(View.GONE);
                     ttl_followups.setText("0");
                     progressBar.setVisibility(View.GONE);
 
@@ -815,7 +823,7 @@ public class DoneFollowupActivity extends AppCompatActivity implements SwipeRefr
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
-                recyclerView.setVisibility(View.GONE);
+                swipeRefresh.setVisibility(View.GONE);
                 //frame.setVisibility(View.VISIBLE);
             }
         }

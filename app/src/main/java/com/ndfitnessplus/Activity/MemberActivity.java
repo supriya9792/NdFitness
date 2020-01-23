@@ -33,6 +33,7 @@ import com.ndfitnessplus.Adapter.MemberAdapter;
 import com.ndfitnessplus.Listeners.PaginationScrollListener;
 import com.ndfitnessplus.Model.MemberDataList;
 import com.ndfitnessplus.Model.MemberDataList;
+
 import com.ndfitnessplus.R;
 import com.ndfitnessplus.Utility.ServerClass;
 import com.ndfitnessplus.Utility.ServiceUrls;
@@ -369,6 +370,8 @@ public class MemberActivity extends AppCompatActivity implements SwipeRefreshLay
 
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
                     //totalPage++;
+                    nodata.setVisibility(View.GONE);
+                    swipeRefresh.setVisibility(View.VISIBLE);
                     String ttl_enq = object.getString("total_member_count");
                     total_member.setText(ttl_enq);
                     progressBar.setVisibility(View.GONE);
@@ -524,6 +527,8 @@ public class MemberActivity extends AppCompatActivity implements SwipeRefreshLay
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
+                    nodata.setVisibility(View.GONE);
+                    swipeRefresh.setVisibility(View.VISIBLE);
                     totalPage++;
                     currentPage++;
                    // currentPage = PAGE_START;
@@ -598,7 +603,8 @@ public class MemberActivity extends AppCompatActivity implements SwipeRefreshLay
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
                     // nodata.setVisibility(View.VISIBLE);
-
+                    nodata.setVisibility(View.VISIBLE);
+                    swipeRefresh.setVisibility(View.GONE);
                     progressBar.setVisibility(View.GONE);
                     Log.d(TAG, "when record 0 currentPage: " + currentPage);
                     Log.d(TAG, "PAGE_START: " + PAGE_START);
@@ -631,14 +637,16 @@ public class MemberActivity extends AppCompatActivity implements SwipeRefreshLay
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            showProgressDialog();
+//            showProgressDialog();
+            viewDialog.showDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            dismissProgressDialog();
+//            dismissProgressDialog();
+            viewDialog.hideDialog();
             //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             EnquirySearchDetails(response);
 
@@ -673,6 +681,8 @@ public class MemberActivity extends AppCompatActivity implements SwipeRefreshLay
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
+                    nodata.setVisibility(View.GONE);
+                    swipeRefresh.setVisibility(View.VISIBLE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
 //                        if(jsonArrayResult.length() >10){
@@ -743,6 +753,8 @@ public class MemberActivity extends AppCompatActivity implements SwipeRefreshLay
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
                     // nodata.setVisibility(View.VISIBLE);
+                    nodata.setVisibility(View.VISIBLE);
+                    swipeRefresh.setVisibility(View.GONE);
                     Toast.makeText(MemberActivity.this, "NO Record Found", Toast.LENGTH_SHORT).show();
                     progressBar.setVisibility(View.GONE);
 

@@ -462,7 +462,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
         inputComment = (EditText) dialog.findViewById(R.id.input_comment);
         inputBalance = (EditText) dialog.findViewById(R.id.input_balance);
         txtPaymentType = dialog.findViewById(R.id.txt_payment_type);
-        inputBalance.setText("0");
+        inputBalance.setText(balanceTV.getText().toString());
         String curr_date = Utility.getCurrentDate();
         inputNextFollDate.setText(curr_date);
         // *********** validation *************
@@ -806,64 +806,80 @@ public class CourseDetailsActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_print) {
-             if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            PrintManager printManager = (PrintManager) this.getSystemService(Context.PRINT_SERVICE);
-            String jobName = this.getString(R.string.app_name) + " Document";
+            requestPermission();
+         if(checkPermission()){
+             Thread thread = new Thread(new Runnable() {
+                 //
+                 @Override
+                 public void run() {
+                     try  {
+                         if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                             Log.d("FilePath", FilePath);
+                             PrintManager printManager = (PrintManager)CourseDetailsActivity.this.getSystemService(Context.PRINT_SERVICE);
+                             final String jobName = CourseDetailsActivity.this.getString(R.string.app_name) + " Document";
+                             PrintDocumentAdapter pda = new PrintDocumentAdapter() {
 
-            PrintDocumentAdapter pda = new PrintDocumentAdapter() {
+                                 @Override
+                                 public void onWrite(PageRange[] pages, ParcelFileDescriptor destination, CancellationSignal cancellationSignal, WriteResultCallback callback) {
+                                     InputStream input = null;
+                                     OutputStream output = null;
 
-                @Override
-                public void onWrite(PageRange[] pages, ParcelFileDescriptor destination, CancellationSignal cancellationSignal, WriteResultCallback callback) {
-                    InputStream input = null;
-                    OutputStream output = null;
-
-                    try {
+                                     try {
 //                        AssetManager assetManager = getAssets();
 //                        String root = Environment.getExternalStorageDirectory().getPath();
 //                        String path=root+"/MyInvoices/Invoice1578297168.pdf";
-                        File file = new File(FilePath);
-                        input = new FileInputStream(file);
-                        output = new FileOutputStream(destination.getFileDescriptor());
-                        byte[] buf = new byte[1024];
-                        int bytesRead;
+                                         File file = new File(FilePath);
+                                         Log.d("FilePath", FilePath);
+                                         input = new FileInputStream(file);
+                                         output = new FileOutputStream(destination.getFileDescriptor());
+                                         byte[] buf = new byte[1024];
+                                         int bytesRead;
 
-                        while ((bytesRead = input.read(buf)) > 0) {
-                            output.write(buf, 0, bytesRead);
-                        }
+                                         while ((bytesRead = input.read(buf)) > 0) {
+                                             output.write(buf, 0, bytesRead);
+                                         }
 
-                        callback.onWriteFinished(new PageRange[]{PageRange.ALL_PAGES});
+                                         callback.onWriteFinished(new PageRange[]{PageRange.ALL_PAGES});
 
-                    } catch (FileNotFoundException ee) {
-                        //Catch exception
-                    } catch (Exception e) {
-                        //Catch exception
-                    } finally {
-                        try {
-                            input.close();
-                            output.close();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
+                                     } catch (FileNotFoundException ee) {
+                                         //Catch exception
+                                     } catch (Exception e) {
+                                         //Catch exception
+                                     } finally {
+                                         try {
+                                             input.close();
+                                             output.close();
+                                         } catch (IOException e) {
+                                             e.printStackTrace();
+                                         }
+                                     }
+                                 }
 
-                @Override
-                public void onLayout(PrintAttributes oldAttributes, PrintAttributes newAttributes, CancellationSignal cancellationSignal, LayoutResultCallback callback, Bundle extras) {
+                                 @Override
+                                 public void onLayout(PrintAttributes oldAttributes, PrintAttributes newAttributes, CancellationSignal cancellationSignal, LayoutResultCallback callback, Bundle extras) {
 
-                    if (cancellationSignal.isCanceled()) {
-                        callback.onLayoutCancelled();
-                        return;
-                    }
+                                     if (cancellationSignal.isCanceled()) {
+                                         callback.onLayoutCancelled();
+                                         return;
+                                     }
+                                     Log.d("FilePath", FilePath);
+//                    File file = new File(FilePath);
+                                     // int pages = computePageCount(newAttributes);
+                                     PrintDocumentInfo pdi = new PrintDocumentInfo.Builder("invoice.pdf").setContentType(PrintDocumentInfo.CONTENT_TYPE_DOCUMENT).build();
 
-                    // int pages = computePageCount(newAttributes);
+                                     callback.onLayoutFinished(pdi, true);
+                                 }
+                             };
+                             printManager.print(jobName, pda, null);
+                         }
+                     } catch (Exception e) {
+                         e.printStackTrace();
+                     }
+                 }
+             });
+             thread.start();
 
-                    PrintDocumentInfo pdi = new PrintDocumentInfo.Builder("Name of file").setContentType(PrintDocumentInfo.CONTENT_TYPE_DOCUMENT).build();
-
-                    callback.onLayoutFinished(pdi, true);
-                }
-            };
-            printManager.print(jobName, pda, null);
-        }
+      }
 
             return true;
         } else if (id == R.id.whatsapp) {
@@ -2528,7 +2544,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                             public void run() {
                                                 try  {
                                                     Image image = Image.getInstance(new URL(imgurl));
-                                                    image.setAbsolutePosition(510,750);
+                                                    image.setAbsolutePosition(440,750);
                                                     image.scalePercent(50);
 //
                                                     document.add(image);
@@ -2542,11 +2558,11 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                         thread.start();
 //
                                         // creating a sample invoice with some customer data
-                                        createHeadings(cb,50,780,Company_Name);
+                                        createHeadings(cb,300,780,Company_Name);
                                         String delimiter = " ";
                                         int partitionSize = 6;
                                         String add="";
-                                        int x=50;
+                                        int x=300;
                                         int y=765;
                                         for (Iterable<String> iterable : Iterables.partition(Splitter.on(delimiter).split(Address), partitionSize)) {
                                             System.out.println(Joiner.on(delimiter).join(iterable));
@@ -2555,17 +2571,14 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                             createText(cb,x,y,Joiner.on(delimiter).join(iterable));
                                             y= y-10;
                                         }
-                                        createText(cb,50,750,Contact);
-                                        createText(cb,50,735,GST_No);
+                                        createText(cb,50,730,Contact);
+                                        createText(cb,50,720,GST_No);
+
                                         createHeadings(cb,435,735,"Invoice Date :"+invoice_date);
                                         createHeadings(cb,435,720,"Invoice No : "+Invoice_ID);
-//
-//
-
                                         HTMLWorker htmlWorker = new HTMLWorker(document);
                                         htmlWorker.parse(new StringReader(messagehtml));
                                         document.close();
-                                        // document.close();
                                     }
                                     catch(Exception e){
                                         e.printStackTrace();
@@ -2798,13 +2811,8 @@ public class CourseDetailsActivity extends AppCompatActivity {
         CourseDetailsActivity. CourseDetailsTrackclass ru = new CourseDetailsActivity. CourseDetailsTrackclass();
         ru.execute("5");
     }
-
     class  CourseDetailsTrackclass extends AsyncTask<String, Void, String> {
-
-
         ServerClass ruc = new ServerClass();
-
-
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -3063,9 +3071,6 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                      Rating = jsonObj.getString("Rating");
                                      callResponce=Call_Response;
 
-//
-
-
                                 }
                             }
                         } else if (jsonArrayResult.length() == 0) {
@@ -3157,12 +3162,12 @@ public class CourseDetailsActivity extends AppCompatActivity {
         return false;
     }
     private boolean checkPermission() {
-        int result = ContextCompat.checkSelfPermission(CourseDetailsActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        if (result == PackageManager.PERMISSION_GRANTED) {
-            return true;
-        } else {
-            return false;
-        }
+            int result = ContextCompat.checkSelfPermission(CourseDetailsActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            if (result == PackageManager.PERMISSION_GRANTED) {
+                return true;
+            } else {
+                return false;
+            }
     }
 
     private void requestPermission() {

@@ -272,11 +272,13 @@ public class FollowupAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                     public void onClick(View v) {
                         if(enq.getFollowupType().equals("Enquiry")) {
                             enquiryId = enq.getID();
-                            Intent intent = new Intent(context, EnquiryFollowupDetailsActivity.class);
-                            intent.putExtra("enquiry_id", enquiryId);
-                            intent.putExtra("rating", enq.getRating());
-                            intent.putExtra("call_response", enq.getCallRespond());
-                            context.startActivity(intent);
+                             if (!enq.getRating().equals("Converted")) {
+                                Intent intent = new Intent(context, EnquiryFollowupDetailsActivity.class);
+                                intent.putExtra("enquiry_id", enquiryId);
+                                intent.putExtra("rating", enq.getRating());
+                                intent.putExtra("call_response", enq.getCallRespond());
+                                context.startActivity(intent);
+                            }
                         }else{
                             String   member_id=enq.getID();
                             Intent intent=new Intent(context, MemberDetailsActivity.class);

@@ -180,7 +180,11 @@ public class EnrollmentActivity extends AppCompatActivity implements SwipeRefres
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                enrollmentsearchclass();
+                if(inputsearch.getText().length()>0){
+                    enrollmentsearchclass();
+                }else{
+                    Toast.makeText(EnrollmentActivity.this,"Please enter text to search", Toast.LENGTH_LONG).show();
+                }
             }
         });
 

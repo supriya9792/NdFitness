@@ -278,7 +278,7 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.BaseViewHo
             if(enq.getStatus()!=null){
              if(enq.getStatus().equals("Active")){
                  statusIv.setColorFilter(ContextCompat.getColor(context, R.color.green), android.graphics.PorterDuff.Mode.SRC_IN);
-             }else{
+             }else if(enq.getStatus().equals("InActive")){
                  statusIv.setColorFilter(ContextCompat.getColor(context, R.color.red), android.graphics.PorterDuff.Mode.SRC_IN);
              }
             }

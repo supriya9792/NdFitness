@@ -268,6 +268,13 @@ public class MainActivity extends AppCompatActivity
 //
 //        // set new title to the MenuItem
 //        selcteorg.setTitle(SharedPrefereneceUtil.getSelectedBranch(MainActivity.this));
+        if(SharedPrefereneceUtil.getAuthority(MainActivity.this).equals("User")){
+            MenuItem item = menu.findItem(R.id.nav_create_plans);
+            item.setVisible(false);
+        }else{
+            MenuItem item = menu.findItem(R.id.nav_create_plans);
+            item.setVisible(true);
+        }
         navigationView.setNavigationItemSelectedListener(this);
 
         mRegistrationBroadcastReceiver = new BroadcastReceiver() {
@@ -394,6 +401,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+
         return true;
     }
 
@@ -420,6 +428,7 @@ public class MainActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
+
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 

@@ -234,7 +234,7 @@ public class EnquiryActivity extends AppCompatActivity implements SwipeRefreshLa
                             totalBudget+=budge;
                             Log.d(TAG, "budget: " + bugdet);
                             Log.d(TAG, "totalBudget: " + totalBudget);
-                            ttl_budget.setText(String.valueOf(totalBudget));
+                            ttl_budget.setText("₹ "+String.valueOf(totalBudget));
                         }
 
                     }
@@ -441,7 +441,7 @@ public class EnquiryActivity extends AppCompatActivity implements SwipeRefreshLa
                                     String address = jsonObj.getString("Address");
                                     String ExecutiveName = jsonObj.getString("ExecutiveName");
                                     String Comment = jsonObj.getString("Comment");
-                                    String NextFollowup_Date = jsonObj.getString("NextFollowup_Date");
+                                    String NextFollowup_Date = jsonObj.getString("NextFollowupDate");
                                     String Enquiry_ID = jsonObj.getString("Enquiry_ID");
                                     String Image = jsonObj.getString("Image");
                                     String CallResponse = jsonObj.getString("CallResponse");
@@ -596,7 +596,7 @@ public class EnquiryActivity extends AppCompatActivity implements SwipeRefreshLa
                                     String address = jsonObj.getString("Address");
                                     String ExecutiveName = jsonObj.getString("ExecutiveName");
                                     String Comment = jsonObj.getString("Comment");
-                                    String NextFollowup_Date = jsonObj.getString("NextFollowup_Date");
+                                    String NextFollowup_Date = jsonObj.getString("NextFollowupDate");
                                     String Enquiry_ID = jsonObj.getString("Enquiry_ID");
                                     String Image = jsonObj.getString("Image");
                                     String CallResponse = jsonObj.getString("CallResponse");
@@ -751,7 +751,7 @@ public class EnquiryActivity extends AppCompatActivity implements SwipeRefreshLa
                                     String address = jsonObj.getString("Address");
                                     String ExecutiveName = jsonObj.getString("ExecutiveName");
                                     String Comment = jsonObj.getString("Comment");
-                                    String NextFollowup_Date = jsonObj.getString("NextFollowup_Date");
+                                    String NextFollowup_Date = jsonObj.getString("NextFollowupDate");
                                     String Enquiry_ID = jsonObj.getString("Enquiry_ID");
                                     String Image = jsonObj.getString("Image");
                                     String CallResponse = jsonObj.getString("CallResponse");

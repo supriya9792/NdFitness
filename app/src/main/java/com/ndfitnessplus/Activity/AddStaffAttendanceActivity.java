@@ -148,33 +148,33 @@ public class AddStaffAttendanceActivity extends AppCompatActivity {
             }
         });
 
-//        inputStaffId.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-//            @Override
-//            public void onFocusChange(View v, boolean hasFocus) {
-//
-//                if(inputContact.getText().length()>0){
-//                    CheckStaffIdClass();
-//                }
-//            }
-//        });
-//        inputContact.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-//            @Override
-//            public void onFocusChange(View v, boolean hasFocus) {
-//
-//                if(inputContact.getText().length()>0){
-//                    CheckContactClass();
-//                }
-//            }
-//        });
-//        inputName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-//            @Override
-//            public void onFocusChange(View v, boolean hasFocus) {
-//
-//                if(inputContact.getText().length()>0){
-//                    CheckNameClass();
-//                }
-//            }
-//        });
+        inputStaffId.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+
+                if(inputStaffId.getText().length()>0){
+                    CheckStaffIdClass();
+                }
+            }
+        });
+        inputContact.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+
+                if(inputContact.getText().length()>0){
+                    CheckContactClass();
+                }
+            }
+        });
+        inputName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+
+                if(inputName.getText().length()>0){
+                    CheckNameClass();
+                }
+            }
+        });
 
         inputName.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -574,8 +574,9 @@ public class AddStaffAttendanceActivity extends AppCompatActivity {
                     }
                 }
                 else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
-                    //nodata.setVisibility(View.VISIBLE);
-                    // recyclerView.setVisibility(View.GONE);
+                    inputName.getText().clear();
+                    inputContact.getText().clear();
+                    inputStaffId.getText().clear();
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");
@@ -660,7 +661,13 @@ public class AddStaffAttendanceActivity extends AppCompatActivity {
                         }}else if(jsonArrayResult.length()==0){
                         System.out.println("No records found");
                     }
-                }}
+                   }
+                }
+                else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
+                    inputName.getText().clear();
+                    inputContact.getText().clear();
+                    inputStaffId.getText().clear();
+                }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
@@ -744,7 +751,12 @@ public class AddStaffAttendanceActivity extends AppCompatActivity {
                         }}else if(jsonArrayResult.length()==0){
                         System.out.println("No records found");
                     }
-                }}
+                 }
+                } else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
+                    inputName.getText().clear();
+                    inputContact.getText().clear();
+                    inputStaffId.getText().clear();
+                }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();

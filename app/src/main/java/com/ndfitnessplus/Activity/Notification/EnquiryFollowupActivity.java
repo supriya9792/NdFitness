@@ -934,7 +934,7 @@ public class EnquiryFollowupActivity extends AppCompatActivity implements SwipeR
                                     String ExecutiveName = jsonObj.getString("ExecutiveName");
                                     String Comment = jsonObj.getString("Comment");
                                     String FollowupType = jsonObj.getString("FollowupType");
-                                    String NextFollowup_Date = jsonObj.getString("NextFollowup_Date");
+                                    String NextFollowup_Date = jsonObj.getString("NextFollowupDate");
                                     String Auto_Id = jsonObj.getString("Enquiry_ID");
                                     String Followup_Date = jsonObj.getString("FollowupDate");
                                     //  for (int j = 0; j < 5; j++) {

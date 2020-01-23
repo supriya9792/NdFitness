@@ -41,6 +41,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.concurrent.TimeoutException;
 
 import static com.ndfitnessplus.Utility.HTTPRequestQueue.isOnline;
 
@@ -359,9 +360,21 @@ public class NotificationActivity extends AppCompatActivity {
                     //nodata.setVisibility(View.VISIBLE);
                     //.setVisibility(View.GONE);
                 }
-            } catch (JSONException e) {
+            } catch (Exception e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
+                android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(NotificationActivity.this);
+                builder.setMessage(R.string.server_exception);
+                builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                        startActivity(getIntent());
+                    }
+                });
+                android.app.AlertDialog dialog = builder.create();
+                dialog.setCancelable(false);
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.show();
             }
         }
     }

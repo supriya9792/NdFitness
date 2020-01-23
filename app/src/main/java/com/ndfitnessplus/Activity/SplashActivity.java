@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -165,6 +166,16 @@ class UserLoginClass extends AsyncTask<String, Void, String> {
             }
         } catch (JSONException e) {
             e.printStackTrace();
+            AlertDialog.Builder builder = new AlertDialog.Builder(SplashActivity.this);
+            builder.setMessage(R.string.server_exception+e.getMessage());
+            builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.setCancelable(false);
+            dialog.show();
         }
 
     }

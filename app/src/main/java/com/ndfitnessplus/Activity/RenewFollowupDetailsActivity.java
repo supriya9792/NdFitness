@@ -333,7 +333,8 @@ public class RenewFollowupDetailsActivity extends AppCompatActivity {
         //}
         callResponseClass();
         follTypeClass();
-        inputNextFollowupdate.setText(NextFollowupDate);
+        String curr_date=Utility.getCurrentDate();
+        inputNextFollowupdate.setText(curr_date);
         inputNextFollowupdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -379,7 +380,7 @@ public class RenewFollowupDetailsActivity extends AppCompatActivity {
                             }
                         }
                     }else{
-                        takefollowupclass();
+                       // takefollowupclass();
                         if(inputfollComment.getText().length()>0) {
                             takefollowupclass();
                             dialog.dismiss();
@@ -1101,7 +1102,7 @@ public class RenewFollowupDetailsActivity extends AppCompatActivity {
             String domainurl=SharedPrefereneceUtil.getDomainUrl(RenewFollowupDetailsActivity.this);
             String loginResult2 = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, TakeFollowupDetails);
 
-            Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult2));
+            Log.v(TAG, String.format("doInBackground :: add_other_followup= %s", loginResult2));
             return loginResult2;
         }
     }
@@ -1135,6 +1136,18 @@ public class RenewFollowupDetailsActivity extends AppCompatActivity {
                 Toast.makeText(RenewFollowupDetailsActivity.this,"Something went wrong",Toast.LENGTH_SHORT).show();
                 // inputContact.getText().clear();
                 //Toast.makeText(RenewFollowupDetailsActivity.this,"Please Enter New Mobile Number",Toast.LENGTH_SHORT).show();
+            } else if (success.equalsIgnoreCase(getResources().getString(R.string.one)))
+            {
+                Toast.makeText(RenewFollowupDetailsActivity.this,"Followup added succesfully",Toast.LENGTH_SHORT).show();
+                finish();
+                overridePendingTransition(0, 0);
+                Intent intent=new Intent(this, RenewFollowupDetailsActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("filter_array_list", filterArrayList);
+                intent.putExtra("BUNDLE",bundle);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+                moveTaskToBack(false);
             }
 
         } catch (JSONException e) {

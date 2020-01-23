@@ -27,9 +27,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ndfitnessplus.Adapter.CourseAdapter;
 import com.ndfitnessplus.Adapter.EnquiryAdapter;
 import com.ndfitnessplus.Adapter.ShowWorkoutAdapter;
 import com.ndfitnessplus.Listeners.PaginationScrollListener;
+import com.ndfitnessplus.Model.CourseList;
 import com.ndfitnessplus.Model.WorkOutDayList;
 import com.ndfitnessplus.Model.WorkOutDayList;
 import com.ndfitnessplus.Model.WorkOutDayList;
@@ -44,7 +46,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 import static com.ndfitnessplus.Utility.HTTPRequestQueue.isOnline;
@@ -172,7 +177,7 @@ public class WorkoutActivity extends AppCompatActivity  implements SwipeRefreshL
             @Override
             public void onClick(View v) {
                 if(inputsearch.getText().length()>0){
-                    //enquirysearchclass();
+                    workoutsearchclass();
                 }else{
                     Toast.makeText(WorkoutActivity.this,"Please enter text to search", Toast.LENGTH_LONG).show();
                 }
@@ -370,6 +375,139 @@ public class WorkoutActivity extends AppCompatActivity  implements SwipeRefreshL
                 dialog.setCancelable(false);
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.show();
+            }
+        }
+    }
+    private void workoutsearchclass() {
+        WorkoutActivity.EnquirySearchTrackclass ru = new WorkoutActivity.EnquirySearchTrackclass();
+        ru.execute("5");
+    }
+    class EnquirySearchTrackclass extends AsyncTask<String, Void, String> {
+
+        ServerClass ruc = new ServerClass();
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Log.v(TAG, "onPreExecute");
+            // showProgressDialog();
+            viewDialog.showDialog();
+        }
+
+        @Override
+        protected void onPostExecute(String response) {
+            super.onPostExecute(response);
+            Log.v(TAG, String.format("onPostExecute :: response = %s", response));
+            //dismissProgressDialog();
+            viewDialog.hideDialog();
+            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
+            EnquirySearchDetails(response);
+
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+            HashMap<String, String> EnquirySearchDetails = new HashMap<String, String>();
+            EnquirySearchDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(WorkoutActivity.this));
+            EnquirySearchDetails.put("text",inputsearch.getText().toString());
+            Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(WorkoutActivity.this)));
+            EnquirySearchDetails.put("action","show_search_workout");
+            String domainurl=SharedPrefereneceUtil.getDomainUrl(WorkoutActivity.this);
+            String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EnquirySearchDetails);
+            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
+            return loginResult;
+        }
+
+
+    }
+
+    private void EnquirySearchDetails(String jsonResponse) {
+
+        Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
+//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
+        if (jsonResponse != null) {
+
+
+            try {
+                Log.v(TAG, "JsonResponseOpeartion :: test");
+                JSONObject object = new JSONObject(jsonResponse);
+                String success = object.getString(getResources().getString(R.string.success));
+                if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
+                    nodata.setVisibility(View.GONE);
+                    swipeRefresh.setVisibility(View.VISIBLE);
+                    if (object != null) {
+                        JSONArray jsonArrayResult = object.getJSONArray("result");
+                        String ttl_enq = object.getString("total_workout_count");
+                        total_workout.setText(ttl_enq);
+                        ArrayList<WorkOutDayList> item = new ArrayList<WorkOutDayList>();
+                        if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
+
+                            for (int i = 0; i < jsonArrayResult.length(); i++) {
+
+
+                                subList = new WorkOutDayList();
+                                Log.d(TAG, "i: " + i);
+                                // Log.d(TAG, "run: " + itemCount);
+                                Log.v(TAG, "JsonResponseOpeartion ::");
+                                JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
+                                if (jsonObj != null) {
+
+                                    String name = jsonObj.getString("Name");
+                                    String Contact = jsonObj.getString("Contact");
+                                    String Date = jsonObj.getString("Date");
+                                    String Exercise_Id = jsonObj.getString("Exercise_Id");
+                                    String Email_Id = jsonObj.getString("Email_Id");
+                                    String LevelName = jsonObj.getString("LevelName");
+                                    String Member_Id = jsonObj.getString("Member_Id");
+                                    String Image = jsonObj.getString("Image");
+                                    String Instructarname = jsonObj.getString("Instructarname");
+
+
+                                    //  for (int j = 0; j < 5; j++) {
+
+                                    subList.setMemberName(name);
+                                    // subList.setGender(gender);
+                                    String cont= Utility.lastFour(Contact);
+                                    subList.setMemberContact(Contact);
+                                    subList.setEncryptContact(cont);
+//                                    subList.setAssignDate(Date);
+                                    subList.setExerciseId(Exercise_Id);
+                                    subList.setEmailId(Email_Id);
+                                    String next_foll_date= Utility.formatDate(Date);
+                                    subList.setAssignDate(next_foll_date);
+                                    subList.setMemberId(Member_Id);
+                                    Image.replace("\"", "");
+                                    subList.setMemberImage(Image);
+                                    subList.setLevel(LevelName);
+                                    subList.setInstructorName(Instructarname);
+
+                                    item.add(subList);
+                                    adapter = new ShowWorkoutAdapter( WorkoutActivity.this,item);
+                                    recyclerView.setAdapter(adapter);
+
+
+                                }
+                            }
+
+                        } else if (jsonArrayResult.length() == 0) {
+                            System.out.println("No records found");
+                        }
+                    }
+                }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
+                    // nodata.setVisibility(View.VISIBLE);
+                    Toast.makeText(WorkoutActivity.this, "NO Record Found", Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(View.GONE);
+                    nodata.setVisibility(View.VISIBLE);
+                    swipeRefresh.setVisibility(View.GONE);
+                    //recyclerView.setVisibility(View.GONE);
+                }
+            } catch (JSONException e) {
+                Log.v(TAG, "JsonResponseOpeartion :: catch");
+                e.printStackTrace();
+                recyclerView.setVisibility(View.GONE);
+                frame.setVisibility(View.VISIBLE);
             }
         }
     }

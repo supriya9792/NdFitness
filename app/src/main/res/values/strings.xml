@@ -198,6 +198,7 @@
     <string name="err_msg_no_of_meals">Enter your No Of Meals</string>
     <string name="err_msg_charges">Enter your Charges</string>
     <string name="err_msg_time">Please Enter Time</string>
+    <string name="err_msg_meal">Please Enter Meal</string>
     <string name="err_msg_pay_details">Enter your Pay Details</string>
     <string name="err_msg_package_name">Enter your Package Name</string>
     <string name="err_msg_duration">Enter your Duration</string>

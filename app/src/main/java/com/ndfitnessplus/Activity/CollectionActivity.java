@@ -585,9 +585,13 @@ public class CollectionActivity extends AppCompatActivity implements SwipeRefres
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
+                        String col = object.getString("collection");
+                       // total_balance.setText(ttl_enq);
+                        double ttlcol=Double.parseDouble(col);
+                        DecimalFormat df = new DecimalFormat("##,##,##,##,##,##,##0.00");
+                        String rt= df.format(ttlcol);
+
+                        collection.setText(rt);
                         String cnt= String.valueOf(jsonArrayResult.length());
                        // total_member.setText(cnt);
                         final   ArrayList<CourseList> subListArrayList = new ArrayList<CourseList>();
@@ -603,7 +607,7 @@ public class CollectionActivity extends AppCompatActivity implements SwipeRefres
                                 if (jsonObj != null) {
 
                                     String name = jsonObj.getString("Name");
-                                    String RegistrationDate = jsonObj.getString("ReceiptDate");
+                                    String ReceiptDate = jsonObj.getString("ReceiptDate");
                                     String Contact = jsonObj.getString("Contact");
                                     String PaymentType = jsonObj.getString("PaymentType");
                                     String ExecutiveName = jsonObj.getString("ExecutiveName");
@@ -619,7 +623,14 @@ public class CollectionActivity extends AppCompatActivity implements SwipeRefres
                                     String ReceiptType = jsonObj.getString("ReceiptType");
                                     String PaymentDetails = jsonObj.getString("PaymentDetails");
 
-
+                                    String Start_Date = jsonObj.getString("Start_Date");
+                                    String End_Date = jsonObj.getString("End_Date");
+                                    String Rate = jsonObj.getString("Rate");
+                                    String RegistrationDate = jsonObj.getString("RegistrationDate");
+                                    String Package_Name = jsonObj.getString("Package_Name");
+                                    String Duration_Days = jsonObj.getString("Duration_Days");
+                                    String Session = jsonObj.getString("Session");
+                                    String Financial_Year = jsonObj.getString("Financial_Year");
                                     //  for (int j = 0; j < 5; j++) {
                                     itemCount++;
                                     Log.d(TAG, "run: " + itemCount);
@@ -632,8 +643,8 @@ public class CollectionActivity extends AppCompatActivity implements SwipeRefres
                                     subList.setPaymentType(PaymentType);
                                     subList.setExecutiveName(ExecutiveName);
                                     subList.setTax(Tax);
-                                    String reg_date= Utility.formatDate(RegistrationDate);
-                                    subList.setReceiptDate(reg_date);
+                                    String rec_date= Utility.formatDate(ReceiptDate);
+                                    subList.setReceiptDate(rec_date);
                                     subList.setID(Member_ID);
                                     subList.setInvoiceID(Invoice_ID);
                                     subList.setReceiptId(Receipt_Id);
@@ -647,7 +658,8 @@ public class CollectionActivity extends AppCompatActivity implements SwipeRefres
                                     }
                                     String nextpaydate=Utility.formatDate(Next_payment_date);
                                     String balance="₹ "+Final_Balance;
-                                    subList.setBalance(balance);
+                                    subList.setBalance(Final_Balance);
+                                    subList.setBalanceRuppe(balance);
                                     Image.replace("\"", "");
                                     subList.setImage(Image);
                                     subList.setEmail(Member_Email_ID);
@@ -655,6 +667,39 @@ public class CollectionActivity extends AppCompatActivity implements SwipeRefres
                                     subList.setNextPaymentdate(nextpaydate);
                                     subList.setReceiptType(ReceiptType);
                                     subList.setPaymentDetails(PaymentDetails);
+
+                                    String sdate=Utility.formatDate(Start_Date);
+                                    String edate=Utility.formatDate(End_Date);
+                                    String todate=sdate+" to "+edate;
+                                    subList.setStartToEndDate(todate);
+
+                                    SimpleDateFormat dateFormat = new SimpleDateFormat(
+                                            "dd-MM-yyyy");
+                                    Date endDate = new Date();
+                                    Date currentdate = new Date();
+                                    String endc=Utility.formatDateDB(End_Date);
+                                    try {
+                                        endDate = dateFormat.parse(endc);
+                                        currentdate = dateFormat.parse(Utility.getCurrentDate());
+                                        Log.v(TAG, String.format(" ::endDate = %s", endDate));
+                                        Log.v(TAG, String.format(" :: currentdate = %s",currentdate));
+                                        if (currentdate.before(endDate)|| currentdate.equals(endDate) ) {
+                                            subList.setStatus("Active");
+                                        } else {
+                                            subList.setStatus("Inactive");
+                                        }
+                                    } catch (ParseException e) {
+                                        // TODO Auto-generated catch block
+                                        e.printStackTrace();
+                                    }
+
+                                    subList.setPackageName(Package_Name);
+                                    String dur_sess="Duration:"+Duration_Days+","+"Session:"+Session;
+                                    subList.setPackageNameWithDS(dur_sess);
+                                    String reg_date= Utility.formatDate(RegistrationDate);
+                                    subList.setRegistrationDate(reg_date);
+                                    subList.setRate(Rate);
+                                    subList.setFinancialYear(Financial_Year);
                                     subListArrayList.add(subList);
 
                                     adapter = new CollectionAdapter( subListArrayList,CollectionActivity.this);

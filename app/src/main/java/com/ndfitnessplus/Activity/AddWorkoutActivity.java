@@ -996,7 +996,6 @@ private void workout_detailsclass() {
                                                 subList.setVideoLink(Vediolink);
                                                 subList.setSection(false);
                                                 subList.setDay(Days);
-
                                                 //Toast.makeText(MainActivity.this, "j "+j, Toast.LENGTH_SHORT).show();
                                                 subListArrayList.add(subList);
                                                 subListArrayList1.add(subList);
@@ -1130,7 +1129,7 @@ private void workout_detailsclass() {
 
                 EmailLoginClass();
                 //finish();
-                Intent intent=new Intent(AddWorkoutActivity.this, AddWorkoutActivity.class);
+                Intent intent=new Intent(AddWorkoutActivity.this, WorkoutActivity.class);
                 startActivity(intent);
             }
             else if (success.equalsIgnoreCase(getResources().getString(R.string.zero)))

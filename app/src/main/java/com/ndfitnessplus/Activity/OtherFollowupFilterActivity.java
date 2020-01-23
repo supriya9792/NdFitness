@@ -345,14 +345,11 @@ public class OtherFollowupFilterActivity extends AppCompatActivity {
 //                                   spinFollTypeList.setName(getResources().getString(R.string.promt_country));
 //                                   enqF.add(0,spinFollTypeList);
 //                               }
-                                    followuptypelist.setName(Followup);
-                                    followuptypelist.setId(id);
-
-
-                                    followupTypeArrayList.add(followuptypelist);
-
-
-
+                                    if(!Followup.equals("Member BirthDay")){
+                                        followuptypelist.setName(Followup);
+                                        followuptypelist.setId(id);
+                                        followupTypeArrayList.add(followuptypelist);
+                                    }
                                 }
                             }
                             followuptypeadapter = new SpinnerAdapter(OtherFollowupFilterActivity.this, followupTypeArrayList){

@@ -589,7 +589,7 @@ public class BalanceReceiptActivity extends AppCompatActivity {
         //first validate the form then move ahead
         //if this becomes true that means validation is successfull
         //if(inputPassword.getText().toString().equals(inputCfmPassword.getText().toString())){
-
+        inputNextFollDate.setError(null);
         if(!(inputBalance.getText().toString().equals("0.0"))){
            // Toast.makeText(this, "Please fill Payment type or Package type", Toast.LENGTH_LONG).show();
             awesomeValidation.addValidation(BalanceReceiptActivity.this, R.id.input_nextfollDate,RegexTemplate.NOT_EMPTY, R.string.err_msg_next_payment_date);
@@ -615,8 +615,10 @@ public class BalanceReceiptActivity extends AppCompatActivity {
 
             }
         }else{
-            awesomeValidation.clear();
+
+            inputNextFollDate.setError(null);
         if (awesomeValidation.validate()) {
+            inputNextFollDate.setError(null);
            // Log.v(TAG, String.format("Remaining balance= %s", inputBalance.getText().toString()));
             if(invoiceRefId.equals(getResources().getString(R.string.hint_packagetype))
                     || paymentType.equals(getResources().getString(R.string.hint_pyment_mode)) ){
@@ -626,6 +628,8 @@ public class BalanceReceiptActivity extends AppCompatActivity {
                 Log.v(TAG, String.format("calling function= %s", "Add Balnce receipt"));
             }
 
+          }else{
+            Toast.makeText(this, "Please verify validation", Toast.LENGTH_LONG).show();
           }
         }
 

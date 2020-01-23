@@ -1,5 +1,7 @@
 package com.ndfitnessplus.Activity;
 
+import android.annotation.TargetApi;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -93,7 +95,7 @@ public class RenewActivity extends AppCompatActivity {
     private ProgressDialog pd;
     private AwesomeValidation awesomeValidation;
     private int mYear, mMonth, mDay;
-
+    public static final int PERMISSIONS_REQUEST_READ_CONTACTS = 1;
     AutoCompleteTextView inputContact ,inputName;
     private static final int PERMISSION_REQUEST_CODE = 1;
     //Spinner Adapter
@@ -140,6 +142,16 @@ public class RenewActivity extends AppCompatActivity {
     ArrayList<Search_list> searchArrayList = new ArrayList<Search_list>();
     public SearchNameAdapter searchnameadapter;
     SearchContactAdapter searchcontactadapter;
+
+
+    int PERMISSION_ALL = 1;
+    String[] PERMISSIONS = {
+            android.Manifest.permission.READ_CONTACTS,
+            android.Manifest.permission.WRITE_CONTACTS,
+            android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            android.Manifest.permission.CAMERA
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -151,6 +163,7 @@ public class RenewActivity extends AppCompatActivity {
 //        LicenseKey.loadLicenseFile(license);
 
         //check if external storage is available so that we can dump our PDF file there
+        requestContactPermission();
         if (!isExternalStorageAvailable() || isExternalStorageReadOnly()) {
             Log.v(LOG_TAG, "External Storage not available or you don't have permission to write");
         }
@@ -2962,7 +2975,8 @@ public class RenewActivity extends AppCompatActivity {
         }
     }
     private boolean checkPermission() {
-        int result = ContextCompat.checkSelfPermission(RenewActivity.this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int result = ContextCompat.checkSelfPermission(RenewActivity.this,
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
         if (result == PackageManager.PERMISSION_GRANTED) {
             return true;
         } else {
@@ -3404,4 +3418,46 @@ public class RenewActivity extends AppCompatActivity {
             }
         }
     }
+    public void requestContactPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (!hasPermissions(this, PERMISSIONS)) {
+                ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
+            }
+//            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+//                if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+//                        android.Manifest.permission.READ_CONTACTS)) {
+//                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//                    builder.setTitle("Read Contacts permission");
+//                    builder.setPositiveButton(android.R.string.ok, null);
+//                    builder.setMessage("Please enable access to contacts.");
+//                    builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+//                        @TargetApi(Build.VERSION_CODES.M)
+//                        @Override
+//                        public void onDismiss(DialogInterface dialog) {
+//                            requestPermissions(
+//                                    new String[]
+//                                            {android.Manifest.permission.READ_CONTACTS}
+//                                    , PERMISSIONS_REQUEST_READ_CONTACTS);
+//                        }
+//                    });
+//                    builder.show();
+//                } else {
+//                    ActivityCompat.requestPermissions(this,
+//                            new String[]{android.Manifest.permission.READ_CONTACTS},
+//                            PERMISSIONS_REQUEST_READ_CONTACTS);
+//                }
+//            }
+        }
+    }
+    public static boolean hasPermissions(Context context, String... permissions) {
+        if (context != null && permissions != null) {
+            for (String permission : permissions) {
+                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
 }

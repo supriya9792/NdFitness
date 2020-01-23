@@ -117,6 +117,9 @@ public class CourseCongratulationActivity extends AppCompatActivity {
                         }catch(Exception e){
                             e.printStackTrace();
                         }
+                    }else{
+                        sendIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(outputFile));
+
                     }
                     sendIntent.putExtra("jid", toNumber + "@s.whatsapp.net");
 //                sendIntent.setType("*/*");

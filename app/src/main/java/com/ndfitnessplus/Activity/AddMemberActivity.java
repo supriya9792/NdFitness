@@ -1159,7 +1159,10 @@ public class AddMemberActivity extends AppCompatActivity implements View.OnClick
                 addMemberClass();
             }
         }else{
+            inputEmail.setError(null);
+            if (awesomeValidation.validate()) {
                 addMemberClass();
+            }
         }
 
     }

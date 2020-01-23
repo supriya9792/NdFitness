@@ -122,6 +122,7 @@
                     android:id="@+id/radioButton"
                     android:layout_gravity="start"
                     android:checked="false"
+                    android:clickable="false"
                     android:textColor="@color/black"
                     android:textSize="14dp" />
 
@@ -132,6 +133,7 @@
                     android:id="@+id/radioButton2"
                     android:layout_gravity="start"
                     android:checked="false"
+                    android:clickable="false"
                     android:textColor="@color/black"
                     android:textSize="14dp"
                     android:layout_weight="0.13" />
