@@ -1,5 +1,6 @@
 package com.ndfitnessplus.Activity;
 
+import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -251,7 +252,8 @@ public class RenewActivity extends AppCompatActivity {
             MemberID=intent.getStringExtra("member_id");
           String  name=intent.getStringExtra("name");
           String  Contact=intent.getStringExtra("contact");
-            Email=intent.getStringExtra("email");
+          Email=intent.getStringExtra("email");
+
             inputContact.setText(Contact);
             inputName.setText(name);
 
@@ -3243,7 +3245,7 @@ public class RenewActivity extends AppCompatActivity {
         intent.putExtra("member_id",MemberID);
         intent.putExtra("invoice_id", invoice_id);
         intent.putExtra("financial_yr",financial_yr);
-        intent.putExtra("filepath",FilePath);
+        intent.putExtra("filepath",pdfFile);
         startActivity(intent);
 //        new Handler().postDelayed(new Runnable() {
 //            @Override

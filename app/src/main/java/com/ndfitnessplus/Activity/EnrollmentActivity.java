@@ -394,6 +394,8 @@ public class EnrollmentActivity extends AppCompatActivity implements SwipeRefres
                 String success = object.getString(getResources().getString(R.string.success));
 
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
+                    nodata.setVisibility(View.GONE);
+                    swipeRefresh.setVisibility(View.VISIBLE);
                     String ttl_enq = object.getString("total_member_count");
                     total_enrollment.setText(ttl_enq);
                     progressBar.setVisibility(View.GONE);
@@ -405,12 +407,8 @@ public class EnrollmentActivity extends AppCompatActivity implements SwipeRefres
                         int count=0;
                         ArrayList<MemberDataList> item = new ArrayList<MemberDataList>();
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
-                            if(jsonArrayResult.length()<100){
-                                count=jsonArrayResult.length();
-                            }else{
-                                count=100;
-                            }
-                            for (int i = 0; i < count; i++) {
+
+                            for (int i = 0; i < jsonArrayResult.length(); i++) {
 
 
                                 subList = new MemberDataList();
@@ -545,6 +543,8 @@ public class EnrollmentActivity extends AppCompatActivity implements SwipeRefres
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
+                    nodata.setVisibility(View.GONE);
+                    swipeRefresh.setVisibility(View.VISIBLE);
                     totalPage++;
                     progressBar.setVisibility(View.GONE);
                     if (object != null) {
@@ -616,7 +616,8 @@ public class EnrollmentActivity extends AppCompatActivity implements SwipeRefres
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
                     // nodata.setVisibility(View.VISIBLE);
-
+                    nodata.setVisibility(View.VISIBLE);
+                    swipeRefresh.setVisibility(View.GONE);
                     progressBar.setVisibility(View.GONE);
                     if (currentPage != PAGE_START)
                         adapter.removeblank();
@@ -628,8 +629,8 @@ public class EnrollmentActivity extends AppCompatActivity implements SwipeRefres
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
-                recyclerView.setVisibility(View.GONE);
-                frame.setVisibility(View.VISIBLE);
+//                recyclerView.setVisibility(View.GONE);
+//                frame.setVisibility(View.VISIBLE);
             }
         }
     }
@@ -690,6 +691,8 @@ public class EnrollmentActivity extends AppCompatActivity implements SwipeRefres
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
+                    nodata.setVisibility(View.GONE);
+                    swipeRefresh.setVisibility(View.VISIBLE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
 //                        if(jsonArrayResult.length() >10){
@@ -758,7 +761,8 @@ public class EnrollmentActivity extends AppCompatActivity implements SwipeRefres
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
                     // nodata.setVisibility(View.VISIBLE);
-
+                    nodata.setVisibility(View.VISIBLE);
+                    swipeRefresh.setVisibility(View.GONE);
                     progressBar.setVisibility(View.GONE);
 
                     //recyclerView.setVisibility(View.GONE);

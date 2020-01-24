@@ -75,7 +75,7 @@ public class RenewFollowupDetailsActivity extends AppCompatActivity {
     ProgressBar progressBar;
     String member_id;
     String invoice_id ="";
-    String Email;
+    String Email="";
     String FinancialYear="";
     View nodata;
 
@@ -155,7 +155,7 @@ public class RenewFollowupDetailsActivity extends AppCompatActivity {
 //                Log.v(TAG, String.format("Selected  ::name= %s", filterArrayList.getName()));
             name=filterArrayList.getName();
             member_id=filterArrayList.getID();
-            //Email=filterArrayList.getEmail();
+//            Email=filterArrayList.getEmail();
             FollowupType=filterArrayList.getFollowupType();
             if(FollowupType== null){
                 FollowupType="";

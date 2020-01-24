@@ -367,6 +367,8 @@ public class CollectionActivity extends AppCompatActivity implements SwipeRefres
                 String success = object.getString(getResources().getString(R.string.success));
 
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
+                    nodata.setVisibility(View.GONE);
+                    swipeRefresh.setVisibility(View.VISIBLE);
                     String ttl_enq = object.getString("total_balance_count");
                     String col = object.getString("collection");
                    // total_balance.setText(ttl_enq);
@@ -583,6 +585,8 @@ public class CollectionActivity extends AppCompatActivity implements SwipeRefres
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
+                    nodata.setVisibility(View.GONE);
+                    swipeRefresh.setVisibility(View.VISIBLE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
                         String col = object.getString("collection");
@@ -716,7 +720,8 @@ public class CollectionActivity extends AppCompatActivity implements SwipeRefres
                     // nodata.setVisibility(View.VISIBLE);
                     Toast.makeText(CollectionActivity.this, "NO Record Found", Toast.LENGTH_SHORT).show();
                     progressBar.setVisibility(View.GONE);
-
+                    nodata.setVisibility(View.VISIBLE);
+                    swipeRefresh.setVisibility(View.GONE);
                     //recyclerView.setVisibility(View.GONE);
                 }
             } catch (JSONException e) {

@@ -1,13 +1,17 @@
 package com.ndfitnessplus.Activity;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -87,6 +91,7 @@ public class CourseActivity extends AppCompatActivity implements SwipeRefreshLay
     TextView total_courses;
     //Loading gif
     ViewDialog viewDialog;
+    private static final int PERMISSION_REQUEST_CODE = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,6 +106,7 @@ public class CourseActivity extends AppCompatActivity implements SwipeRefreshLay
         getSupportActionBar().setTitle(getResources().getString(R.string.exi_course));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         initComponent();
+        requestPermission();
     }
     private void initComponent(){
         FloatingActionButton addenquiry=findViewById(R.id.fab);
@@ -936,5 +942,21 @@ public class CourseActivity extends AppCompatActivity implements SwipeRefreshLay
 
         byte[] data = new byte[length];
         outState.putByteArray("data", data);
+    }
+    private void requestPermission() {
+
+        if (ActivityCompat.shouldShowRequestPermissionRationale(CourseActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            Toast.makeText(CourseActivity.this, "Write External Storage permission allows us to do store images. Please allow this permission in App Settings.", Toast.LENGTH_LONG).show();
+        } else {
+            ActivityCompat.requestPermissions(CourseActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
+        }
+    }
+    private boolean checkPermission() {
+        int result = ContextCompat.checkSelfPermission(CourseActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if (result == PackageManager.PERMISSION_GRANTED) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

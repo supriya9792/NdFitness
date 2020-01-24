@@ -98,6 +98,7 @@ import com.ndfitnessplus.Utility.SharedPrefereneceUtil;
 import com.ndfitnessplus.Utility.Utility;
 import com.ndfitnessplus.Utility.ViewDialog;
 
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -185,7 +186,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
     String Email_ID, Password, Header, Footer, ContactNumber;
     String Logo;
     String NextPaymentDate;
-
+    int pages = 4;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -865,9 +866,22 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                      Log.d("FilePath", FilePath);
 //                    File file = new File(FilePath);
                                      // int pages = computePageCount(newAttributes);
-                                     PrintDocumentInfo pdi = new PrintDocumentInfo.Builder("invoice.pdf").setContentType(PrintDocumentInfo.CONTENT_TYPE_DOCUMENT).build();
+//                                     PDDocument myDocument = null;
+//                                     try {
+//                                         myDocument = PDDocument.load(new File(FilePath));
+//                                     } catch (IOException e) {
+//                                         e.printStackTrace();
+//                                     }
+//                                     pages = myDocument.getNumberOfPages();
 
-                                     callback.onLayoutFinished(pdi, true);
+                                     if (pages > 0) {
+                                         PrintDocumentInfo pdi = new PrintDocumentInfo.Builder("invoice.pdf")
+                                                 .setContentType(PrintDocumentInfo.CONTENT_TYPE_DOCUMENT) .setPageCount(pages).build();
+                                         callback.onLayoutFinished(pdi, true);
+                                     }else {
+                                         // Otherwise report an error to the print framework
+                                         callback.onLayoutFailed("Page count calculation failed.");
+                                     }
                                  }
                              };
                              printManager.print(jobName, pda, null);
@@ -1013,6 +1027,20 @@ public class CourseDetailsActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+//    private int computePageCount(PrintAttributes printAttributes) {
+//        int itemsPerPage = 4; // default item count for portrait mode
+//
+//        PrintAttributes.MediaSize pageSize = printAttributes.getMediaSize();
+//        if (!pageSize.isPortrait()) {
+//            // Six items per page in landscape orientation
+//            itemsPerPage = 6;
+//        }
+//
+//        // Determine number of print items
+//        int printItemCount = getPrintItemCount();
+//
+//        return (int) Math.ceil(printItemCount / itemsPerPage);
+//    }
     public void saveBitmap(Bitmap bitmap) {
         File imagePath = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+"/testing" + ".png");
         FileOutputStream fos;

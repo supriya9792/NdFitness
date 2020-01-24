@@ -310,6 +310,7 @@ public class BalanceReceiptActivity extends AppCompatActivity {
                 }
             }
         });
+
         String curr_date = Utility.getCurrentDate();
         inputNextFollDate.setText(curr_date);
         //package spinners
@@ -427,7 +428,8 @@ public class BalanceReceiptActivity extends AppCompatActivity {
                         awesomeValidation.clear();
                     } else {
                         inputNextFollDate.setEnabled(true);
-                        awesomeValidation.addValidation(BalanceReceiptActivity.this, R.id.input_nextfollDate, RegexTemplate.NOT_EMPTY, R.string.err_msg_next_foll_date);
+                       // inputNextFollDate.setError(getResources().getString(R.string.err_msg_next_foll_date));
+                        //awesomeValidation.addValidation(BalanceReceiptActivity.this, R.id.input_nextfollDate, RegexTemplate.NOT_EMPTY, R.string.err_msg_next_foll_date);
                     }
                     if (paid > rate) {
                         Toast.makeText(BalanceReceiptActivity.this, "Your paying more than your fees,focus chnga", Toast
@@ -438,6 +440,7 @@ public class BalanceReceiptActivity extends AppCompatActivity {
                         inputNextFollDate.setEnabled(false);
                         inputNextFollDate.setKeyListener(null);
                         awesomeValidation.clear();
+                        //inputNextFollDate.setError(null);
                     }
 //
                 }else{
@@ -484,6 +487,7 @@ public class BalanceReceiptActivity extends AppCompatActivity {
                         inputNextFollDate.setEnabled(false);
                         inputNextFollDate.setKeyListener(null);
                         awesomeValidation.clear();
+                        inputNextFollDate.setError(null);
                     } else{
                         inputNextFollDate.setEnabled(true);
 
@@ -526,7 +530,7 @@ public class BalanceReceiptActivity extends AppCompatActivity {
                                                   int monthOfYear, int dayOfMonth) {
 
                                 inputNextFollDate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
-
+                                inputNextFollDate.setError(null);
                             }
                         }, mYear, mMonth, mDay);
                 datePickerDialog.getDatePicker().setMinDate(c.getTimeInMillis());
@@ -589,10 +593,11 @@ public class BalanceReceiptActivity extends AppCompatActivity {
         //first validate the form then move ahead
         //if this becomes true that means validation is successfull
         //if(inputPassword.getText().toString().equals(inputCfmPassword.getText().toString())){
-        inputNextFollDate.setError(null);
+
         if(!(inputBalance.getText().toString().equals("0.0"))){
+            inputNextFollDate.setError(getResources().getString(R.string.err_msg_next_foll_date));
            // Toast.makeText(this, "Please fill Payment type or Package type", Toast.LENGTH_LONG).show();
-            awesomeValidation.addValidation(BalanceReceiptActivity.this, R.id.input_nextfollDate,RegexTemplate.NOT_EMPTY, R.string.err_msg_next_payment_date);
+            //awesomeValidation.addValidation(BalanceReceiptActivity.this, R.id.input_nextfollDate,RegexTemplate.NOT_EMPTY, R.string.err_msg_next_payment_date);
             if (awesomeValidation.validate()) {
                 // Log.v(TAG, String.format("Remaining balance= %s", inputBalance.getText().toString()));
                 double paid = Double.parseDouble(inputPaid.getText().toString());
@@ -607,7 +612,12 @@ public class BalanceReceiptActivity extends AppCompatActivity {
                         Toast.makeText(BalanceReceiptActivity.this, "Please pay some amount", Toast
                                 .LENGTH_SHORT).show();
                     }else{
-                        AddBalanceReceiptClass();
+                        if(inputNextFollDate.getText().length()>0) {
+                            AddBalanceReceiptClass();
+                        }else{
+                            inputNextFollDate.setError(null);
+                            Toast.makeText(this, "Please enter next followup date", Toast.LENGTH_LONG).show();
+                        }
                     }
 
                     Log.v(TAG, String.format("calling function= %s", "Add Balnce receipt"));
@@ -615,16 +625,17 @@ public class BalanceReceiptActivity extends AppCompatActivity {
 
             }
         }else{
-
+            awesomeValidation.clear();
             inputNextFollDate.setError(null);
         if (awesomeValidation.validate()) {
-            inputNextFollDate.setError(null);
            // Log.v(TAG, String.format("Remaining balance= %s", inputBalance.getText().toString()));
             if(invoiceRefId.equals(getResources().getString(R.string.hint_packagetype))
                     || paymentType.equals(getResources().getString(R.string.hint_pyment_mode)) ){
                 Toast.makeText(this, "Please fill Payment type or Package type", Toast.LENGTH_LONG).show();
             }else{
-                AddBalanceReceiptClass();
+
+                    AddBalanceReceiptClass();
+
                 Log.v(TAG, String.format("calling function= %s", "Add Balnce receipt"));
             }
 

@@ -46,6 +46,7 @@ public class CourseCongratulationActivity extends AppCompatActivity {
     CircularImageView imageView;
     public static String TAG = CourseDetailsActivity.class.getName();
     ImageView sendWhatsapp;
+    File pdfFile;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,7 +77,8 @@ public class CourseCongratulationActivity extends AppCompatActivity {
             member_id=intent.getStringExtra("member_id");
             invoice_id=intent.getStringExtra("invoice_id");
             FinancialYear=intent.getStringExtra("financial_yr");
-            filepath=intent.getStringExtra("filepath");
+            pdfFile= (File) intent.getSerializableExtra("filepath");
+            ;
 
         }
         coursedetailsclass();
@@ -93,7 +95,7 @@ public class CourseCongratulationActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                                 try {
-                    File outputFile = new File(filepath);
+//                    File outputFile = new File(filepath);
 //                Uri uri = Uri.fromFile(outputFile);
 //
 //                Intent share = new Intent();
@@ -112,13 +114,13 @@ public class CourseCongratulationActivity extends AppCompatActivity {
                         try{
                             Method m = StrictMode.class.getMethod("disableDeathOnFileUriExposure");
                             m.invoke(null);
-                            sendIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(outputFile));
+                            sendIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(pdfFile));
 //                            shareImage(Uri.fromFile(new File(Path)));
                         }catch(Exception e){
                             e.printStackTrace();
                         }
                     }else{
-                        sendIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(outputFile));
+                        sendIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(pdfFile));
 
                     }
                     sendIntent.putExtra("jid", toNumber + "@s.whatsapp.net");

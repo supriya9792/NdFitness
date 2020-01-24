@@ -213,29 +213,31 @@ public class AddMemberActivity extends AppCompatActivity implements View.OnClick
 
             }
         });
+        inputEmail.addTextChangedListener(new TextWatcher() {
+            //
+            public void onTextChanged(CharSequence s, int start, int before,
+                                      int count) {
+                if(count==0){
+                    awesomeValidation.clear();
+                }
+            }
 
-//        inputContact.addTextChangedListener(new TextWatcher() {
-//
-//            public void onTextChanged(CharSequence s, int start, int before,
-//                                      int count) {
-//                CheckContactClass();
-//            }
-//
-//
-//
-//            public void beforeTextChanged(CharSequence s, int start, int count,
-//                                          int after) {
-//
-//            }
-//
-//            public void afterTextChanged(Editable s) {
-//                if(inputContact.getText().length()>0) {
-//                    //do your work here
-//                    // Toast.makeText(AddEnquiryActivity.this ,"Text vhanged count  is 10 then: " , Toast.LENGTH_LONG).show();
-//                    CheckContactClass();
-//                }
-//            }
-//        });
+
+
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+                if(count==0){
+                    awesomeValidation.clear();
+                }
+            }
+
+            public void afterTextChanged(Editable s) {
+                if(inputEmail.getText().length()==0){
+                   awesomeValidation.clear();
+                }
+            }
+        });
+
         inputName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -1154,13 +1156,15 @@ public class AddMemberActivity extends AppCompatActivity implements View.OnClick
         }
 
         if((inputEmail.length()>0) ){
+//            inputEmail.setError(getResources().getString(R.string.err_msg_email));
             awesomeValidation.addValidation(this, R.id.input_email, Patterns.EMAIL_ADDRESS, R.string.err_msg_email);
             if (awesomeValidation.validate()) {
                 addMemberClass();
             }
         }else{
-            inputEmail.setError(null);
-            if (awesomeValidation.validate()) {
+//            inputEmail.setError(null);
+            awesomeValidation.clear();
+            if (inputContact.length()>0 && inputName.length()>0) {
                 addMemberClass();
             }
         }

@@ -5,9 +5,9 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.ndfitnessplus"
-        minSdkVersion 18
+        minSdkVersion 19
         targetSdkVersion 28
-        versionCode 19
+        versionCode 20
         versionName "1.0"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -78,6 +78,10 @@ dependencies {
     implementation 'com.itextpdf.tool:xmlworker:5.5.10'
 
     implementation 'com.github.barteksc:android-pdf-viewer:2.0.3'   //pdf Viewer
+//    implementation 'org.apache.pdfbox:pdfbox:1.8.6'
+
+    implementation 'com.tom_roush:pdfbox-android:1.8.10.1'
+
 //    implementation 'com.itextpdf:html2pdf:2.1.2'
 ////    implementation 'itext:itext:4.2.1'
 ////    implementation 'com.itextpdf:itext7-core:7.0.2'
