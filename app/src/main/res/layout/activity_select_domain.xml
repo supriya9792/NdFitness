@@ -15,46 +15,109 @@
         <include layout="@layout/toolbar"/>
 
     </android.support.design.widget.AppBarLayout>
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:padding="@dimen/spacing_large"
-  >
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/enter_url"
-        android:textAlignment="center"
-        android:gravity="start"
-        android:layout_gravity="start"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
-        android:textColor="@color/blue_grey_800" />
+<!--<LinearLayout-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent"-->
+<!--    android:orientation="vertical"-->
+<!--    android:gravity="center"-->
+<!--    android:padding="@dimen/spacing_large"-->
+<!--  >-->
+<!--    <TextView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="@string/enter_url"-->
+<!--        android:textAlignment="center"-->
+<!--        android:gravity="start"-->
+<!--        android:layout_gravity="start"-->
+<!--        android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"-->
+<!--        android:textColor="@color/blue_grey_800" />-->
 
-    <EditText
+<!--    <EditText-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:id="@+id/domainurl"-->
+<!--        android:inputType="text"-->
+<!--        android:hint="@string/enter_url"-->
+<!--        android:text="@string/url_hint"-->
+<!--        android:drawableStart="@drawable/ic_web"-->
+<!--        android:textColor="@android:color/black"-->
+<!--        />-->
+<!--    <Button-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="45dp"-->
+<!--        android:layout_marginLeft="14dp"-->
+<!--        android:layout_marginRight="14dp"-->
+<!--        android:id="@+id/save"-->
+<!--        android:layout_marginTop="@dimen/spacing_medium"-->
+<!--        android:background="@drawable/btn_rounded"-->
+<!--        android:text="@string/url_save_hint"-->
+<!--        android:textAllCaps="false"-->
+<!--        android:textColor="@color/white"-->
+<!--        android:textStyle="bold" />-->
+<!--</LinearLayout>-->
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/domainurl"
-        android:inputType="text"
-        android:hint="@string/enter_url"
-        android:text="@string/url_hint"
-        android:drawableStart="@drawable/ic_web"
-        android:textColor="@android:color/black"
-        />
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_marginLeft="14dp"
-        android:layout_marginRight="14dp"
-        android:id="@+id/save"
-        android:layout_marginTop="@dimen/spacing_medium"
-        android:background="@drawable/btn_rounded"
-        android:text="@string/url_save_hint"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        android:textStyle="bold" />
-</LinearLayout>
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="@dimen/spacing_large"
+        >
+        <!--        <TextView-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:text="@string/enter_url"-->
+        <!--            android:textAlignment="center"-->
+        <!--            android:gravity="start"-->
+        <!--            android:layout_gravity="start"-->
+        <!--            android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"-->
+        <!--            android:textColor="@color/blue_grey_800" />-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
+            <ImageButton
+                android:layout_width="@dimen/spacing_mxlarge"
+                android:layout_height="@dimen/spacing_mxlarge"
+                android:layout_marginTop="@dimen/spacing_mlarge"
+                android:background="@android:color/transparent"
+                app:srcCompat="@drawable/ic_dialpad" />
+
+            <View
+                android:layout_width="@dimen/spacing_large"
+                android:layout_height="match_parent" />
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+
+                <EditText
+                    android:id="@+id/domainurl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:capitalize="characters"
+                    android:inputType="number"
+                    android:textColor="@color/black"
+                    android:backgroundTint="@color/black"
+                    android:hint="@string/enter_url"
+                    android:text="@string/url_hint"/>
+            </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginLeft="14dp"
+            android:layout_marginRight="14dp"
+            android:id="@+id/save"
+            android:layout_marginTop="@dimen/spacing_medium"
+            android:background="@drawable/btn_rounded"
+            android:text="@string/url_save_hint"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+    </LinearLayout>
 
 </LinearLayout>

@@ -2883,6 +2883,7 @@ public class RenewActivity extends AppCompatActivity {
                                         HTMLWorker htmlWorker = new HTMLWorker(document);
                                         htmlWorker.parse(new StringReader(messagehtml));
 
+
                                         document.close();
                                     }
                                     catch(Exception e){
@@ -3247,12 +3248,7 @@ public class RenewActivity extends AppCompatActivity {
         intent.putExtra("financial_yr",financial_yr);
         intent.putExtra("filepath",pdfFile);
         startActivity(intent);
-//        new Handler().postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                showDialogPaymentSuccess();
-//            }
-//        }, 1000);
+
     }
 
 

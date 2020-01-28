@@ -20,8 +20,9 @@
     <string name="select_domain">Select Domain</string>
     <string name="select_company">Select Company</string>
     <string name="wel_gymtime">Welcome To GymTime</string>
-    <string name="enter_url">Please enter your domain url</string>
-    <string name="url_hint">http://admin.gymtime.in</string>
+<!--    <string name="enter_url">Please enter your domain url</string>-->
+    <string name="enter_url">Please enter your unique code</string>
+    <string name="url_hint">1</string>
     <string name="url_save_hint">Save</string>
     <string name="server_exception">server connection failed .</string>
     <string name="ok">OK</string>
@@ -29,7 +30,7 @@
     <string name="lbl_take_camera_picture">Take a picture</string>
     <string name="lbl_choose_from_gallery">Choose from gallery</string>
     <string name="toast_image_intent_null">Image picker option is missing!</string>
-
+    <string name="error_unique_code">Invalid Unique Code.Please enter valid Unique Code</string>
     <string name="dialog_permission_title">Grant Permissions</string>
     <string name="dialog_permission_message">This app needs permission to use this feature. You can grant them in app settings.</string>
     <string name="go_to_settings">GOTO SETTINGS</string>
