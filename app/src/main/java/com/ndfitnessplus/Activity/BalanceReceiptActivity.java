@@ -46,6 +46,7 @@ import com.itextpdf.text.html.simpleparser.HTMLWorker;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.tool.xml.XMLWorkerHelper;
 import com.ndfitnessplus.Adapter.AddEnquirySpinnerAdapter;
 import com.ndfitnessplus.Adapter.SearchContactAdapter;
 import com.ndfitnessplus.Adapter.SearchNameAdapter;
@@ -64,11 +65,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringReader;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -595,7 +599,7 @@ public class BalanceReceiptActivity extends AppCompatActivity {
         //if(inputPassword.getText().toString().equals(inputCfmPassword.getText().toString())){
 
         if(!(inputBalance.getText().toString().equals("0.0"))){
-            inputNextFollDate.setError(getResources().getString(R.string.err_msg_next_foll_date));
+//            inputNextFollDate.setError(getResources().getString(R.string.err_msg_next_foll_date));
            // Toast.makeText(this, "Please fill Payment type or Package type", Toast.LENGTH_LONG).show();
             //awesomeValidation.addValidation(BalanceReceiptActivity.this, R.id.input_nextfollDate,RegexTemplate.NOT_EMPTY, R.string.err_msg_next_payment_date);
             if (awesomeValidation.validate()) {
@@ -613,6 +617,7 @@ public class BalanceReceiptActivity extends AppCompatActivity {
                                 .LENGTH_SHORT).show();
                     }else{
                         if(inputNextFollDate.getText().length()>0) {
+                            inputNextFollDate.setError(getResources().getString(R.string.err_msg_next_foll_date));
                             AddBalanceReceiptClass();
                         }else{
                             inputNextFollDate.setError(null);
@@ -1393,6 +1398,7 @@ public class BalanceReceiptActivity extends AppCompatActivity {
             ReceiptDataDetails.put("invoice_id", InvoiceRefID);
             Log.v(TAG, String.format("doInBackground :: receipt data invoice_id= %s", InvoiceRefID));
             ReceiptDataDetails.put("financial_yr", FinancialYear);
+            ReceiptDataDetails.put("member_id", MemberID);
             Log.v(TAG, String.format("doInBackground :: receipt data company id = %s", FinancialYear));
             Log.v(TAG, String.format("doInBackground :: receipt data company id = %s", SharedPrefereneceUtil.getSelectedBranchId(BalanceReceiptActivity.this)));
             ReceiptDataDetails.put("action","show_receipt_data");
@@ -1462,7 +1468,9 @@ public class BalanceReceiptActivity extends AppCompatActivity {
                                         Registration_Fees="0.00";
                                     }
 
-                                    String Company_Name = SharedPrefereneceUtil.getCompanyName(BalanceReceiptActivity.this)+"-"+ SharedPrefereneceUtil.getSelectedBranch(BalanceReceiptActivity.this);
+
+                                    String Company_Name = SharedPrefereneceUtil.getCompanyName(BalanceReceiptActivity.this);
+                                    String Branch=SharedPrefereneceUtil.getSelectedBranch(BalanceReceiptActivity.this);
                                     String Address = jsonObj.getString("Address");
                                     String Contact = jsonObj.getString("Contact");
                                     String MemberGST_No = jsonObj.getString("MemberGST_No");
@@ -1477,7 +1485,7 @@ public class BalanceReceiptActivity extends AppCompatActivity {
                                     Log.d(TAG, "imgurl: " +imgurl);
 
                                     String textBody = "";
-
+                                    String CGST="";
                                     JSONArray jsonArrayPayTrasa = jsonObj.getJSONArray("payment_transa");
                                     if (jsonArrayPayTrasa != null && jsonArrayPayTrasa.length() > 0) {
                                         for (int loopCount = 0; loopCount < jsonArrayPayTrasa.length(); loopCount++)
@@ -1502,10 +1510,18 @@ public class BalanceReceiptActivity extends AppCompatActivity {
                                                 String PaymentDetails =  jsonObj1.getString("PaymentDetails");
                                                 String ReceiptOwnerExecutive =  jsonObj1.getString("ReceiptOwnerExecutive");
 
+                                                String SubTotal =  jsonObj1.getString("SubTotal");
+                                                double cgst =Double.parseDouble(Tax)/2;
+                                                CGST=String.valueOf(cgst);
+                                                double sgst=Double.parseDouble(TaxAmount)/2;
+                                                String SGST=String.valueOf(sgst);
                                                 textBody += "  <tr >\n \n" +
                                                         "    <td width='10%'>"+Receipt_Id+"</td>\n \n" +
                                                         "     <td width='15%'>"+receipt_date+"</td>\n\n" +
+                                                        "     <td width='12%'>"+SubTotal+"</td>\n\n" +
                                                         "    <td width='8%'>"+Tax+"</td> \n\n" +
+                                                        "    <td width='9%'>"+SGST+"</td> \n\n" +
+                                                        "    <td width='9%'>"+SGST+"</td> \n\n" +
                                                         "    <td width='12.5%'>"+TaxAmount+"</td>\n\n" +
                                                         "    <td width='12.5%'>"+Paid+"</td>\n\n" +
                                                         "    <td width='12.5%'>"+PaymentType+"</td>\n\n" +
@@ -1519,209 +1535,6 @@ public class BalanceReceiptActivity extends AppCompatActivity {
                                     }
 
 
-
-
-
-                                    final String messagehtml = "<!DOCTYPE html>\n" +
-                                            "\n" +
-                                            "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n" +
-                                            "<head runat=\"server\">\n" +
-                                            "    <title></title>\n" +
-                                            "</head>\n" +
-                                            "<body>\n" +
-                                            "    <form runat=\"server\">\n" +
-                                            "\n" +
-                                            " <div class=\"row\">\n" +
-                                            "                <div class=\"column\" >\n" +
-                                            "                    <div >\n" +
-                                            "                        <address>\n" +
-                                            "                            <strong style=\"font: 700;\">\n" +
-                                            "                               </strong><br></br>" +
-                                            "                          <br></br>" +
-                                            "                           <br></br>" +
-                                            "                        </address>" +
-                                            "                    </div>" +
-                                            "                    <div >" +
-                                            "                        <address>" +
-                                            "                        " +
-//                                            "                            <img src="+ imgurl +">" +
-                                            "                        </address>\n" +
-                                            "                    </div>" +
-                                            "                </div>" +
-                                            "                <div class=\"column\" >\n" +
-                                            "                    <div  >\n" +
-                                            "                        <address>\n" +
-                                            "                            <strong></strong><br></br>\n" +
-                                            "                            <strong style=\"font: 900;\">"+"</strong><br></br>\n" +
-                                            "                           <br></br>\n" +
-                                            "                        </address>\n" +
-                                            "                    </div>" +
-                                            "                    <div >" +
-                                            "                        <address>" +
-                                            "                            <strong>"+"</strong><br></br>\n" +
-                                            "\n" +
-                                            "                            <strong> "+"</strong><br></br>\n" +
-                                            "                            <strong>  "+"</strong>\n" +
-                                            "                        </address>\n" +
-                                            "                    </div>\n" +
-                                            "                </div>\n" +
-                                            "      </div>\n" +
-                                            "\n" + "    <div >\n" +
-
-                                            "            <div >\n" +
-                                            "                <div  >\n" +
-                                            "                        <h3 ><strong>Bill To</strong></h3>\n" +
-                                            "                    </div>\n" +
-                                            "                <div >\n" +
-                                            "              <div >\n" +
-                                            "             <table border = '1' cellpadding=\"6\"  width=\"100%\" >\n" +
-                                            "             <thead height=\"100\">\n" +
-                                            "                   <tr height=\"100\" >\n" +
-                                            "                      <th ><strong>ID</strong></th>\n" +
-                                            "                      <th ><strong>Name</strong></th>\n" +
-                                            "                      <th ><strong>Email Id</strong></th>                                    \n" +
-                                            "                      <th ><strong>Contact</strong></th>\n" +
-                                            "                      <th ><strong>GST No</strong></th>\n" +
-                                            "                    </tr>\n" +
-                                            "             </thead>\n" +
-                                            "           <tbody >\n" +
-                                            "  <tr >\n \n" +
-                                            "    <td width='12%'>"+MemberID+"</td>\n \n" +
-                                            "     <td width='25%'>"+Name+"</td>\n\n" +
-                                            "    <td width='30%'>"+Email+"</td> \n\n" +
-                                            "    <td width='16%'>"+Member_Contact+"</td>\n\n" +
-                                            "    <td width='17%'>"+MemberGST_No+"</td>\n\n" +
-                                            "    </tr>\n"+
-                                            "          </tbody>\n" +
-                                            "       </table>\n" +
-                                            "       </div>\n" +
-                                            "       </div>\n" +
-                                            "                     \n" +
-                                            "      </div>\n" +
-                                            "     </div>\n" +
-                                            "  </div>\n" +
-                                            "                           <br></br>\n" +
-                                            "        <div  >\n" +
-                                            "\n" +
-                                            "            <div >\n" +
-                                            "                <div >\n" +
-                                            "                    <div  >\n" +
-                                            "                        <h3 ><strong>Package Summary</strong></h3>\n" +
-                                            "                    </div>\n" +
-                                            "                    <div  >\n" +
-                                            "                        <div  >\n" +
-                                            "   <table border = '1' cellpadding=\"6\"  width=\"100%\" >\n" +
-                                            "                             <thead height=\"100\" >\n" +
-                                            "                                    <tr height=\"100\" >\n" +
-                                            "                                      <th ><strong>Package</strong></th>\n" +
-                                            "                                       <th ><strong>Duration</strong></th>\n" +
-                                            "                                       <th ><strong>Session</strong></th>                                    \n" +
-                                            "                                       <th ><strong>StartDate</strong></th>\n" +
-                                            "                                       <th ><strong>EndDate</strong></th>\n" +
-                                            "                                       <th ><strong>Time</strong></th>\n" +
-                                            "                                       <th ><strong>Instructor</strong></th>\n" +
-                                            "                                       <th ><strong>Package Fees</strong></th>\n" +
-                                            "                                    </tr>\n" +
-                                            "                                </thead>\n" +
-                                            "                               <tbody height=\"100\" >\n" +
-                                            "                                    <tr height=\"100\" >\n" +
-                                            "                                        <td width='12.5%'>"+Package_Name+"</td>\n" +
-                                            "                                         <td width='11.5%'>"+Duration_Days+"</td>\n" +
-                                            "                                        <td width='11%'>"+Session+"</td>                                       \n" +
-                                            "                                        <td width='14%'>"+start_date+"</td>\n" +
-                                            "                                        <td width='14%'>"+end_date+"</td>\n" +
-                                            "                                        <td width='8%'>"+Time+"</td>\n" +
-                                            "                                        <td width='13%'>"+Instructor_Name+"</td>\n" +
-                                            "                                        <td width='12%'>"+Package_Fees+"</td>\n" +
-                                            "                                    </tr>\n" +
-                                            "                                </tbody>\n" +
-                                            "                            </table>\n" +
-                                            "                        </div>\n" +
-                                            "                    </div>\n" +
-                                            "                    <div >\n" +
-                                            "                        <div  >\n" +
-                                            "                            <table border = '1' cellpadding=\"6\"  width=\"100%\" >\n" +
-                                            "                                <thead height=\"100\">\n" +
-                                            "                                    <tr height=\"100\" >\n" +
-                                            "                                        <th ><strong>Discount</strong></th>\n" +
-                                            "                                        <th ><strong>Reg Fees</strong></th>\n" +
-                                            "                                        <th ><strong>Total Amount</strong></th>\n" +
-                                            "                                        <th ><strong>Paid Amount</strong></th>\n" +
-                                            "                                        <th ><strong>Balance</strong></th>\n" +
-                                            "                                    </tr>\n" +
-                                            "                                </thead>\n" +
-                                            "                                <tbody >\n" +
-                                            "                                    <tr>\n" +
-                                            "                                        <td >"+Discount+"</td>\n" +
-                                            "                                        <td >"+Registration_Fees+"</td>\n" +
-                                            "                                       \n" +
-                                            "                                        <td >"+Rate+"</td>\n" +
-                                            "                                        <td >"+Final_paid+"</td>\n" +
-                                            "                                        <td >"+Final_Balance+"</td>\n" +
-                                            "                                    </tr>\n" +
-                                            "                                </tbody>\n" +
-                                            "                            </table>\n" +
-                                            "                        </div>\n" +
-                                            "                    </div>\n" +
-                                            "\n" +
-                                            "                </div>\n" +
-                                            "            </div>\n" +
-                                            "        </div>\n" +
-                                            "\n" + "                           <br></br>\n" +
-                                            "       \n" +
-                                            " <div  >\n" +
-                                            "\n" +
-                                            "    <div >\n" +
-
-                                            "            <div >\n" +
-                                            "                <div  >\n" +
-                                            "                        <h3 ><strong>Payment Transaction</strong></h3>\n" +
-                                            "                    </div>\n" +
-                                            "                <div >\n" +
-                                            "              <div >\n" +
-                                            "             <table border = '1' cellpadding=\"6\"  width=\"100%\" >\n" +
-                                            "             <thead height=\"100\">\n" +
-                                            "                   <tr height=\"100\" >\n" +
-                                            "                      <th ><strong>#RNo</strong></th>\n" +
-                                            "                      <th ><strong>Date</strong></th>\n" +
-                                            "                      <th ><strong>Tax</strong></th>                                    \n" +
-                                            "                      <th ><strong>Tax Amount</strong></th>\n" +
-                                            "                      <th ><strong>Paid Amount</strong></th>\n" +
-                                            "                       <th ><strong>Payment Mode</strong></th>\n" +
-                                            "                       <th ><strong>Payment Details</strong></th>\n" +
-                                            "                       <th ><strong>Executive</strong></th>\n" +
-                                            "                    </tr>\n" +
-                                            "             </thead>\n" +
-                                            "           <tbody >\n" +
-                                            textBody+
-                                            "          </tbody>\n" +
-                                            "       </table>\n" +
-                                            "       </div>\n" +
-                                            "       </div>\n" +
-                                            "                     \n" +
-                                            "      </div>\n" +
-                                            "     </div>\n" +
-                                            "  </div>\n" +
-                                            "\n" + "                           <br></br>\n" +
-                                            "      \n" +
-                                            "\n" +
-                                            "  <div  >\n" +
-                                            "    <div >\n" +
-                                            "       <div  >\n" +
-                                            "          <h3 ><strong>Terms And Conditions</strong></h3>\n" +
-                                            "       </div>\n" +
-                                            "                  \n" +
-                                            "                           "+TermsAndConditions+"\n" +
-                                            "                     \n" +
-                                            "    \n" +
-                                            "                \n" +
-                                            "            </div>\n" +
-                                            "        </div>\n" +
-                                            "\n" +
-                                            "    </div>\n" +
-                                            "        </form>\n" +
-                                            "</body>\n" +
-                                            "</html>";
                                     final Document document = new Document(PageSize.A4);
 
                                     try {
@@ -1735,11 +1548,6 @@ public class BalanceReceiptActivity extends AppCompatActivity {
                                         initializeFonts();
 
                                         //the company logo is stored in the assets which is read only
-                                        //get the logo and print on the document
-                                        String urlOfImage = "https://lh5.googleusercontent.com/E3eX_"
-                                                + "hgl-eK9cX6j6XMyM6eOkCPvYs9Us5ySKIu60_fYFGlKywKP9pGfNcTj"
-                                                + "7WDSnDb4zrHubFRLHGK4DqBiLBa4HzRAWx728iHpDrL21HxzsEXSHAa"
-                                                + "lK49-rBzvU3DlmGURrwg";
 
                                         //Add Image from some URL
                                         Thread thread = new Thread(new Runnable() {
@@ -1748,16 +1556,9 @@ public class BalanceReceiptActivity extends AppCompatActivity {
                                             public void run() {
                                                 try  {
                                                     Image image = Image.getInstance(new URL(imgurl));
-                                                    image.setAbsolutePosition(440,750);
-                                                    image.scalePercent(50);
-//                                                    //Set absolute position for image in PDF (or fixed)
-//                                                    image.setAbsolutePosition(100, 500);
-//                                                    //Scale image's width and height
-//                                                    image.scaleAbsolute(200, 200);
-//                                                    //Scale image's height
-//                                                    image.scaleAbsoluteWidth(200);
-//                                                    //Scale image's width
-//                                                    image.scaleAbsoluteHeight(200);
+                                                    image.setAbsolutePosition(50,730);
+                                                    image.scalePercent(10);
+                                                    image.scaleToFit(100, 70);
                                                     document.add(image);
                                                     //Your code goes here
                                                 } catch (Exception e) {
@@ -1769,7 +1570,7 @@ public class BalanceReceiptActivity extends AppCompatActivity {
                                         thread.start();
 //
                                         // creating a sample invoice with some customer data
-                                        createHeadings(cb,50,780,Company_Name);
+                                        //createHeadings(cb,50,780,Company_Name);
                                         String delimiter = " ";
                                         int partitionSize = 6;
                                         String add="";
@@ -1777,20 +1578,272 @@ public class BalanceReceiptActivity extends AppCompatActivity {
                                         int y=765;
                                         for (Iterable<String> iterable : Iterables.partition(Splitter.on(delimiter).split(Address), partitionSize)) {
                                             System.out.println(Joiner.on(delimiter).join(iterable));
-                                            add+=Joiner.on(delimiter).join(iterable)+"\n";
+                                            add+=Joiner.on(delimiter).join(iterable)+"<br/>";
 
-                                            createText(cb,x,y,Joiner.on(delimiter).join(iterable));
+                                            //createText(cb,x,y,Joiner.on(delimiter).join(iterable));
                                             y= y-10;
                                         }
-                                        createText(cb,50,730,Contact);
-                                        createText(cb,50,720,GST_No);
+                                        String csstext=" .text-right { text-align: right;} .p{border: 1px solid black;font-family: Helvetica,Arial,sans-serif;font-size: 12px;}" +
+                                                "        .addr {" +
+                                                "            margin-bottom: 10px;" +
+                                                "            font-style: normal;" +
+                                                "            margin-left: 20px;font-size: 12px;" +
+                                                "            line-height: 1.428571429;" +
+                                                "        }" +
+                                                "        .table > thead > tr > td {" +
+                                                "            padding: 1px;" +
+                                                "            line-height: 1.428571429;" +
+                                                "            vertical-align: top;" +
+                                                "            border-top: 1px solid #ddd;" +
+                                                "            margin-left: 10px;" +
+                                                "font-family: Helvetica,Arial,sans-serif;font-size: 12px;" +
+                                                "        }\n" +
+                                                "        .column {\n" +
+                                                "          float: left;\n" +
+                                                "          width: 30.33%;\n" +
+                                                "          padding: 10px;" +
+                                                "        }\n" +
+                                                "        .col-3{\n" +
+                                                "            float: left;\n" +
+                                                "          width: 20%;\n" +
+                                                "          padding: 10px;\n" +
+                                                "        }\n" +
+                                                "        .col-6{\n" +
+                                                "            float: left;\n" +
+                                                "          width: 70%;\n" +
+                                                "        }\n" +
+                                                "         .col-4{\n" +
+                                                "            float: left;\n" +
+                                                "          width: 10%;\n" +
+                                                "text-align: right;" +
+                                                "        }\n" +
+                                                "        .id{\n" +
+                                                "            float: left;\n" +
+                                                "          width: 50%;\n" +
+                                                "          margin-left: 5px;\n" +
+                                                "        }\n" +
+                                                "        .email{\n" +
+                                                "            float: left;\n" +
+                                                "          width: 49%;\n" +
+                                                "        }" +
+                                                "        .row:after {\n" +
+                                                "          content: \"\";\n" +
+                                                "          display: table;\n" +
+                                                "          clear: both;\n" +
+                                                "border-bottom: 1px solid black;margin-top: 13px;" +
+                                                "        }\n" +
+                                                "        .col-md-3{\n" +
+                                                "             float: left;\n" +
+                                                "           width: 28%;\n" +
+                                                "          height: 100%;\n" +
+                                                "    overflow: hidden;\n" +
+                                                "        } .col-md-4{" +
+                                                "    float: left; width: 20%;height: 100%; overflow: hidden;}\n" +
+                                                "        .table > thead > tr > td {\n" +
+                                                "            line-height: 1.428571429;\n" +
+                                                "            vertical-align: top;\n" +
+                                                "            border: 1px solid #ddd;\n" +
+                                                "            margin-left: 0px;\n" +
+                                                "             table-layout: fixed;\n" +
+                                                "           }\n" +
+                                                "           .table-bordered {\n" +
+                                                "            empty-cells: show;\n" +
+                                                "        }\n" +
+                                                "        table {\n" +
+                                                "        border-spacing: 0;\n" +
+                                                "         empty-cells: show;\n" +
+                                                "         }\n" +
+                                                "        table td[class*=col-], table th[class*=col-] {\n" +
+                                                "            position: static;\n" +
+                                                "            float: none;\n" +
+                                                "            display: table-cell;\n" +
+                                                "        }\n" +
+                                                "        .container {\n" +
+                                                "          display: flex;\n" +
+                                                "          flex-wrap: wrap;\n" +
+                                                "        }\n" +
+                                                "        thead {\n" +
+                                                "    display: table-header-group;\n" +
+                                                "    vertical-align: middle;\n" +
+                                                "    border-color: inherit;\n" +
+                                                "}" +
+                                                " td{font-family: Helvetica,Arial,sans-serif;font-size: 12px; }";
 
-                                        createHeadings(cb,435,735,"Invoice Date :"+invoice_date);
-                                        createHeadings(cb,435,720,"Invoice No : "+Invoice_ID);
+                                        String HTML = "<html><body style=\"font-family: Helvetica,Arial,sans-serif;color: #333\">\n" +
+                                                "        <div class=\"container\" >\n" +
+                                                "            <div class=\"row\">\n" +
+                                                "                    <div class=\"row\" style=\"border-bottom: 1px solid black;margin-top: 13px;\">\n" +
+                                                "                        <div class=\"col-3\"> \n" +
+                                                "                                <img src=\"http://demo.gymtime.in/CompanyLogo/NavkarDemo_2020125141355.png\" style=\"width: 120px; height: 100px;\" />                                                                                   \n" +
+                                                "                        </div>\n" +
+                                                "                        <div class=\"col-6\" style=\"margin-left: 0px; padding :5px;\">\n" +
+                                                "                            <div class=\"addr\">\n" +
+                                                "                                 <table cellpadding=\"4\">\n" +
+                                                "                                <thead>\n" +
+                                                "                                    <tr>\n" +
+                                                "                                        <td ><strong>"+Company_Name+"</strong></td>\n" +
+                                                "                                    </tr>\n" +
+                                                "                                    <tr>\n" +
+                                                "                                        <td  >"+add+"</td>\n" +
+                                                "                                    </tr>\n" +
+                                                "                                    <tr>\n" +
+                                                "                                        <td  >"+Branch+"</td>\n" +
+                                                "                                    </tr>\n" +
+                                                "                                    <tr>\n" +
+                                                "                                        <td  >"+Contact+"</td>\n" +
+                                                "                                    </tr>\n" +
+                                                "                                    <tr>\n" +
+                                                "                                        <td  >"+GST_No+"</td>\n" +
+                                                "                                    </tr>\n" +
+                                                "                                </thead>\n" +
+                                                "                            </table>\n" +
+                                                "                               \n" +
+                                                "                            </div>\n" +
+                                                "                        </div>\n" +
+                                                "                        <div class=\"col-4\" style=\"text-align: right;\">\n" +
+                                                "                               <table cellpadding=\"4\">\n" +
+                                                "                                <thead>\n" +
+                                                "                                    <tr>\n" +
+                                                "                                        <td  ><strong>Invoice No : </strong>"+Invoice_ID+"</td>\n" +
+                                                "                                    </tr>\n" +
+                                                "                                    <tr>\n" +
+                                                "                                        <td  ><strong>Invoice Date :</strong>"+invoice_date+"</td>\n" +
+                                                "                                    </tr>\n" +
+                                                "                                   \n" +
+                                                "                                </thead>\n" +
+                                                "                            </table>\n" +
+                                                "                        </div>\n" +
+                                                "                    </div> " +
+                                                "  <hr/>  " +
+                                                "<div class=\"row\" style=\"margin-top: 9px; border-bottom: 1px solid black\">\n" +
+                                                "                        <div class=\"id\" style=\"text-align: inherit\">\n" +
+                                                "                            <table cellpadding=\"4\">\n" +
+                                                "                                <thead>\n" +
+                                                "                                    <tr>\n" +
+                                                "                                        <td  ><strong>ID:</strong></td>\n" +
+                                                "                                        <td > "+MemberID+"</td>\n" +
+                                                "                                       \n" +
+                                                "                                    </tr>\n" +
+                                                "                                    <tr>\n" +
+                                                "                                        <td  ><strong>Name:</strong></td>\n" +
+                                                "                                        <td  >"+Name+"</td>\n" +
+                                                "                                        \n" +
+                                                "                                    </tr>\n" +
+                                                "                                    <tr>\n" +
+                                                "                                        <td  ><strong>Contact:</strong></td>\n" +
+                                                "                                        <td  >"+Member_Contact+"</td>\n" +
+                                                "                                    </tr>\n" +
+                                                "                                </thead>\n" +
+                                                "                            </table>\n" +
+                                                "                        </div>\n" +
+                                                "                         <div class=\"email\" style=\"margin-left: 0px;\">\n" +
+                                                "                              <table cellpadding=\"4\">\n" +
+                                                "                                <thead>\n" +
+                                                "                                    <tr>\n" +
+                                                "                                         <td ><strong>Email:</strong></td>\n" +
+                                                "                                        <td >"+Email+"</td>\n" +
+                                                "                                     </tr>\n" +
+                                                "                                     <tr>\n" +
+                                                "                                          <td class=\"text-right\" ><strong>GST No:</strong></td>\n" +
+                                                "                                        <td >"+MemberGST_No+"</td>\n" +
+                                                "                                     </tr>\n" +
+                                                "                                </thead>\n" +
+                                                "                            </table>\n" +
+                                                "                         </div>\n" +
+                                                "                    </div>" +
+                                                " <hr/>" +
+                                                "<div class=\"row\">                                                                                       \n" +
+                                                "                        <div  style=\"text-align: inherit;\">\n" +
+                                                "                            <div class=\"container\" style=\"width:100%; overflow: hidden;padding: 0px 5px 5px 5px;\">\n" +
+                                                "                                <table cellpadding=\"1\" class=\"table table-bordered\" style=\"margin-bottom: 0px;width:100%;padding: 5px;\">\n" +
+                                                "                                    <thead >\n" +
+                                                "                                        <tr  style=\"width:100%;height:10px;border: thick; border-color: black;\">\n" +
+                                                "                                            <td class=\"col-md-3\"><strong>Package :</strong></td>\n" +
+                                                "                                            <td  class=\"col-md-3\">"+Package_Name+"</td>\n" +
+                                                "                                            <td  class=\"col-md-4\"><strong>Amount</strong></td>\n" +
+                                                "                                            <td  class=\"col-md-4\" style=\"text-align: right; \">"+Package_Fees+"</td>\n" +
+                                                "                                        </tr>\n" +
+                                                "                                        <tr style=\"width:100%;height:10px;border: thick; border-color: black;\">\n" +
+                                                "                                            <td class=\"col-md-3\"><strong>Duration/Sessions :</strong></td>\n" +
+                                                "                                             <td class=\"col-md-3\">"+Duration_Days+"/"+Session+"</td>\n" +
+                                                "                                            <td class=\"col-md-4\"><strong>Discount</strong></td>\n" +
+                                                "                                            <td class=\"col-md-4\" style=\"text-align: right; \">"+Discount+"</td>\n" +
+                                                "                                        </tr>\n" +
+                                                "                                        <tr style=\"width:100%;height:10px;border: thick; border-color: black;\">\n" +
+                                                "\n" +
+                                                "                                            <td class=\"col-md-3\"><strong>Date :</strong></td>\n" +
+                                                "                                            <td class=\"col-md-3\">"+start_date+" to "+end_date+"</td>\n" +
+                                                "                                            <td class=\"col-md-4\"><strong>Reg Fees</strong></td>\n" +
+                                                "                                            <td class=\"col-md-4\" style=\"text-align: right; \">"+Registration_Fees+"</td>\n" +
+                                                "                                        </tr>\n" +
+                                                "                                        <tr style=\"width:100%;height:10px;border: thick; border-color: black;\">\n" +
+                                                "\n" +
+                                                "                                            <td class=\"col-md-3\"><strong>Time  :</strong></td>\n" +
+                                                "                                            <td class=\"col-md-3\">"+Time+"</td>\n" +
+                                                "                                            <td class=\"col-md-4\"><strong>Total Amount</strong></td>\n" +
+                                                "                                            <td class=\"col-md-4\" style=\"text-align: right; \">"+Rate+"</td>\n" +
+                                                "                                        </tr>\n" +
+                                                "                                        <tr style=\"width:100%;height:10px;border: thick; border-color: black;\">\n" +
+                                                "\n" +
+                                                "                                            <td class=\"col-md-3\"><strong>Instructor:</strong></td>\n" +
+                                                "                                             <td class=\"col-md-3\">"+Instructor_Name+"</td>\n" +
+                                                "                                            <td class=\"col-md-4\"><strong>Paid Amount</strong></td>\n" +
+                                                "                                            <td class=\"col-md-4\" style=\"text-align: right; \">"+Final_paid+"</td>\n" +
+                                                "                                        </tr>\n" +
+                                                "                                        <tr style=\"width:100%;height:10px;border: thick; border-color: black;\">\n" +
+                                                "                                            <td class=\"col-md-3\"><strong>&nbsp;  </strong></td>                          \n" +
+                                                "                                            <td class=\"col-md-3\"><strong>&nbsp; </strong></td>\n" +
+                                                "                                            <td class=\"col-md-4\"><strong>Balance</strong></td>\n" +
+                                                "                                            <td class=\"col-md-4\" style=\"text-align: right; \">"+Final_Balance+"</td>\n" +
+                                                "                                        </tr>                                                                             \n" +
+                                                "                                    </thead>\n" +
+                                                "                                </table>\n" +
+                                                "                            </div>\n" +
+                                                "                        </div>\n" +
+                                                "                    </div>" +
+                                                " <div class=\"row\">\n" +
+                                                "                                <div style=\"padding-left: 5px;\">\n" +
+                                                "                                    <h3 ><strong>Payment Transaction:</strong></h3>\n" +
+                                                "                                </div><br/>\n" +
+                                                "                                <div  style=\"width:99%; overflow: hidden;padding: 0px 5px 5px 5px;\">\n" +
+                                                "                                      <font size=\"2\" face=\"Courier New\" >  <table cellpadding=\"1\" class=\"table table-bordered\" style=\"margin-bottom: 0px;width:100%;\" >\n" +
+                                                "                                            <thead>\n" +
+                                                "                                                <tr style=\"width:100%;height:10px;border: thick; border-color: black;\">\n" +
+                                                "                                                    <td style=\"padding: 1px;\"><strong>#RNo</strong></td>\n" +
+                                                "                                                    <td style=\"padding: 1px;\"><strong>Pay Date</strong></td>\n" +
+                                                "                                                    <td style=\"padding: 1px;\"><strong>Subtotal</strong></td>\n" +
+                                                "                                                    <td style=\"padding: 1px;\"><strong>Tax</strong></td>\n" +
+                                                "                                                    <td style=\"padding: 1px;\"><strong>CGST("+CGST+"%)</strong></td>\n" +
+                                                "                                                    <td style=\"padding: 1px;\"><strong>SGST("+CGST+"%)</strong></td>\n" +
+                                                "                                                    <td style=\"padding: 1px;\"><strong>Tax Amount</strong></td>\n" +
+                                                "                                                    <td style=\"padding: 1px;\"><strong>Paid Amount</strong></td>\n" +
+                                                "                                                    <td style=\"padding: 1px;\"><strong>Payment Mode</strong></td>\n" +
+                                                "                                                    <td style=\"padding: 1px;\"><strong>Payment Details</strong></td>\n" +
+                                                "                                                    <td style=\"padding: 1px;\"><strong>Executive</strong></td>\n" +
+                                                "                                                </tr>\n" +
+                                                textBody+
 
-
-                                        HTMLWorker htmlWorker = new HTMLWorker(document);
-                                        htmlWorker.parse(new StringReader(messagehtml));
+                                                "                                            </thead>\n" +
+                                                "                                        </table></font>\n" +
+                                                "                                    </div>\n" +
+                                                "                        </div>           \n" +
+                                                "                    <div class=\"row\">\n" +
+                                                "                                <div style=\"margin-top: 4px; margin-bottom: 4px;padding: 5px;\">\n" +
+                                                "                                    <h3  style=\"margin-bottom: 6px\"><strong>Terms And Conditions : </strong></h3>\n" +
+                                                "                                    <div>                                          \n" +
+                                                "                                        <div  ><table cellpadding=\"4\" style=\"width:100%\">\n" +
+                                                "  <tr><td class=\"p\">"+TermsAndConditions+"</td> </tr>\n" +
+                                                "</table>\n" +
+                                                "                                        </div>\n" +
+                                                "                                    </div>\n" +
+                                                "                                </div>\n" +
+                                                "                    </div>" +
+                                                "                </div>\n" +
+                                                "            </div>\n" +
+                                                "</body></html>";
+                                        InputStream is = new ByteArrayInputStream(HTML.getBytes());
+                                        InputStream cssggh = new ByteArrayInputStream(csstext.getBytes());
+                                        XMLWorkerHelper.getInstance().parseXHtml(docWriter, document, is, cssggh, Charset.forName("UTF-8"));
                                         document.close();
                                         // document.close();
                                     }
