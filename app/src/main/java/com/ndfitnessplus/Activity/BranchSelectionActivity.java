@@ -256,10 +256,5 @@ public class BranchSelectionActivity extends AppCompatActivity {
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
-//    @Override
-//    public boolean onSupportNavigateUp(){
-//        finish();
-//       // moveTaskToBack(true);
-//        return true;
-//    }
+
 }

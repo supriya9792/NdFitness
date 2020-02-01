@@ -492,10 +492,6 @@ public class RenewActivity extends AppCompatActivity {
             public void onFocusChange(View v, boolean hasFocus) {
 
                 String disc=inputDiscount.getText().toString();
-
-//                    Toast.makeText(RenewActivity.this,"Discount Should not be greater than Max Discount",Toast
-//                            .LENGTH_SHORT).show();
-
                     if(inputDiscount.getText().length()>0){
                         double discount=Double.parseDouble(disc);
                         Log.v(TAG, String.format("Discount  :: souble discout= %s", discount));
@@ -689,8 +685,6 @@ public class RenewActivity extends AppCompatActivity {
                     rate= (packfees+regfees)-discount;
                     inputRate.setText(String.valueOf(rate));
                     Log.v(TAG, String.format("Discount  :: souble reg fees= %s", regfees));
-                   // Log.v(TAG, String.format("Max Discount  :: souble max discout= %s", maxdisc));
-
 
                 }else{
                     double packfees=0;
@@ -701,9 +695,6 @@ public class RenewActivity extends AppCompatActivity {
                     if(inputDiscount.getText().length()>0) {
                         discount = Double.parseDouble(inputDiscount.getText().toString());
                     }
-                   // Log.v(TAG, String.format("Discount  :: souble reg fees= %s", regfees));
-                    // Log.v(TAG, String.format("Max Discount  :: souble max discout= %s", maxdisc));
-
                     double rate= (packfees+0)-discount;
 
                     inputRate.setText(String.valueOf(rate));
@@ -717,14 +708,10 @@ public class RenewActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before,
                                       int count) {
             }
-
-
-
             public void beforeTextChanged(CharSequence s, int start, int count,
                                           int after) {
 
             }
-
             public void afterTextChanged(Editable s) {
                 if(inputRegiFees.getText().length()>0) {
                     double regfees=Double.parseDouble(inputRegiFees.getText().toString());
@@ -772,13 +759,9 @@ public class RenewActivity extends AppCompatActivity {
                     if(inputDiscount.getText().length()>0) {
                         discount = Double.parseDouble(inputDiscount.getText().toString());
                     }
-                    // Log.v(TAG, String.format("Discount  :: souble reg fees= %s", regfees));
-                    // Log.v(TAG, String.format("Max Discount  :: souble max discout= %s", maxdisc));
-
                     double rate= (packfees+0)-discount;
 
                     inputRate.setText(String.valueOf(rate));
-                   // double rate =packfees-0;
                     double paid =0;
                     if(inputPaid.getText().length()>0) {
                          paid = Double.parseDouble(inputPaid.getText().toString());
@@ -811,9 +794,6 @@ public class RenewActivity extends AppCompatActivity {
                             inputRate.setText(String.valueOf(rate));
                         }
                         Log.v(TAG, String.format("Discount  :: souble reg fees= %s", regfees));
-                        // Log.v(TAG, String.format("Max Discount  :: souble max discout= %s", maxdisc));
-
-
                         if(inputPaid.getText().length()>0){
                             double rate= (packfees-discount)+regfees;
 
@@ -843,7 +823,6 @@ public class RenewActivity extends AppCompatActivity {
                     subtotal=String.valueOf(i);
                     Log.v(TAG, String.format("Discount  ::Tax amount= %s", TaxAmount));
                     Log.v(TAG, String.format("Discount  ::Tax = %s", Tax));
-                    // Log.v(TAG, String.format("Max Discount  :: souble max discout= %s", maxdisc));
                    if(rate == paid){
                        awesomeValidation.clear();
                        inputNextFollDate.getText().clear();
@@ -854,7 +833,6 @@ public class RenewActivity extends AppCompatActivity {
                        inputNextFollDate.setEnabled(true);
                        String curr_date = Utility.getCurrentDate();
                        inputNextFollDate.setText(curr_date);
-                       //awesomeValidation.addValidation(RenewActivity.this,R.id.input_nextfollDate,RegexTemplate.NOT_EMPTY,R.string.err_msg_next_foll_date);
                    }
                     if(paid>rate){
                         Toast.makeText(RenewActivity.this,"Your paying more than your fees",Toast
@@ -865,13 +843,10 @@ public class RenewActivity extends AppCompatActivity {
                         inputNextFollDate.getText().clear();
                         inputNextFollDate.setEnabled(false);
                         inputNextFollDate.setKeyListener(null);
-
                     }
                 }else {
                     inputBalance.setText("");
                 }
-
-
             }
         });
         inputPaid.addTextChangedListener(new TextWatcher() {
@@ -879,14 +854,10 @@ public class RenewActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before,
                                       int count) {
             }
-
-
-
             public void beforeTextChanged(CharSequence s, int start, int count,
                                           int after) {
 
             }
-
             public void afterTextChanged(Editable s) {
                 if(inputPaid.getText().length()>0) {
                     double rate=0;
@@ -929,7 +900,6 @@ public class RenewActivity extends AppCompatActivity {
                         inputNextFollDate.setEnabled(false);
                         inputNextFollDate.setKeyListener(null);
                         awesomeValidation.clear();
-
                     }
                 }else{
                     inputBalance.setText("");
@@ -1009,12 +979,6 @@ public class RenewActivity extends AppCompatActivity {
                     TextView tv = (TextView) view.findViewById(R.id.tv_Name);
                     View layout = (View) view.findViewById(R.id.layout);
                     layout.setPadding(0, 0, 0, 0);
-
-
-//                    if (index == 0) {
-//                        tv.setText(getResources().getString(R.string.hint_instructor));
-//                        tv.setTextColor((Color.GRAY));
-//                    } else {
                         tv.setTextColor((Color.BLACK));
                     txtInstructorName.setVisibility(View.VISIBLE);
 //                    }
@@ -1027,9 +991,6 @@ public class RenewActivity extends AppCompatActivity {
                      }
 
                 }
-                // ((TextView) spinPackageType.getSelectedView()).setTextColor(getResources().getColor(R.color.black));
-                // Showing selected spinner item
-                //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -1058,10 +1019,6 @@ public class RenewActivity extends AppCompatActivity {
                     View layout = (View) view.findViewById(R.id.layout);
                     layout.setPadding(0, 0, 0, 0);
 
-
-//                    if (index == 0) {
-//                        tv.setTextColor((Color.GRAY));
-//                    } else {
                         tv.setTextColor((Color.BLACK));
                     txtTime.setVisibility(View.VISIBLE);
 //                    }
@@ -1074,9 +1031,6 @@ public class RenewActivity extends AppCompatActivity {
                     }
 
                 }
-                // ((TextView) spinPackageType.getSelectedView()).setTextColor(getResources().getColor(R.color.black));
-                // Showing selected spinner item
-                //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -1113,12 +1067,7 @@ public class RenewActivity extends AppCompatActivity {
                     if (index != 0) {
                         txtPaymentType.setVisibility(View.VISIBLE);
                     }
-
-
                 }
-                // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.black));
-                // Showing selected spinner item
-                //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -1145,9 +1094,6 @@ public class RenewActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
     private void submitForm() {
-        //first validate the form then move ahead
-        //if this becomes true that means validation is successfull
-        //if(inputPassword.getText().toString().equals(inputCfmPassword.getText().toString())){
             if(!inputBalance.getText().toString().equals("0.0")){
                 awesomeValidation.addValidation(RenewActivity.this, R.id.input_nextfollDate,RegexTemplate.NOT_EMPTY, R.string.err_msg_next_foll_date);
                 if (awesomeValidation.validate()) {
@@ -1186,11 +1132,9 @@ public class RenewActivity extends AppCompatActivity {
                         }else{
                             AddCourseClass();
                         }
-
                     }
                 }
             }
-
     }
     private void showProgressDialog() {
         Log.v(TAG, String.format("showProgressDialog"));
@@ -1199,15 +1143,12 @@ public class RenewActivity extends AppCompatActivity {
         pd.setCancelable(false);
         pd.show();
     }
-
     /**
      * Dismiss Progress Dialog.
      */
     private void dismissProgressDialog() {
         Log.v(TAG, String.format("dismissProgressDialog"));
         pd.cancel();
-
-
     }
     //   ************** Check Contact number already exist or not **************
     public void  CheckContactClass() {
@@ -1218,7 +1159,6 @@ public class RenewActivity extends AppCompatActivity {
     class CheckContactTrackClass extends AsyncTask<String, Void, String> {
 
         ServerClass ruc = new ServerClass();
-
 
         @Override
         protected void onPreExecute() {
@@ -1234,8 +1174,6 @@ public class RenewActivity extends AppCompatActivity {
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
            // dismissProgressDialog();
             viewDialog.hideDialog();
-            //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
-            //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
             CheckContactDetails(response);
 
         }
@@ -1347,8 +1285,6 @@ public class RenewActivity extends AppCompatActivity {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             PackageTypeDetails(response);
 
         }
@@ -1398,10 +1334,6 @@ public class RenewActivity extends AppCompatActivity {
 
                                     String PackageType     = jsonObj.getString("PackageType");
 
-//                               if(i==0){
-//                                   packagetypelist.setName(getResources().getString(R.string.promt_country));
-//                                   enqF.add(0,packagetypelist);
-//                               }
                                     packagetypelist.setName(PackageType);
 
                                     packageTypeArrayList.add(packagetypelist);
@@ -1459,8 +1391,6 @@ public class RenewActivity extends AppCompatActivity {
                     dialog.setCancelable(false);
                     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     dialog.show();
-                    //forumCount.setVisibility(View.INVISBLE);
-                    // queCount.setVisibility(View.INVISIBLE);
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");
@@ -1489,8 +1419,6 @@ public class RenewActivity extends AppCompatActivity {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             PackageNameDetails(response);
 
         }
@@ -1589,9 +1517,6 @@ public class RenewActivity extends AppCompatActivity {
                         }
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
-
-                    //forumCount.setVisibility(View.INVISBLE);
-                    // queCount.setVisibility(View.INVISIBLE);
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");
@@ -1661,10 +1586,6 @@ public class RenewActivity extends AppCompatActivity {
 
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
-                        int count=0;
                         ArrayList<FollowupList> item = new ArrayList<FollowupList>();
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
 
@@ -1891,21 +1812,6 @@ public class RenewActivity extends AppCompatActivity {
                     };
                     spinInstructor.setAdapter(instructoradapter);
                         txtInstructorName.setVisibility(View.VISIBLE);
-
-
-//                    android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(RenewActivity.this);
-//                    builder.setMessage("Add Staff First");
-//                    builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-//                        public void onClick(DialogInterface dialog, int id) {
-//                            dialog.dismiss();
-//                        }
-//                    });
-//                    android.app.AlertDialog dialog = builder.create();
-//                    dialog.setCancelable(false);
-//                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-//                    dialog.show();
-                    //forumCount.setVisibility(View.INVISBLE);
-                    // queCount.setVisibility(View.INVISIBLE);
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");

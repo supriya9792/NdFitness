@@ -107,19 +107,7 @@ public class MainActivity extends AppCompatActivity
         data = new ArrayList<AdSliderList>();
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
-        viewDialog = new ViewDialog(this);
 
-//        for (int i = 0; i < AdSliderData.nameArray.length; i++) {
-//            data.add(new AdSliderList(
-//                    AdSliderData.nameArray[i],
-//                    AdSliderData.nameArray[i],
-//                    AdSliderData.drawableArray[i],
-//                    AdSliderData.id_[i]
-//            ));
-//        }
-//
-//        adapter = new AdSliderAdapter(MainActivity.this,data);
-//        viewPager.setAdapter(adapter);
         setupAutoPager();
         viewDialog = new ViewDialog(this);
 //intitlization
