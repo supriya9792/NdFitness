@@ -2432,7 +2432,7 @@ public class RenewActivity extends AppCompatActivity {
                                     //String end_date=Utility.formatDateDB(End_Date);
                                     String Rate = inputRate.getText().toString();
                                     String Final_paid = inputPaid.getText().toString();
-                                    String Final_Balance = inputBalance.getText().toString();
+                                    String Final_Balance = jsonObj.getString("Final_Balance");
                                     if(Final_Balance.equals(".00")){
                                         Final_Balance="0.00";
                                     }
@@ -2445,11 +2445,11 @@ public class RenewActivity extends AppCompatActivity {
                                     String Time = time;
                                     String Instructor_Name = instructorname;
                                     String Package_Fees = inputPackageFees.getText().toString();
-                                    String Discount = inputDiscount.getText().toString();
+                                    String Discount =  jsonObj.getString("Discount");;
                                     if(Discount.equals(".00")){
                                         Discount="0.00";
                                     }
-                                    String Registration_Fees = inputRegiFees.getText().toString();
+                                    String Registration_Fees =  jsonObj.getString("Registration_Fees");;
                                     if(Registration_Fees.equals(".00")){
                                         Registration_Fees="0.00";
                                     }
@@ -2801,8 +2801,8 @@ public class RenewActivity extends AppCompatActivity {
                                                 "                                                    <td style=\"padding: 1px;\"><strong>Pay Date</strong></td>\n" +
                                                 "                                                    <td style=\"padding: 1px;\"><strong>Subtotal</strong></td>\n" +
                                                 "                                                    <td style=\"padding: 1px;\"><strong>Tax</strong></td>\n" +
-                                                "                                                    <td style=\"padding: 1px;\"><strong>CGST("+CGST+"%)</strong></td>\n" +
-                                                "                                                    <td style=\"padding: 1px;\"><strong>SGST("+CGST+"%)</strong></td>\n" +
+                                                "                                                    <td style=\"padding: 1px;\"><strong>CGST ("+CGST+"%)</strong></td>\n" +
+                                                "                                                    <td style=\"padding: 1px;\"><strong>SGST ("+CGST+"%)</strong></td>\n" +
                                                 "                                                    <td style=\"padding: 1px;\"><strong>Tax Amount</strong></td>\n" +
                                                 "                                                    <td style=\"padding: 1px;\"><strong>Paid Amount</strong></td>\n" +
                                                 "                                                    <td style=\"padding: 1px;\"><strong>Payment Mode</strong></td>\n" +

@@ -2856,8 +2856,8 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                                 "                                                    <td style=\"padding: 1px;\"><strong>Pay Date</strong></td>\n" +
                                                 "                                                    <td style=\"padding: 1px;\"><strong>Subtotal</strong></td>\n" +
                                                 "                                                    <td style=\"padding: 1px;\"><strong>Tax</strong></td>\n" +
-                                                "                                                    <td style=\"padding: 1px;\"><strong>CGST("+CGST+"%)</strong></td>\n" +
-                                                "                                                    <td style=\"padding: 1px;\"><strong>SGST("+CGST+"%)</strong></td>\n" +
+                                                "                                                    <td style=\"padding: 1px;\"><strong>CGST ("+CGST+"%)</strong></td>\n" +
+                                                "                                                    <td style=\"padding: 1px;\"><strong>SGST ("+CGST+"%)</strong></td>\n" +
                                                 "                                                    <td style=\"padding: 1px;\"><strong>Tax Amount</strong></td>\n" +
                                                 "                                                    <td style=\"padding: 1px;\"><strong>Paid Amount</strong></td>\n" +
                                                 "                                                    <td style=\"padding: 1px;\"><strong>Payment Mode</strong></td>\n" +
@@ -4119,8 +4119,8 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                                 "                                                    <td style=\"padding: 1px;\"><strong>Pay Date</strong></td>\n" +
                                                 "                                                    <td style=\"padding: 1px;\"><strong>Subtotal</strong></td>\n" +
                                                 "                                                    <td style=\"padding: 1px;\"><strong>Tax</strong></td>\n" +
-                                                "                                                    <td style=\"padding: 1px;\"><strong>CGST("+CGST+"%)</strong></td>\n" +
-                                                "                                                    <td style=\"padding: 1px;\"><strong>SGST("+CGST+"%)</strong></td>\n" +
+                                                "                                                    <td style=\"padding: 1px;\"><strong>CGST ("+CGST+"%)</strong></td>\n" +
+                                                "                                                    <td style=\"padding: 1px;\"><strong>SGST ("+CGST+"%)</strong></td>\n" +
                                                 "                                                    <td style=\"padding: 1px;\"><strong>Tax Amount</strong></td>\n" +
                                                 "                                                    <td style=\"padding: 1px;\"><strong>Paid Amount</strong></td>\n" +
                                                 "                                                    <td style=\"padding: 1px;\"><strong>Payment Mode</strong></td>\n" +

@@ -243,8 +243,6 @@ public class ActiveMemberActivity extends AppCompatActivity {
             }
         });
 
-
-
     }
     public void CampareTwoDates(){
         //******************campare two dates****************
