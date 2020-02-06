@@ -135,9 +135,10 @@ public class MainActivity extends AppCompatActivity
         token = SharedPrefManager.getInstance(this).getDeviceToken();
         //Toast.makeText(MainActivity.this, token, Toast.LENGTH_LONG).show();
         registerDeviceClass();
-        String upperString = UName.substring(0,1).toUpperCase() + UName.substring(1);
-        Username.setText(upperString);
-
+        if(UName!= null) {
+            String upperString = UName.substring(0, 1).toUpperCase() + UName.substring(1);
+            Username.setText(upperString);
+        }
         String wishes=Utility.getWishes();
         Welcome.setText(wishes);
         CheckCompanyClass();
@@ -241,7 +242,7 @@ public class MainActivity extends AppCompatActivity
          compLogo=(ImageView)headerView.findViewById(R.id.imageView);
         //String name=UName;
         String name = UName.substring(0,1).toUpperCase() + UName.substring(1);
-         String  authority=SharedPrefereneceUtil.getAuthority(MainActivity.this);
+        String  authority=SharedPrefereneceUtil.getAuthority(MainActivity.this);
         companyname=SharedPrefereneceUtil.getCompanyName(MainActivity.this);
         String brnach=SharedPrefereneceUtil.getSelectedBranch(MainActivity.this);
         String aname=name+"-"+authority;

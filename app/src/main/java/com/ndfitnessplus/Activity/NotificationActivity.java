@@ -46,16 +46,13 @@ import java.util.concurrent.TimeoutException;
 import static com.ndfitnessplus.Utility.HTTPRequestQueue.isOnline;
 
 public class NotificationActivity extends AppCompatActivity {
-    private ViewPager view_pager;
-    private TabLayout tab_layout;
     private ProgressDialog pd;
     private static final String TAG = NotificationActivity.class.getSimpleName();
-
-    int count=5;
-    public String[] title ={"Member Birthday", "Staff Birthday", "Enquiry","Enquiry Followup","Todays Admission",
-            "Active Member","Deactive Member","Membership End Date","Payment Date","Post Dated Cheque","Other Followup"};
-    public static int[] tabicons = {R.drawable.ic_cake_black,R.drawable.birthdaycake, R.drawable.enquiry
-            ,R.drawable.followup,R.drawable.admission,R.drawable.activemember,R.drawable.deactivemember,R.drawable.mem_end_date,R.drawable.payment_date,R.drawable.cheque,R.drawable.otherfollowup};
+//    int count=5;
+//    public String[] title ={"Member Birthday", "Staff Birthday", "Enquiry","Enquiry Followup","Todays Admission",
+//            "Active Member","Deactive Member","Membership End Date","Payment Date","Post Dated Cheque","Other Followup"};
+//    public static int[] tabicons = {R.drawable.ic_cake_black,R.drawable.birthdaycake, R.drawable.enquiry
+//            ,R.drawable.followup,R.drawable.admission,R.drawable.activemember,R.drawable.deactive_members,R.drawable.mem_end_date,R.drawable.payment_date,R.drawable.cheque,R.drawable.otherfollowup};
 
     //Notification Menu
     LinearLayout member_bday,staff_bday,enquiry,enquiry_followup,todays_admission,active_member,deactive_member,mem_end_date,payment_date,renew_followup,other_followup,done_followup;

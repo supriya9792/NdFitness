@@ -1606,7 +1606,6 @@ public class EnquiryFilterActivity extends AppCompatActivity {
             return loginResult;
         }
 
-
     }
 
 

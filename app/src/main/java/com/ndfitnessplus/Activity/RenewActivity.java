@@ -1690,8 +1690,6 @@ public class RenewActivity extends AppCompatActivity {
             Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
-
-
     }
 
 

@@ -178,7 +178,7 @@ public class SQLiteDataBaseHelper extends SQLiteOpenHelper {
         // Select All Query
         String selectQuery = "SELECT  * FROM  Cart"  ;
 
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
 
         // looping through all rows and adding to list

@@ -142,7 +142,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
-                            android:text="Mary Jackson"
+                            android:text=""
                             android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
                             android:textColor="@color/grey_80"
                             android:textStyle="bold" />
@@ -151,7 +151,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
-                            android:text="857555555"
+                            android:text=""
                            android:textSize="11sp"
                             android:textColor="@color/grey_80"
                             />
@@ -287,7 +287,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
-                            android:text="20, June 2017"
+                            android:text=""
                             android:textSize="12sp"
                             android:textColor="@color/grey_80"
                             />
@@ -302,7 +302,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
-                            android:text="11:28 AM"
+                            android:text=""
                             android:textSize="12sp"
                             android:textColor="@color/grey_80"
                             />
@@ -418,7 +418,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
                             android:layout_gravity="center"
-                            android:text="11:28 AM"
+                            android:text=""
                             android:textSize="9sp"
                             android:textColor="@color/white"
                             />

@@ -29,6 +29,7 @@ import com.ndfitnessplus.Utility.ServerClass;
 import com.ndfitnessplus.Utility.ServiceUrls;
 import com.ndfitnessplus.Utility.SharedPrefereneceUtil;
 import com.ndfitnessplus.Utility.Utility;
+import com.ndfitnessplus.Utility.ViewDialog;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -47,6 +48,7 @@ public class CourseCongratulationActivity extends AppCompatActivity {
     public static String TAG = CourseDetailsActivity.class.getName();
     ImageView sendWhatsapp;
     File pdfFile;
+    ViewDialog viewDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +73,7 @@ public class CourseCongratulationActivity extends AppCompatActivity {
         imageView=findViewById(R.id.user_image);
         sendWhatsapp=findViewById(R.id.send_to_whatsapp);
 
+        viewDialog=new ViewDialog(this);
         Intent intent = getIntent();
         Bundle args = intent.getBundleExtra("BUNDLE");
         if (intent != null) {
@@ -95,16 +98,6 @@ public class CourseCongratulationActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                                 try {
-//                    File outputFile = new File(filepath);
-//                Uri uri = Uri.fromFile(outputFile);
-//
-//                Intent share = new Intent();
-//                share.setAction(Intent.ACTION_SEND);
-//                share.setType("application/pdf");
-//                share.putExtra(Intent.EXTRA_STREAM, uri);
-//                share.setPackage("com.whatsapp");
-//                startActivity(share);
-
 
                     String toNumber = "+91"+MobileNo.getText().toString(); // contains spaces.
                     toNumber = toNumber.replace("+", "").replace(" ", "");
@@ -156,6 +149,7 @@ public class CourseCongratulationActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
+            viewDialog.showDialog();
             //showProgressDialog();
         }
 
@@ -163,6 +157,7 @@ public class CourseCongratulationActivity extends AppCompatActivity {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
+            viewDialog.hideDialog();
             //dismissProgressDialog();
             //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             CourseDetailsDetails(response);
@@ -203,9 +198,7 @@ public class CourseCongratulationActivity extends AppCompatActivity {
 
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
+
                         ArrayList<BalanceTrasactionList> item = new ArrayList<BalanceTrasactionList>();
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
 
@@ -261,12 +254,6 @@ public class CourseCongratulationActivity extends AppCompatActivity {
 
                                     String fpaid="₹ "+Final_paid;
                                     String ttl="₹ "+Rate;
-
-
-//                                    String sdate=Utility.formatDate(Start_Date);
-//                                    String edate=Utility.dformatDate(End_Date);
-////                                    String todate=sdate+" to "+eate;
-//                                    start_to_end_dateTV.setText(todate);
 
                                     invoice_id=Invoice_ID;
 

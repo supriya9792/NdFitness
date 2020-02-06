@@ -18,7 +18,7 @@
             android:background="@android:color/transparent"
             android:layout_gravity="center_horizontal"
             android:tint="@color/black"
-            app:srcCompat="@drawable/deactivemember" />
+            app:srcCompat="@drawable/deactive_members" />
 
         <View
             android:layout_width="@dimen/spacing_middle"
