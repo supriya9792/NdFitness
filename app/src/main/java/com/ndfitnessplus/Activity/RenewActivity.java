@@ -306,8 +306,6 @@ public class RenewActivity extends AppCompatActivity {
                                       int count) {
             }
 
-
-
             public void beforeTextChanged(CharSequence s, int start, int count,
                                           int after) {
 
@@ -2830,10 +2828,6 @@ public class RenewActivity extends AppCompatActivity {
                                         InputStream is = new ByteArrayInputStream(HTML.getBytes());
                                         InputStream cssggh = new ByteArrayInputStream(csstext.getBytes());
                                         XMLWorkerHelper.getInstance().parseXHtml(docWriter, document, is, cssggh, Charset.forName("UTF-8"));
-
-
-//                                        HTMLWorker htmlWorker = new HTMLWorker(document);
-//                                        htmlWorker.parse(new StringReader(messagehtml));
 
 
                                         document.close();

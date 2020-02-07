@@ -471,9 +471,7 @@ public class EnquiryFollowupActivity extends AppCompatActivity implements SwipeR
                     progressBar.setVisibility(View.GONE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
+
                         int count=0;
                         ArrayList<FollowupList> item = new ArrayList<FollowupList>();
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
