@@ -124,8 +124,6 @@ public class OtherFollowupActivity extends AppCompatActivity implements SwipeRef
         inputsearch=(EditText)findViewById(R.id.inputsearchid);
         swipeRefresh.setOnRefreshListener(this);
 
-
-
         inputsearch.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -160,8 +158,6 @@ public class OtherFollowupActivity extends AppCompatActivity implements SwipeRef
 
             }
         });
-//        adapter = new EnquiryAdapter( new ArrayList<EnquiryList>(),OtherFollowupActivity.this);
-//        recyclerView.setAdapter(adapter);
 
         Intent intent = getIntent();
         Bundle args = intent.getBundleExtra("BUNDLE");
@@ -304,7 +300,6 @@ public class OtherFollowupActivity extends AppCompatActivity implements SwipeRef
             return loginResult;
         }
 
-
     }
 
     private void FollowupDetails(String jsonResponse) {
@@ -322,9 +317,7 @@ public class OtherFollowupActivity extends AppCompatActivity implements SwipeRef
                     progressBar.setVisibility(View.GONE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
+
                         ttl_followups.setText(String.valueOf(jsonArrayResult.length()));
                         int count=0;
                         ArrayList<FollowupList> item = new ArrayList<FollowupList>();
@@ -350,11 +343,10 @@ public class OtherFollowupActivity extends AppCompatActivity implements SwipeRef
                                     String NextFollowup_Date = jsonObj.getString("NextFollowupDate");
                                     String Member_ID = jsonObj.getString("Member_ID");
                                     String Followup_Date = jsonObj.getString("FollowupDate");
-                                    //  for (int j = 0; j < 5; j++) {
+
                                     Log.d(TAG, "next followup date: " + NextFollowup_Date);
                                     Log.d(TAG, "Followup date: " + Followup_Date);
 
-                                    //  for (int j = 0; j < 5; j++) {
 
                                     subList.setName(name);
                                     subList.setRating(Rating);

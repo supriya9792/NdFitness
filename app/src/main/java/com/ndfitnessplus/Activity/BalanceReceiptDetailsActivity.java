@@ -88,16 +88,16 @@ public class BalanceReceiptDetailsActivity extends AppCompatActivity  implements
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
                 WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_balance_receipt_details);
-        initToolbar();
-    }
-    private void initToolbar() {
+          initToolbar();
+}
+private void initToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(getResources().getString(R.string.balance_receipt));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         initComponent();
-    }
-    private void initComponent(){
+        }
+private void initComponent(){
         FloatingActionButton addbalance=findViewById(R.id.fab);
         progressBar=findViewById(R.id.progressBar);
         swipeRefresh=findViewById(R.id.swipeRefresh);
@@ -117,191 +117,189 @@ public class BalanceReceiptDetailsActivity extends AppCompatActivity  implements
         swipeRefresh.setOnRefreshListener(this);
         progress_bar.setVisibility(View.GONE);
         lyt_no_connection.setVisibility(View.VISIBLE);
-//        adapter = new BalanceReceiptAdapter( new ArrayList<EnquiryList>(),CourseActivity.this);
-//        recyclerView.setAdapter(adapter);
 
 
         Intent intent = getIntent();
         Bundle args = intent.getBundleExtra("BUNDLE");
         if (args != null) {
-            ArrayList<CourseList> filterArrayList = (ArrayList<CourseList>) args.getSerializable("filter_array_list");
-            String bal=intent.getStringExtra("balance");
-            progressBar.setVisibility(View.GONE);
-            count=filterArrayList.size();
-            total_balance.setText(String.valueOf(bal));
-            adapter = new BalanceReceiptAdapter( filterArrayList,BalanceReceiptDetailsActivity.this);
-            recyclerView.setAdapter(adapter);
+        ArrayList<CourseList> filterArrayList = (ArrayList<CourseList>) args.getSerializable("filter_array_list");
+        String bal=intent.getStringExtra("balance");
+        progressBar.setVisibility(View.GONE);
+        count=filterArrayList.size();
+        total_balance.setText(String.valueOf(bal));
+        adapter = new BalanceReceiptAdapter( filterArrayList,BalanceReceiptDetailsActivity.this);
+        recyclerView.setAdapter(adapter);
         }else{
-            if (isOnline(BalanceReceiptDetailsActivity.this)) {
-                balanceReceiptclass();// check login details are valid or not from server
-            }
-            else {
-                frame.setVisibility(View.GONE);
-                noInternet.setVisibility(View.VISIBLE);
-                lyt_no_connection.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(final View v) {
-                        progress_bar.setVisibility(View.VISIBLE);
-                        lyt_no_connection.setVisibility(View.GONE);
+        if (isOnline(BalanceReceiptDetailsActivity.this)) {
+        balanceReceiptclass();// check login details are valid or not from server
+        }
+        else {
+        frame.setVisibility(View.GONE);
+        noInternet.setVisibility(View.VISIBLE);
+        lyt_no_connection.setOnClickListener(new View.OnClickListener() {
+@Override
+public void onClick(final View v) {
+        progress_bar.setVisibility(View.VISIBLE);
+        lyt_no_connection.setVisibility(View.GONE);
 
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                progress_bar.setVisibility(View.GONE);
-                                lyt_no_connection.setVisibility(View.VISIBLE);
-                                finish();
-                                overridePendingTransition(0, 0);
-                                startActivity(getIntent());
-                                overridePendingTransition(0, 0);
-                                moveTaskToBack(false);
+        new Handler().postDelayed(new Runnable() {
+@Override
+public void run() {
+        progress_bar.setVisibility(View.GONE);
+        lyt_no_connection.setVisibility(View.VISIBLE);
+        finish();
+        overridePendingTransition(0, 0);
+        startActivity(getIntent());
+        overridePendingTransition(0, 0);
+        moveTaskToBack(false);
 
-                            }
-                        }, 1000);
-                    }
-                });
+        }
+        }, 1000);
+        }
+        });
 
-            }
+        }
         }
 
 
 
         addbalance.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent(BalanceReceiptDetailsActivity.this,BalanceReceiptActivity.class);
-                startActivity(intent);
-            }
+@Override
+public void onClick(View v) {
+        Intent intent=new Intent(BalanceReceiptDetailsActivity.this,BalanceReceiptActivity.class);
+        startActivity(intent);
+        }
         });
 
         inputsearch=(EditText)findViewById(R.id.inputsearchid);
         search=findViewById(R.id.search);
 
         search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(inputsearch.getText().length()>0){
-                    balanceReceiptsearchclass();
-                }else{
-                    Toast.makeText(BalanceReceiptDetailsActivity.this,"Please enter text to search", Toast.LENGTH_LONG).show();
-                }
+@Override
+public void onClick(View v) {
+        if(inputsearch.getText().length()>0){
+        balanceReceiptsearchclass();
+        }else{
+        Toast.makeText(BalanceReceiptDetailsActivity.this,"Please enter text to search", Toast.LENGTH_LONG).show();
+        }
 
-            }
+        }
         });
 
         inputsearch.addTextChangedListener(new TextWatcher() {
 
-            @Override
-            public void afterTextChanged(final Editable arg0) {
-                // TODO Auto-generated method stub
-                if (BalanceReceiptDetailsActivity.this.adapter == null){
+@Override
+public void afterTextChanged(final Editable arg0) {
+        // TODO Auto-generated method stub
+        if (BalanceReceiptDetailsActivity.this.adapter == null){
 
-                }
-                else
-                {
-                    isLoading = false;
-                     count= BalanceReceiptDetailsActivity.this.adapter.filter(String.valueOf(arg0));
+        }
+        else
+        {
+        isLoading = false;
+        count= BalanceReceiptDetailsActivity.this.adapter.filter(String.valueOf(arg0));
 
 
 
-                }
-            }
-            @Override
-            public void beforeTextChanged(CharSequence arg0, int arg1,
-                                          int arg2, int arg3) {
-                // TODO Auto-generated method stub
+        }
+        }
+@Override
+public void beforeTextChanged(CharSequence arg0, int arg1,
+        int arg2, int arg3) {
+        // TODO Auto-generated method stub
 
-            }
+        }
 
-            @Override
-            public void onTextChanged(CharSequence arg0, int arg1, int arg2,
-                                      int arg3) {
-                // TODO Auto-generated method stub
-                if(inputsearch.getText().length()==0) {
-                    //do your work here
-                    // Toast.makeText(AddEnquiryActivity.this ,"Text vhanged count  is 10 then: " , Toast.LENGTH_LONG).show();
-                    balanceReceiptclass();
-                }
+@Override
+public void onTextChanged(CharSequence arg0, int arg1, int arg2,
+        int arg3) {
+        // TODO Auto-generated method stub
+        if(inputsearch.getText().length()==0) {
+        //do your work here
+        // Toast.makeText(AddEnquiryActivity.this ,"Text vhanged count  is 10 then: " , Toast.LENGTH_LONG).show();
+        balanceReceiptclass();
+        }
 
-            }
+        }
         });
         /**
          * add scroll listener while user reach in bottom load more will call
          */
         recyclerView.addOnScrollListener(new PaginationScrollListener(layoutManager) {
-            @Override
-            protected void loadMoreItems() {
-                isLoading = true;
+@Override
+protected void loadMoreItems() {
+        isLoading = true;
 
-                Log.d(TAG, "prepare called current item: " + currentPage+"Total page"+totalPage);
-                if(currentPage<=totalPage && count >100){
-                    //currentPage = PAGE_START;
-                    Log.d(TAG, "currentPage: " + currentPage);
-                    isLastPage = false;
-                    preparedListItem();
-                }
+        Log.d(TAG, "prepare called current item: " + currentPage+"Total page"+totalPage);
+        if(currentPage<=totalPage && count >100){
+        //currentPage = PAGE_START;
+        Log.d(TAG, "currentPage: " + currentPage);
+        isLastPage = false;
+        preparedListItem();
+        }
 
-            }
+        }
 
-            @Override
-            public boolean isLastPage() {
-                return isLastPage;
-            }
+@Override
+public boolean isLastPage() {
+        return isLastPage;
+        }
 
-            @Override
-            public boolean isLoading() {
-                return isLoading;
-            }
+@Override
+public boolean isLoading() {
+        return isLoading;
+        }
         });
-    }
+        }
 
 
-    private void preparedListItem() {
+private void preparedListItem() {
         offset=offset+100;
 
         if (isOnline(BalanceReceiptDetailsActivity.this)) {
-            balanceReceiptoffsetclass();// check login details are valid or not from server
+        balanceReceiptoffsetclass();// check login details are valid or not from server
         }
         else {
-            //Toast.makeText(BalanceReceiptDetailsActivity.this, R.string.internet_unavailable, Toast.LENGTH_LONG).show();
-            android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(BalanceReceiptDetailsActivity.this);
-            builder.setMessage(R.string.internet_unavailable);
-            builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    dialog.dismiss();
-                }
-            });
-            android.app.AlertDialog dialog = builder.create();
-            dialog.setCancelable(false);
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialog.show();
+        //Toast.makeText(BalanceReceiptDetailsActivity.this, R.string.internet_unavailable, Toast.LENGTH_LONG).show();
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(BalanceReceiptDetailsActivity.this);
+        builder.setMessage(R.string.internet_unavailable);
+        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+public void onClick(DialogInterface dialog, int id) {
+        dialog.dismiss();
+        }
+        });
+        android.app.AlertDialog dialog = builder.create();
+        dialog.setCancelable(false);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.show();
         }
 
-    }
-    //Showing progress dialog
-    private void showProgressDialog() {
+        }
+//Showing progress dialog
+private void showProgressDialog() {
         Log.v(TAG, String.format("showProgressDialog"));
         pd = new ProgressDialog(BalanceReceiptDetailsActivity.this);
         pd.setMessage("loading");
         pd.setCancelable(false);
         pd.show();
-    }
+        }
 
-    /**
-     * Dismiss Progress Dialog.
-     */
-    private void dismissProgressDialog() {
+/**
+ * Dismiss Progress Dialog.
+ */
+private void dismissProgressDialog() {
         Log.v(TAG, String.format("dismissProgressDialog"));
 
         pd.cancel();
-    }
-    // Asycc class for loading data for database
-    private void balanceReceiptclass() {
+        }
+// Asycc class for loading data for database
+private void balanceReceiptclass() {
         BalanceReceiptDetailsActivity.BalanceReceiptTrackclass ru = new BalanceReceiptDetailsActivity.BalanceReceiptTrackclass();
         ru.execute("5");
-    }
+        }
 
-    @Override
-    public void onRefresh() {
+@Override
+public void onRefresh() {
         itemCount = 0;
         currentPage = PAGE_START;
         Log.d(TAG, "currentPage: " + currentPage);
@@ -311,45 +309,45 @@ public class BalanceReceiptDetailsActivity extends AppCompatActivity  implements
         //preparedListItem();
 
 
+        }
+
+class BalanceReceiptTrackclass extends AsyncTask<String, Void, String> {
+
+    ServerClass ruc = new ServerClass();
+
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        Log.v(TAG, "onPreExecute");
+        //showProgressDialog();
     }
 
-    class BalanceReceiptTrackclass extends AsyncTask<String, Void, String> {
-
-        ServerClass ruc = new ServerClass();
-
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
-        }
-
-        @Override
-        protected void onPostExecute(String response) {
-            super.onPostExecute(response);
-            Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
-            BalanceReceiptDetails(response);
-
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
-            HashMap<String, String> BalanceReceiptDetails = new HashMap<String, String>();
-            BalanceReceiptDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(BalanceReceiptDetailsActivity.this));
-            BalanceReceiptDetails.put("offset", String.valueOf(offset));
-            Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(BalanceReceiptDetailsActivity.this)));
-            BalanceReceiptDetails.put("action","show_balance_receipt_list");
-            String domainurl=SharedPrefereneceUtil.getDomainUrl(BalanceReceiptDetailsActivity.this);
-            String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, BalanceReceiptDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
-            return loginResult;
-        }
+    @Override
+    protected void onPostExecute(String response) {
+        super.onPostExecute(response);
+        Log.v(TAG, String.format("onPostExecute :: response = %s", response));
+        //dismissProgressDialog();
+        //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
+        BalanceReceiptDetails(response);
 
     }
+
+    @Override
+    protected String doInBackground(String... params) {
+        //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+        HashMap<String, String> BalanceReceiptDetails = new HashMap<String, String>();
+        BalanceReceiptDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(BalanceReceiptDetailsActivity.this));
+        BalanceReceiptDetails.put("offset", String.valueOf(offset));
+        Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(BalanceReceiptDetailsActivity.this)));
+        BalanceReceiptDetails.put("action","show_balance_receipt_list");
+        String domainurl=SharedPrefereneceUtil.getDomainUrl(BalanceReceiptDetailsActivity.this);
+        String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, BalanceReceiptDetails);
+        //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
+        return loginResult;
+    }
+
+}
 
     private void BalanceReceiptDetails(String jsonResponse) {
 
@@ -487,44 +485,44 @@ public class BalanceReceiptDetailsActivity extends AppCompatActivity  implements
         BalanceReceiptDetailsActivity.BalanceReceiptOffsetTrackclass ru = new BalanceReceiptDetailsActivity.BalanceReceiptOffsetTrackclass();
         ru.execute("5");
     }
-    class BalanceReceiptOffsetTrackclass extends AsyncTask<String, Void, String> {
+class BalanceReceiptOffsetTrackclass extends AsyncTask<String, Void, String> {
 
-        ServerClass ruc = new ServerClass();
+    ServerClass ruc = new ServerClass();
 
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
-        }
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        Log.v(TAG, "onPreExecute");
+        //showProgressDialog();
+    }
 
-        @Override
-        protected void onPostExecute(String response) {
-            super.onPostExecute(response);
-            Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            // dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
-            BalanceReceiptOffsetDetails(response);
-
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
-            HashMap<String, String> BalanceReceiptOffsetDetails = new HashMap<String, String>();
-            BalanceReceiptOffsetDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(BalanceReceiptDetailsActivity.this));
-            BalanceReceiptOffsetDetails.put("offset", String.valueOf(offset));
-            Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(BalanceReceiptDetailsActivity.this)));
-            BalanceReceiptOffsetDetails.put("action","show_balance_receipt_list");
-            String domainurl=SharedPrefereneceUtil.getDomainUrl(BalanceReceiptDetailsActivity.this);
-            String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, BalanceReceiptOffsetDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
-            return loginResult;
-        }
-
+    @Override
+    protected void onPostExecute(String response) {
+        super.onPostExecute(response);
+        Log.v(TAG, String.format("onPostExecute :: response = %s", response));
+        // dismissProgressDialog();
+        //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
+        BalanceReceiptOffsetDetails(response);
 
     }
+
+    @Override
+    protected String doInBackground(String... params) {
+        //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+        HashMap<String, String> BalanceReceiptOffsetDetails = new HashMap<String, String>();
+        BalanceReceiptOffsetDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(BalanceReceiptDetailsActivity.this));
+        BalanceReceiptOffsetDetails.put("offset", String.valueOf(offset));
+        Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(BalanceReceiptDetailsActivity.this)));
+        BalanceReceiptOffsetDetails.put("action","show_balance_receipt_list");
+        String domainurl=SharedPrefereneceUtil.getDomainUrl(BalanceReceiptDetailsActivity.this);
+        String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, BalanceReceiptOffsetDetails);
+        //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
+        return loginResult;
+    }
+
+
+}
 
     private void BalanceReceiptOffsetDetails(String jsonResponse) {
 
@@ -662,46 +660,46 @@ public class BalanceReceiptDetailsActivity extends AppCompatActivity  implements
         BalanceReceiptDetailsActivity.BalanceReceiptSearchTrackclass ru = new BalanceReceiptDetailsActivity.BalanceReceiptSearchTrackclass();
         ru.execute("5");
     }
-    class BalanceReceiptSearchTrackclass extends AsyncTask<String, Void, String> {
+class BalanceReceiptSearchTrackclass extends AsyncTask<String, Void, String> {
 
-        ServerClass ruc = new ServerClass();
+    ServerClass ruc = new ServerClass();
 
 
-        @Override
-            protected void onPreExecute() {
-            super.onPreExecute();
-            Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
-            viewDialog.showDialog();
-        }
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        Log.v(TAG, "onPreExecute");
+        //showProgressDialog();
+        viewDialog.showDialog();
+    }
 
-        @Override
-        protected void onPostExecute(String response) {
-            super.onPostExecute(response);
-            Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
-            viewDialog.hideDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
-            BalanceReceiptSearchDetails(response);
-
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
-            HashMap<String, String> BalanceReceiptSearchDetails = new HashMap<String, String>();
-            BalanceReceiptSearchDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(BalanceReceiptDetailsActivity.this));
-            BalanceReceiptSearchDetails.put("text",inputsearch.getText().toString());
-            Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(BalanceReceiptDetailsActivity.this)));
-            BalanceReceiptSearchDetails.put("action","show_search_balance_receipt");
-            String domainurl=SharedPrefereneceUtil.getDomainUrl(BalanceReceiptDetailsActivity.this);
-            String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, BalanceReceiptSearchDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
-            return loginResult;
-        }
-
+    @Override
+    protected void onPostExecute(String response) {
+        super.onPostExecute(response);
+        Log.v(TAG, String.format("onPostExecute :: response = %s", response));
+        //dismissProgressDialog();
+        viewDialog.hideDialog();
+        //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
+        BalanceReceiptSearchDetails(response);
 
     }
+
+    @Override
+    protected String doInBackground(String... params) {
+        //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+        HashMap<String, String> BalanceReceiptSearchDetails = new HashMap<String, String>();
+        BalanceReceiptSearchDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(BalanceReceiptDetailsActivity.this));
+        BalanceReceiptSearchDetails.put("text",inputsearch.getText().toString());
+        Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(BalanceReceiptDetailsActivity.this)));
+        BalanceReceiptSearchDetails.put("action","show_search_balance_receipt");
+        String domainurl=SharedPrefereneceUtil.getDomainUrl(BalanceReceiptDetailsActivity.this);
+        String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, BalanceReceiptSearchDetails);
+        //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
+        return loginResult;
+    }
+
+
+}
 
     private void BalanceReceiptSearchDetails(String jsonResponse) {
 

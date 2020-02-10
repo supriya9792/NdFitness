@@ -94,16 +94,16 @@ public class EnquiryActivity extends AppCompatActivity implements SwipeRefreshLa
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
                 WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_enquiry);
-        initToolbar();
-    }
-    private void initToolbar() {
+          initToolbar();
+}
+private void initToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(getResources().getString(R.string.exi_enquiry));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         initComponent();
-    }
-    private void initComponent(){
+        }
+private void initComponent(){
         FloatingActionButton addenquiry=findViewById(R.id.fab);
         progressBar=findViewById(R.id.progressBar);
         swipeRefresh=findViewById(R.id.swipeRefresh);
@@ -130,44 +130,44 @@ public class EnquiryActivity extends AppCompatActivity implements SwipeRefreshLa
         Intent intent = getIntent();
         Bundle args = intent.getBundleExtra("BUNDLE");
         if (args != null) {
-            String tt_budget=intent.getStringExtra("ttl_budget");
-            ArrayList<EnquiryList> filterArrayList = (ArrayList<EnquiryList>) args.getSerializable("filter_array_list");
-            progressBar.setVisibility(View.GONE);
-            count=filterArrayList.size();
-            total_enquiry.setText(String.valueOf(count));
-            String totalbug="₹ "+tt_budget;
-            ttl_budget.setText(totalbug);
-            adapter = new EnquiryAdapter( filterArrayList,EnquiryActivity.this);
-            recyclerView.setAdapter(adapter);
+        String tt_budget=intent.getStringExtra("ttl_budget");
+        ArrayList<EnquiryList> filterArrayList = (ArrayList<EnquiryList>) args.getSerializable("filter_array_list");
+        progressBar.setVisibility(View.GONE);
+        count=filterArrayList.size();
+        total_enquiry.setText(String.valueOf(count));
+        String totalbug="₹ "+tt_budget;
+        ttl_budget.setText(totalbug);
+        adapter = new EnquiryAdapter( filterArrayList,EnquiryActivity.this);
+        recyclerView.setAdapter(adapter);
         }else{
-            if (isOnline(EnquiryActivity.this)) {
-                enquiryclass();// check login details are valid or not from server
-            }
-            else {
-                frame.setVisibility(View.GONE);
-                noInternet.setVisibility(View.VISIBLE);
-                lyt_no_connection.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(final View v) {
-                        progress_bar.setVisibility(View.VISIBLE);
-                        lyt_no_connection.setVisibility(View.GONE);
+        if (isOnline(EnquiryActivity.this)) {
+        enquiryclass();// check login details are valid or not from server
+        }
+        else {
+        frame.setVisibility(View.GONE);
+        noInternet.setVisibility(View.VISIBLE);
+        lyt_no_connection.setOnClickListener(new View.OnClickListener() {
+@Override
+public void onClick(final View v) {
+        progress_bar.setVisibility(View.VISIBLE);
+        lyt_no_connection.setVisibility(View.GONE);
 
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                progress_bar.setVisibility(View.GONE);
-                                lyt_no_connection.setVisibility(View.VISIBLE);
-                                finish();
-                                overridePendingTransition(0, 0);
-                                startActivity(getIntent());
-                                overridePendingTransition(0, 0);
-                                moveTaskToBack(false);
+        new Handler().postDelayed(new Runnable() {
+@Override
+public void run() {
+        progress_bar.setVisibility(View.GONE);
+        lyt_no_connection.setVisibility(View.VISIBLE);
+        finish();
+        overridePendingTransition(0, 0);
+        startActivity(getIntent());
+        overridePendingTransition(0, 0);
+        moveTaskToBack(false);
 
-                            }
-                        }, 1000);
-                    }
-                });
-                //Toast.makeText(EnquiryActivity.this, R.string.internet_unavailable, Toast.LENGTH_LONG).show();
+        }
+        }, 1000);
+        }
+        });
+        //Toast.makeText(EnquiryActivity.this, R.string.internet_unavailable, Toast.LENGTH_LONG).show();
 //                android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(EnquiryActivity.this);
 ////                builder.setMessage(R.string.internet_unavailable);
 ////                builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
@@ -180,216 +180,216 @@ public class EnquiryActivity extends AppCompatActivity implements SwipeRefreshLa
 ////                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 ////                dialog.show();
 
-            }
+        }
         }
 
 
 
         addenquiry.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent(EnquiryActivity.this,AddEnquiryActivity.class);
-                startActivity(intent);
-            }
+@Override
+public void onClick(View v) {
+        Intent intent=new Intent(EnquiryActivity.this,AddEnquiryActivity.class);
+        startActivity(intent);
+        }
         });
 
         inputsearch=(EditText)findViewById(R.id.inputsearchid);
         search=findViewById(R.id.search);
 
         search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(inputsearch.getText().length()>0){
-                    enquirysearchclass();
-                }else{
-                    Toast.makeText(EnquiryActivity.this,"Please enter text to search", Toast.LENGTH_LONG).show();
-                }
+@Override
+public void onClick(View v) {
+        if(inputsearch.getText().length()>0){
+        enquirysearchclass();
+        }else{
+        Toast.makeText(EnquiryActivity.this,"Please enter text to search", Toast.LENGTH_LONG).show();
+        }
 
-            }
+        }
         });
 
         inputsearch.addTextChangedListener(new TextWatcher() {
 
-            @Override
-            public void afterTextChanged(final Editable arg0) {
-                // TODO Auto-generated method stub
-                if (EnquiryActivity.this.adapter == null){
-                    // some print statement saying it is null
+@Override
+public void afterTextChanged(final Editable arg0) {
+        // TODO Auto-generated method stub
+        if (EnquiryActivity.this.adapter == null){
+        // some print statement saying it is null
 //                   // Toast toast = Toast.makeText(EnquiryActivity.this,"no record found", Toast.LENGTH_SHORT);
 //                    toast.setGravity(Gravity.CENTER, 0, 0);
 //                    toast.show();
-                }
-                else
-                {
-                    isLoading = false;
+        }
+        else
+        {
+        isLoading = false;
 //                    int count=EnquiryActivity.this.adapter.filter(String.valueOf(arg0));
 //                    total_enquiry.setText(String.valueOf(count));
 //                    ttl_budget.setText(String.valueOf(count));
-                    ArrayList<EnquiryList> filterlist=EnquiryActivity.this.adapter.filter(String.valueOf(arg0));
-                    double totalBudget=0;
-                    for (final EnquiryList wp : filterlist) {
-                        String bugdet=wp.getBudget();
-                        if(!(bugdet.equals("")||bugdet.equals("null"))){
-                            double budge=Double.parseDouble(bugdet);
-                            totalBudget+=budge;
-                            Log.d(TAG, "budget: " + bugdet);
-                            Log.d(TAG, "totalBudget: " + totalBudget);
-                            ttl_budget.setText("₹ "+String.valueOf(totalBudget));
-                        }
+        ArrayList<EnquiryList> filterlist=EnquiryActivity.this.adapter.filter(String.valueOf(arg0));
+        double totalBudget=0;
+        for (final EnquiryList wp : filterlist) {
+        String bugdet=wp.getBudget();
+        if(!(bugdet.equals("")||bugdet.equals("null"))){
+        double budge=Double.parseDouble(bugdet);
+        totalBudget+=budge;
+        Log.d(TAG, "budget: " + bugdet);
+        Log.d(TAG, "totalBudget: " + totalBudget);
+        ttl_budget.setText("₹ "+String.valueOf(totalBudget));
+        }
 
-                    }
-                    total_enquiry.setText(String.valueOf(filterlist.size()));
+        }
+        total_enquiry.setText(String.valueOf(filterlist.size()));
 
-                }
-            }
-            @Override
-            public void beforeTextChanged(CharSequence arg0, int arg1,
-                                          int arg2, int arg3) {
-                // TODO Auto-generated method stub
+        }
+        }
+@Override
+public void beforeTextChanged(CharSequence arg0, int arg1,
+        int arg2, int arg3) {
+        // TODO Auto-generated method stub
 
-            }
+        }
 
-            @Override
-            public void onTextChanged(CharSequence arg0, int arg1, int arg2,
-                                      int arg3) {
-                // TODO Auto-generated method stub
+@Override
+public void onTextChanged(CharSequence arg0, int arg1, int arg2,
+        int arg3) {
+        // TODO Auto-generated method stub
 
-                if(inputsearch.getText().length()==0) {
-                    //do your work here
-                    // Toast.makeText(AddEnquiryActivity.this ,"Text vhanged count  is 10 then: " , Toast.LENGTH_LONG).show();
-                 enquiryclass();
-                }
-            }
+        if(inputsearch.getText().length()==0) {
+        //do your work here
+        // Toast.makeText(AddEnquiryActivity.this ,"Text vhanged count  is 10 then: " , Toast.LENGTH_LONG).show();
+        enquiryclass();
+        }
+        }
         });
         /**
          * add scroll listener while user reach in bottom load more will call
          */
         recyclerView.addOnScrollListener(new PaginationScrollListener(layoutManager) {
-            @Override
-            protected void loadMoreItems() {
-                isLoading = true;
+@Override
+protected void loadMoreItems() {
+        isLoading = true;
 
-                Log.d(TAG, "prepare called current item: " + currentPage+"Total page"+totalPage);
-                if(currentPage<=totalPage && count >100){
-                   // currentPage = PAGE_START;
-                    Log.d(TAG, "currentPage: " + currentPage);
-                    isLastPage = false;
-                    preparedListItem();
-                }
+        Log.d(TAG, "prepare called current item: " + currentPage+"Total page"+totalPage);
+        if(currentPage<=totalPage && count >100){
+        // currentPage = PAGE_START;
+        Log.d(TAG, "currentPage: " + currentPage);
+        isLastPage = false;
+        preparedListItem();
+        }
 
 
-            }
+        }
 
-            @Override
-            public boolean isLastPage() {
-                return isLastPage;
-            }
+@Override
+public boolean isLastPage() {
+        return isLastPage;
+        }
 
-            @Override
-            public boolean isLoading() {
-                return isLoading;
-            }
+@Override
+public boolean isLoading() {
+        return isLoading;
+        }
         });
-    }
+        }
 
 
-    private void preparedListItem() {
+private void preparedListItem() {
         offset=offset+1000;
 
         if (isOnline(EnquiryActivity.this)) {
-            enquiryoffsetclass();// check login details are valid or not from server
+        enquiryoffsetclass();// check login details are valid or not from server
         }
         else {
-            //Toast.makeText(EnquiryActivity.this, R.string.internet_unavailable, Toast.LENGTH_LONG).show();
-            android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(EnquiryActivity.this);
-            builder.setMessage(R.string.internet_unavailable);
-            builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    dialog.dismiss();
-                }
-            });
-            android.app.AlertDialog dialog = builder.create();
-            dialog.setCancelable(false);
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialog.show();
+        //Toast.makeText(EnquiryActivity.this, R.string.internet_unavailable, Toast.LENGTH_LONG).show();
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(EnquiryActivity.this);
+        builder.setMessage(R.string.internet_unavailable);
+        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+public void onClick(DialogInterface dialog, int id) {
+        dialog.dismiss();
+        }
+        });
+        android.app.AlertDialog dialog = builder.create();
+        dialog.setCancelable(false);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.show();
         }
 
-    }
+        }
 //Showing progress dialog
-    private void showProgressDialog() {
+private void showProgressDialog() {
         Log.v(TAG, String.format("showProgressDialog"));
         pd = new ProgressDialog(EnquiryActivity.this);
         pd.setMessage("loading");
         pd.setCancelable(false);
         pd.show();
-    }
+        }
 
-    /**
-     * Dismiss Progress Dialog.
-     */
-    private void dismissProgressDialog() {
+/**
+ * Dismiss Progress Dialog.
+ */
+private void dismissProgressDialog() {
         Log.v(TAG, String.format("dismissProgressDialog"));
 
         pd.cancel();
-    }
+        }
 // Asycc class for loading data for database
-    private void enquiryclass() {
+private void enquiryclass() {
         EnquiryActivity.EnquiryTrackclass ru = new EnquiryActivity.EnquiryTrackclass();
         ru.execute("5");
-    }
+        }
 
-    @Override
-    public void onRefresh() {
+@Override
+public void onRefresh() {
         itemCount = 0;
         currentPage = PAGE_START;
         Log.d(TAG, "currentPage: " + currentPage);
         isLastPage = false;
-       // adapter.clear();
+        // adapter.clear();
         onRestart();
         //preparedListItem();
 
 
+        }
+
+class EnquiryTrackclass extends AsyncTask<String, Void, String> {
+
+    ServerClass ruc = new ServerClass();
+
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        Log.v(TAG, "onPreExecute");
+        //showProgressDialog();
     }
 
-    class EnquiryTrackclass extends AsyncTask<String, Void, String> {
+    @Override
+    protected void onPostExecute(String response) {
+        super.onPostExecute(response);
+        Log.v(TAG, String.format("onPostExecute :: response = %s", response));
+        //dismissProgressDialog();
+        //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
+        EnquiryDetails(response);
 
-        ServerClass ruc = new ServerClass();
+    }
 
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
-        }
-
-        @Override
-        protected void onPostExecute(String response) {
-            super.onPostExecute(response);
-            Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
-            EnquiryDetails(response);
-
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
-            HashMap<String, String> EnquiryDetails = new HashMap<String, String>();
-            EnquiryDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(EnquiryActivity.this));
-            EnquiryDetails.put("offset", String.valueOf(offset));
+    @Override
+    protected String doInBackground(String... params) {
+        //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+        HashMap<String, String> EnquiryDetails = new HashMap<String, String>();
+        EnquiryDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(EnquiryActivity.this));
+        EnquiryDetails.put("offset", String.valueOf(offset));
 //            EnquiryDetails.put("authority", SharedPrefereneceUtil.getAuthority(EnquiryActivity.this));
 //            EnquiryDetails.put("exe_name", SharedPrefereneceUtil.getName(EnquiryActivity.this));
-            Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(EnquiryActivity.this)));
-            EnquiryDetails.put("action","show_enquiry_list");
-            String domainurl=SharedPrefereneceUtil.getDomainUrl(EnquiryActivity.this);
-            String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EnquiryDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
-            return loginResult;
-        }
-
+        Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(EnquiryActivity.this)));
+        EnquiryDetails.put("action","show_enquiry_list");
+        String domainurl=SharedPrefereneceUtil.getDomainUrl(EnquiryActivity.this);
+        String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EnquiryDetails);
+        //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
+        return loginResult;
     }
+
+}
 
     private void EnquiryDetails(String jsonResponse) {
 
@@ -414,22 +414,14 @@ public class EnquiryActivity extends AppCompatActivity implements SwipeRefreshLa
                     progressBar.setVisibility(View.GONE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
-                        int count=0;
+
                         ArrayList<EnquiryList> item = new ArrayList<EnquiryList>();
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
-                            if(jsonArrayResult.length()<100){
-                                count=jsonArrayResult.length();
-                            }else{
-                                count=100;
-                            }
-                            for (int i = 0; i < count; i++) {
+                            count=jsonArrayResult.length();
+                            for (int i = 0; i < jsonArrayResult.length(); i++) {
 
 
                                 subList = new EnquiryList();
-                                Log.d(TAG, "i: " + i);
 
                                 Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
@@ -450,9 +442,6 @@ public class EnquiryActivity extends AppCompatActivity implements SwipeRefreshLa
                                     String Budget = jsonObj.getString("Budget");
 
 
-                                    //  for (int j = 0; j < 5; j++) {
-                                        itemCount++;
-                                        Log.d(TAG, "run: " + itemCount);
                                     subList.setName(name);
                                     subList.setGender(gender);
                                     String cont=Utility.lastFour(Contact);
@@ -475,9 +464,7 @@ public class EnquiryActivity extends AppCompatActivity implements SwipeRefreshLa
                                         Budget="0.00";
                                     }
                                     subList.setBudget(Budget);
-                                    //Toast.makeText(EnquiryActivity.this, "followup date: "+next_foll_date, Toast.LENGTH_SHORT).show();
 
-                                    //Toast.makeText(MainActivity.this, "j "+j, Toast.LENGTH_SHORT).show();
                                     item.add(subList);
                                     adapter = new EnquiryAdapter( item,EnquiryActivity.this);
                                     recyclerView.setAdapter(adapter);
@@ -513,46 +500,46 @@ public class EnquiryActivity extends AppCompatActivity implements SwipeRefreshLa
         EnquiryActivity.EnquiryOffsetTrackclass ru = new EnquiryActivity.EnquiryOffsetTrackclass();
         ru.execute("5");
     }
-    class EnquiryOffsetTrackclass extends AsyncTask<String, Void, String> {
+class EnquiryOffsetTrackclass extends AsyncTask<String, Void, String> {
 
-        ServerClass ruc = new ServerClass();
+    ServerClass ruc = new ServerClass();
 
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
-        }
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        Log.v(TAG, "onPreExecute");
+        //showProgressDialog();
+    }
 
-        @Override
-        protected void onPostExecute(String response) {
-            super.onPostExecute(response);
-            Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-           // dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
-            EnquiryOffsetDetails(response);
-
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
-            HashMap<String, String> EnquiryOffsetDetails = new HashMap<String, String>();
-            EnquiryOffsetDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(EnquiryActivity.this));
-            EnquiryOffsetDetails.put("offset", String.valueOf(offset));
-//            EnquiryOffsetDetails.put("authority", SharedPrefereneceUtil.getAuthority(EnquiryActivity.this));
-//            EnquiryOffsetDetails.put("exe_name", SharedPrefereneceUtil.getName(EnquiryActivity.this));
-            Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(EnquiryActivity.this)));
-            EnquiryOffsetDetails.put("action","show_enquiry_list");
-            String domainurl=SharedPrefereneceUtil.getDomainUrl(EnquiryActivity.this);
-            String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EnquiryOffsetDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
-            return loginResult;
-        }
-
+    @Override
+    protected void onPostExecute(String response) {
+        super.onPostExecute(response);
+        Log.v(TAG, String.format("onPostExecute :: response = %s", response));
+        // dismissProgressDialog();
+        //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
+        EnquiryOffsetDetails(response);
 
     }
+
+    @Override
+    protected String doInBackground(String... params) {
+        //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+        HashMap<String, String> EnquiryOffsetDetails = new HashMap<String, String>();
+        EnquiryOffsetDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(EnquiryActivity.this));
+        EnquiryOffsetDetails.put("offset", String.valueOf(offset));
+//            EnquiryOffsetDetails.put("authority", SharedPrefereneceUtil.getAuthority(EnquiryActivity.this));
+//            EnquiryOffsetDetails.put("exe_name", SharedPrefereneceUtil.getName(EnquiryActivity.this));
+        Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(EnquiryActivity.this)));
+        EnquiryOffsetDetails.put("action","show_enquiry_list");
+        String domainurl=SharedPrefereneceUtil.getDomainUrl(EnquiryActivity.this);
+        String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EnquiryOffsetDetails);
+        //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
+        return loginResult;
+    }
+
+
+}
 
     private void EnquiryOffsetDetails(String jsonResponse) {
 
@@ -585,7 +572,7 @@ public class EnquiryActivity extends AppCompatActivity implements SwipeRefreshLa
 
                                 subList = new EnquiryList();
                                 Log.d(TAG, "i: " + i);
-                               // Log.d(TAG, "run: " + itemCount);
+                                // Log.d(TAG, "run: " + itemCount);
                                 Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
@@ -646,13 +633,13 @@ public class EnquiryActivity extends AppCompatActivity implements SwipeRefreshLa
                         }
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
-                   // nodata.setVisibility(View.VISIBLE);
+                    // nodata.setVisibility(View.VISIBLE);
 
                     progressBar.setVisibility(View.GONE);
                     Log.d(TAG, "when record 0 currentPage: " + currentPage);
                     Log.d(TAG, "PAGE_START: " + PAGE_START);
                     if (currentPage != PAGE_START)
-                       adapter.removeblank();
+                        adapter.removeblank();
                     currentPage = PAGE_START;
                     //adapter.addAll(subListArrayList);
                     swipeRefresh.setRefreshing(false);
@@ -671,45 +658,45 @@ public class EnquiryActivity extends AppCompatActivity implements SwipeRefreshLa
         EnquiryActivity.EnquirySearchTrackclass ru = new EnquiryActivity.EnquirySearchTrackclass();
         ru.execute("5");
     }
-    class EnquirySearchTrackclass extends AsyncTask<String, Void, String> {
+class EnquirySearchTrackclass extends AsyncTask<String, Void, String> {
 
-        ServerClass ruc = new ServerClass();
-
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            Log.v(TAG, "onPreExecute");
-           // showProgressDialog();
-            viewDialog.showDialog();
-        }
-
-        @Override
-        protected void onPostExecute(String response) {
-            super.onPostExecute(response);
-            Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            // dismissProgressDialog();
-            viewDialog.hideDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
-            EnquirySearchDetails(response);
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
-            HashMap<String, String> EnquirySearchDetails = new HashMap<String, String>();
-            EnquirySearchDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(EnquiryActivity.this));
-            EnquirySearchDetails.put("text", inputsearch.getText().toString());
-            Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(EnquiryActivity.this)));
-            EnquirySearchDetails.put("action","show_search_enquiry");
-            String domainurl=SharedPrefereneceUtil.getDomainUrl(EnquiryActivity.this);
-            String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EnquirySearchDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
-            return loginResult;
-        }
+    ServerClass ruc = new ServerClass();
 
 
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        Log.v(TAG, "onPreExecute");
+        // showProgressDialog();
+        viewDialog.showDialog();
     }
+
+    @Override
+    protected void onPostExecute(String response) {
+        super.onPostExecute(response);
+        Log.v(TAG, String.format("onPostExecute :: response = %s", response));
+        // dismissProgressDialog();
+        viewDialog.hideDialog();
+        //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
+        EnquirySearchDetails(response);
+    }
+
+    @Override
+    protected String doInBackground(String... params) {
+        //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+        HashMap<String, String> EnquirySearchDetails = new HashMap<String, String>();
+        EnquirySearchDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(EnquiryActivity.this));
+        EnquirySearchDetails.put("text", inputsearch.getText().toString());
+        Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(EnquiryActivity.this)));
+        EnquirySearchDetails.put("action","show_search_enquiry");
+        String domainurl=SharedPrefereneceUtil.getDomainUrl(EnquiryActivity.this);
+        String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EnquirySearchDetails);
+        //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
+        return loginResult;
+    }
+
+
+}
 
     private void EnquirySearchDetails(String jsonResponse) {
 
@@ -733,7 +720,7 @@ public class EnquiryActivity extends AppCompatActivity implements SwipeRefreshLa
                         count=jsonArrayResult.length();
                         String ttl_enq = String.valueOf(jsonArrayResult.length());
                         total_enquiry.setText(ttl_enq);
-                     final   ArrayList<EnquiryList> subListArrayList = new ArrayList<EnquiryList>();
+                        final   ArrayList<EnquiryList> subListArrayList = new ArrayList<EnquiryList>();
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
                             for (int i = 0; i < jsonArrayResult.length(); i++) {
 
