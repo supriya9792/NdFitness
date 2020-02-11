@@ -83,16 +83,16 @@ public class ExpensesActivity extends AppCompatActivity implements SwipeRefreshL
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
                 WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_expenses);
-        initToolbar();
-    }
-    private void initToolbar() {
+          initToolbar();
+}
+private void initToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(getResources().getString(R.string.exi_expenses));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         initComponent();
-    }
-    private void initComponent(){
+        }
+private void initComponent(){
         FloatingActionButton addenquiry=findViewById(R.id.fab);
         progressBar=findViewById(R.id.progressBar);
         swipeRefresh=findViewById(R.id.swipeRefresh);
@@ -116,42 +116,42 @@ public class ExpensesActivity extends AppCompatActivity implements SwipeRefreshL
         Intent intent = getIntent();
         Bundle args = intent.getBundleExtra("BUNDLE");
         if (args != null) {
-            ArrayList<ExpensesList> filterArrayList = (ArrayList<ExpensesList>) args.getSerializable("filter_array_list");
-            progressBar.setVisibility(View.GONE);
-            String coll=intent.getStringExtra("expense");
-            progressBar.setVisibility(View.GONE);
-            expenses.setText(coll);
-            //total_courses.setText(String.valueOf(length));
-            adapter = new ExpensesAdapter( filterArrayList,ExpensesActivity.this);
-            recyclerView.setAdapter(adapter);
+        ArrayList<ExpensesList> filterArrayList = (ArrayList<ExpensesList>) args.getSerializable("filter_array_list");
+        progressBar.setVisibility(View.GONE);
+        String coll=intent.getStringExtra("expense");
+        progressBar.setVisibility(View.GONE);
+        expenses.setText(coll);
+        //total_courses.setText(String.valueOf(length));
+        adapter = new ExpensesAdapter( filterArrayList,ExpensesActivity.this);
+        recyclerView.setAdapter(adapter);
         }else {
 
-            if (isOnline(ExpensesActivity.this)) {
-                expenseclass();// check login details are valid or not from server
-            } else {
-                swipeRefresh.setVisibility(View.GONE);
-                noInternet.setVisibility(View.VISIBLE);
-                lyt_no_connection.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(final View v) {
-                        progress_bar.setVisibility(View.VISIBLE);
-                        lyt_no_connection.setVisibility(View.GONE);
+        if (isOnline(ExpensesActivity.this)) {
+        expenseclass();// check login details are valid or not from server
+        } else {
+        swipeRefresh.setVisibility(View.GONE);
+        noInternet.setVisibility(View.VISIBLE);
+        lyt_no_connection.setOnClickListener(new View.OnClickListener() {
+@Override
+public void onClick(final View v) {
+        progress_bar.setVisibility(View.VISIBLE);
+        lyt_no_connection.setVisibility(View.GONE);
 
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                progress_bar.setVisibility(View.GONE);
-                                lyt_no_connection.setVisibility(View.VISIBLE);
-                                finish();
-                                overridePendingTransition(0, 0);
-                                startActivity(getIntent());
-                                overridePendingTransition(0, 0);
-                                moveTaskToBack(false);
+        new Handler().postDelayed(new Runnable() {
+@Override
+public void run() {
+        progress_bar.setVisibility(View.GONE);
+        lyt_no_connection.setVisibility(View.VISIBLE);
+        finish();
+        overridePendingTransition(0, 0);
+        startActivity(getIntent());
+        overridePendingTransition(0, 0);
+        moveTaskToBack(false);
 
-                            }
-                        }, 1000);
-                    }
-                });
+        }
+        }, 1000);
+        }
+        });
 //                Toast.makeText(ExpensesActivity.this, R.string.internet_unavailable, Toast.LENGTH_LONG).show();
 //                android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(ExpensesActivity.this);
 //                builder.setMessage(R.string.internet_unavailable);
@@ -165,190 +165,190 @@ public class ExpensesActivity extends AppCompatActivity implements SwipeRefreshL
 //                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 //                dialog.show();
 
-            }
+        }
         }
 
         addenquiry.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent(ExpensesActivity.this,AddExpensesActivity.class);
-                startActivity(intent);
-            }
+@Override
+public void onClick(View v) {
+        Intent intent=new Intent(ExpensesActivity.this,AddExpensesActivity.class);
+        startActivity(intent);
+        }
         });
 
         inputsearch=(EditText)findViewById(R.id.inputsearchid);
 
         inputsearch.addTextChangedListener(new TextWatcher() {
 
-            @Override
-            public void afterTextChanged(Editable arg0) {
-                // TODO Auto-generated method stub
-                if (ExpensesActivity.this.adapter == null){
+@Override
+public void afterTextChanged(Editable arg0) {
+        // TODO Auto-generated method stub
+        if (ExpensesActivity.this.adapter == null){
 
-                }
-                else
-                {
-                    ArrayList<ExpensesList> filterlist=ExpensesActivity.this.adapter.filter(String.valueOf(arg0));
-                    double totalBudget=0;
-                    for (final ExpensesList wp : filterlist) {
-                        String bugdet=wp.getAmount();
-                        if(!(bugdet.equals("")||bugdet.equals("null"))){
-                            double budge=Double.parseDouble(bugdet);
-                            totalBudget+=budge;
-                            Log.d(TAG, "budget: " + bugdet);
-                            Log.d(TAG, "totalBudget: " + totalBudget);
-                            expenses.setText(String.valueOf(totalBudget));
-                        }
+        }
+        else
+        {
+        ArrayList<ExpensesList> filterlist=ExpensesActivity.this.adapter.filter(String.valueOf(arg0));
+        double totalBudget=0;
+        for (final ExpensesList wp : filterlist) {
+        String bugdet=wp.getAmount();
+        if(!(bugdet.equals("")||bugdet.equals("null"))){
+        double budge=Double.parseDouble(bugdet);
+        totalBudget+=budge;
+        Log.d(TAG, "budget: " + bugdet);
+        Log.d(TAG, "totalBudget: " + totalBudget);
+        expenses.setText(String.valueOf(totalBudget));
+        }
 
-                    }
-                }
-            }
-            @Override
-            public void beforeTextChanged(CharSequence arg0, int arg1,
-                                          int arg2, int arg3) {
-                // TODO Auto-generated method stub
+        }
+        }
+        }
+@Override
+public void beforeTextChanged(CharSequence arg0, int arg1,
+        int arg2, int arg3) {
+        // TODO Auto-generated method stub
 
-            }
+        }
 
-            @Override
-            public void onTextChanged(CharSequence arg0, int arg1, int arg2,
-                                      int arg3) {
-                // TODO Auto-generated method stub
+@Override
+public void onTextChanged(CharSequence arg0, int arg1, int arg2,
+        int arg3) {
+        // TODO Auto-generated method stub
 
 
-            }
+        }
         });
         /**
          * add scroll listener while user reach in bottom load more will call
          */
         recyclerView.addOnScrollListener(new PaginationScrollListener(layoutManager) {
-            @Override
-            protected void loadMoreItems() {
-                isLoading = true;
-                currentPage++;
-                Log.d(TAG, "prepare called current item: " + currentPage+"Total page"+totalPage);
-                if(currentPage<=totalPage){
-                    //preparedListItem();
-                }
+@Override
+protected void loadMoreItems() {
+        isLoading = true;
+        currentPage++;
+        Log.d(TAG, "prepare called current item: " + currentPage+"Total page"+totalPage);
+        if(currentPage<=totalPage){
+        //preparedListItem();
+        }
 
 
-            }
+        }
 
-            @Override
-            public boolean isLastPage() {
-                return isLastPage;
-            }
+@Override
+public boolean isLastPage() {
+        return isLastPage;
+        }
 
-            @Override
-            public boolean isLoading() {
-                return isLoading;
-            }
+@Override
+public boolean isLoading() {
+        return isLoading;
+        }
         });
-    }
+        }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+@Override
+public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.filter_action_menu, menu);
         return true;
-    }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+        }
+@Override
+public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
         if (id == R.id.action_home) {
-            Intent intent = new Intent(ExpensesActivity.this, MainActivity.class);
-            startActivity(intent);
-            return true;
+        Intent intent = new Intent(ExpensesActivity.this, MainActivity.class);
+        startActivity(intent);
+        return true;
         }else if (id == R.id.action_filter) {
-            Intent intent = new Intent(ExpensesActivity.this, ExpenseFilterActivity.class);
-            startActivity(intent);
-            return true;
+        Intent intent = new Intent(ExpensesActivity.this, ExpenseFilterActivity.class);
+        startActivity(intent);
+        return true;
         }
         return super.onOptionsItemSelected(item);
-    }
+        }
 
 //Showing progress dialog
-    private void showProgressDialog() {
+private void showProgressDialog() {
         Log.v(TAG, String.format("showProgressDialog"));
         pd = new ProgressDialog(ExpensesActivity.this);
         pd.setMessage("loading");
         pd.setCancelable(false);
         pd.show();
-    }
+        }
 
-    /**
-     * Dismiss Progress Dialog.
-     */
-    private void dismissProgressDialog() {
+/**
+ * Dismiss Progress Dialog.
+ */
+private void dismissProgressDialog() {
         Log.v(TAG, String.format("dismissProgressDialog"));
 
         pd.cancel();
-    }
-    // Asycc class for loading data for database
-    private void expenseclass() {
+        }
+// Asycc class for loading data for database
+private void expenseclass() {
         ExpensesActivity.ExpenseTrackclass ru = new ExpensesActivity.ExpenseTrackclass();
         ru.execute("5");
-    }
+        }
 
-    @Override
-    public void onRefresh() {
-       // swipeRefresh.setRefreshing(false);
-       onRestart();
-    }
-    @Override
-    protected void onRestart() {
+@Override
+public void onRefresh() {
+        // swipeRefresh.setRefreshing(false);
+        onRestart();
+        }
+@Override
+protected void onRestart() {
         super.onRestart();
         swipeRefresh.setRefreshing(false);
         finish();
         startActivity(getIntent());
 //        Intent intent=new Intent(ExpensesActivity.this,ExpensesActivity.class);
 //        startActivity(intent);
-    }
-    @Override
-    protected void onResume() {
+        }
+@Override
+protected void onResume() {
         swipeRefresh.setRefreshing(false);
         super.onResume();
 
+        }
+class ExpenseTrackclass extends AsyncTask<String, Void, String> {
+
+    ServerClass ruc = new ServerClass();
+
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        Log.v(TAG, "onPreExecute");
+        //  showProgressDialog();
+        viewDialog.showDialog();
     }
-    class ExpenseTrackclass extends AsyncTask<String, Void, String> {
 
-        ServerClass ruc = new ServerClass();
-
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            Log.v(TAG, "onPreExecute");
-          //  showProgressDialog();
-            viewDialog.showDialog();
-        }
-
-        @Override
-        protected void onPostExecute(String response) {
-            super.onPostExecute(response);
-            Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-           // dismissProgressDialog();
-            viewDialog.hideDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
-            ExpenseDetails(response);
-
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
-            HashMap<String, String> ExpenseDetails = new HashMap<String, String>();
-            ExpenseDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(ExpensesActivity.this));
-            Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(ExpensesActivity.this)));
-            ExpenseDetails.put("action","show_expenses_list");
-            String domainurl=SharedPrefereneceUtil.getDomainUrl(ExpensesActivity.this);
-            String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, ExpenseDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
-            return loginResult;
-        }
-
+    @Override
+    protected void onPostExecute(String response) {
+        super.onPostExecute(response);
+        Log.v(TAG, String.format("onPostExecute :: response = %s", response));
+        // dismissProgressDialog();
+        viewDialog.hideDialog();
+        //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
+        ExpenseDetails(response);
 
     }
+
+    @Override
+    protected String doInBackground(String... params) {
+        //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+        HashMap<String, String> ExpenseDetails = new HashMap<String, String>();
+        ExpenseDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(ExpensesActivity.this));
+        Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(ExpensesActivity.this)));
+        ExpenseDetails.put("action","show_expenses_list");
+        String domainurl=SharedPrefereneceUtil.getDomainUrl(ExpensesActivity.this);
+        String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, ExpenseDetails);
+        //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
+        return loginResult;
+    }
+
+
+}
 
     private void ExpenseDetails(String jsonResponse) {
 

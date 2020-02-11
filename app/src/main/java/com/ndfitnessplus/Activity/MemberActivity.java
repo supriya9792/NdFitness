@@ -163,8 +163,6 @@ public class MemberActivity extends AppCompatActivity implements SwipeRefreshLay
             }
         }
 
-
-
         addmember.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

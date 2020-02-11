@@ -389,8 +389,8 @@ public class MeasurementActivity extends AppCompatActivity implements SwipeRefre
                                     String cont=Utility.lastFour(MemberContact);
                                     subList.setContact(MemberContact);
                                     subList.setContactEncrypt(cont);
-                                    String name = MemberName.substring(0,1).toUpperCase() + MemberName.substring(1);
-                                    subList.setName(name);
+//                                    String name = MemberName.substring(0,1).toUpperCase() + MemberName.substring(1);
+                                    subList.setName(MemberName);
                                     subList.setWeight(Weight);
                                     subList.setHeight(Height);
                                     subList.setAge(Age);

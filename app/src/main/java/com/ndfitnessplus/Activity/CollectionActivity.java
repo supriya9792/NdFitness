@@ -122,9 +122,6 @@ public class CollectionActivity extends AppCompatActivity implements SwipeRefres
         swipeRefresh.setOnRefreshListener(this);
         progress_bar.setVisibility(View.GONE);
         lyt_no_connection.setVisibility(View.VISIBLE);
-//        adapter = new BalanceReceiptAdapter( new ArrayList<EnquiryList>(),CourseActivity.this);
-//        recyclerView.setAdapter(adapter);
-
 
         Intent intent = getIntent();
         Bundle args = intent.getBundleExtra("BUNDLE");
