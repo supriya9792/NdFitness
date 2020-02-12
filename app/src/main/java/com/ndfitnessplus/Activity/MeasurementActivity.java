@@ -121,8 +121,6 @@ public class MeasurementActivity extends AppCompatActivity implements SwipeRefre
         swipeRefresh.setOnRefreshListener(this);
         progress_bar.setVisibility(View.GONE);
         lyt_no_connection.setVisibility(View.VISIBLE);
-//        adapter = new CourseAdapter( new ArrayList<EnquiryList>(),CourseActivity.this);
-//        recyclerView.setAdapter(adapter);
 
 
         Intent intent = getIntent();
@@ -513,9 +511,7 @@ public class MeasurementActivity extends AppCompatActivity implements SwipeRefre
                     swipeRefresh.setVisibility(View.VISIBLE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
+
                         String ttl_enq = String.valueOf(jsonArrayResult.length());
                         total_measurement.setText(ttl_enq);
                         final   ArrayList<MeasurementList> subListArrayList = new ArrayList<MeasurementList>();
@@ -524,9 +520,7 @@ public class MeasurementActivity extends AppCompatActivity implements SwipeRefre
 
 
                                 subList = new MeasurementList();
-                                Log.d(TAG, "i: " + i);
-                                // Log.d(TAG, "run: " + itemCount);
-                                Log.v(TAG, "JsonResponseOpeartion ::");
+
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -554,8 +548,6 @@ public class MeasurementActivity extends AppCompatActivity implements SwipeRefre
                                     String NextFollowupDate = jsonObj.getString("NextFollowupDate");
                                     String Executive_Name = jsonObj.getString("Executive_Name");
 
-
-                                    //  for (int j = 0; j < 5; j++) {
 
                                     String mdate=Utility.formatDate(Measurement_Date);
                                     subList.setMeasurement_Date(mdate);

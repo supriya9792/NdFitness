@@ -706,9 +706,7 @@ public class MemberDetailsActivity extends AppCompatActivity {
                     progressBar.setVisibility(View.GONE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
+
                         ArrayList<CourseList> item = new ArrayList<CourseList>();
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
 
@@ -716,9 +714,7 @@ public class MemberDetailsActivity extends AppCompatActivity {
 
 
                                 subList = new CourseList();
-                                Log.d(TAG, "i: " + i);
 
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -741,8 +737,6 @@ public class MemberDetailsActivity extends AppCompatActivity {
                                     String Financial_Year = jsonObj.getString("Financial_Year");
                                     String Image = jsonObj.getString("Image");
 
-
-                                    //  for (int j = 0; j < 5; j++) {
 
                                     subList.setName(name);
                                     username.setText(name);
@@ -905,10 +899,7 @@ public class MemberDetailsActivity extends AppCompatActivity {
                                     String CallResponse     = jsonObj.getString("CallResponse");
 
                                     String id=jsonObj.getString("Auto_Id");
-//                               if(i==0){
-//                                   spinCallReslist.setName(getResources().getString(R.string.promt_country));
-//                                   enqF.add(0,spinCallReslist);
-//                               }
+
                                     spinCallReslist.setName(CallResponse);
                                     spinCallReslist.setId(id);
 
@@ -1278,15 +1269,11 @@ public class MemberDetailsActivity extends AppCompatActivity {
                     progressBar.setVisibility(View.GONE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
+
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
 
                             for (int i = 0; i < jsonArrayResult.length(); i++) {
 
-
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -1295,9 +1282,6 @@ public class MemberDetailsActivity extends AppCompatActivity {
                                     String Call_Response = jsonObj.getString("Call_Response");
                                     Rating = jsonObj.getString("Rating");
                                     callResponce=Call_Response;
-
-//
-
 
                                 }
                             }
@@ -1387,9 +1371,7 @@ public class MemberDetailsActivity extends AppCompatActivity {
 
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
+
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
 
                             for (int i = 0; i < jsonArrayResult.length(); i++) {

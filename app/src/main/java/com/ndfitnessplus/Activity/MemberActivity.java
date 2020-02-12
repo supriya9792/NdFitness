@@ -375,9 +375,7 @@ public class MemberActivity extends AppCompatActivity implements SwipeRefreshLay
                     progressBar.setVisibility(View.GONE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
+
                         int count=0;
                         ArrayList<MemberDataList> item = new ArrayList<MemberDataList>();
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
@@ -390,9 +388,7 @@ public class MemberActivity extends AppCompatActivity implements SwipeRefreshLay
 
 
                                 subList = new MemberDataList();
-                                Log.d(TAG, "i: " + i);
 
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -411,9 +407,6 @@ public class MemberActivity extends AppCompatActivity implements SwipeRefreshLay
                                     String FinalBalance=jsonObj.getString("FinalBalance");
 
 
-                                    //  for (int j = 0; j < 5; j++) {
-                                    itemCount++;
-                                    Log.d(TAG, "run: " + itemCount);
                                    // String Name=MemberID+"_"+name;
                                     subList.setName(name);
                                     subList.setGender(gender);
@@ -435,9 +428,6 @@ public class MemberActivity extends AppCompatActivity implements SwipeRefreshLay
                                     subList.setFinalBalance(FinalBalance);
 
 
-                                    //Toast.makeText(MemberActivity.this, "followup date: "+next_foll_date, Toast.LENGTH_SHORT).show();
-
-                                    //Toast.makeText(MainActivity.this, "j "+j, Toast.LENGTH_SHORT).show();
                                     item.add(subList);
                                     adapter = new MemberAdapter( item,MemberActivity.this);
                                     recyclerView.setAdapter(adapter);
@@ -542,9 +532,7 @@ public class MemberActivity extends AppCompatActivity implements SwipeRefreshLay
 
 
                                 subList = new MemberDataList();
-                                Log.d(TAG, "i: " + i);
-                                // Log.d(TAG, "run: " + itemCount);
-                                Log.v(TAG, "JsonResponseOpeartion ::");
+
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -562,8 +550,7 @@ public class MemberActivity extends AppCompatActivity implements SwipeRefreshLay
                                     String End_Date=jsonObj.getString("End_Date");
                                     String FinalBalance=jsonObj.getString("FinalBalance");
                                     //  for (int j = 0; j < 5; j++) {
-                                    itemCount++;
-                                    Log.d(TAG, "run: " + itemCount);
+
                                    // String Name=MemberID+"-"+name;
                                     subList.setName(name);
                                     subList.setGender(gender);
@@ -683,9 +670,7 @@ public class MemberActivity extends AppCompatActivity implements SwipeRefreshLay
                     swipeRefresh.setVisibility(View.VISIBLE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
+
                         String cnt= String.valueOf(jsonArrayResult.length());
                         total_member.setText(cnt);
                         length=jsonArrayResult.length();
@@ -695,9 +680,7 @@ public class MemberActivity extends AppCompatActivity implements SwipeRefreshLay
 
 
                                 subList = new MemberDataList();
-                                Log.d(TAG, "i: " + i);
-                                // Log.d(TAG, "run: " + itemCount);
-                                Log.v(TAG, "JsonResponseOpeartion ::");
+
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -714,9 +697,7 @@ public class MemberActivity extends AppCompatActivity implements SwipeRefreshLay
                                     String Email=jsonObj.getString("Email");
                                     String End_Date=jsonObj.getString("End_Date");
                                     String FinalBalance=jsonObj.getString("FinalBalance");
-                                    //  for (int j = 0; j < 5; j++) {
-                                    itemCount++;
-                                    Log.d(TAG, "run: " + itemCount);
+
                                    // String Name=MemberID+"-"+name;
                                     subList.setName(name);
                                     subList.setGender(gender);
