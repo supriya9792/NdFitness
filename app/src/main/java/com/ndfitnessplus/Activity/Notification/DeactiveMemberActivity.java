@@ -178,9 +178,6 @@ public class DeactiveMemberActivity extends AppCompatActivity {
         });
         nodata=findViewById(R.id.nodata);
         viewDialog = new ViewDialog(this);
-//        adapter = new EnquiryAdapter( new ArrayList<EnquiryList>(),EnquiryActivity.this);
-//        recyclerView.setAdapter(adapter);
-
 
         if (isOnline(DeactiveMemberActivity.this)) {
             deactivememberclass();// check login details are valid or not from server
@@ -213,7 +210,6 @@ public class DeactiveMemberActivity extends AppCompatActivity {
                 }
                 else
                 {
-                    //isLoading = false;
                    int cnt= DeactiveMemberActivity.this.adapter.filter(String.valueOf(arg0));
                    ttl_members.setText(String.valueOf(cnt));
 
@@ -231,8 +227,6 @@ public class DeactiveMemberActivity extends AppCompatActivity {
                                       int arg3) {
                 // TODO Auto-generated method stub
                 if(inputsearch.getText().length()==0) {
-                    //do your work here
-                    // Toast.makeText(AddEnquiryActivity.this ,"Text vhanged count  is 10 then: " , Toast.LENGTH_LONG).show();
                     deactivememberclass();
                 }
 
@@ -241,8 +235,6 @@ public class DeactiveMemberActivity extends AppCompatActivity {
     }
     public void CampareTwoDates(){
         //******************campare two dates****************
-//        String date = "03/26/2012 11:00:00";
-//        String dateafter = "03/26/2012 11:59:00";
         SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "dd-MM-yyyy");
         Date convertedDate = new Date();
@@ -264,8 +256,6 @@ public class DeactiveMemberActivity extends AppCompatActivity {
     }
     public void CampareFronTwoDates(){
         //******************campare two dates****************
-//        String date = "03/26/2012 11:00:00";
-//        String dateafter = "03/26/2012 11:59:00";
         SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "dd-MM-yyyy");
         Date convertedDate = new Date();
@@ -300,22 +290,7 @@ public class DeactiveMemberActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-    private void showProgressDialog() {
-        Log.v(TAG, String.format("showProgressDialog"));
-        pd = new ProgressDialog(DeactiveMemberActivity.this);
-        pd.setMessage("loading");
-        pd.setCancelable(false);
-        pd.show();
-    }
 
-    /**
-     * Dismiss Progress Dialog.
-     */
-    private void dismissProgressDialog() {
-        Log.v(TAG, String.format("dismissProgressDialog"));
-
-        pd.cancel();
-    }
     //*********** Asycc class for loading data for database **************
     private void deactivememberclass() {
         DeactiveMemberActivity. DeactiveMemberTrackclass ru = new DeactiveMemberActivity. DeactiveMemberTrackclass();
@@ -332,7 +307,6 @@ public class DeactiveMemberActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
             viewDialog.showDialog();
 
         }
@@ -341,17 +315,14 @@ public class DeactiveMemberActivity extends AppCompatActivity {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: show_balance_trasaction_details = %s", response));
-           // dismissProgressDialog();
             viewDialog.hideDialog();
 
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             DeactiveMemberDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> DeactiveMemberDetails = new HashMap<String, String>();
             DeactiveMemberDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(DeactiveMemberActivity.this));
             DeactiveMemberDetails.put("status", "InActive");
@@ -359,7 +330,6 @@ public class DeactiveMemberActivity extends AppCompatActivity {
             DeactiveMemberDetails.put("action","show_active_deactive_members_list");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(DeactiveMemberActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL,  DeactiveMemberDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
 
@@ -369,7 +339,6 @@ public class DeactiveMemberActivity extends AppCompatActivity {
     private void  DeactiveMemberDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
@@ -381,9 +350,7 @@ public class DeactiveMemberActivity extends AppCompatActivity {
                     progressBar.setVisibility(View.GONE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
+
                         ttl_members.setText(String.valueOf(jsonArrayResult.length()));
                         ArrayList<MemberDataList> item = new ArrayList<MemberDataList>();
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
@@ -392,9 +359,7 @@ public class DeactiveMemberActivity extends AppCompatActivity {
 
 
                                 subList = new MemberDataList();
-                                Log.d(TAG, "i: " + i);
 
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -409,8 +374,6 @@ public class DeactiveMemberActivity extends AppCompatActivity {
                                     String Image = jsonObj.getString("Image");
                                     String status=jsonObj.getString("MemberStatus");
                                     String Email=jsonObj.getString("Email");
-
-                                    //  for (int j = 0; j < 5; j++) {
 
                                     subList.setName(name);
                                     subList.setGender(gender);
@@ -434,8 +397,6 @@ public class DeactiveMemberActivity extends AppCompatActivity {
 
                                 }
                             }
-                        } else if (jsonArrayResult.length() == 0) {
-                            System.out.println("No records found");
                         }
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
@@ -466,15 +427,12 @@ public class DeactiveMemberActivity extends AppCompatActivity {
 
     class  SearchActiveMemberTrackclass extends AsyncTask<String, Void, String> {
 
-
         ServerClass ruc = new ServerClass();
-
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            // showProgressDialog();
             viewDialog.showDialog();
 
         }
@@ -483,17 +441,13 @@ public class DeactiveMemberActivity extends AppCompatActivity {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: search_active_member_filter = %s", response));
-            //   dismissProgressDialog();
             viewDialog.hideDialog();
-
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             SearchActiveMemberDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String>  SearchActiveMemberDetails = new HashMap<String, String>();
             SearchActiveMemberDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(DeactiveMemberActivity.this));
             Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(DeactiveMemberActivity.this)));
@@ -504,7 +458,6 @@ public class DeactiveMemberActivity extends AppCompatActivity {
             SearchActiveMemberDetails.put("action","search_deactive_member_filter");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(DeactiveMemberActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL,  SearchActiveMemberDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
 
@@ -514,7 +467,6 @@ public class DeactiveMemberActivity extends AppCompatActivity {
     private void  SearchActiveMemberDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: search_active_member_filter = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
@@ -529,9 +481,6 @@ public class DeactiveMemberActivity extends AppCompatActivity {
                     progressBar.setVisibility(View.GONE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
                         ttl_members.setText(String.valueOf(jsonArrayResult.length()));
                         ArrayList<MemberDataList> item = new ArrayList<MemberDataList>();
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
@@ -540,9 +489,7 @@ public class DeactiveMemberActivity extends AppCompatActivity {
 
 
                                 subList = new MemberDataList();
-                                Log.d(TAG, "i: " + i);
 
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -557,8 +504,6 @@ public class DeactiveMemberActivity extends AppCompatActivity {
                                     String Image = jsonObj.getString("Image");
                                     String status=jsonObj.getString("MemberStatus");
                                     String Email=jsonObj.getString("Email");
-
-                                    //  for (int j = 0; j < 5; j++) {
 
                                     subList.setName(name);
                                     subList.setGender(gender);
@@ -617,9 +562,6 @@ public class DeactiveMemberActivity extends AppCompatActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
-        //swipeRefresh.setRefreshing(false);
-        Intent intent=new Intent(DeactiveMemberActivity.this,DeactiveMemberActivity.class);
-        startActivity(intent);
     }
     @Override
     public boolean onSupportNavigateUp(){

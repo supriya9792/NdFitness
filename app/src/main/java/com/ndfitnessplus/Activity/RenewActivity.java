@@ -1162,7 +1162,6 @@ public class RenewActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-           // showProgressDialog();
             viewDialog.showDialog();
         }
 
@@ -1170,7 +1169,6 @@ public class RenewActivity extends AppCompatActivity {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-           // dismissProgressDialog();
             viewDialog.hideDialog();
             CheckContactDetails(response);
 
@@ -1178,7 +1176,6 @@ public class RenewActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EnquiryForDetails = new HashMap<String, String>();
 
             EnquiryForDetails.put("mobileno",inputContact.getText().toString() );
@@ -1186,7 +1183,6 @@ public class RenewActivity extends AppCompatActivity {
             EnquiryForDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(RenewActivity.this) );
             EnquiryForDetails.put("action", "check_mobile_already_exist_or_not");
             String domainurl= SharedPrefereneceUtil.getDomainUrl(RenewActivity.this);
-            //EnquiryForloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(EnquiryForloyee.this));
             String loginResult = ruc.sendPostRequest(domainurl+ ServiceUrls.LOGIN_URL, EnquiryForDetails);
             Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
@@ -1276,7 +1272,6 @@ public class RenewActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
         }
 
         @Override
@@ -1289,7 +1284,6 @@ public class RenewActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> PackageTypeDetails = new HashMap<String, String>();
             PackageTypeDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(RenewActivity.this));
             PackageTypeDetails.put("action", "show_package_type");
@@ -1308,7 +1302,6 @@ public class RenewActivity extends AppCompatActivity {
 
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
@@ -1341,8 +1334,6 @@ public class RenewActivity extends AppCompatActivity {
                                         public boolean isEnabled(int position){
                                             if(position == 0)
                                             {
-                                                // Disable the first item from Spinner
-                                                // First item will be use for hint
                                                 return false;
                                             }
                                             else
@@ -1359,7 +1350,6 @@ public class RenewActivity extends AppCompatActivity {
                                                 // Set the hint text color gray
                                                 tv.setTextColor(Color.GRAY);
                                                 tv.setText(getResources().getString(R.string.prompt_packagetype));
-                                                // tv.setTextColor(Color.GRAY);
                                             }
                                             else {
                                                 tv.setTextColor(Color.BLACK);
@@ -1410,7 +1400,6 @@ public class RenewActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
         }
 
         @Override
@@ -1423,7 +1412,6 @@ public class RenewActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> PackageNameDetails = new HashMap<String, String>();
             PackageNameDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(RenewActivity.this));
             PackageNameDetails.put("pack_type", packageType);
@@ -1443,7 +1431,6 @@ public class RenewActivity extends AppCompatActivity {
 
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
@@ -1537,7 +1524,6 @@ public class RenewActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-           // showProgressDialog();
             viewDialog.showDialog();
         }
 
@@ -1545,16 +1531,13 @@ public class RenewActivity extends AppCompatActivity {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-           // dismissProgressDialog();
             viewDialog.hideDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             PackageDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> PackageDetails = new HashMap<String, String>();
             PackageDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(RenewActivity.this));
             PackageDetails.put("pack_name",packagename );
@@ -1572,7 +1555,6 @@ public class RenewActivity extends AppCompatActivity {
     private void PackageDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
@@ -1663,15 +1645,12 @@ public class RenewActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             InstructorNameDetails(response);
 
         }
@@ -1695,7 +1674,6 @@ public class RenewActivity extends AppCompatActivity {
 
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
@@ -1829,22 +1807,18 @@ public class RenewActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             TimeDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> TimeDetails = new HashMap<String, String>();
            // TimeDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(RenewActivity.this));
             TimeDetails.put("action", "show_master_time");
@@ -1863,7 +1837,6 @@ public class RenewActivity extends AppCompatActivity {
 
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
@@ -1998,22 +1971,18 @@ public class RenewActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             PaymentTypeDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> PaymentTypeDetails = new HashMap<String, String>();
             PaymentTypeDetails.put("action", "show_payment_type_list");
             String domainurl= SharedPrefereneceUtil.getDomainUrl(RenewActivity.this);
@@ -2031,7 +2000,6 @@ public class RenewActivity extends AppCompatActivity {
 
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
@@ -2130,7 +2098,6 @@ public class RenewActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
             viewDialog.showDialog();
         }
 
@@ -2138,17 +2105,13 @@ public class RenewActivity extends AppCompatActivity {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
             viewDialog.hideDialog();
-            //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
-            //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
             AddCourseDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
 
             if(inputStartDate.getText().length()>0 && inputDuration.getText().length()>0){
                 int duration =Integer.parseInt(inputDuration.getText().toString());
@@ -2237,12 +2200,9 @@ public class RenewActivity extends AppCompatActivity {
             String success = jsonObjLoginResponse.getString(getResources().getString(R.string.success));
 
             if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
-               // Toast.makeText(RenewActivity.this,"Course added succesfully",Toast.LENGTH_SHORT).show();
                 invoice_id=jsonObjLoginResponse.getString("invoice_id");
                 receipt_id=jsonObjLoginResponse.getString("receipt_id");
                 financial_yr=jsonObjLoginResponse.getString("financial_yr");
-                //inputName.getText().clear();
-                //inputContact.getText().clear();
                 SendEnquirySmsClass();
                 submitAction();
                 EmailLoginClass();
@@ -2273,28 +2233,22 @@ public class RenewActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            // dismissProgressDialog();
-            //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
-            //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
             EmailLoginDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EmailLoginDetails = new HashMap<String, String>();
             EmailLoginDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(RenewActivity.this) );
             EmailLoginDetails.put("action", "show_email_login");
             String domainurl= SharedPrefereneceUtil.getDomainUrl(RenewActivity.this);
-            //EnquiryForloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(EnquiryForloyee.this));
             String loginResult = ruc.sendPostRequest(domainurl+ ServiceUrls.LOGIN_URL, EmailLoginDetails);
 
             Log.v(TAG, String.format("doInBackground :: show_email_login= %s", loginResult));
@@ -2320,7 +2274,6 @@ public class RenewActivity extends AppCompatActivity {
 
                     if (jsonArrayCountry != null && jsonArrayCountry.length() > 0){
                         for (int i = 0; i < jsonArrayCountry.length(); i++) {
-                            Log.v(TAG, "JsonResponseOpeartion ::");
                             JSONObject jsonObj = jsonArrayCountry.getJSONObject(i);
                             if (jsonObj != null) {
 
@@ -2374,7 +2327,6 @@ public class RenewActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> ReceiptDataDetails = new HashMap<String, String>();
             ReceiptDataDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(RenewActivity.this));
             ReceiptDataDetails.put("invoice_id", invoice_id);
@@ -2395,7 +2347,6 @@ public class RenewActivity extends AppCompatActivity {
     private void ReceiptDataDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
@@ -2410,7 +2361,6 @@ public class RenewActivity extends AppCompatActivity {
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
                             for (int i = 0; i < jsonArrayResult.length(); i++) {
 
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -2418,14 +2368,11 @@ public class RenewActivity extends AppCompatActivity {
                                     String Member_Contact = inputContact.getText().toString();
                                     String Invoice_date = jsonObj.getString("Invoice_date");
                                     String invoice_date= Utility.formatDate(Invoice_date);
-//                                    String invoice_date= Utility.getCurrentDate();
                                     String Package_Name = packagename;
                                     String Duration_Days =inputDuration.getText().toString();
                                     String Session = inputSession.getText().toString();
                                     String start_date = inputStartDate.getText().toString();
-                                    //String start_date=Utility.formatDateDB(Start_Date);
                                     String end_date = EndDate;
-                                    //String end_date=Utility.formatDateDB(End_Date);
                                     String Rate = inputRate.getText().toString();
                                     String Final_paid = inputPaid.getText().toString();
                                     String Final_Balance = jsonObj.getString("Final_Balance");
@@ -2433,10 +2380,6 @@ public class RenewActivity extends AppCompatActivity {
                                         Final_Balance="0.00";
                                     }
                                     String Invoice_ID = invoice_id;
-//                                    String tax = Tax;
-//                                    if(tax.equals(".00")){
-//                                        tax="0.00";
-//                                    }
                                     String Member_Email_ID = Email;
                                     String Time = time;
                                     String Instructor_Name = instructorname;
@@ -2463,11 +2406,8 @@ public class RenewActivity extends AppCompatActivity {
                                     TermsAndConditions = TermsAndConditions.replace("\r\n", "<br />");
                                     String Logo = jsonObj.getString("Logo");
                                     String l=Logo.replaceAll("\\s+","%20");
-                                   // Logo.replace(" ","%20");
                                     String domainurl= SharedPrefereneceUtil.getDomainUrl(RenewActivity.this);
                                   final  String imgurl=domainurl+ ServiceUrls.IMAGES_URL+l;
-                                    Log.d(TAG, "GST_No: " +GST_No);
-                                    Log.d(TAG, "MemberGST_No: " +MemberGST_No);
 
                                     String textBody = "";
                                     String CGST="";
@@ -2478,7 +2418,6 @@ public class RenewActivity extends AppCompatActivity {
                                             JSONObject jsonObj1 = jsonArrayPayTrasa.getJSONObject(loopCount);
                                             if (jsonObj1 != null) {
                                                 String Receipt_Id = jsonObj1.getString("Receipt_Id");
-                                                // String start_date=Utility.formatDateDB(Start_Date);
                                                 String ReceiptDate = jsonObj1.getString("ReceiptDate");
                                                 String receipt_date= Utility.formatDateDB(ReceiptDate);
                                                 String Tax = jsonObj1.getString("Tax");
@@ -2500,7 +2439,7 @@ public class RenewActivity extends AppCompatActivity {
                                                 CGST=String.valueOf(cgst);
                                                 double sgst=Double.parseDouble(TaxAmount)/2;
                                                 String SGST=String.valueOf(sgst);
-                                                textBody += "  <tr >\n \n" +
+                                                textBody = "  <tr >\n \n" +
                                                         "    <td width='10%'>"+Receipt_Id+"</td>\n \n" +
                                                         "     <td width='15%'>"+receipt_date+"</td>\n\n" +
                                                         "     <td width='12%'>"+SubTotal+"</td>\n\n" +
@@ -2551,10 +2490,6 @@ public class RenewActivity extends AppCompatActivity {
                                         });
 
                                         thread.start();
-//
-                                       // createHeadings(cb,50,780,Company_Name);
-//                                        Paragraph p = new Paragraph(Address);
-//                                        document.add(p);
                                         String delimiter = " ";
                                         int partitionSize = 6;
                                         String add="";
@@ -2564,7 +2499,6 @@ public class RenewActivity extends AppCompatActivity {
                                             System.out.println(Joiner.on(delimiter).join(iterable));
                                             add+=Joiner.on(delimiter).join(iterable)+"<br/>";
 
-                                        //createText(cb,x,y,Joiner.on(delimiter).join(iterable));
                                          y= y-10;
                                         }
                                         String csstext=" .text-right { text-align: right;} .p{border: 1px solid black;font-family: Helvetica,Arial,sans-serif;font-size: 12px;}" +
@@ -2829,7 +2763,6 @@ public class RenewActivity extends AppCompatActivity {
                                         InputStream cssggh = new ByteArrayInputStream(csstext.getBytes());
                                         XMLWorkerHelper.getInstance().parseXHtml(docWriter, document, is, cssggh, Charset.forName("UTF-8"));
 
-
                                         document.close();
                                     }
                                     catch(Exception e){
@@ -2911,9 +2844,6 @@ public class RenewActivity extends AppCompatActivity {
                             System.out.println("No records found");
                         }
                     }
-                }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
-                    //nodata.setVisibility(View.VISIBLE);
-                    //.setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");
@@ -2955,23 +2885,18 @@ public class RenewActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-           // dismissProgressDialog();
-            //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
-            //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
             CheckPackageNameDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EnquiryForDetails = new HashMap<String, String>();
 
             EnquiryForDetails.put("package_name",packagename );
@@ -2979,7 +2904,6 @@ public class RenewActivity extends AppCompatActivity {
             EnquiryForDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(RenewActivity.this) );
             EnquiryForDetails.put("action", "check_package_already_assigned_to_member");
             String domainurl= SharedPrefereneceUtil.getDomainUrl(RenewActivity.this);
-            //EnquiryForloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(EnquiryForloyee.this));
             String loginResult = ruc.sendPostRequest(domainurl+ ServiceUrls.LOGIN_URL, EnquiryForDetails);
 
             Log.v(TAG, String.format("doInBackground :: check_package_already_assigned_to_member= %s", loginResult));
@@ -2997,9 +2921,6 @@ public class RenewActivity extends AppCompatActivity {
 
             if (success.equalsIgnoreCase(getResources().getString(R.string.zero))) {
 
-                // showCustomDialog();
-
-                //inputEmail, inputPhone,inputAdd,inputReq,inputFollowupdate;
             }
             else if (success.equalsIgnoreCase(getResources().getString(R.string.two)))
             {
@@ -3014,14 +2935,10 @@ public class RenewActivity extends AppCompatActivity {
                     inputEndDate.setText(EndDate);
                     inputRegiFees.setText("");
                     inputPaid.setText("");
-                   // inputRate.setText("");
                     inputBalance.setText("");
                     Log.v(TAG, String.format("End Date  :: End date= %s", EndDate));
                 }
 
-               // Toast.makeText(RenewActivity.this,"Mobile Number Already Exits",Toast.LENGTH_SHORT).show();
-               // inputPackageName.getText().clear();
-                // Toast.makeText(RenewActivity.this,"Please Enter New Mobile Number",Toast.LENGTH_SHORT).show();
             }
 
         } catch (JSONException e) {
@@ -3045,7 +2962,6 @@ public class RenewActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-           // showProgressDialog();
             viewDialog.showDialog();
         }
 
@@ -3053,7 +2969,6 @@ public class RenewActivity extends AppCompatActivity {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-           // dismissProgressDialog();
             viewDialog.hideDialog();
 
             SendEnquirySmsDetails(response);
@@ -3062,14 +2977,12 @@ public class RenewActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EnquiryForDetails = new HashMap<String, String>();
 
             EnquiryForDetails.put("type","Renew" );
             EnquiryForDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(RenewActivity.this) );
             EnquiryForDetails.put("action", "sms_for_add_enquiry");
             String domainurl= SharedPrefereneceUtil.getDomainUrl(RenewActivity.this);
-            //EnquiryForloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(EnquiryForloyee.this));
             String loginResult = ruc.sendPostRequest(domainurl+ ServiceUrls.LOGIN_URL, EnquiryForDetails);
             Log.v(TAG, String.format("doInBackground :: sms_for_add_enquiry= %s", loginResult));
             return loginResult;
@@ -3085,11 +2998,7 @@ public class RenewActivity extends AppCompatActivity {
             String success = object.getString(getResources().getString(R.string.success));
 
             if (success.equalsIgnoreCase(getResources().getString(R.string.zero))) {
-//                Intent intent = new Intent(RenewActivity.this, CourseActivity.class);
-//                startActivity(intent);
-                // showCustomDialog();
 
-                //inputEmail, inputPhone,inputAdd,inputReq,inputFollowupdate;
             }
             else if (success.equalsIgnoreCase(getResources().getString(R.string.two)))
             {
@@ -3107,6 +3016,7 @@ public class RenewActivity extends AppCompatActivity {
 
                                 afterEnquirySms = jsonObj.getString("Renew");
                                 afterEnquirySms = afterEnquirySms.replace(".", "");
+                                afterEnquirySms = afterEnquirySms.replace("#MID#", MemberID);
                                 String coursename="Your CourseName:"+packageType;
                                 afterEnquirySms = afterEnquirySms.replace("#CourseN#", coursename);
                                 String pack="Your Package:"+packagename;
@@ -3211,25 +3121,6 @@ public class RenewActivity extends AppCompatActivity {
         Intent intent=new Intent(RenewActivity.this, CourseActivity.class);
         startActivity(intent);
     }
-
-    private void createHeadings(PdfContentByte cb, float x, float y, String text){
-
-        cb.beginText();
-        cb.setFontAndSize(bfBold, 8);
-        cb.setTextMatrix(x,y);
-        cb.showText(text.trim());
-        cb.endText();
-
-    }
-    private void createText(PdfContentByte cb, float x, float y, String text){
-
-        cb.beginText();
-        cb.setFontAndSize(bfnormal, 8);
-        cb.setTextMatrix(x,y);
-        cb.showText(text.trim());
-        cb.endText();
-
-    }
     private void initializeFonts(){
 
 
@@ -3271,28 +3162,23 @@ public class RenewActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            // showProgressDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             SearchDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> SearchDetails = new HashMap<String, String>();
 
             SearchDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(RenewActivity.this) );
             SearchDetails.put("action", "show_all_member_list");
             String domainurl= SharedPrefereneceUtil.getDomainUrl(RenewActivity.this);
-            //EmployeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(Employee.this));
             String loginResult = ruc.sendPostRequest(domainurl+ ServiceUrls.LOGIN_URL, SearchDetails);
             Log.v(TAG, String.format("doInBackground :: show_all_member_list= %s", loginResult));
             return loginResult;
@@ -3306,7 +3192,6 @@ public class RenewActivity extends AppCompatActivity {
 
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
@@ -3342,13 +3227,11 @@ public class RenewActivity extends AppCompatActivity {
                                 searchnameadapter = new SearchNameAdapter(RenewActivity.this, searchArrayList);
 
                                 inputName.setAdapter(searchnameadapter);
-                                // inputName.setDropDownBackgroundResource(R.drawable.search_background);
                                 inputName.setThreshold(1);
 
                                 searchcontactadapter = new SearchContactAdapter(RenewActivity.this, searchArrayList);
 
                                 inputContact.setAdapter(searchcontactadapter);
-                                // textContact.setDropDownBackgroundResource(R.drawable.search_background);
                                 inputContact.setThreshold(1);
 
                             }
@@ -3367,30 +3250,7 @@ public class RenewActivity extends AppCompatActivity {
             if (!hasPermissions(this, PERMISSIONS)) {
                 ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
             }
-//            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
-//                if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-//                        android.Manifest.permission.READ_CONTACTS)) {
-//                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//                    builder.setTitle("Read Contacts permission");
-//                    builder.setPositiveButton(android.R.string.ok, null);
-//                    builder.setMessage("Please enable access to contacts.");
-//                    builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
-//                        @TargetApi(Build.VERSION_CODES.M)
-//                        @Override
-//                        public void onDismiss(DialogInterface dialog) {
-//                            requestPermissions(
-//                                    new String[]
-//                                            {android.Manifest.permission.READ_CONTACTS}
-//                                    , PERMISSIONS_REQUEST_READ_CONTACTS);
-//                        }
-//                    });
-//                    builder.show();
-//                } else {
-//                    ActivityCompat.requestPermissions(this,
-//                            new String[]{android.Manifest.permission.READ_CONTACTS},
-//                            PERMISSIONS_REQUEST_READ_CONTACTS);
-//                }
-//            }
+
         }
     }
     public static boolean hasPermissions(Context context, String... permissions) {

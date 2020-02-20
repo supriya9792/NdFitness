@@ -421,10 +421,6 @@ public class POSAddItemActivity extends AppCompatActivity {
                 CapturedImage.setVisibility(View.GONE);
                Intent intent=new Intent(POSAddItemActivity.this,POSShowItemActivity.class);
                startActivity(intent);
-
-                // showCustomDialog();
-
-                //inputEmail, inputPhone,inputAdd,inputReq,inputFollowupdate;
             }
 
 

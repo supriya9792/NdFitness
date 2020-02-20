@@ -223,16 +223,11 @@ public class EnquiryFollowupActivity extends AppCompatActivity implements SwipeR
                                       int arg3) {
                 // TODO Auto-generated method stub
                 if(inputsearch.getText().length()==0) {
-                    //do your work here
-                    // Toast.makeText(AddEnquiryActivity.this ,"Text vhanged count  is 10 then: " , Toast.LENGTH_LONG).show();
                     followupclass();
                 }
 
             }
         });
-//        adapter = new EnquiryAdapter( new ArrayList<EnquiryList>(),EnquiryFollowupActivity.this);
-//        recyclerView.setAdapter(adapter);
-
         if (isOnline(EnquiryFollowupActivity.this)) {
             followupclass();// check login details are valid or not from server
         }
@@ -261,7 +256,6 @@ public class EnquiryFollowupActivity extends AppCompatActivity implements SwipeR
                 currentPage++;
                 Log.d(TAG, "prepare called current item: " + currentPage+"Total page"+totalPage);
                 if(currentPage<=totalPage && count >100){
-                    //currentPage = PAGE_START;
                     Log.d(TAG, "currentPage: " + currentPage);
                     isLastPage = false;
                     preparedListItem();
@@ -296,8 +290,6 @@ public class EnquiryFollowupActivity extends AppCompatActivity implements SwipeR
     }
     public void CampareTwoDates(){
         //******************campare two dates****************
-//        String date = "03/26/2012 11:00:00";
-//        String dateafter = "03/26/2012 11:59:00";
         SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "dd-MM-yyyy");
         Date convertedDate = new Date();
@@ -319,8 +311,6 @@ public class EnquiryFollowupActivity extends AppCompatActivity implements SwipeR
     }
     public void CampareFronTwoDates(){
         //******************campare two dates****************
-//        String date = "03/26/2012 11:00:00";
-//        String dateafter = "03/26/2012 11:59:00";
         SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "dd-MM-yyyy");
         Date convertedDate = new Date();
@@ -329,7 +319,6 @@ public class EnquiryFollowupActivity extends AppCompatActivity implements SwipeR
             convertedDate = dateFormat.parse(fromdate.getText().toString());
             convertedDate2 = dateFormat.parse(todate.getText().toString());
             if (convertedDate2.before(convertedDate) || convertedDate2.equals(convertedDate)) {
-                //.setText("true");
             } else {
                 String firstday= Utility.getCurrentDate();
                 fromdate.setText(firstday);
@@ -382,26 +371,9 @@ public class EnquiryFollowupActivity extends AppCompatActivity implements SwipeR
         currentPage = PAGE_START;
         isLastPage = false;
         swipeRefresh.setRefreshing(false);
-        //adapter.clear();
-       // preparedListItem();
 
     }
-    private void showProgressDialog() {
-        Log.v(TAG, String.format("showProgressDialog"));
-        pd = new ProgressDialog(EnquiryFollowupActivity.this);
-        pd.setMessage("loading");
-        pd.setCancelable(false);
-        pd.show();
-    }
 
-    /**
-     * Dismiss Progress Dialog.
-     */
-    private void dismissProgressDialog() {
-        Log.v(TAG, String.format("dismissProgressDialog"));
-
-        pd.cancel();
-    }
     // Asycc class for loading data for database
     private void followupclass() {
         EnquiryFollowupActivity.FollowupTrackclass ru = new EnquiryFollowupActivity.FollowupTrackclass();
@@ -419,7 +391,6 @@ public class EnquiryFollowupActivity extends AppCompatActivity implements SwipeR
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-          //  showProgressDialog();
             viewDialog.showDialog();
         }
 
@@ -427,27 +398,21 @@ public class EnquiryFollowupActivity extends AppCompatActivity implements SwipeR
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
             viewDialog.hideDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             FollowupDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> FollowupDetails = new HashMap<String, String>();
             FollowupDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(EnquiryFollowupActivity.this));
             FollowupDetails.put("offset", String.valueOf(offset));
-//            FollowupDetails.put("authority", SharedPrefereneceUtil.getAuthority(EnquiryFollowupActivity.this));
-//            FollowupDetails.put("exe_name", SharedPrefereneceUtil.getName(EnquiryFollowupActivity.this));
             Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(EnquiryFollowupActivity.this)));
             Log.v(TAG, String.format("doInBackground :: offset  = %s",offset ));
             FollowupDetails.put("action","show_enquiry_followup");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(EnquiryFollowupActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, FollowupDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
 
@@ -457,7 +422,6 @@ public class EnquiryFollowupActivity extends AppCompatActivity implements SwipeR
     private void FollowupDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
@@ -475,18 +439,12 @@ public class EnquiryFollowupActivity extends AppCompatActivity implements SwipeR
                         int count=0;
                         ArrayList<FollowupList> item = new ArrayList<FollowupList>();
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
-                            if(jsonArrayResult.length()<100){
-                                count=jsonArrayResult.length();
-                            }else{
-                                count=100;
-                            }
-                            for (int i = 0; i < count; i++) {
+
+                            for (int i = 0; i < jsonArrayResult.length(); i++) {
 
 
                                 subList = new FollowupList();
-                                Log.d(TAG, "i: " + i);
 
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -500,11 +458,7 @@ public class EnquiryFollowupActivity extends AppCompatActivity implements SwipeR
                                     String NextFollowup_Date = jsonObj.getString("NextFollowupDate");
                                     String Auto_Id = jsonObj.getString("Enquiry_ID");
                                     String Followup_Date = jsonObj.getString("FollowupDate");
-                                    //  for (int j = 0; j < 5; j++) {
-                                    Log.d(TAG, "next followup date: " + NextFollowup_Date);
-                                    Log.d(TAG, "Contact: " + Contact);
 
-                                    //  for (int j = 0; j < 5; j++) {
 
                                     subList.setName(name);
                                     subList.setRating(Rating);
@@ -516,11 +470,9 @@ public class EnquiryFollowupActivity extends AppCompatActivity implements SwipeR
                                     subList.setComment(Comment);
                                     subList.setFollowupType(FollowupType);
                                     String next_foll_date= Utility.formatDate(NextFollowup_Date);
-                                    Log.d(TAG, "converted next followup date: " + next_foll_date);
                                     subList.setNextFollowupDate(next_foll_date);
                                     String foll_date= Utility.formatDate(Followup_Date);
                                     subList.setImage("");
-                                    Log.d(TAG, "converted Followup date: " + foll_date);
                                     subList.setFollowupDate(foll_date);
                                     subList.setID(Auto_Id);
                                     item.add(subList);
@@ -567,33 +519,26 @@ public class EnquiryFollowupActivity extends AppCompatActivity implements SwipeR
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            // dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             FollowupOffsetDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> FollowupOffsetDetails = new HashMap<String, String>();
             FollowupOffsetDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(EnquiryFollowupActivity.this));
             FollowupOffsetDetails.put("offset", String.valueOf(offset));
-//            FollowupOffsetDetails.put("authority", SharedPrefereneceUtil.getAuthority(EnquiryFollowupActivity.this));
-//            FollowupOffsetDetails.put("exe_name", SharedPrefereneceUtil.getName(EnquiryFollowupActivity.this));
             Log.v(TAG, String.format("doInBackground :: offset  = %s",offset ));
             Log.v(TAG, String.format("doInBackground :: offset company id = %s", SharedPrefereneceUtil.getSelectedBranchId(EnquiryFollowupActivity.this)));
             FollowupOffsetDetails.put("action","show_enquiry_followup");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(EnquiryFollowupActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, FollowupOffsetDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
 
@@ -603,7 +548,6 @@ public class EnquiryFollowupActivity extends AppCompatActivity implements SwipeR
     private void FollowupOffsetDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
@@ -618,18 +562,13 @@ public class EnquiryFollowupActivity extends AppCompatActivity implements SwipeR
                     progressBar.setVisibility(View.GONE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
                         ArrayList<FollowupList> subListArrayList = new ArrayList<FollowupList>();
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
                             for (int i = 0; i < jsonArrayResult.length(); i++) {
 
 
                                 subList = new FollowupList();
-                                Log.d(TAG, "offset i: " + i +"jason array length"+jsonArrayResult.length());
-                                // Log.d(TAG, "run: " + itemCount);
-                                Log.v(TAG, "JsonResponseOpeartion ::");
+
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -643,11 +582,6 @@ public class EnquiryFollowupActivity extends AppCompatActivity implements SwipeR
                                     String NextFollowup_Date = jsonObj.getString("NextFollowupDate");
                                     String Auto_Id = jsonObj.getString("Enquiry_ID");
                                     String Followup_Date = jsonObj.getString("FollowupDate");
-                                    //  for (int j = 0; j < 5; j++) {
-                                    Log.d(TAG, "next followup date: " + NextFollowup_Date);
-                                    Log.d(TAG, "Followup date: " + Followup_Date);
-
-                                    //  for (int j = 0; j < 5; j++) {
 
                                     subList.setName(name);
                                     subList.setRating(Rating);
@@ -659,14 +593,13 @@ public class EnquiryFollowupActivity extends AppCompatActivity implements SwipeR
                                     subList.setComment(Comment);
                                     subList.setFollowupType(FollowupType);
                                     String next_foll_date= Utility.formatDate(NextFollowup_Date);
-                                    Log.d(TAG, "converted next followup date: " + next_foll_date);
+
                                     subList.setNextFollowupDate(next_foll_date);
                                     String foll_date= Utility.formatDate(Followup_Date);
                                     subList.setImage("");
-                                    Log.d(TAG, "converted Followup date: " + foll_date);
                                     subList.setFollowupDate(foll_date);
                                     subList.setID(Auto_Id);
-                                    //Toast.makeText(EnquiryFollowupActivity.this, "followup date: "+next_foll_date, Toast.LENGTH_SHORT).show();
+
                                     subListArrayList.add(subList);
 
                                 }
@@ -688,16 +621,12 @@ public class EnquiryFollowupActivity extends AppCompatActivity implements SwipeR
                     progressBar.setVisibility(View.GONE);
                     if (currentPage != PAGE_START)
                     adapter.removeblank();
-                    //adapter.addAll(subListArrayList);
                     swipeRefresh.setRefreshing(false);
                     isLoading = false;
-                    //recyclerView.setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
-//                recyclerView.setVisibility(View.GONE);
-//                nodata.setVisibility(View.VISIBLE);
             }
         }
     }
@@ -716,7 +645,6 @@ public class EnquiryFollowupActivity extends AppCompatActivity implements SwipeR
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            // showProgressDialog();
             viewDialog.showDialog();
 
         }
@@ -725,17 +653,14 @@ public class EnquiryFollowupActivity extends AppCompatActivity implements SwipeR
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: search_active_member_filter = %s", response));
-            //   dismissProgressDialog();
             viewDialog.hideDialog();
 
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             SearchActiveMemberDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String>  SearchActiveMemberDetails = new HashMap<String, String>();
             SearchActiveMemberDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(EnquiryFollowupActivity.this));
             Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(EnquiryFollowupActivity.this)));
@@ -743,12 +668,9 @@ public class EnquiryFollowupActivity extends AppCompatActivity implements SwipeR
             Log.v(TAG, String.format("doInBackground :: to_date = %s",todate.getText().toString() ));
             SearchActiveMemberDetails.put("from_date",fromdate.getText().toString());
             Log.v(TAG, String.format("doInBackground :: from_date = %s", fromdate.getText().toString()));
-//            SearchActiveMemberDetails.put("authority", SharedPrefereneceUtil.getAuthority(EnquiryFollowupActivity.this));
-//            SearchActiveMemberDetails.put("exe_name", SharedPrefereneceUtil.getName(EnquiryFollowupActivity.this));
             SearchActiveMemberDetails.put("action","search_enquiry_followup_filter");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(EnquiryFollowupActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL,  SearchActiveMemberDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
     }
@@ -756,7 +678,6 @@ public class EnquiryFollowupActivity extends AppCompatActivity implements SwipeR
     private void  SearchActiveMemberDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: search_active_member_filter = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
@@ -770,9 +691,6 @@ public class EnquiryFollowupActivity extends AppCompatActivity implements SwipeR
                     progressBar.setVisibility(View.GONE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
                         count=jsonArrayResult.length();
                         ttl_followups.setText(String.valueOf(jsonArrayResult.length()));
                         ArrayList<FollowupList> item = new ArrayList<FollowupList>();
@@ -782,9 +700,7 @@ public class EnquiryFollowupActivity extends AppCompatActivity implements SwipeR
 
 
                                 subList = new FollowupList();
-                                Log.d(TAG, "i: " + i);
 
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -798,11 +714,7 @@ public class EnquiryFollowupActivity extends AppCompatActivity implements SwipeR
                                     String NextFollowup_Date = jsonObj.getString("NextFollowupDate");
                                     String Auto_Id = jsonObj.getString("Enquiry_ID");
                                     String Followup_Date = jsonObj.getString("FollowupDate");
-                                    //  for (int j = 0; j < 5; j++) {
-                                    Log.d(TAG, "next followup date: " + NextFollowup_Date);
-                                    Log.d(TAG, "Followup date: " + Followup_Date);
 
-                                    //  for (int j = 0; j < 5; j++) {
 
                                     subList.setName(name);
                                     subList.setRating(Rating);
@@ -814,11 +726,10 @@ public class EnquiryFollowupActivity extends AppCompatActivity implements SwipeR
                                     subList.setComment(Comment);
                                     subList.setFollowupType(FollowupType);
                                     String next_foll_date= Utility.formatDate(NextFollowup_Date);
-                                    Log.d(TAG, "converted next followup date: " + next_foll_date);
                                     subList.setNextFollowupDate(next_foll_date);
                                     String foll_date= Utility.formatDate(Followup_Date);
                                     subList.setImage("");
-                                    Log.d(TAG, "converted Followup date: " + foll_date);
+
                                     subList.setFollowupDate(foll_date);
                                     subList.setID(Auto_Id);
                                     item.add(subList);
@@ -865,7 +776,6 @@ public class EnquiryFollowupActivity extends AppCompatActivity implements SwipeR
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            // showProgressDialog();
             viewDialog.showDialog();
         }
 
@@ -873,15 +783,12 @@ public class EnquiryFollowupActivity extends AppCompatActivity implements SwipeR
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            // dismissProgressDialog();
             viewDialog.hideDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             EnquirySearchDetails(response);
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EnquirySearchDetails = new HashMap<String, String>();
             EnquirySearchDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(EnquiryFollowupActivity.this));
             EnquirySearchDetails.put("text", inputsearch.getText().toString());
@@ -889,7 +796,6 @@ public class EnquiryFollowupActivity extends AppCompatActivity implements SwipeR
             EnquirySearchDetails.put("action","show_search_enquiry");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(EnquiryFollowupActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EnquirySearchDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
 
@@ -899,7 +805,6 @@ public class EnquiryFollowupActivity extends AppCompatActivity implements SwipeR
     private void EnquirySearchDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
@@ -919,9 +824,6 @@ public class EnquiryFollowupActivity extends AppCompatActivity implements SwipeR
 
 
                                 subList = new FollowupList();
-                                Log.d(TAG, "i: " + i);
-                                // Log.d(TAG, "run: " + itemCount);
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -935,11 +837,7 @@ public class EnquiryFollowupActivity extends AppCompatActivity implements SwipeR
                                     String NextFollowup_Date = jsonObj.getString("NextFollowupDate");
                                     String Auto_Id = jsonObj.getString("Enquiry_ID");
                                     String Followup_Date = jsonObj.getString("FollowupDate");
-                                    //  for (int j = 0; j < 5; j++) {
-                                    Log.d(TAG, "next followup date: " + NextFollowup_Date);
-                                    Log.d(TAG, "Followup date: " + Followup_Date);
 
-                                    //  for (int j = 0; j < 5; j++) {
 
                                     subList.setName(name);
                                     subList.setRating(Rating);
@@ -951,11 +849,10 @@ public class EnquiryFollowupActivity extends AppCompatActivity implements SwipeR
                                     subList.setComment(Comment);
                                     subList.setFollowupType(FollowupType);
                                     String next_foll_date= Utility.formatDate(NextFollowup_Date);
-                                    Log.d(TAG, "converted next followup date: " + next_foll_date);
+
                                     subList.setNextFollowupDate(next_foll_date);
                                     String foll_date= Utility.formatDate(Followup_Date);
                                     subList.setImage("");
-                                    Log.d(TAG, "converted Followup date: " + foll_date);
                                     subList.setFollowupDate(foll_date);
                                     subList.setID(Auto_Id);
                                     subListArrayList.add(subList);
@@ -970,18 +867,14 @@ public class EnquiryFollowupActivity extends AppCompatActivity implements SwipeR
                         }
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
-                    // nodata.setVisibility(View.VISIBLE);
-//                    nodata.setVisibility(View.VISIBLE);
-//                    swipeRefresh.setVisibility(View.GONE);
+
                     progressBar.setVisibility(View.GONE);
                     Toast.makeText(EnquiryFollowupActivity.this, "NO Record Found", Toast.LENGTH_SHORT).show();
-                    //frame.setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
                 recyclerView.setVisibility(View.GONE);
-//                frame.setVisibility(View.VISIBLE);
             }
         }
     }

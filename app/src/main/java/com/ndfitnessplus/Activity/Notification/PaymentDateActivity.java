@@ -222,8 +222,6 @@ public class PaymentDateActivity extends AppCompatActivity implements SwipeRefre
                 return isLoading;
             }
         });
-//        adapter = new EnquiryAdapter( new ArrayList<EnquiryList>(),EnquiryActivity.this);
-//        recyclerView.setAdapter(adapter);
 
 
         if (isOnline(PaymentDateActivity.this)) {
@@ -275,8 +273,6 @@ public class PaymentDateActivity extends AppCompatActivity implements SwipeRefre
                                       int arg3) {
                 // TODO Auto-generated method stub
                 if(inputsearch.getText().length()==0) {
-                    //do your work here
-                    // Toast.makeText(AddEnquiryActivity.this ,"Text vhanged count  is 10 then: " , Toast.LENGTH_LONG).show();
                     todaysPaymentdateclass();
                 }
 
@@ -302,8 +298,6 @@ public class PaymentDateActivity extends AppCompatActivity implements SwipeRefre
     }
     public void CampareTwoDates(){
         //******************campare two dates****************
-//        String date = "03/26/2012 11:00:00";
-//        String dateafter = "03/26/2012 11:59:00";
         SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "dd-MM-yyyy");
         Date convertedDate = new Date();
@@ -312,7 +306,6 @@ public class PaymentDateActivity extends AppCompatActivity implements SwipeRefre
             convertedDate = dateFormat.parse(todate.getText().toString());
             convertedDate2 = dateFormat.parse(fromdate.getText().toString());
             if (convertedDate2.after(convertedDate) || convertedDate2.equals(convertedDate)) {
-                //.setText("true");
             } else {
                 String firstday= Utility.getFirstDayofMonth();
                 todate.setText(firstday);
@@ -325,8 +318,6 @@ public class PaymentDateActivity extends AppCompatActivity implements SwipeRefre
     }
     public void CampareFronTwoDates(){
         //******************campare two dates****************
-//        String date = "03/26/2012 11:00:00";
-//        String dateafter = "03/26/2012 11:59:00";
         SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "dd-MM-yyyy");
         Date convertedDate = new Date();
@@ -335,7 +326,6 @@ public class PaymentDateActivity extends AppCompatActivity implements SwipeRefre
             convertedDate = dateFormat.parse(fromdate.getText().toString());
             convertedDate2 = dateFormat.parse(todate.getText().toString());
             if (convertedDate2.before(convertedDate) || convertedDate2.equals(convertedDate)) {
-                //.setText("true");
             } else {
                 String firstday= Utility.getCurrentDate();
                 fromdate.setText(firstday);
@@ -367,23 +357,6 @@ public class PaymentDateActivity extends AppCompatActivity implements SwipeRefre
             dialog.show();
         }
     }
-
-    private void showProgressDialog() {
-        Log.v(TAG, String.format("showProgressDialog"));
-        pd = new ProgressDialog(PaymentDateActivity.this);
-        pd.setMessage("loading");
-        pd.setCancelable(false);
-        pd.show();
-    }
-
-    /**
-     * Dismiss Progress Dialog.
-     */
-    private void dismissProgressDialog() {
-        Log.v(TAG, String.format("dismissProgressDialog"));
-
-        pd.cancel();
-    }
     //*********** Asycc class for loading data for database **************
     private void todaysPaymentdateclass() {
         PaymentDateActivity.  PaymentDateTrackclass ru = new PaymentDateActivity.  PaymentDateTrackclass();
@@ -408,7 +381,6 @@ public class PaymentDateActivity extends AppCompatActivity implements SwipeRefre
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-          //  showProgressDialog();
             viewDialog.showDialog();
         }
 
@@ -416,16 +388,13 @@ public class PaymentDateActivity extends AppCompatActivity implements SwipeRefre
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: show_balance_trasaction_details = %s", response));
-            //dismissProgressDialog();
             viewDialog.hideDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             PaymentDateDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> PaymentDateDetails = new HashMap<String, String>();
             PaymentDateDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(PaymentDateActivity.this));
             Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(PaymentDateActivity.this)));
@@ -433,7 +402,6 @@ public class PaymentDateActivity extends AppCompatActivity implements SwipeRefre
             PaymentDateDetails.put("action","show_payment_date_list");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(PaymentDateActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL,   PaymentDateDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
 
@@ -443,7 +411,6 @@ public class PaymentDateActivity extends AppCompatActivity implements SwipeRefre
     private void   PaymentDateDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
@@ -529,7 +496,6 @@ public class PaymentDateActivity extends AppCompatActivity implements SwipeRefre
                                     subList.setFollowuptype("Payment");
                                     String nextpaydate=Utility.formatDate(NextPaymentDate);
                                     subList.setNextPaymentdate(nextpaydate);
-                                    //Toast.makeText(CourseActivity.this, "followup date: "+next_foll_date, Toast.LENGTH_SHORT).show();
 
 
 
@@ -583,7 +549,6 @@ public class PaymentDateActivity extends AppCompatActivity implements SwipeRefre
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //  showProgressDialog();
             viewDialog.showDialog();
         }
 
@@ -591,16 +556,13 @@ public class PaymentDateActivity extends AppCompatActivity implements SwipeRefre
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: show_balance_trasaction_details = %s", response));
-            //dismissProgressDialog();
             viewDialog.hideDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             PaymentDateOffsetDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> PaymentDateOffsetDetails = new HashMap<String, String>();
             PaymentDateOffsetDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(PaymentDateActivity.this));
             Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(PaymentDateActivity.this)));
@@ -608,7 +570,6 @@ public class PaymentDateActivity extends AppCompatActivity implements SwipeRefre
             PaymentDateOffsetDetails.put("action","show_payment_date_list");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(PaymentDateActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL,   PaymentDateOffsetDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
 
@@ -618,7 +579,6 @@ public class PaymentDateActivity extends AppCompatActivity implements SwipeRefre
     private void   PaymentDateOffsetDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
@@ -641,9 +601,7 @@ public class PaymentDateActivity extends AppCompatActivity implements SwipeRefre
 
 
                                 subList = new CourseList();
-                                Log.d(TAG, "i: " + i);
 
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -668,8 +626,6 @@ public class PaymentDateActivity extends AppCompatActivity implements SwipeRefre
                                     String NextPaymentDate = jsonObj.getString("NextPaymentDate");
 
 
-                                    //  for (int j = 0; j < 5; j++) {
-
                                     subList.setName(name);
                                     String sdate= Utility.formatDate(Start_Date);
                                     String edate=Utility.formatDate(End_Date);
@@ -678,7 +634,6 @@ public class PaymentDateActivity extends AppCompatActivity implements SwipeRefre
                                     String cont=Utility.lastFour(Contact);
                                     subList.setContact(Contact);
                                     subList.setContactEncrypt(cont);
-//                                    String pack=Package_Name;
                                     subList.setPackageName(Package_Name);
                                     subList.setExecutiveName(ExecutiveName);
                                     subList.setTax(Tax);
@@ -690,12 +645,10 @@ public class PaymentDateActivity extends AppCompatActivity implements SwipeRefre
                                     subList.setInvoiceID(Invoice_ID);
 
                                     subList.setRate(Rate);
-                                    // String fpaid="₹ "+Final_paid;
                                     subList.setPaid(Final_paid);
                                     if(Final_Balance.equals(".00")){
                                         Final_Balance="0.00";
                                     }
-                                    //String fbalance="₹ "+Final_Balance;
                                     subList.setBalance(Final_Balance);
                                     Image.replace("\"", "");
                                     subList.setImage(Image);
@@ -704,7 +657,6 @@ public class PaymentDateActivity extends AppCompatActivity implements SwipeRefre
                                     subList.setFollowuptype("Payment");
                                     String nextpaydate=Utility.formatDate(NextPaymentDate);
                                     subList.setNextPaymentdate(nextpaydate);
-                                    //Toast.makeText(CourseActivity.this, "followup date: "+next_foll_date, Toast.LENGTH_SHORT).show();
 
                                     item.add(subList);
 
@@ -728,10 +680,8 @@ public class PaymentDateActivity extends AppCompatActivity implements SwipeRefre
                     progressBar.setVisibility(View.GONE);
                     if (currentPage != PAGE_START)
                         adapter.removeblank();
-                    //adapter.addAll(subListArrayList);
                     swipeRefresh.setRefreshing(false);
                     isLoading = false;
-                    // recyclerView.setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");
@@ -764,7 +714,6 @@ public class PaymentDateActivity extends AppCompatActivity implements SwipeRefre
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            // showProgressDialog();
             viewDialog.showDialog();
 
         }
@@ -773,17 +722,14 @@ public class PaymentDateActivity extends AppCompatActivity implements SwipeRefre
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: search_active_member_filter = %s", response));
-            //   dismissProgressDialog();
             viewDialog.hideDialog();
 
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             SearchActiveMemberDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String>  SearchActiveMemberDetails = new HashMap<String, String>();
             SearchActiveMemberDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(PaymentDateActivity.this));
             Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(PaymentDateActivity.this)));
@@ -794,17 +740,13 @@ public class PaymentDateActivity extends AppCompatActivity implements SwipeRefre
             SearchActiveMemberDetails.put("action","search_payment_date_filter");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(PaymentDateActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL,  SearchActiveMemberDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
-
-
     }
 
     private void  SearchActiveMemberDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: search_active_member_filter = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
@@ -818,9 +760,6 @@ public class PaymentDateActivity extends AppCompatActivity implements SwipeRefre
                     progressBar.setVisibility(View.GONE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
                         count=jsonArrayResult.length();
                         ttl_pay_date.setText(String.valueOf(jsonArrayResult.length()));
                         ArrayList<CourseList> item = new ArrayList<CourseList>();
@@ -830,9 +769,7 @@ public class PaymentDateActivity extends AppCompatActivity implements SwipeRefre
 
 
                                 subList = new CourseList();
-                                Log.d(TAG, "i: " + i);
 
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -856,9 +793,6 @@ public class PaymentDateActivity extends AppCompatActivity implements SwipeRefre
                                     String Financial_Year = jsonObj.getString("Financial_Year");
                                     String NextPaymentDate = jsonObj.getString("NextPaymentDate");
 
-
-                                    //  for (int j = 0; j < 5; j++) {
-
                                     subList.setName(name);
                                     String sdate= Utility.formatDate(Start_Date);
                                     String edate=Utility.formatDate(End_Date);
@@ -867,7 +801,6 @@ public class PaymentDateActivity extends AppCompatActivity implements SwipeRefre
                                     String cont=Utility.lastFour(Contact);
                                     subList.setContact(Contact);
                                     subList.setContactEncrypt(cont);
-//                                    String pack=Package_Name;
                                     subList.setPackageName(Package_Name);
                                     subList.setExecutiveName(ExecutiveName);
                                     subList.setTax(Tax);
@@ -879,12 +812,10 @@ public class PaymentDateActivity extends AppCompatActivity implements SwipeRefre
                                     subList.setInvoiceID(Invoice_ID);
 
                                     subList.setRate(Rate);
-                                    // String fpaid="₹ "+Final_paid;
                                     subList.setPaid(Final_paid);
                                     if(Final_Balance.equals(".00")){
                                         Final_Balance="0.00";
                                     }
-                                    //String fbalance="₹ "+Final_Balance;
                                     subList.setBalance(Final_Balance);
                                     Image.replace("\"", "");
                                     subList.setImage(Image);
@@ -893,7 +824,6 @@ public class PaymentDateActivity extends AppCompatActivity implements SwipeRefre
                                     subList.setFollowuptype("Payment");
                                     String nextpaydate=Utility.formatDate(NextPaymentDate);
                                     subList.setNextPaymentdate(nextpaydate);
-                                    //Toast.makeText(CourseActivity.this, "followup date: "+next_foll_date, Toast.LENGTH_SHORT).show();
 
 
 
@@ -938,7 +868,6 @@ public class PaymentDateActivity extends AppCompatActivity implements SwipeRefre
     @Override
     protected void onRestart() {
         super.onRestart();
-        //swipeRefresh.setRefreshing(false);
         Intent intent=new Intent(PaymentDateActivity.this,PaymentDateActivity.class);
         startActivity(intent);
     }

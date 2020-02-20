@@ -101,8 +101,6 @@ public class AddStaffAttendanceActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                // String selection = (String)parent.getItemAtPosition(position);
-                // Toast.makeText(MainNavigationActivity.this,"this is autocomplete suggestions"+selection,Toast.LENGTH_SHORT).show();
                 String countryName = searchcontactadapter.getItem(position).getCustName();
                 String contact = searchcontactadapter.getItem(position).getCustContact();
                 StaffId = searchcontactadapter.getItem(position).getMemberId();
@@ -180,9 +178,6 @@ public class AddStaffAttendanceActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-
-                // String selection = (String)parent.getItemAtPosition(position);
-                // Toast.makeText(MainNavigationActivity.this,"this is autocomplete suggestions"+selection,Toast.LENGTH_SHORT).show();
                 String countryName = searchnameadapter.getItem(position).getCustName();
                 String contact = searchnameadapter.getItem(position).getCustContact();
                 StaffId = searchnameadapter.getItem(position).getMemberId();
@@ -236,10 +231,6 @@ public class AddStaffAttendanceActivity extends AppCompatActivity {
         inputStaffId.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-
-                // String selection = (String)parent.getItemAtPosition(position);
-                // Toast.makeText(MainNavigationActivity.this,"this is autocomplete suggestions"+selection,Toast.LENGTH_SHORT).show();
                 String countryName = searchnameadapter.getItem(position).getCustName();
                 String contact = searchnameadapter.getItem(position).getCustContact();
                 StaffId = searchnameadapter.getItem(position).getMemberId();
@@ -315,28 +306,23 @@ public class AddStaffAttendanceActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            // showProgressDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             SearchDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> SearchDetails = new HashMap<String, String>();
 
             SearchDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(AddStaffAttendanceActivity.this) );
             SearchDetails.put("action", "show_all_staff_list");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(AddStaffAttendanceActivity.this);
-            //EmployeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(Employee.this));
             String loginResult = ruc.sendPostRequest(domainurl+ ServiceUrls.LOGIN_URL, SearchDetails);
             Log.v(TAG, String.format("doInBackground :: show_all_staff_list= %s", loginResult));
             return loginResult;
@@ -350,7 +336,6 @@ public class AddStaffAttendanceActivity extends AppCompatActivity {
 
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
@@ -374,8 +359,6 @@ public class AddStaffAttendanceActivity extends AppCompatActivity {
                                 String Gender = jsonObj.getString("Gender");
                                 String Image = jsonObj.getString("Image");
 
-
-
                                 String namec=Name+"-"+Contact;
                                 searchModel.setCustName(Name);
                                 searchModel.setCustContact(Contact);
@@ -389,19 +372,16 @@ public class AddStaffAttendanceActivity extends AppCompatActivity {
                                 searchnameadapter = new SearchNameAdapter(AddStaffAttendanceActivity.this, searchArrayList);
 
                                 inputName.setAdapter(searchnameadapter);
-                                // inputName.setDropDownBackgroundResource(R.drawable.search_background);
                                 inputName.setThreshold(1);
 
                                 searchcontactadapter = new SearchContactAdapter(AddStaffAttendanceActivity.this, searchArrayList);
 
                                 inputContact.setAdapter(searchcontactadapter);
-                                // textContact.setDropDownBackgroundResource(R.drawable.search_background);
                                 inputContact.setThreshold(1);
 
                                 searchstaffidtadapter = new SearchStaffIdAdaper(AddStaffAttendanceActivity.this, searchArrayList);
 
                                 inputStaffId.setAdapter(searchstaffidtadapter);
-                                // textContact.setDropDownBackgroundResource(R.drawable.search_background);
                                 inputStaffId.setThreshold(1);
 
                             }
@@ -428,7 +408,6 @@ public class AddStaffAttendanceActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
             viewDialog.showDialog();
         }
 
@@ -436,17 +415,13 @@ public class AddStaffAttendanceActivity extends AppCompatActivity {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            // dismissProgressDialog();
             viewDialog.hideDialog();
-            //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
-            //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
             MakeAttendanceDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> MakeAttendanceDetails = new HashMap<String, String>();
             MakeAttendanceDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(AddStaffAttendanceActivity.this));
             Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(AddStaffAttendanceActivity.this)));
@@ -506,8 +481,6 @@ public class AddStaffAttendanceActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
-            // viewDialog.showDialog();
         }
 
         @Override
@@ -520,13 +493,11 @@ public class AddStaffAttendanceActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            //  Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EnquiryForDetails = new HashMap<String, String>();
 
             EnquiryForDetails.put("staff_id",inputStaffId.getText().toString() );
             EnquiryForDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(AddStaffAttendanceActivity.this) );
             EnquiryForDetails.put("action", "show_staff_details_by_id");
-            //EnquiryForloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(EnquiryForloyee.this));
             String domainurl=SharedPrefereneceUtil.getDomainUrl(AddStaffAttendanceActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EnquiryForDetails);
             Log.v(TAG, String.format("doInBackground :: show_staff_details_by_id= %s", loginResult));
@@ -536,7 +507,6 @@ public class AddStaffAttendanceActivity extends AppCompatActivity {
     private void CheckStaffIdDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
@@ -598,8 +568,6 @@ public class AddStaffAttendanceActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
-            // viewDialog.showDialog();
         }
 
         @Override
@@ -612,13 +580,11 @@ public class AddStaffAttendanceActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            //  Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EnquiryForDetails = new HashMap<String, String>();
 
             EnquiryForDetails.put("contact",inputContact.getText().toString() );
             EnquiryForDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(AddStaffAttendanceActivity.this) );
             EnquiryForDetails.put("action", "show_staff_details_by_contact");
-            //EnquiryForloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(EnquiryForloyee.this));
             String domainurl=SharedPrefereneceUtil.getDomainUrl(AddStaffAttendanceActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EnquiryForDetails);
             Log.v(TAG, String.format("doInBackground :: show_staff_details_by_contact= %s", loginResult));
@@ -628,9 +594,7 @@ public class AddStaffAttendanceActivity extends AppCompatActivity {
     private void CheckContactDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
-
 
             try {
                 Log.v(TAG, "JsonResponseOpeartion :: test");
@@ -688,8 +652,6 @@ public class AddStaffAttendanceActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
-            // viewDialog.showDialog();
         }
 
         @Override
@@ -702,13 +664,11 @@ public class AddStaffAttendanceActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            //  Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EnquiryForDetails = new HashMap<String, String>();
 
             EnquiryForDetails.put("name",inputName.getText().toString() );
             EnquiryForDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(AddStaffAttendanceActivity.this) );
             EnquiryForDetails.put("action", "show_staff_details_by_name");
-            //EnquiryForloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(EnquiryForloyee.this));
             String domainurl=SharedPrefereneceUtil.getDomainUrl(AddStaffAttendanceActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EnquiryForDetails);
             Log.v(TAG, String.format("doInBackground :: show_staff_details_by_name= %s", loginResult));
@@ -718,7 +678,6 @@ public class AddStaffAttendanceActivity extends AppCompatActivity {
     private void CheckNameDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 

@@ -66,7 +66,6 @@ public class MembershipEndDateActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private LinearLayoutManager layoutManager;
     ProgressBar progressBar;
-   // FrameLayout mainframe;
     View nodata;
     BalanceReceiptAdapter adapter;
     ArrayList<CourseList> subListArrayList = new ArrayList<CourseList>();
@@ -105,14 +104,11 @@ public class MembershipEndDateActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
-        //mainframe=findViewById(R.id.main_frame);
         nodata=findViewById(R.id.nodata);
         inputsearch=(EditText)findViewById(R.id.inputsearchid);
         search=findViewById(R.id.search);
         ttl_mem_end=findViewById(R.id.ttl_membership_end);
 
-//        adapter = new EnquiryAdapter( new ArrayList<EnquiryList>(),EnquiryActivity.this);
-//        recyclerView.setAdapter(adapter);
         nodata=findViewById(R.id.nodata);
 
         todate=findViewById(R.id.to_date);
@@ -249,8 +245,7 @@ public class MembershipEndDateActivity extends AppCompatActivity {
     }
     public void CampareTwoDates(){
         //******************campare two dates****************
-//        String date = "03/26/2012 11:00:00";
-//        String dateafter = "03/26/2012 11:59:00";
+
         SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "dd-MM-yyyy");
         Date convertedDate = new Date();
@@ -272,8 +267,7 @@ public class MembershipEndDateActivity extends AppCompatActivity {
     }
     public void CampareFronTwoDates(){
         //******************campare two dates****************
-//        String date = "03/26/2012 11:00:00";
-//        String dateafter = "03/26/2012 11:59:00";
+
         SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "dd-MM-yyyy");
         Date convertedDate = new Date();
@@ -282,7 +276,7 @@ public class MembershipEndDateActivity extends AppCompatActivity {
             convertedDate = dateFormat.parse(fromdate.getText().toString());
             convertedDate2 = dateFormat.parse(todate.getText().toString());
             if (convertedDate2.before(convertedDate) || convertedDate2.equals(convertedDate)) {
-                //.setText("true");
+
             } else {
                 String firstday= Utility.getCurrentDate();
                 fromdate.setText(firstday);
@@ -308,22 +302,7 @@ public class MembershipEndDateActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-    private void showProgressDialog() {
-        Log.v(TAG, String.format("showProgressDialog"));
-        pd = new ProgressDialog(MembershipEndDateActivity.this);
-        pd.setMessage("loading");
-        pd.setCancelable(false);
-        pd.show();
-    }
 
-    /**
-     * Dismiss Progress Dialog.
-     */
-    private void dismissProgressDialog() {
-        Log.v(TAG, String.format("dismissProgressDialog"));
-
-        pd.cancel();
-    }
     //*********** Asycc class for loading data for database **************
     private void todaysEnddateclass() {
         MembershipEndDateActivity.  MembershipEndDateTrackclass ru = new MembershipEndDateActivity.  MembershipEndDateTrackclass();
@@ -340,7 +319,6 @@ public class MembershipEndDateActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-          //  showProgressDialog();
             viewDialog.showDialog();
         }
 
@@ -348,23 +326,19 @@ public class MembershipEndDateActivity extends AppCompatActivity {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: show_balance_trasaction_details = %s", response));
-            //dismissProgressDialog();
             viewDialog.hideDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
              MembershipEndDateDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String>  MembershipEndDateDetails = new HashMap<String, String>();
              MembershipEndDateDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(MembershipEndDateActivity.this));
             Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(MembershipEndDateActivity.this)));
              MembershipEndDateDetails.put("action","show_todays_enddate");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(MembershipEndDateActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL,   MembershipEndDateDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
 
@@ -374,7 +348,6 @@ public class MembershipEndDateActivity extends AppCompatActivity {
     private void   MembershipEndDateDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
@@ -386,9 +359,6 @@ public class MembershipEndDateActivity extends AppCompatActivity {
                     progressBar.setVisibility(View.GONE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
                         ttl_mem_end.setText(String.valueOf(jsonArrayResult.length()));
                         ArrayList<CourseList> item = new ArrayList<CourseList>();
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
@@ -396,9 +366,7 @@ public class MembershipEndDateActivity extends AppCompatActivity {
                             for (int i = 0; i < jsonArrayResult.length(); i++) {
 
                                 subList = new CourseList();
-                                Log.d(TAG, "i: " + i);
 
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -421,8 +389,6 @@ public class MembershipEndDateActivity extends AppCompatActivity {
                                     String Member_Email_ID = jsonObj.getString("Member_Email_ID");
                                     String Financial_Year = jsonObj.getString("Financial_Year");
 
-                                    //  for (int j = 0; j < 5; j++) {
-
                                     subList.setName(name);
                                     String sdate= Utility.formatDate(Start_Date);
                                     String edate=Utility.formatDate(End_Date);
@@ -431,7 +397,6 @@ public class MembershipEndDateActivity extends AppCompatActivity {
                                     String cont=Utility.lastFour(Contact);
                                     subList.setContact(Contact);
                                     subList.setContactEncrypt(cont);
-//                                    String pack=Package_Name;
                                     subList.setPackageName(Package_Name);
                                     subList.setExecutiveName(ExecutiveName);
                                     subList.setTax(Tax);
@@ -443,21 +408,16 @@ public class MembershipEndDateActivity extends AppCompatActivity {
                                     subList.setInvoiceID(Invoice_ID);
 
                                     subList.setRate(Rate);
-                                    // String fpaid="₹ "+Final_paid;
                                     subList.setPaid(Final_paid);
                                     if(Final_Balance.equals(".00")){
                                         Final_Balance="0.00";
                                     }
-                                    //String fbalance="₹ "+Final_Balance;
                                     subList.setBalance(Final_Balance);
                                     Image.replace("\"", "");
                                     subList.setImage(Image);
                                     subList.setEmail(Member_Email_ID);
                                     subList.setFinancialYear(Financial_Year);
                                     subList.setFollowuptype("Renew");
-
-                                    //Toast.makeText(CourseActivity.this, "followup date: "+next_foll_date, Toast.LENGTH_SHORT).show();
-
 
 
                                     item.add(subList);
@@ -507,7 +467,6 @@ public class MembershipEndDateActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            // showProgressDialog();
             viewDialog.showDialog();
 
         }
@@ -516,17 +475,13 @@ public class MembershipEndDateActivity extends AppCompatActivity {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: search_active_member_filter = %s", response));
-            //   dismissProgressDialog();
             viewDialog.hideDialog();
-
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             SearchActiveMemberDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String>  SearchActiveMemberDetails = new HashMap<String, String>();
             SearchActiveMemberDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(MembershipEndDateActivity.this));
             Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(MembershipEndDateActivity.this)));
@@ -537,7 +492,6 @@ public class MembershipEndDateActivity extends AppCompatActivity {
             SearchActiveMemberDetails.put("action","search_membership_end_date_filter");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(MembershipEndDateActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL,  SearchActiveMemberDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
 
@@ -547,7 +501,6 @@ public class MembershipEndDateActivity extends AppCompatActivity {
     private void  SearchActiveMemberDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: search_active_member_filter = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
@@ -561,9 +514,7 @@ public class MembershipEndDateActivity extends AppCompatActivity {
                     progressBar.setVisibility(View.GONE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
+
                         ttl_mem_end.setText(String.valueOf(jsonArrayResult.length()));
                         ArrayList<CourseList> item = new ArrayList<CourseList>();
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
@@ -571,9 +522,7 @@ public class MembershipEndDateActivity extends AppCompatActivity {
                             for (int i = 0; i < jsonArrayResult.length(); i++) {
 
                                 subList = new CourseList();
-                                Log.d(TAG, "i: " + i);
 
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -596,7 +545,7 @@ public class MembershipEndDateActivity extends AppCompatActivity {
                                     String Member_Email_ID = jsonObj.getString("Member_Email_ID");
                                     String Financial_Year = jsonObj.getString("Financial_Year");
 
-                                    //  for (int j = 0; j < 5; j++) {
+
 
                                     subList.setName(name);
                                     String sdate= Utility.formatDate(Start_Date);
@@ -606,7 +555,6 @@ public class MembershipEndDateActivity extends AppCompatActivity {
                                     String cont=Utility.lastFour(Contact);
                                     subList.setContact(Contact);
                                     subList.setContactEncrypt(cont);
-//                                    String pack=Package_Name;
                                     subList.setPackageName(Package_Name);
                                     subList.setExecutiveName(ExecutiveName);
                                     subList.setTax(Tax);
@@ -618,21 +566,16 @@ public class MembershipEndDateActivity extends AppCompatActivity {
                                     subList.setInvoiceID(Invoice_ID);
 
                                     subList.setRate(Rate);
-                                    // String fpaid="₹ "+Final_paid;
                                     subList.setPaid(Final_paid);
                                     if(Final_Balance.equals(".00")){
                                         Final_Balance="0.00";
                                     }
-                                    //String fbalance="₹ "+Final_Balance;
                                     subList.setBalance(Final_Balance);
                                     Image.replace("\"", "");
                                     subList.setImage(Image);
                                     subList.setEmail(Member_Email_ID);
                                     subList.setFinancialYear(Financial_Year);
                                     subList.setFollowuptype("Renew");
-
-                                    //Toast.makeText(CourseActivity.this, "followup date: "+next_foll_date, Toast.LENGTH_SHORT).show();
-
 
 
                                     item.add(subList);
@@ -675,7 +618,6 @@ public class MembershipEndDateActivity extends AppCompatActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
-        //swipeRefresh.setRefreshing(false);
         Intent intent=new Intent(MembershipEndDateActivity.this,MembershipEndDateActivity.class);
         startActivity(intent);
     }

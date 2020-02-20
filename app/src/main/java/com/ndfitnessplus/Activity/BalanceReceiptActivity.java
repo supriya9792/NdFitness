@@ -205,7 +205,6 @@ public class BalanceReceiptActivity extends AppCompatActivity {
 
 
         Intent intent = getIntent();
-        // Bundle args = intent.getBundleExtra("BUNDLE");
         if (intent != null) {
             MemberID=intent.getStringExtra("member_id");
             String  name=intent.getStringExtra("name");
@@ -244,8 +243,6 @@ public class BalanceReceiptActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                // String selection = (String)parent.getItemAtPosition(position);
-                // Toast.makeText(MainNavigationActivity.this,"this is autocomplete suggestions"+selection,Toast.LENGTH_SHORT).show();
                 String countryName = searchcontactadapter.getItem(position).getCustName();
                 String contact = searchcontactadapter.getItem(position).getCustContact();
                 MemberID = searchcontactadapter.getItem(position).getMemberId();
@@ -281,9 +278,6 @@ public class BalanceReceiptActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-
-                // String selection = (String)parent.getItemAtPosition(position);
-                // Toast.makeText(MainNavigationActivity.this,"this is autocomplete suggestions"+selection,Toast.LENGTH_SHORT).show();
                 String countryName = searchnameadapter.getItem(position).getCustName();
                 String contact = searchnameadapter.getItem(position).getCustContact();
                 MemberID = searchnameadapter.getItem(position).getMemberId();
@@ -362,9 +356,8 @@ public class BalanceReceiptActivity extends AppCompatActivity {
                     layout.setPadding(0, 0, 0, 0);
                     final Spinner_List model = invoiceRefidArrayList.get(position);
 
-                    //country_parent_id=model.getId();
 
-                    //if(!(InvoiceRefID.equals("")||InvoiceRefID.equals("null"))){
+
                     if(pack_name==null){
                         Log.v(TAG, String.format("Selected  ::Invoice Ref ID= %s", InvoiceRefID));
                     }else{
@@ -374,11 +367,9 @@ public class BalanceReceiptActivity extends AppCompatActivity {
                         tv.setTextColor((Color.BLACK));
                     }
 
-                   // }
 
                     Log.v(TAG, String.format("Selected  ::Invoice Ref ID= %s", InvoiceRefID));
                     if (index == 0) {
-                        //tv.setTextColor((Color.GRAY));
                     } else {
                         tv.setTextColor((Color.BLACK));
                     }
@@ -415,7 +406,6 @@ public class BalanceReceiptActivity extends AppCompatActivity {
                     double rate = Double.parseDouble(inputRemBal.getText().toString());
                     double paid = Double.parseDouble(inputPaid.getText().toString());
                     double tax = Double.parseDouble(Tax);
-                   // if (paid > 0) {
 
                     double finalbal = rate - paid;
                     finalBalance = String.valueOf(finalbal);
@@ -424,7 +414,6 @@ public class BalanceReceiptActivity extends AppCompatActivity {
                     double tax_amt = paid - i;
                     TaxAmount = String.valueOf(tax_amt);
                     subtotal = String.valueOf(i);
-                    // Log.v(TAG, String.format("Max Discount  :: souble max discout= %s", maxdisc));
                     if (rate == paid) {
                         inputNextFollDate.getText().clear();
                         inputNextFollDate.setEnabled(false);
@@ -432,8 +421,6 @@ public class BalanceReceiptActivity extends AppCompatActivity {
                         awesomeValidation.clear();
                     } else {
                         inputNextFollDate.setEnabled(true);
-                       // inputNextFollDate.setError(getResources().getString(R.string.err_msg_next_foll_date));
-                        //awesomeValidation.addValidation(BalanceReceiptActivity.this, R.id.input_nextfollDate, RegexTemplate.NOT_EMPTY, R.string.err_msg_next_foll_date);
                     }
                     if (paid > rate) {
                         Toast.makeText(BalanceReceiptActivity.this, "Your paying more than your fees,focus chnga", Toast
@@ -444,7 +431,6 @@ public class BalanceReceiptActivity extends AppCompatActivity {
                         inputNextFollDate.setEnabled(false);
                         inputNextFollDate.setKeyListener(null);
                         awesomeValidation.clear();
-                        //inputNextFollDate.setError(null);
                     }
 //
                 }else{
@@ -460,13 +446,10 @@ public class BalanceReceiptActivity extends AppCompatActivity {
                                       int count) {
             }
 
-
-
             public void beforeTextChanged(CharSequence s, int start, int count,
                                           int after) {
 
             }
-
             public void afterTextChanged(Editable s) {
                 if(inputPaid.getText().length()>0) {
                     double rate=0;
@@ -565,9 +548,6 @@ public class BalanceReceiptActivity extends AppCompatActivity {
 
 
                 }
-                // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.black));
-                // Showing selected spinner item
-                //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -587,23 +567,15 @@ public class BalanceReceiptActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_save_enquiry) {
-            // sendEmail();
             submitForm();
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
     private void submitForm() {
-        //first validate the form then move ahead
-        //if this becomes true that means validation is successfull
-        //if(inputPassword.getText().toString().equals(inputCfmPassword.getText().toString())){
 
         if(!(inputBalance.getText().toString().equals("0.0"))){
-//            inputNextFollDate.setError(getResources().getString(R.string.err_msg_next_foll_date));
-           // Toast.makeText(this, "Please fill Payment type or Package type", Toast.LENGTH_LONG).show();
-            //awesomeValidation.addValidation(BalanceReceiptActivity.this, R.id.input_nextfollDate,RegexTemplate.NOT_EMPTY, R.string.err_msg_next_payment_date);
             if (awesomeValidation.validate()) {
-                // Log.v(TAG, String.format("Remaining balance= %s", inputBalance.getText().toString()));
                 double paid = Double.parseDouble(inputPaid.getText().toString());
                 if(invoiceRefId.equals(getResources().getString(R.string.hint_packagetype))
                         || paymentType.equals(getResources().getString(R.string.hint_pyment_mode))){
@@ -633,7 +605,6 @@ public class BalanceReceiptActivity extends AppCompatActivity {
             awesomeValidation.clear();
             inputNextFollDate.setError(null);
         if (awesomeValidation.validate()) {
-           // Log.v(TAG, String.format("Remaining balance= %s", inputBalance.getText().toString()));
             if(invoiceRefId.equals(getResources().getString(R.string.hint_packagetype))
                     || paymentType.equals(getResources().getString(R.string.hint_pyment_mode)) ){
                 Toast.makeText(this, "Please fill Payment type or Package type", Toast.LENGTH_LONG).show();
@@ -650,23 +621,7 @@ public class BalanceReceiptActivity extends AppCompatActivity {
         }
 
     }
-    private void showProgressDialog() {
-        Log.v(TAG, String.format("showProgressDialog"));
-        pd = new ProgressDialog(BalanceReceiptActivity.this);
-        pd.setMessage("loading");
-        pd.setCancelable(false);
-        pd.show();
-    }
 
-    /**
-     * Dismiss Progress Dialog.
-     */
-    private void dismissProgressDialog() {
-        Log.v(TAG, String.format("dismissProgressDialog"));
-        pd.cancel();
-
-
-    }
     //   ************** Check Contact number already exist or not **************
     public void  CheckContactClass() {
         BalanceReceiptActivity.CheckContactTrackClass ru = new BalanceReceiptActivity.CheckContactTrackClass();
@@ -682,7 +637,6 @@ public class BalanceReceiptActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-           // showProgressDialog();
             viewDialog.showDialog();
         }
 
@@ -690,17 +644,13 @@ public class BalanceReceiptActivity extends AppCompatActivity {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
             viewDialog.hideDialog();
-            //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
-            //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
             CheckContactDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-          //  Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EnquiryForDetails = new HashMap<String, String>();
 
             EnquiryForDetails.put("mobileno",inputContact.getText().toString() );
@@ -708,7 +658,6 @@ public class BalanceReceiptActivity extends AppCompatActivity {
             EnquiryForDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(BalanceReceiptActivity.this) );
             EnquiryForDetails.put("action", "check_mobile_already_exist_or_not");
             String domainurl= SharedPrefereneceUtil.getDomainUrl(BalanceReceiptActivity.this);
-            //EnquiryForloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(EnquiryForloyee.this));
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EnquiryForDetails);
             Log.v(TAG, String.format("doInBackground :: check_mobile_already_exist_or_not= %s", loginResult));
             return loginResult;
@@ -725,12 +674,10 @@ public class BalanceReceiptActivity extends AppCompatActivity {
 
             if (success.equalsIgnoreCase(getResources().getString(R.string.zero))) {
                 Toast.makeText(BalanceReceiptActivity.this,"Member is not registred. Please register Member first",Toast.LENGTH_SHORT).show();
-                //inputContact.getText().clear();
-                // showCustomDialog();
+
                 Intent intent=new Intent(BalanceReceiptActivity.this, AddMemberActivity.class);
                 intent.putExtra("contact",inputContact.getText().toString());
                 startActivity(intent);
-                //inputEmail, inputPhone,inputAdd,inputReq,inputFollowupdate;
             }
             else if (success.equalsIgnoreCase(getResources().getString(R.string.two)))
             {
@@ -739,7 +686,6 @@ public class BalanceReceiptActivity extends AppCompatActivity {
                 if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
                     for (int i = 0; i < jsonArrayResult.length(); i++) {
 
-                        Log.v(TAG, "JsonResponseOpeartion ::");
                         JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                         if (jsonObj != null) {
 
@@ -754,7 +700,6 @@ public class BalanceReceiptActivity extends AppCompatActivity {
                 } else if (jsonArrayResult.length() == 0) {
                     System.out.println("No records found");
                 }
-                // Toast.makeText(AddEnquiryActivity.this,"Please Enter New Mobile Number",Toast.LENGTH_SHORT).show();
             }else if(success.equalsIgnoreCase(getResources().getString(R.string.one))){
                 Toast.makeText(BalanceReceiptActivity.this,"member has no active course.Please add course first",Toast.LENGTH_SHORT).show();
                 Intent intent=new Intent(BalanceReceiptActivity.this, RenewActivity.class);
@@ -780,28 +725,23 @@ public class BalanceReceiptActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             InvoiceRefDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-          //  Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> InvoiceRefDetails = new HashMap<String, String>();
             InvoiceRefDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(BalanceReceiptActivity.this));
             InvoiceRefDetails.put("member_id", MemberID);
             InvoiceRefDetails.put("action", "show_balance_package_name_list");
             String domainurl= SharedPrefereneceUtil.getDomainUrl(BalanceReceiptActivity.this);
-            //InvoiceRefloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(InvoiceRefloyee.this));
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, InvoiceRefDetails);
             Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
@@ -815,7 +755,6 @@ public class BalanceReceiptActivity extends AppCompatActivity {
 
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
@@ -833,7 +772,7 @@ public class BalanceReceiptActivity extends AppCompatActivity {
                         if (jsonArrayCountry != null && jsonArrayCountry.length() > 0){
                             for (int i = 0; i < jsonArrayCountry.length(); i++) {
                                 invoiceRefIdlist = new Spinner_List();
-                                Log.v(TAG, "JsonResponseOpeartion ::");
+
                                 JSONObject jsonObj = jsonArrayCountry.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -841,10 +780,6 @@ public class BalanceReceiptActivity extends AppCompatActivity {
                                     String Invoice_ID     = jsonObj.getString("Invoice_ID");
                                     String Financial_Year     = jsonObj.getString("Financial_Year");
 
-//                               if(i==0){
-//                                   invoiceRefIdlist.setName(getResources().getString(R.string.promt_country));
-//                                   enqF.add(0,invoiceRefIdlist);
-//                               }
                                     String invoi_pack_name=Invoice_ID+","+Package_Name;
                                     invoiceRefIdlist.setName(invoi_pack_name);
                                     invoiceRefIdlist.setId(Invoice_ID);
@@ -858,8 +793,7 @@ public class BalanceReceiptActivity extends AppCompatActivity {
                                         public boolean isEnabled(int position){
                                             if(position == 0)
                                             {
-                                                // Disable the first item from Spinner
-                                                // First item will be use for hint
+
                                                 return false;
                                             }
                                             else
@@ -876,7 +810,6 @@ public class BalanceReceiptActivity extends AppCompatActivity {
                                                 // Set the hint text color gray
                                                 tv.setTextColor(Color.GRAY);
                                                 tv.setText(getResources().getString(R.string.hint_invoice_ref_id));
-                                                // tv.setTextColor(Color.GRAY);
                                             }
                                             else {
                                                 tv.setTextColor(Color.BLACK);
@@ -922,7 +855,6 @@ public class BalanceReceiptActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-           // showProgressDialog();
             viewDialog.showDialog();
         }
 
@@ -930,16 +862,13 @@ public class BalanceReceiptActivity extends AppCompatActivity {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-           // dismissProgressDialog();
             viewDialog.hideDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             BalanceDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> BalanceDetails = new HashMap<String, String>();
             BalanceDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(BalanceReceiptActivity.this));
             BalanceDetails.put("invoice_id",InvoiceRefID );
@@ -949,7 +878,6 @@ public class BalanceReceiptActivity extends AppCompatActivity {
             BalanceDetails.put("action","show_balance_details_by_invoice_id");
             String domainurl= SharedPrefereneceUtil.getDomainUrl(BalanceReceiptActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, BalanceDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
 
@@ -959,7 +887,6 @@ public class BalanceReceiptActivity extends AppCompatActivity {
     private void BalanceDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
@@ -971,16 +898,11 @@ public class BalanceReceiptActivity extends AppCompatActivity {
 
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
-                        int count=0;
                         ArrayList<FollowupList> item = new ArrayList<FollowupList>();
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
 
                             for (int i = 0; i < jsonArrayResult.length(); i++) {
 
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -993,8 +915,6 @@ public class BalanceReceiptActivity extends AppCompatActivity {
                                     inputRemBal.setText(Final_Balance);
 
 
-
-
                                 }
                             }
                         } else if (jsonArrayResult.length() == 0) {
@@ -1002,23 +922,11 @@ public class BalanceReceiptActivity extends AppCompatActivity {
                         }
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
-                    //nodata.setVisibility(View.VISIBLE);
 
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
-//                android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(BalanceReceiptActivity.this);
-//                builder.setMessage(R.string.server_exception);
-//                builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int id) {
-//                        dialog.dismiss();
-//                    }
-//                });
-//                android.app.AlertDialog dialog = builder.create();
-//                dialog.setCancelable(false);
-//                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-//                dialog.show();
             }
         }
     }
@@ -1038,25 +946,20 @@ public class BalanceReceiptActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             PaymentTypeDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> PaymentTypeDetails = new HashMap<String, String>();
             PaymentTypeDetails.put("action", "show_payment_type_list");
-            //PaymentTypeloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(PaymentTypeloyee.this));
             String domainurl= SharedPrefereneceUtil.getDomainUrl(BalanceReceiptActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, PaymentTypeDetails);
             Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
@@ -1071,7 +974,6 @@ public class BalanceReceiptActivity extends AppCompatActivity {
 
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
@@ -1089,17 +991,12 @@ public class BalanceReceiptActivity extends AppCompatActivity {
                         if (jsonArrayCountry != null && jsonArrayCountry.length() > 0){
                             for (int i = 0; i < jsonArrayCountry.length(); i++) {
                                 paymentTypeList = new Spinner_List();
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayCountry.getJSONObject(i);
                                 if (jsonObj != null) {
 
                                     String PaymentType     = jsonObj.getString("PaymentType");
 
                                     String id=jsonObj.getString("Auto_Id");
-//                               if(i==0){
-//                                   paymentTypeList.setName(getResources().getString(R.string.promt_country));
-//                                   enqF.add(0,paymentTypeList);
-//                               }
                                     paymentTypeList.setName(PaymentType);
                                     paymentTypeList.setId(id);
 
@@ -1128,7 +1025,6 @@ public class BalanceReceiptActivity extends AppCompatActivity {
                                                 // Set the hint text color gray
                                                 tv.setTextColor(Color.GRAY);
                                                 tv.setText(getResources().getString(R.string.prompt_payment_type));
-                                                // tv.setTextColor(Color.GRAY);
                                             }
                                             else {
                                                 tv.setTextColor(Color.BLACK);
@@ -1146,10 +1042,6 @@ public class BalanceReceiptActivity extends AppCompatActivity {
                             System.out.println("No records found");
                         }
                     }
-                }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
-
-                    //forumCount.setVisibility(View.INVISBLE);
-                    // queCount.setVisibility(View.INVISIBLE);
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");
@@ -1170,7 +1062,6 @@ public class BalanceReceiptActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-           // showProgressDialog();
             viewDialog.showDialog();
         }
 
@@ -1178,17 +1069,13 @@ public class BalanceReceiptActivity extends AppCompatActivity {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
             viewDialog.hideDialog();
-            //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
-            //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
             AddBalanceReceiptDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
 
 
             HashMap<String, String> AddBalanceReceiptDetails = new HashMap<String, String>();
@@ -1241,28 +1128,14 @@ public class BalanceReceiptActivity extends AppCompatActivity {
 
             if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
                 Toast.makeText(BalanceReceiptActivity.this,"Balance Paid succesfully",Toast.LENGTH_SHORT).show();
-                //inputName.getText().clear();
-                //inputContact.getText().clear();
                 EmailLoginClass();
                 SendEnquirySmsClass();
-                //if(!Email.equals("")){
-
-              //  }
-                // imageView.setImageResource(R.drawable.add_photo);
-
-                // showCustomDialog();
-
-                //inputEmail, inputPhone,inputAdd,inputReq,inputFollowupdate;
             }
             else if (success.equalsIgnoreCase(getResources().getString(R.string.zero)))
             {
                 Toast.makeText(BalanceReceiptActivity.this,"Your Balance is Already Paid",Toast.LENGTH_SHORT).show();
                 Intent intent=new Intent(BalanceReceiptActivity.this, BalanceReceiptActivity.class);
-//                Bundle bundle = new Bundle();
-//                bundle.putSerializable("filter_array_list", filterArrayList);
-//                intent.putExtra("BUNDLE",bundle);
                 startActivity(intent);
-                //inputContact.getText().clear();
             }
 
         } catch (JSONException e) {
@@ -1283,28 +1156,22 @@ public class BalanceReceiptActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            // dismissProgressDialog();
-            //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
-            //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
             EmailLoginDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EmailLoginDetails = new HashMap<String, String>();
             EmailLoginDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(BalanceReceiptActivity.this) );
             EmailLoginDetails.put("action", "show_email_login");
             String domainurl= SharedPrefereneceUtil.getDomainUrl(BalanceReceiptActivity.this);
-            //EnquiryForloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(EnquiryForloyee.this));
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EmailLoginDetails);
 
             Log.v(TAG, String.format("doInBackground :: show_email_login= %s", loginResult));
@@ -1321,10 +1188,6 @@ public class BalanceReceiptActivity extends AppCompatActivity {
             String success = object.getString(getResources().getString(R.string.success));
 
             if (success.equalsIgnoreCase(getResources().getString(R.string.zero))) {
-
-                // showCustomDialog();
-
-                //inputEmail, inputPhone,inputAdd,inputReq,inputFollowupdate;
             }
             else if (success.equalsIgnoreCase(getResources().getString(R.string.two)))
             {
@@ -1375,7 +1238,6 @@ public class BalanceReceiptActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
             viewDialog.showDialog();
         }
 
@@ -1383,16 +1245,13 @@ public class BalanceReceiptActivity extends AppCompatActivity {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: show_receipt_data = %s", response));
-            //dismissProgressDialog();
             viewDialog.hideDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             ReceiptDataDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> ReceiptDataDetails = new HashMap<String, String>();
             ReceiptDataDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(BalanceReceiptActivity.this));
             ReceiptDataDetails.put("invoice_id", InvoiceRefID);
@@ -1414,7 +1273,6 @@ public class BalanceReceiptActivity extends AppCompatActivity {
     private void ReceiptDataDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
@@ -1493,7 +1351,6 @@ public class BalanceReceiptActivity extends AppCompatActivity {
                                             JSONObject jsonObj1 = jsonArrayPayTrasa.getJSONObject(loopCount);
                                             if (jsonObj1 != null) {
                                                 String Receipt_Id = jsonObj1.getString("Receipt_Id");
-                                                // String start_date=Utility.formatDateDB(Start_Date);
                                                 String ReceiptDate = jsonObj1.getString("ReceiptDate");
                                                 String receipt_date= Utility.formatDateDB(ReceiptDate);
                                                 String Tax = jsonObj1.getString("Tax");
@@ -1501,7 +1358,6 @@ public class BalanceReceiptActivity extends AppCompatActivity {
                                                     Tax="0.00";
                                                 }
                                                 String TaxAmount = jsonObj1.getString("TaxAmount");
-                                               // String Taxamount = TaxAmount;
                                                 if(TaxAmount.equals(".00")){
                                                     TaxAmount="0.00";
                                                 }
@@ -1541,13 +1397,10 @@ public class BalanceReceiptActivity extends AppCompatActivity {
 
                                         PdfWriter docWriter = PdfWriter.getInstance(document, new FileOutputStream(pdfFile));
                                         document.open();
-//
 
                                         PdfContentByte cb = docWriter.getDirectContent();
                                         //initialize fonts for text printing
                                         initializeFonts();
-
-                                        //the company logo is stored in the assets which is read only
 
                                         //Add Image from some URL
                                         Thread thread = new Thread(new Runnable() {
@@ -1568,20 +1421,14 @@ public class BalanceReceiptActivity extends AppCompatActivity {
                                         });
 
                                         thread.start();
-//
-                                        // creating a sample invoice with some customer data
-                                        //createHeadings(cb,50,780,Company_Name);
+
                                         String delimiter = " ";
                                         int partitionSize = 6;
                                         String add="";
-                                        int x=50;
-                                        int y=765;
+
                                         for (Iterable<String> iterable : Iterables.partition(Splitter.on(delimiter).split(Address), partitionSize)) {
                                             System.out.println(Joiner.on(delimiter).join(iterable));
                                             add+=Joiner.on(delimiter).join(iterable)+"<br/>";
-
-                                            //createText(cb,x,y,Joiner.on(delimiter).join(iterable));
-                                            y= y-10;
                                         }
                                         String csstext=" .text-right { text-align: right;} .p{border: 1px solid black;font-family: Helvetica,Arial,sans-serif;font-size: 12px;}" +
                                                 "        .addr {" +
@@ -1845,7 +1692,7 @@ public class BalanceReceiptActivity extends AppCompatActivity {
                                         InputStream cssggh = new ByteArrayInputStream(csstext.getBytes());
                                         XMLWorkerHelper.getInstance().parseXHtml(docWriter, document, is, cssggh, Charset.forName("UTF-8"));
                                         document.close();
-                                        // document.close();
+
                                     }
                                     catch(Exception e){
                                         e.printStackTrace();
@@ -1924,33 +1771,12 @@ public class BalanceReceiptActivity extends AppCompatActivity {
                             System.out.println("No records found");
                         }
                     }
-                }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
-                    //nodata.setVisibility(View.VISIBLE);
-                    //.setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
             }
         }
-    }
-    private void createHeadings(PdfContentByte cb, float x, float y, String text){
-
-        cb.beginText();
-        cb.setFontAndSize(bfBold, 11);
-        cb.setTextMatrix(x,y);
-        cb.showText(text.trim());
-        cb.endText();
-
-    }
-    private void createText(PdfContentByte cb, float x, float y, String text){
-
-        cb.beginText();
-        cb.setFontAndSize(bfnormal, 8);
-        cb.setTextMatrix(x,y);
-        cb.showText(text.trim());
-        cb.endText();
-
     }
     private void initializeFonts(){
 
@@ -1980,7 +1806,6 @@ public class BalanceReceiptActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-           // showProgressDialog();
             viewDialog.showDialog();
         }
 
@@ -1988,7 +1813,6 @@ public class BalanceReceiptActivity extends AppCompatActivity {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
             viewDialog.hideDialog();
             SendEnquirySmsDetails(response);
 
@@ -1996,14 +1820,12 @@ public class BalanceReceiptActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-          //  Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EnquiryForDetails = new HashMap<String, String>();
 
             EnquiryForDetails.put("type","balancepaid" );
             EnquiryForDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(BalanceReceiptActivity.this) );
             EnquiryForDetails.put("action", "sms_for_add_enquiry");
             String domainurl= SharedPrefereneceUtil.getDomainUrl(BalanceReceiptActivity.this);
-            //EnquiryForloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(EnquiryForloyee.this));
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EnquiryForDetails);
             Log.v(TAG, String.format("doInBackground :: sms_for_add_enquiry= %s", loginResult));
             return loginResult;
@@ -2021,9 +1843,6 @@ public class BalanceReceiptActivity extends AppCompatActivity {
             if (success.equalsIgnoreCase(getResources().getString(R.string.zero))) {
                 Intent intent = new Intent(BalanceReceiptActivity.this, BalanceReceiptDetailsActivity.class);
                 startActivity(intent);
-                // showCustomDialog();
-
-                //inputEmail, inputPhone,inputAdd,inputReq,inputFollowupdate;
             }
             else if (success.equalsIgnoreCase(getResources().getString(R.string.two)))
             {
@@ -2035,7 +1854,6 @@ public class BalanceReceiptActivity extends AppCompatActivity {
 
                         for (int i = 0; i < jsonArrayResult.length(); i++) {
 
-                            Log.v(TAG, "JsonResponseOpeartion ::");
                             JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                             if (jsonObj != null) {
 
@@ -2146,28 +1964,23 @@ public class BalanceReceiptActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            // showProgressDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             SearchDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> SearchDetails = new HashMap<String, String>();
 
             SearchDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(BalanceReceiptActivity.this) );
             SearchDetails.put("action", "show_all_member_list");
             String domainurl= SharedPrefereneceUtil.getDomainUrl(BalanceReceiptActivity.this);
-            //EmployeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(Employee.this));
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, SearchDetails);
             Log.v(TAG, String.format("doInBackground :: show_all_member_list= %s", loginResult));
             return loginResult;
@@ -2179,12 +1992,8 @@ public class BalanceReceiptActivity extends AppCompatActivity {
 
     private void SearchDetails(String jsonResponse) {
 
-
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
-
-
             try {
                 Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
@@ -2194,7 +2003,6 @@ public class BalanceReceiptActivity extends AppCompatActivity {
                     if (jsonArrayResult != null && jsonArrayResult.length() > 0){
                         for (int i = 0; i < jsonArrayResult.length(); i++) {
                             searchModel = new Search_list();
-                            Log.v(TAG, "JsonResponseOpeartion ::");
                             JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                             if (jsonObj != null) {
 
@@ -2203,10 +2011,6 @@ public class BalanceReceiptActivity extends AppCompatActivity {
                                 String MemberID     = jsonObj.getString("MemberID");
                                 String Email = jsonObj.getString("Email");
                                 String Gender = jsonObj.getString("Gender");
-
-
-                                //  String email = jsonObj.getString("email");
-                                // String phn_no = jsonObj.getString("mobile");
 
                                 String namec=Name+"-"+Contact;
                                 searchModel.setCustName(Name);
@@ -2220,19 +2024,12 @@ public class BalanceReceiptActivity extends AppCompatActivity {
                                 searchnameadapter = new SearchNameAdapter(BalanceReceiptActivity.this, searchArrayList);
 
                                 inputName.setAdapter(searchnameadapter);
-                                // inputName.setDropDownBackgroundResource(R.drawable.search_background);
                                 inputName.setThreshold(1);
 
                                 searchcontactadapter = new SearchContactAdapter(BalanceReceiptActivity.this, searchArrayList);
 
                                 inputContact.setAdapter(searchcontactadapter);
-                                // textContact.setDropDownBackgroundResource(R.drawable.search_background);
                                 inputContact.setThreshold(1);
-
-                                //searchnameadapter = new SearchAdapter(MainNavigationActivity.this, searchArrayList);
-                                //text.setAdapter(searchnameadapter);
-                                // text.setDropDownBackgroundResource(R.drawable.layoutborder);
-                                // text.setThreshold(1);
 
 
                             }

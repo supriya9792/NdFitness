@@ -222,8 +222,6 @@ public class RenewFollowupActivity extends AppCompatActivity implements SwipeRef
 
             }
         });
-//        adapter = new EnquiryAdapter( new ArrayList<EnquiryList>(),RenewFollowupActivity.this);
-//        recyclerView.setAdapter(adapter);
 
         if (isOnline(RenewFollowupActivity.this)) {
             followupclass();// check login details are valid or not from server
@@ -247,8 +245,6 @@ public class RenewFollowupActivity extends AppCompatActivity implements SwipeRef
     }
     public void CampareTwoDates(){
         //******************campare two dates****************
-//        String date = "03/26/2012 11:00:00";
-//        String dateafter = "03/26/2012 11:59:00";
         SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "dd-MM-yyyy");
         Date convertedDate = new Date();
@@ -270,8 +266,6 @@ public class RenewFollowupActivity extends AppCompatActivity implements SwipeRef
     }
     public void CampareFronTwoDates(){
         //******************campare two dates****************
-//        String date = "03/26/2012 11:00:00";
-//        String dateafter = "03/26/2012 11:59:00";
         SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "dd-MM-yyyy");
         Date convertedDate = new Date();
@@ -311,26 +305,9 @@ public class RenewFollowupActivity extends AppCompatActivity implements SwipeRef
         itemCount = 0;
         currentPage = PAGE_START;
         isLastPage = false;
-        //adapter.clear();
-        //preparedListItem();
 
     }
-    private void showProgressDialog() {
-        Log.v(TAG, String.format("showProgressDialog"));
-        pd = new ProgressDialog(RenewFollowupActivity.this);
-        pd.setMessage("loading");
-        pd.setCancelable(false);
-        pd.show();
-    }
 
-    /**
-     * Dismiss Progress Dialog.
-     */
-    private void dismissProgressDialog() {
-        Log.v(TAG, String.format("dismissProgressDialog"));
-
-        pd.cancel();
-    }
     // Asycc class for loading data for database
     private void followupclass() {
         RenewFollowupActivity.FollowupTrackclass ru = new RenewFollowupActivity.FollowupTrackclass();
@@ -348,7 +325,6 @@ class FollowupTrackclass extends AsyncTask<String, Void, String> {
     protected void onPreExecute() {
         super.onPreExecute();
         Log.v(TAG, "onPreExecute");
-       // showProgressDialog();
         viewDialog.showDialog();
     }
 
@@ -356,23 +332,19 @@ class FollowupTrackclass extends AsyncTask<String, Void, String> {
     protected void onPostExecute(String response) {
         super.onPostExecute(response);
         Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-       // dismissProgressDialog();
         viewDialog.hideDialog();
-        //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
         FollowupDetails(response);
 
     }
 
     @Override
     protected String doInBackground(String... params) {
-        //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
         HashMap<String, String> FollowupDetails = new HashMap<String, String>();
         FollowupDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(RenewFollowupActivity.this));
         Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(RenewFollowupActivity.this)));
         FollowupDetails.put("action","show_renew_followup_list");
         String domainurl=SharedPrefereneceUtil.getDomainUrl(RenewFollowupActivity.this);
         String loginResult = ruc.sendPostRequest(domainurl+ ServiceUrls.LOGIN_URL, FollowupDetails);
-        //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
         return loginResult;
     }
 
@@ -382,7 +354,6 @@ class FollowupTrackclass extends AsyncTask<String, Void, String> {
     private void FollowupDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
@@ -394,25 +365,15 @@ class FollowupTrackclass extends AsyncTask<String, Void, String> {
                     progressBar.setVisibility(View.GONE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
                         ttl_followups.setText(String.valueOf(jsonArrayResult.length()));
-                        int count=0;
                         ArrayList<FollowupList> item = new ArrayList<FollowupList>();
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
-                            if(jsonArrayResult.length()<100){
-                                count=jsonArrayResult.length();
-                            }else{
-                                count=100;
-                            }
-                            for (int i = 0; i < count; i++) {
+
+                            for (int i = 0; i < jsonArrayResult.length(); i++) {
 
 
                                 subList = new FollowupList();
-                                Log.d(TAG, "i: " + i);
 
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -427,11 +388,7 @@ class FollowupTrackclass extends AsyncTask<String, Void, String> {
                                     String NextFollowup_Date = jsonObj.getString("NextFollowupDate");
                                     String Auto_Id = jsonObj.getString("Member_ID");
                                     String Image = jsonObj.getString("Image");
-                                    //  for (int j = 0; j < 5; j++) {
-                                    Log.d(TAG, "next followup date: " + NextFollowup_Date);
-                                    Log.d(TAG, "Followup date: " + Followup_Date);
 
-                                    //  for (int j = 0; j < 5; j++) {
 
                                     subList.setName(name);
                                     subList.setRating(Rating);
@@ -443,11 +400,9 @@ class FollowupTrackclass extends AsyncTask<String, Void, String> {
                                     subList.setComment(Comment);
                                     subList.setFollowupType(FollowupType);
                                     String next_foll_date= Utility.formatDate(NextFollowup_Date);
-                                    Log.d(TAG, "converted next followup date: " + next_foll_date);
                                     subList.setNextFollowupDate(next_foll_date);
                                     String foll_date= Utility.formatDate(Followup_Date);
 
-                                    Log.d(TAG, "converted Followup date: " + foll_date);
                                     subList.setFollowupDate(foll_date);
                                     subList.setID(Auto_Id);
                                     subList.setImage(Image);
@@ -498,7 +453,6 @@ class FollowupTrackclass extends AsyncTask<String, Void, String> {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            // showProgressDialog();
             viewDialog.showDialog();
 
         }
@@ -507,17 +461,13 @@ class FollowupTrackclass extends AsyncTask<String, Void, String> {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: search_active_member_filter = %s", response));
-            //   dismissProgressDialog();
             viewDialog.hideDialog();
-
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             SearchActiveMemberDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String>  SearchActiveMemberDetails = new HashMap<String, String>();
             SearchActiveMemberDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(RenewFollowupActivity.this));
             Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(RenewFollowupActivity.this)));
@@ -528,7 +478,6 @@ class FollowupTrackclass extends AsyncTask<String, Void, String> {
             SearchActiveMemberDetails.put("action","search_renew_followup_filter");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(RenewFollowupActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL,  SearchActiveMemberDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
 
@@ -538,7 +487,6 @@ class FollowupTrackclass extends AsyncTask<String, Void, String> {
     private void  SearchActiveMemberDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: search_active_member_filter = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
@@ -552,9 +500,6 @@ class FollowupTrackclass extends AsyncTask<String, Void, String> {
                     progressBar.setVisibility(View.GONE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
                         ttl_followups.setText(String.valueOf(jsonArrayResult.length()));
                         ArrayList<FollowupList> item = new ArrayList<FollowupList>();
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
@@ -563,9 +508,7 @@ class FollowupTrackclass extends AsyncTask<String, Void, String> {
 
 
                                 subList = new FollowupList();
-                                Log.d(TAG, "i: " + i);
 
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -580,11 +523,6 @@ class FollowupTrackclass extends AsyncTask<String, Void, String> {
                                     String NextFollowup_Date = jsonObj.getString("NextFollowupDate");
                                     String Auto_Id = jsonObj.getString("Member_ID");
                                     String Image = jsonObj.getString("Image");
-                                    //  for (int j = 0; j < 5; j++) {
-                                    Log.d(TAG, "next followup date: " + NextFollowup_Date);
-                                    Log.d(TAG, "Followup date: " + Followup_Date);
-
-                                    //  for (int j = 0; j < 5; j++) {
 
                                     subList.setName(name);
                                     subList.setRating(Rating);
@@ -596,11 +534,9 @@ class FollowupTrackclass extends AsyncTask<String, Void, String> {
                                     subList.setComment(Comment);
                                     subList.setFollowupType(FollowupType);
                                     String next_foll_date= Utility.formatDate(NextFollowup_Date);
-                                    Log.d(TAG, "converted next followup date: " + next_foll_date);
                                     subList.setNextFollowupDate(next_foll_date);
                                     String foll_date= Utility.formatDate(Followup_Date);
 
-                                    Log.d(TAG, "converted Followup date: " + foll_date);
                                     subList.setFollowupDate(foll_date);
                                     subList.setID(Auto_Id);
                                     subList.setImage(Image);

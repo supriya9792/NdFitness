@@ -215,8 +215,6 @@ public void onTextChanged(CharSequence arg0, int arg1, int arg2,
         int arg3) {
         // TODO Auto-generated method stub
         if(inputsearch.getText().length()==0) {
-        //do your work here
-        // Toast.makeText(AddEnquiryActivity.this ,"Text vhanged count  is 10 then: " , Toast.LENGTH_LONG).show();
         balanceReceiptclass();
         }
 

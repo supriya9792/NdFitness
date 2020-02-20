@@ -240,8 +240,6 @@ public class DoneFollowupActivity extends AppCompatActivity implements SwipeRefr
 
             }
         });
-//        adapter = new EnquiryAdapter( new ArrayList<EnquiryList>(),DoneFollowupActivity.this);
-//        recyclerView.setAdapter(adapter);
 
         if (isOnline(DoneFollowupActivity.this)) {
             followupclass();// check login details are valid or not from server
@@ -261,39 +259,10 @@ public class DoneFollowupActivity extends AppCompatActivity implements SwipeRefr
             dialog.show();
 
         }
-        /**
-         * add scroll listener while user reach in bottom load more will call
-         */
-//        recyclerView.addOnScrollListener(new PaginationScrollListener(layoutManager) {
-//            @Override
-//            protected void loadMoreItems() {
-//                isLoading = true;
-//                currentPage++;
-//                Log.d(TAG, "prepare called current item: " + currentPage+"Total page"+totalPage);
-//                if(currentPage<=totalPage){
-//                    currentPage = PAGE_START;
-//                    isLastPage = false;
-//                    preparedListItem();
-//                }
-//
-//
-//            }
-//
-//            @Override
-//            public boolean isLastPage() {
-//                return isLastPage;
-//            }
-//
-//            @Override
-//            public boolean isLoading() {
-//                return isLoading;
-//            }
-//        });
+
     }
     public void CampareTwoDates(){
         //******************campare two dates****************
-//        String date = "03/26/2012 11:00:00";
-//        String dateafter = "03/26/2012 11:59:00";
         SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "dd-MM-yyyy");
         Date convertedDate = new Date();
@@ -315,8 +284,6 @@ public class DoneFollowupActivity extends AppCompatActivity implements SwipeRefr
     }
     public void CampareFronTwoDates(){
         //******************campare two dates****************
-//        String date = "03/26/2012 11:00:00";
-//        String dateafter = "03/26/2012 11:59:00";
         SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "dd-MM-yyyy");
         Date convertedDate = new Date();
@@ -325,7 +292,6 @@ public class DoneFollowupActivity extends AppCompatActivity implements SwipeRefr
             convertedDate = dateFormat.parse(fromdate.getText().toString());
             convertedDate2 = dateFormat.parse(todate.getText().toString());
             if (convertedDate2.before(convertedDate) || convertedDate2.equals(convertedDate)) {
-                //.setText("true");
             } else {
                 String firstday= Utility.getCurrentDate();
                 fromdate.setText(firstday);
@@ -364,25 +330,8 @@ public class DoneFollowupActivity extends AppCompatActivity implements SwipeRefr
         currentPage = PAGE_START;
         isLastPage = false;
         swipeRefresh.setRefreshing(false);
-        //adapter.clear();
-        //preparedListItem();
-    }
-    private void showProgressDialog() {
-        Log.v(TAG, String.format("showProgressDialog"));
-        pd = new ProgressDialog(DoneFollowupActivity.this);
-        pd.setMessage("loading");
-        pd.setCancelable(false);
-        pd.show();
     }
 
-    /**
-     * Dismiss Progress Dialog.
-     */
-    private void dismissProgressDialog() {
-        Log.v(TAG, String.format("dismissProgressDialog"));
-
-        pd.cancel();
-    }
     // Asycc class for loading data for database
     private void followupclass() {
         DoneFollowupActivity.FollowupTrackclass ru = new DoneFollowupActivity.FollowupTrackclass();
@@ -400,7 +349,6 @@ public class DoneFollowupActivity extends AppCompatActivity implements SwipeRefr
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-           // showProgressDialog();
             viewDialog.showDialog();
 
         }
@@ -409,17 +357,14 @@ public class DoneFollowupActivity extends AppCompatActivity implements SwipeRefr
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-           // dismissProgressDialog();
             viewDialog.hideDialog();
 
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             FollowupDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> FollowupDetails = new HashMap<String, String>();
             FollowupDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(DoneFollowupActivity.this));
             FollowupDetails.put("offset", String.valueOf(offset));
@@ -428,7 +373,6 @@ public class DoneFollowupActivity extends AppCompatActivity implements SwipeRefr
             FollowupDetails.put("action","show_done_followup");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(DoneFollowupActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, FollowupDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
 
@@ -438,7 +382,6 @@ public class DoneFollowupActivity extends AppCompatActivity implements SwipeRefr
     private void FollowupDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
@@ -452,25 +395,17 @@ public class DoneFollowupActivity extends AppCompatActivity implements SwipeRefr
                     progressBar.setVisibility(View.GONE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
+
                         ttl_followups.setText(String.valueOf(jsonArrayResult.length()));
                         int count=0;
                         ArrayList<FollowupList> item = new ArrayList<FollowupList>();
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
-//                            if(jsonArrayResult.length()<100){
-//                                count=jsonArrayResult.length();
-//                            }else{
-//                                count=100;
-//                            }
+
                             for (int i = 0; i < jsonArrayResult.length(); i++) {
 
 
                                 subList = new FollowupList();
-                                Log.d(TAG, "i: " + i);
 
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -485,11 +420,7 @@ public class DoneFollowupActivity extends AppCompatActivity implements SwipeRefr
                                     String Auto_Id = jsonObj.getString("Member_ID");
                                     String Followup_Date = jsonObj.getString("FollowupDate");
                                     String Image = jsonObj.getString("Image");
-                                    //  for (int j = 0; j < 5; j++) {
-                                    Log.d(TAG, "next followup date: " + NextFollowup_Date);
-                                    Log.d(TAG, "Followup date: " + Followup_Date);
 
-                                    //  for (int j = 0; j < 5; j++) {
 
                                     subList.setName(name);
                                     subList.setRating(Rating);
@@ -500,14 +431,11 @@ public class DoneFollowupActivity extends AppCompatActivity implements SwipeRefr
                                     subList.setExecutiveName(ExecutiveName);
                                     subList.setComment(Comment);
                                     subList.setFollowupType(FollowupType);
-                                    Log.d(TAG, "name: " + name);
-                                    Log.d(TAG, "Image: " + Image);
+
                                     String next_foll_date= Utility.formatDate(NextFollowup_Date);
-                                    Log.d(TAG, "converted next followup date: " + next_foll_date);
                                     subList.setNextFollowupDate(next_foll_date);
                                     String foll_date= Utility.formatDate(Followup_Date);
 
-                                    Log.d(TAG, "converted Followup date: " + foll_date);
                                     subList.setFollowupDate(foll_date);
                                     subList.setID(Auto_Id);
                                     subList.setImage(Image);
@@ -555,15 +483,12 @@ public class DoneFollowupActivity extends AppCompatActivity implements SwipeRefr
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            // dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             FollowupOffsetDetails(response);
 
         }
@@ -578,7 +503,6 @@ public class DoneFollowupActivity extends AppCompatActivity implements SwipeRefr
             FollowupOffsetDetails.put("action","show_done_followup");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(DoneFollowupActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, FollowupOffsetDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
 
@@ -588,7 +512,6 @@ public class DoneFollowupActivity extends AppCompatActivity implements SwipeRefr
     private void FollowupOffsetDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
@@ -603,18 +526,12 @@ public class DoneFollowupActivity extends AppCompatActivity implements SwipeRefr
                     progressBar.setVisibility(View.GONE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
                         ArrayList<FollowupList> subListArrayList = new ArrayList<FollowupList>();
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
                             for (int i = 0; i < jsonArrayResult.length(); i++) {
 
-
                                 subList = new FollowupList();
-                                Log.d(TAG, "i: " + i);
-                                // Log.d(TAG, "run: " + itemCount);
-                                Log.v(TAG, "JsonResponseOpeartion ::");
+
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -629,11 +546,6 @@ public class DoneFollowupActivity extends AppCompatActivity implements SwipeRefr
                                     String Auto_Id = jsonObj.getString("Member_ID");
                                     String Followup_Date = jsonObj.getString("FollowupDate");
                                     String Image = jsonObj.getString("Image");
-                                    //  for (int j = 0; j < 5; j++) {
-                                    Log.d(TAG, "next followup date: " + NextFollowup_Date);
-                                    Log.d(TAG, "Followup date: " + Followup_Date);
-
-                                    //  for (int j = 0; j < 5; j++) {
 
                                     subList.setName(name);
                                     subList.setRating(Rating);
@@ -644,15 +556,11 @@ public class DoneFollowupActivity extends AppCompatActivity implements SwipeRefr
                                     subList.setComment(Comment);
                                     subList.setFollowupType(FollowupType);
                                     String next_foll_date= Utility.formatDate(NextFollowup_Date);
-                                    Log.d(TAG, "converted next followup date: " + next_foll_date);
                                     subList.setNextFollowupDate(next_foll_date);
                                     String foll_date= Utility.formatDate(Followup_Date);
-
-                                    Log.d(TAG, "converted Followup date: " + foll_date);
                                     subList.setFollowupDate(foll_date);
                                     subList.setID(Auto_Id);
                                     subList.setImage(Image);
-                                    //Toast.makeText(DoneFollowupActivity.this, "followup date: "+next_foll_date, Toast.LENGTH_SHORT).show();
                                     subListArrayList.add(subList);
 
                                 }
@@ -674,16 +582,12 @@ public class DoneFollowupActivity extends AppCompatActivity implements SwipeRefr
                     progressBar.setVisibility(View.GONE);
                     if (currentPage != PAGE_START)
                     adapter.removeblank();
-                    //adapter.addAll(subListArrayList);
                     swipeRefresh.setRefreshing(false);
                     isLoading = false;
-                    //recyclerView.setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
-//                recyclerView.setVisibility(View.GONE);
-//                nodata.setVisibility(View.VISIBLE);
             }
         }
     }
@@ -700,7 +604,6 @@ public class DoneFollowupActivity extends AppCompatActivity implements SwipeRefr
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-          //  showProgressDialog();
             viewDialog.showDialog();
 
         }
@@ -709,16 +612,13 @@ public class DoneFollowupActivity extends AppCompatActivity implements SwipeRefr
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-          //  dismissProgressDialog();
             viewDialog.hideDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             FollowupSearchDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> FollowupSearchDetails = new HashMap<String, String>();
             FollowupSearchDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(DoneFollowupActivity.this));
             FollowupSearchDetails.put("text", inputsearch.getText().toString());
@@ -727,7 +627,6 @@ public class DoneFollowupActivity extends AppCompatActivity implements SwipeRefr
             FollowupSearchDetails.put("action","show_search_followup");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(DoneFollowupActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, FollowupSearchDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
 
@@ -737,7 +636,6 @@ public class DoneFollowupActivity extends AppCompatActivity implements SwipeRefr
     private void FollowupSearchDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
@@ -750,9 +648,7 @@ public class DoneFollowupActivity extends AppCompatActivity implements SwipeRefr
                     swipeRefresh.setVisibility(View.VISIBLE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
+
                         ttl_followups.setText(String.valueOf(jsonArrayResult.length()));
                         ArrayList<FollowupList> subListArrayList = new ArrayList<FollowupList>();
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
@@ -760,9 +656,7 @@ public class DoneFollowupActivity extends AppCompatActivity implements SwipeRefr
 
 
                                 subList = new FollowupList();
-                                Log.d(TAG, "i: " + i);
-                                // Log.d(TAG, "run: " + itemCount);
-                                Log.v(TAG, "JsonResponseOpeartion ::");
+
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -777,11 +671,6 @@ public class DoneFollowupActivity extends AppCompatActivity implements SwipeRefr
                                     String Auto_Id = jsonObj.getString("Member_ID");
                                     String Followup_Date = jsonObj.getString("FollowupDate");
                                     String Image = jsonObj.getString("Image");
-                                    //  for (int j = 0; j < 5; j++) {
-                                    Log.d(TAG, "next followup date: " + NextFollowup_Date);
-                                    Log.d(TAG, "Followup date: " + Followup_Date);
-
-                                    //  for (int j = 0; j < 5; j++) {
 
                                     subList.setName(name);
                                     subList.setRating(Rating);
@@ -793,11 +682,9 @@ public class DoneFollowupActivity extends AppCompatActivity implements SwipeRefr
                                     subList.setComment(Comment);
                                     subList.setFollowupType(FollowupType);
                                     String next_foll_date= Utility.formatDate(NextFollowup_Date);
-                                    Log.d(TAG, "converted next followup date: " + next_foll_date);
                                     subList.setNextFollowupDate(next_foll_date);
                                     String foll_date= Utility.formatDate(Followup_Date);
                                     subList.setImage(Image);
-                                    Log.d(TAG, "converted Followup date: " + foll_date);
                                     subList.setFollowupDate(foll_date);
                                     subList.setID(Auto_Id);
 
@@ -807,24 +694,20 @@ public class DoneFollowupActivity extends AppCompatActivity implements SwipeRefr
                                 }
                             }
 
-                        } else if (jsonArrayResult.length() == 0) {
-                            System.out.println("No records found");
                         }
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
-                    // nodata.setVisibility(View.VISIBLE);
+
                     nodata.setVisibility(View.VISIBLE);
                     swipeRefresh.setVisibility(View.GONE);
                     ttl_followups.setText("0");
                     progressBar.setVisibility(View.GONE);
 
-                    //recyclerView.setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
                 swipeRefresh.setVisibility(View.GONE);
-                //frame.setVisibility(View.VISIBLE);
             }
         }
     }
@@ -843,7 +726,6 @@ public class DoneFollowupActivity extends AppCompatActivity implements SwipeRefr
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            // showProgressDialog();
             viewDialog.showDialog();
 
         }
@@ -852,17 +734,14 @@ public class DoneFollowupActivity extends AppCompatActivity implements SwipeRefr
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: search_active_member_filter = %s", response));
-            //   dismissProgressDialog();
             viewDialog.hideDialog();
 
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             SearchActiveMemberDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String>  SearchActiveMemberDetails = new HashMap<String, String>();
             SearchActiveMemberDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(DoneFollowupActivity.this));
             Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(DoneFollowupActivity.this)));
@@ -873,7 +752,6 @@ public class DoneFollowupActivity extends AppCompatActivity implements SwipeRefr
             SearchActiveMemberDetails.put("action","search_done_followup_filter");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(DoneFollowupActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL,  SearchActiveMemberDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
 
@@ -883,7 +761,6 @@ public class DoneFollowupActivity extends AppCompatActivity implements SwipeRefr
     private void  SearchActiveMemberDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: search_active_member_filter = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
@@ -897,9 +774,6 @@ public class DoneFollowupActivity extends AppCompatActivity implements SwipeRefr
                     progressBar.setVisibility(View.GONE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
                         ttl_followups.setText(String.valueOf(jsonArrayResult.length()));
                         ArrayList<FollowupList> item = new ArrayList<FollowupList>();
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
@@ -908,9 +782,7 @@ public class DoneFollowupActivity extends AppCompatActivity implements SwipeRefr
 
 
                                 subList = new FollowupList();
-                                Log.d(TAG, "i: " + i);
 
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -925,11 +797,7 @@ public class DoneFollowupActivity extends AppCompatActivity implements SwipeRefr
                                     String Auto_Id = jsonObj.getString("Member_ID");
                                     String Followup_Date = jsonObj.getString("FollowupDate");
                                     String Image = jsonObj.getString("Image");
-                                    //  for (int j = 0; j < 5; j++) {
-                                    Log.d(TAG, "next followup date: " + NextFollowup_Date);
-                                    Log.d(TAG, "Followup date: " + Followup_Date);
 
-                                    //  for (int j = 0; j < 5; j++) {
 
                                     subList.setName(name);
                                     subList.setRating(Rating);
@@ -939,13 +807,12 @@ public class DoneFollowupActivity extends AppCompatActivity implements SwipeRefr
                                     subList.setExecutiveName(ExecutiveName);
                                     subList.setComment(Comment);
                                     subList.setFollowupType(FollowupType);
-                                    Log.d(TAG, "FollowupType: " + FollowupType);
+
                                     String next_foll_date= Utility.formatDate(NextFollowup_Date);
-                                    Log.d(TAG, "converted next followup date: " + next_foll_date);
+
                                     subList.setNextFollowupDate(next_foll_date);
                                     String foll_date= Utility.formatDate(Followup_Date);
 
-                                    Log.d(TAG, "converted Followup date: " + foll_date);
                                     subList.setFollowupDate(foll_date);
                                     subList.setID(Auto_Id);
                                     subList.setImage(Image);
@@ -954,8 +821,6 @@ public class DoneFollowupActivity extends AppCompatActivity implements SwipeRefr
                                     recyclerView.setAdapter(adapter);
                                 }
                             }
-                        } else if (jsonArrayResult.length() == 0) {
-                            System.out.println("No records found");
                         }
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){

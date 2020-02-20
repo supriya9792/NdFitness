@@ -75,15 +75,9 @@ public class OtherFollowupActivity extends AppCompatActivity implements SwipeRef
     private LinearLayout lyt_no_connection;
     public static String TAG = OtherFollowupActivity.class.getName();
     private ProgressDialog pd;
-//    //paginnation parameters
-//    public static final int PAGE_START = 1;
-//    private int currentPage = PAGE_START;
-//    private boolean isLastPage = false;
-//    private int totalPage = 2;
+
     private boolean isLoading = false;
-//    int itemCount = 0;
-//    int offset = 0;
-    //search
+
     private EditText inputsearch;
     //Loading gif
     ViewDialog viewDialog;
@@ -239,22 +233,6 @@ public class OtherFollowupActivity extends AppCompatActivity implements SwipeRef
     public void onRefresh() {
 
     }
-    private void showProgressDialog() {
-        Log.v(TAG, String.format("showProgressDialog"));
-        pd = new ProgressDialog(OtherFollowupActivity.this);
-        pd.setMessage("loading");
-        pd.setCancelable(false);
-        pd.show();
-    }
-
-    /**
-     * Dismiss Progress Dialog.
-     */
-    private void dismissProgressDialog() {
-        Log.v(TAG, String.format("dismissProgressDialog"));
-
-        pd.cancel();
-    }
     // Asycc class for loading data for database
     private void followupclass() {
         OtherFollowupActivity.FollowupTrackclass ru = new OtherFollowupActivity.FollowupTrackclass();
@@ -272,7 +250,6 @@ public class OtherFollowupActivity extends AppCompatActivity implements SwipeRef
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
             viewDialog.showDialog();
         }
 
@@ -280,23 +257,20 @@ public class OtherFollowupActivity extends AppCompatActivity implements SwipeRef
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-           // dismissProgressDialog();
             viewDialog.hideDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
+
             FollowupDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> FollowupDetails = new HashMap<String, String>();
             FollowupDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(OtherFollowupActivity.this));
             Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(OtherFollowupActivity.this)));
             FollowupDetails.put("action","show_other_followup_list");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(OtherFollowupActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ ServiceUrls.LOGIN_URL, FollowupDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
 
@@ -305,7 +279,6 @@ public class OtherFollowupActivity extends AppCompatActivity implements SwipeRef
     private void FollowupDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
@@ -327,9 +300,7 @@ public class OtherFollowupActivity extends AppCompatActivity implements SwipeRef
 
 
                                 subList = new FollowupList();
-                                Log.d(TAG, "i: " + i);
 
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -344,9 +315,6 @@ public class OtherFollowupActivity extends AppCompatActivity implements SwipeRef
                                     String Member_ID = jsonObj.getString("Member_ID");
                                     String Followup_Date = jsonObj.getString("FollowupDate");
 
-                                    Log.d(TAG, "next followup date: " + NextFollowup_Date);
-                                    Log.d(TAG, "Followup date: " + Followup_Date);
-
 
                                     subList.setName(name);
                                     subList.setRating(Rating);
@@ -358,11 +326,8 @@ public class OtherFollowupActivity extends AppCompatActivity implements SwipeRef
                                     subList.setComment(Comment);
                                     subList.setFollowupType(FollowupType);
                                     String next_foll_date= Utility.formatDate(NextFollowup_Date);
-                                    Log.d(TAG, "converted next followup date: " + next_foll_date);
                                     subList.setNextFollowupDate(next_foll_date);
                                     String foll_date= Utility.formatDate(Followup_Date);
-
-                                    Log.d(TAG, "converted Followup date: " + foll_date);
                                     subList.setFollowupDate(foll_date);
                                     subList.setID(Member_ID);
                                     subList.setImage("");

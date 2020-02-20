@@ -337,9 +337,6 @@ public class MeasurementActivity extends AppCompatActivity implements SwipeRefre
                     progressBar.setVisibility(View.GONE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
 
                         ArrayList<MeasurementList> item = new ArrayList<MeasurementList>();
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
@@ -348,9 +345,7 @@ public class MeasurementActivity extends AppCompatActivity implements SwipeRefre
 
 
                                 subList = new MeasurementList();
-                                Log.d(TAG, "i: " + i);
 
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -379,8 +374,6 @@ public class MeasurementActivity extends AppCompatActivity implements SwipeRefre
                                     String Executive_Name = jsonObj.getString("Executive_Name");
 
 
-                                    //  for (int j = 0; j < 5; j++) {
-
                                     String mdate=Utility.formatDate(Measurement_Date);
                                     subList.setMeasurement_Date(mdate);
                                     subList.setMemberId(Member_ID);
@@ -389,7 +382,9 @@ public class MeasurementActivity extends AppCompatActivity implements SwipeRefre
                                     subList.setContactEncrypt(cont);
 //                                    String name = MemberName.substring(0,1).toUpperCase() + MemberName.substring(1);
                                     subList.setName(MemberName);
-                                    subList.setWeight(Weight);
+                                    if(!Weight.equals("")) {
+                                        subList.setWeight(Weight);
+                                    }
                                     subList.setHeight(Height);
                                     subList.setAge(Age);
                                     subList.setBMI(BMI);

@@ -172,8 +172,6 @@ public class MemberBirthdayActivity extends AppCompatActivity {
                 searchactivememberclass();
             }
         });
-//        adapter = new EnquiryAdapter( new ArrayList<EnquiryList>(),EnquiryActivity.this);
-//        recyclerView.setAdapter(adapter);
 
 
         if (isOnline(MemberBirthdayActivity.this)) {
@@ -200,8 +198,7 @@ public class MemberBirthdayActivity extends AppCompatActivity {
     }
     public void CampareTwoDates(){
         //******************campare two dates****************
-//        String date = "03/26/2012 11:00:00";
-//        String dateafter = "03/26/2012 11:59:00";
+
         SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "dd-MM-yyyy");
         Date convertedDate = new Date();
@@ -223,8 +220,6 @@ public class MemberBirthdayActivity extends AppCompatActivity {
     }
     public void CampareFronTwoDates(){
         //******************campare two dates****************
-//        String date = "03/26/2012 11:00:00";
-//        String dateafter = "03/26/2012 11:59:00";
         SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "dd-MM-yyyy");
         Date convertedDate = new Date();
@@ -233,7 +228,6 @@ public class MemberBirthdayActivity extends AppCompatActivity {
             convertedDate = dateFormat.parse(fromdate.getText().toString());
             convertedDate2 = dateFormat.parse(todate.getText().toString());
             if (convertedDate2.before(convertedDate) || convertedDate2.equals(convertedDate)) {
-                //.setText("true");
             } else {
                 String firstday= Utility.getCurrentDate();
                 fromdate.setText(firstday);
@@ -259,22 +253,7 @@ public class MemberBirthdayActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-    private void showProgressDialog() {
-        Log.v(TAG, String.format("showProgressDialog"));
-        pd = new ProgressDialog(MemberBirthdayActivity.this);
-        pd.setMessage("loading");
-        pd.setCancelable(false);
-        pd.show();
-    }
 
-    /**
-     * Dismiss Progress Dialog.
-     */
-    private void dismissProgressDialog() {
-        Log.v(TAG, String.format("dismissProgressDialog"));
-
-        pd.cancel();
-    }
     //*********** Asycc class for loading data for database **************
     private void memberbirthdayclass() {
         MemberBirthdayActivity.MemberBirthdayTrackclass ru = new MemberBirthdayActivity.MemberBirthdayTrackclass();
@@ -291,7 +270,6 @@ public class MemberBirthdayActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-           // showProgressDialog();
             viewDialog.showDialog();
         }
 
@@ -299,23 +277,19 @@ public class MemberBirthdayActivity extends AppCompatActivity {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: show_balance_trasaction_details = %s", response));
-           // dismissProgressDialog();
             viewDialog.hideDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             MemberBirthdayDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> MemberBirthdayDetails = new HashMap<String, String>();
             MemberBirthdayDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(MemberBirthdayActivity.this));
             Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(MemberBirthdayActivity.this)));
             MemberBirthdayDetails.put("action","show_members_birthdays");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(MemberBirthdayActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, MemberBirthdayDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
 
@@ -325,7 +299,6 @@ public class MemberBirthdayActivity extends AppCompatActivity {
     private void MemberBirthdayDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
@@ -339,9 +312,6 @@ public class MemberBirthdayActivity extends AppCompatActivity {
                     nodata.setVisibility(View.GONE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
                         ttl_members.setText(String.valueOf(jsonArrayResult.length()));
                         ArrayList<MemberDataList> item = new ArrayList<MemberDataList>();
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
@@ -350,9 +320,7 @@ public class MemberBirthdayActivity extends AppCompatActivity {
 
 
                                 subList = new MemberDataList();
-                                Log.d(TAG, "i: " + i);
 
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -369,7 +337,6 @@ public class MemberBirthdayActivity extends AppCompatActivity {
                                     String Email=jsonObj.getString("Email");
                                     String RegistrationDate=jsonObj.getString("RegistrationDate");
 
-                                    //  for (int j = 0; j < 5; j++) {
 
                                     subList.setName(name);
                                     subList.setGender(gender);
@@ -396,8 +363,6 @@ public class MemberBirthdayActivity extends AppCompatActivity {
 
                                 }
                             }
-                        } else if (jsonArrayResult.length() == 0) {
-                            System.out.println("No records found");
                         }
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
@@ -437,7 +402,7 @@ public class MemberBirthdayActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            // showProgressDialog();
+
             viewDialog.showDialog();
 
         }
@@ -446,17 +411,13 @@ public class MemberBirthdayActivity extends AppCompatActivity {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: search_active_member_filter = %s", response));
-            //   dismissProgressDialog();
             viewDialog.hideDialog();
-
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             SearchActiveMemberDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String>  SearchActiveMemberDetails = new HashMap<String, String>();
             SearchActiveMemberDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(MemberBirthdayActivity.this));
             Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(MemberBirthdayActivity.this)));
@@ -467,7 +428,6 @@ public class MemberBirthdayActivity extends AppCompatActivity {
             SearchActiveMemberDetails.put("action","search_member_birthdays_filter");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(MemberBirthdayActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL,  SearchActiveMemberDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
 
@@ -477,7 +437,6 @@ public class MemberBirthdayActivity extends AppCompatActivity {
     private void  SearchActiveMemberDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: search_active_member_filter = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
@@ -491,9 +450,6 @@ public class MemberBirthdayActivity extends AppCompatActivity {
                     progressBar.setVisibility(View.GONE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
                         ttl_members.setText(String.valueOf(jsonArrayResult.length()));
                         ArrayList<MemberDataList> item = new ArrayList<MemberDataList>();
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
@@ -502,9 +458,7 @@ public class MemberBirthdayActivity extends AppCompatActivity {
 
 
                                 subList = new MemberDataList();
-                                Log.d(TAG, "i: " + i);
 
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -521,7 +475,6 @@ public class MemberBirthdayActivity extends AppCompatActivity {
                                     String Email=jsonObj.getString("Email");
                                     String RegistrationDate=jsonObj.getString("RegistrationDate");
 
-                                    //  for (int j = 0; j < 5; j++) {
 
                                     subList.setName(name);
                                     subList.setGender(gender);
@@ -583,7 +536,6 @@ public class MemberBirthdayActivity extends AppCompatActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
-        //swipeRefresh.setRefreshing(false);
         Intent intent=new Intent(MemberBirthdayActivity.this,MemberBirthdayActivity.class);
         startActivity(intent);
     }

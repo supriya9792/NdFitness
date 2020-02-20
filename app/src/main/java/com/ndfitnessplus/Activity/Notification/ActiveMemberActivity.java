@@ -182,10 +182,6 @@ public class ActiveMemberActivity extends AppCompatActivity {
         });
         nodata=findViewById(R.id.nodata);
         viewDialog = new ViewDialog(this);
-//        adapter = new EnquiryAdapter( new ArrayList<EnquiryList>(),EnquiryActivity.this);
-//        recyclerView.setAdapter(adapter);
-
-
         if (isOnline(ActiveMemberActivity.this)) {
             activememberclass();// check login details are valid or not from server
         }
@@ -217,7 +213,6 @@ public class ActiveMemberActivity extends AppCompatActivity {
                 }
                 else
                 {
-                    //isLoading = false;
                   int count=  ActiveMemberActivity.this.adapter.filter(String.valueOf(arg0));
                   ttl_members.setText(String.valueOf(count));
 
@@ -235,8 +230,6 @@ public class ActiveMemberActivity extends AppCompatActivity {
                                       int arg3) {
                 // TODO Auto-generated method stub
                 if(inputsearch.getText().length()==0) {
-                    //do your work here
-                    // Toast.makeText(AddEnquiryActivity.this ,"Text vhanged count  is 10 then: " , Toast.LENGTH_LONG).show();
                     activememberclass();
                 }
 
@@ -246,8 +239,6 @@ public class ActiveMemberActivity extends AppCompatActivity {
     }
     public void CampareTwoDates(){
         //******************campare two dates****************
-//        String date = "03/26/2012 11:00:00";
-//        String dateafter = "03/26/2012 11:59:00";
         SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "dd-MM-yyyy");
         Date convertedDate = new Date();
@@ -256,7 +247,6 @@ public class ActiveMemberActivity extends AppCompatActivity {
             convertedDate = dateFormat.parse(todate.getText().toString());
             convertedDate2 = dateFormat.parse(fromdate.getText().toString());
             if (convertedDate2.after(convertedDate) || convertedDate2.equals(convertedDate)) {
-                //.setText("true");
             } else {
                 String firstday= Utility.getFirstDayofMonth();
                 todate.setText(firstday);
@@ -269,8 +259,6 @@ public class ActiveMemberActivity extends AppCompatActivity {
     }
     public void CampareFronTwoDates(){
         //******************campare two dates****************
-//        String date = "03/26/2012 11:00:00";
-//        String dateafter = "03/26/2012 11:59:00";
         SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "dd-MM-yyyy");
         Date convertedDate = new Date();
@@ -305,22 +293,6 @@ public class ActiveMemberActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-    private void showProgressDialog() {
-        Log.v(TAG, String.format("showProgressDialog"));
-        pd = new ProgressDialog(ActiveMemberActivity.this);
-        pd.setMessage("loading");
-        pd.setCancelable(false);
-        pd.show();
-    }
-
-    /**
-     * Dismiss Progress Dialog.
-     */
-    private void dismissProgressDialog() {
-        Log.v(TAG, String.format("dismissProgressDialog"));
-
-        pd.cancel();
-    }
     //*********** Asycc class for loading data for database **************
     private void activememberclass() {
         ActiveMemberActivity. ActiveMemberTrackclass ru = new ActiveMemberActivity. ActiveMemberTrackclass();
@@ -337,7 +309,6 @@ public class ActiveMemberActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-           // showProgressDialog();
             viewDialog.showDialog();
 
         }
@@ -346,17 +317,13 @@ public class ActiveMemberActivity extends AppCompatActivity {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: show_balance_trasaction_details = %s", response));
-         //   dismissProgressDialog();
             viewDialog.hideDialog();
-
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
              ActiveMemberDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String>  ActiveMemberDetails = new HashMap<String, String>();
              ActiveMemberDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(ActiveMemberActivity.this));
              ActiveMemberDetails.put("status", "Active");
@@ -364,7 +331,6 @@ public class ActiveMemberActivity extends AppCompatActivity {
              ActiveMemberDetails.put("action","show_active_deactive_members_list");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(ActiveMemberActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL,  ActiveMemberDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
 
@@ -374,9 +340,7 @@ public class ActiveMemberActivity extends AppCompatActivity {
     private void  ActiveMemberDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
-
 
             try {
                 Log.v(TAG, "JsonResponseOpeartion :: test");
@@ -386,9 +350,6 @@ public class ActiveMemberActivity extends AppCompatActivity {
                     progressBar.setVisibility(View.GONE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
                         ttl_members.setText(String.valueOf(jsonArrayResult.length()));
                         ArrayList<MemberDataList> item = new ArrayList<MemberDataList>();
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
@@ -397,9 +358,7 @@ public class ActiveMemberActivity extends AppCompatActivity {
 
 
                                 subList = new MemberDataList();
-                                Log.d(TAG, "i: " + i);
 
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -416,7 +375,6 @@ public class ActiveMemberActivity extends AppCompatActivity {
                                     String Email=jsonObj.getString("Email");
                                     String End_Date=jsonObj.getString("End_Date");
                                     String FinalBalance=jsonObj.getString("FinalBalance");
-                                    //  for (int j = 0; j < 5; j++) {
 
                                     subList.setName(name);
                                     subList.setGender(gender);
@@ -442,8 +400,6 @@ public class ActiveMemberActivity extends AppCompatActivity {
 
                                 }
                             }
-                        } else if (jsonArrayResult.length() == 0) {
-                            System.out.println("No records found");
                         }
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
@@ -482,7 +438,6 @@ public class ActiveMemberActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            // showProgressDialog();
             viewDialog.showDialog();
 
         }
@@ -491,17 +446,13 @@ public class ActiveMemberActivity extends AppCompatActivity {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: search_active_member_filter = %s", response));
-            //   dismissProgressDialog();
             viewDialog.hideDialog();
-
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             SearchActiveMemberDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String>  SearchActiveMemberDetails = new HashMap<String, String>();
             SearchActiveMemberDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(ActiveMemberActivity.this));
             Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(ActiveMemberActivity.this)));
@@ -512,7 +463,6 @@ public class ActiveMemberActivity extends AppCompatActivity {
             SearchActiveMemberDetails.put("action","search_active_member_filter");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(ActiveMemberActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL,  SearchActiveMemberDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
 
@@ -522,7 +472,6 @@ public class ActiveMemberActivity extends AppCompatActivity {
     private void  SearchActiveMemberDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: search_active_member_filter = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
@@ -534,9 +483,6 @@ public class ActiveMemberActivity extends AppCompatActivity {
                     progressBar.setVisibility(View.GONE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
                         ttl_members.setText(String.valueOf(jsonArrayResult.length()));
                         ArrayList<MemberDataList> item = new ArrayList<MemberDataList>();
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
@@ -545,9 +491,7 @@ public class ActiveMemberActivity extends AppCompatActivity {
 
 
                                 subList = new MemberDataList();
-                                Log.d(TAG, "i: " + i);
 
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -564,7 +508,6 @@ public class ActiveMemberActivity extends AppCompatActivity {
                                     String Email=jsonObj.getString("Email");
                                     String End_Date=jsonObj.getString("End_Date");
                                     String FinalBalance=jsonObj.getString("FinalBalance");
-                                    //  for (int j = 0; j < 5; j++) {
 
                                     subList.setName(name);
                                     subList.setGender(gender);
@@ -600,7 +543,6 @@ public class ActiveMemberActivity extends AppCompatActivity {
                      recyclerView.setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
                 android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(ActiveMemberActivity.this);
                 builder.setMessage(R.string.server_exception);

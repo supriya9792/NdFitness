@@ -101,9 +101,6 @@ Context context;
             e.printStackTrace();
         }
 
-//        strUrl = strUrl.replaceAll(" ", "%20");
-//        strUrl = strUrl.replaceAll("\r\n", "%0A");
-//        strUrl = strUrl.replaceAll(".", "");
         try {
             url = new URL(strUrl);
 

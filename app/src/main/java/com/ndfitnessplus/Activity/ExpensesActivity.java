@@ -372,24 +372,15 @@ class ExpenseTrackclass extends AsyncTask<String, Void, String> {
                     progressBar.setVisibility(View.GONE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
-                        int count=0;
+
                         ArrayList<ExpensesList> item = new ArrayList<ExpensesList>();
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
-                            if(jsonArrayResult.length()<10){
-                                count=jsonArrayResult.length();
-                            }else{
-                                count=10;
-                            }
-                            for (int i = 0; i < count; i++) {
+
+                            for (int i = 0; i < jsonArrayResult.length(); i++) {
 
 
                                 subList = new ExpensesList();
-                                Log.d(TAG, "i: " + i);
 
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -403,9 +394,6 @@ class ExpenseTrackclass extends AsyncTask<String, Void, String> {
                                     String PaymentDetails = jsonObj.getString("PaymentDetails");
                                     String Expence_ID = jsonObj.getString("Expence_ID");
 
-                                    //  for (int j = 0; j < 5; j++) {
-                                    itemCount++;
-                                    Log.d(TAG, "run: " + itemCount);
 
                                     subList.setTtl_of_expenses(TitleExpences);
                                     subList.setDisc(Description);

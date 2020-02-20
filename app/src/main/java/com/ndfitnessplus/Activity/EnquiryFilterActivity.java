@@ -761,10 +761,7 @@ public class EnquiryFilterActivity extends AppCompatActivity {
                                     String Enquiry_For     = jsonObj.getString("Enquiry_For");
 
                                     String id=jsonObj.getString("Auto_Id");
-//                               if(i==0){
-//                                   enqForList.setName(getResources().getString(R.string.promt_country));
-//                                   enqF.add(0,enqForList);
-//                               }
+
                                     enqForList.setName(Enquiry_For);
                                     enqForList.setId(id);
 
@@ -1067,7 +1064,6 @@ public class EnquiryFilterActivity extends AppCompatActivity {
             Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
-
 
     }
 
@@ -1999,21 +1995,14 @@ public class EnquiryFilterActivity extends AppCompatActivity {
 
             if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
                 String tt_budget = object.getString("ttl_budget");
-                //Toast.makeText(EnquiryFilterActivity.this,"Enquiry added succesfully",Toast.LENGTH_SHORT).show();
-
                 if (object != null) {
                     JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
+
                     if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
                         for (int i = 0; i < jsonArrayResult.length(); i++) {
 
-
                             subList = new EnquiryList();
-                            Log.d(TAG, "i: " + i);
-                            // Log.d(TAG, "run: " + itemCount);
-                            Log.v(TAG, "JsonResponseOpeartion ::");
+
                             JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                             if (jsonObj != null) {
 
@@ -2030,9 +2019,7 @@ public class EnquiryFilterActivity extends AppCompatActivity {
                                 String Rating = jsonObj.getString("Rating");
                                 String Followup_Date = jsonObj.getString("FollowupDate");
                                 String Budget = jsonObj.getString("Budget");
-                                //  for (int j = 0; j < 5; j++) {
-//                                itemCount++;
-//                                Log.d(TAG, "run offset: " + itemCount);
+
                                 subList.setName(name);
                                 subList.setGender(gender);
                                 String cont=Utility.lastFour(Contact);
@@ -2071,13 +2058,7 @@ public class EnquiryFilterActivity extends AppCompatActivity {
                         System.out.println("No records found");
                     }
                 }
-
-                // showCustomDialog();
-
-                //inputEmail, inputPhone,inputAdd,inputReq,inputFollowupdate;
             }
-
-
             else if (success.equalsIgnoreCase(getResources().getString(R.string.zero)))
             {
                 //Toast.makeText(EnquiryFilterActivity.this,"Mobile Number Already Exits",Toast.LENGTH_SHORT).show();
