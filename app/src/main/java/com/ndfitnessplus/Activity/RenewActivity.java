@@ -287,8 +287,6 @@ public class RenewActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                // String selection = (String)parent.getItemAtPosition(position);
-                // Toast.makeText(MainNavigationActivity.this,"this is autocomplete suggestions"+selection,Toast.LENGTH_SHORT).show();
                 String countryName = searchcontactadapter.getItem(position).getCustName();
                 String contact = searchcontactadapter.getItem(position).getCustContact();
                 MemberID = searchcontactadapter.getItem(position).getMemberId();
@@ -322,9 +320,6 @@ public class RenewActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-
-                // String selection = (String)parent.getItemAtPosition(position);
-                // Toast.makeText(MainNavigationActivity.this,"this is autocomplete suggestions"+selection,Toast.LENGTH_SHORT).show();
                 String countryName = searchnameadapter.getItem(position).getCustName();
                 String contact = searchnameadapter.getItem(position).getCustContact();
                 MemberID = searchnameadapter.getItem(position).getMemberId();
@@ -417,9 +412,6 @@ public class RenewActivity extends AppCompatActivity {
                     inputStartDate.setText("");
                     inputEndDate.setText("");
                 }
-                // ((TextView) spinPackageType.getSelectedView()).setTextColor(getResources().getColor(R.color.black));
-                // Showing selected spinner item
-                //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -458,13 +450,8 @@ public class RenewActivity extends AppCompatActivity {
                         txtPackageName.setVisibility(View.VISIBLE);
                         CheckPackageNameClass();
                     }
-
-
-
                 }
-                // ((TextView) spinPackageType.getSelectedView()).setTextColor(getResources().getColor(R.color.black));
-                // Showing selected spinner item
-                //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+
             }
 
             @Override
@@ -492,7 +479,6 @@ public class RenewActivity extends AppCompatActivity {
                 String disc=inputDiscount.getText().toString();
                     if(inputDiscount.getText().length()>0){
                         double discount=Double.parseDouble(disc);
-                        Log.v(TAG, String.format("Discount  :: souble discout= %s", discount));
 
                         if(discount > maxdisc){
                               inputDiscount.setText("");
@@ -546,7 +532,6 @@ public class RenewActivity extends AppCompatActivity {
                         }
 
                         double rate =packfees-0;
-                        Log.v(TAG, String.format("  ::rate= %s", rate));
                         inputRate.setText(String.valueOf(rate));
                     }
 
@@ -570,8 +555,6 @@ public class RenewActivity extends AppCompatActivity {
                     String disc=inputDiscount.getText().toString();
                     double discount=Double.parseDouble(disc);
 
-                    Log.v(TAG, String.format("Discount  :: souble discout= %s", discount));
-                    Log.v(TAG, String.format("Max Discount  :: souble max discout= %s", maxdisc));
                     if(discount > maxdisc){
                         inputDiscount.setText("");
                         Toast.makeText(RenewActivity.this,"Discount Should not be greater than Max Discount",Toast
@@ -727,8 +710,6 @@ public class RenewActivity extends AppCompatActivity {
                     }
                     rate= (packfees+regfees)-discount;
                     inputRate.setText(String.valueOf(rate));
-                    // Log.v(TAG, String.format("Max Discount  :: souble max discout= %s", maxdisc));
-
 
                     if(inputPaid.getText().length()>0){
                          rate= (packfees+regfees)-discount;
@@ -835,7 +816,6 @@ public class RenewActivity extends AppCompatActivity {
                     if(paid>rate){
                         Toast.makeText(RenewActivity.this,"Your paying more than your fees",Toast
                                 .LENGTH_SHORT).show();
-                       // double rate=Double.parseDouble(inputRate.getText().toString());
                          inputBalance.setText(String.valueOf(rate));
                         inputPaid.setText("");
                         inputNextFollDate.getText().clear();
@@ -872,11 +852,9 @@ public class RenewActivity extends AppCompatActivity {
                     double i=(paid/((tax/100)+1));
                     double tax_amt=paid-i;
                     TaxAmount=String.valueOf(tax_amt);
-                    //double sub_ttl=rate-tax_amt;
+
                     subtotal=String.valueOf(i);
-                    Log.v(TAG, String.format("Discount  ::Tax amount= %s", TaxAmount));
-                    Log.v(TAG, String.format("Discount  ::Tax = %s", Tax));
-                    // Log.v(TAG, String.format("Max Discount  :: souble max discout= %s", maxdisc));
+
                     if(rate == paid){
                         awesomeValidation.clear();
                         inputNextFollDate.getText().clear();
@@ -887,7 +865,6 @@ public class RenewActivity extends AppCompatActivity {
                         inputNextFollDate.setEnabled(true);
                         String curr_date = Utility.getCurrentDate();
                         inputNextFollDate.setText(curr_date);
-                       // awesomeValidation.addValidation(RenewActivity.this,R.id.input_nextfollDate,RegexTemplate.NOT_EMPTY,R.string.err_msg_next_foll_date);
                     }
                     if(paid>rate){
                         Toast.makeText(RenewActivity.this,"Your paying more than your fees",Toast
@@ -1134,20 +1111,6 @@ public class RenewActivity extends AppCompatActivity {
                 }
             }
     }
-    private void showProgressDialog() {
-        Log.v(TAG, String.format("showProgressDialog"));
-        pd = new ProgressDialog(RenewActivity.this);
-        pd.setMessage("loading");
-        pd.setCancelable(false);
-        pd.show();
-    }
-    /**
-     * Dismiss Progress Dialog.
-     */
-    private void dismissProgressDialog() {
-        Log.v(TAG, String.format("dismissProgressDialog"));
-        pd.cancel();
-    }
     //   ************** Check Contact number already exist or not **************
     public void  CheckContactClass() {
         RenewActivity.CheckContactTrackClass ru = new RenewActivity.CheckContactTrackClass();
@@ -1199,12 +1162,10 @@ public class RenewActivity extends AppCompatActivity {
 
             if (success.equalsIgnoreCase(getResources().getString(R.string.zero))) {
                 Toast.makeText(RenewActivity.this,"Member is not registred. Please register Member first",Toast.LENGTH_SHORT).show();
-                //inputContact.getText().clear();
-                // showCustomDialog();
               Intent intent=new Intent(RenewActivity.this, AddMemberActivity.class);
               intent.putExtra("contact",inputContact.getText().toString());
               startActivity(intent);
-                //inputEmail, inputPhone,inputAdd,inputReq,inputFollowupdate;
+
             }
             else if (success.equalsIgnoreCase(getResources().getString(R.string.two)))
             {
@@ -1228,7 +1189,6 @@ public class RenewActivity extends AppCompatActivity {
                 } else if (jsonArrayResult.length() == 0) {
                     System.out.println("No records found");
                 }
-                // Toast.makeText(AddEnquiryActivity.this,"Please Enter New Mobile Number",Toast.LENGTH_SHORT).show();
             }else if (success.equalsIgnoreCase(getResources().getString(R.string.one)))
             {
                 JSONArray jsonArrayResult = object.getJSONArray("Data");
@@ -1251,7 +1211,6 @@ public class RenewActivity extends AppCompatActivity {
                 } else if (jsonArrayResult.length() == 0) {
                     System.out.println("No records found");
                 }
-                // Toast.makeText(AddEnquiryActivity.this,"Please Enter New Mobile Number",Toast.LENGTH_SHORT).show();
             }
 
         } catch (JSONException e) {
@@ -1288,7 +1247,6 @@ public class RenewActivity extends AppCompatActivity {
             PackageTypeDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(RenewActivity.this));
             PackageTypeDetails.put("action", "show_package_type");
             String domainurl= SharedPrefereneceUtil.getDomainUrl(RenewActivity.this);
-            //PackageTypeloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(PackageTypeloyee.this));
             String loginResult = ruc.sendPostRequest(domainurl+ ServiceUrls.LOGIN_URL, PackageTypeDetails);
             Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
@@ -1306,7 +1264,6 @@ public class RenewActivity extends AppCompatActivity {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
@@ -1319,7 +1276,6 @@ public class RenewActivity extends AppCompatActivity {
                         if (jsonArrayCountry != null && jsonArrayCountry.length() > 0){
                             for (int i = 0; i < jsonArrayCountry.length(); i++) {
                                 packagetypelist = new Spinner_List();
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayCountry.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -1417,7 +1373,6 @@ public class RenewActivity extends AppCompatActivity {
             PackageNameDetails.put("pack_type", packageType);
             PackageNameDetails.put("action", "show_packages_details");
             String domainurl= SharedPrefereneceUtil.getDomainUrl(RenewActivity.this);
-            //PackageNameloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(PackageNameloyee.this));
             String loginResult = ruc.sendPostRequest(domainurl+ ServiceUrls.LOGIN_URL, PackageNameDetails);
             Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
@@ -1435,7 +1390,6 @@ public class RenewActivity extends AppCompatActivity {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
@@ -1448,7 +1402,6 @@ public class RenewActivity extends AppCompatActivity {
                         if (jsonArrayCountry != null && jsonArrayCountry.length() > 0){
                             for (int i = 0; i < jsonArrayCountry.length(); i++) {
                                 packageNamelist = new Spinner_List();
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayCountry.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -1466,7 +1419,6 @@ public class RenewActivity extends AppCompatActivity {
                                             if(position == 0)
                                             {
                                                 // Disable the first item from Spinner
-                                                // First item will be use for hint
                                                 return false;
                                             }
                                             else
@@ -1483,7 +1435,7 @@ public class RenewActivity extends AppCompatActivity {
                                                 // Set the hint text color gray
                                                 tv.setTextColor(Color.GRAY);
                                                 tv.setText(getResources().getString(R.string.prompt_package_name));
-                                                // tv.setTextColor(Color.GRAY);
+
                                             }
                                             else {
                                                 tv.setTextColor(Color.BLACK);
@@ -1545,7 +1497,6 @@ public class RenewActivity extends AppCompatActivity {
             PackageDetails.put("action","show_package_details_by_name");
             String domainurl= SharedPrefereneceUtil.getDomainUrl(RenewActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ ServiceUrls.LOGIN_URL, PackageDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
 
@@ -1610,9 +1561,6 @@ public class RenewActivity extends AppCompatActivity {
                             System.out.println("No records found");
                         }
                     }
-                }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
-                    //nodata.setVisibility(View.VISIBLE);
-
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");
@@ -1657,12 +1605,10 @@ public class RenewActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-          //  Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> InstructorNameDetails = new HashMap<String, String>();
             InstructorNameDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(RenewActivity.this));
             InstructorNameDetails.put("action", "show_instructor_name_list");
             String domainurl= SharedPrefereneceUtil.getDomainUrl(RenewActivity.this);
-            //InstructorNameloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(InstructorNameloyee.this));
             String loginResult = ruc.sendPostRequest(domainurl+ ServiceUrls.LOGIN_URL, InstructorNameDetails);
             Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
@@ -1678,7 +1624,6 @@ public class RenewActivity extends AppCompatActivity {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
@@ -1693,7 +1638,6 @@ public class RenewActivity extends AppCompatActivity {
                             instructorArrayList.add(1,instructorList);
                             for (int i = 0; i < jsonArrayCountry.length(); i++) {
                                 instructorList = new Spinner_List();
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayCountry.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -1709,8 +1653,6 @@ public class RenewActivity extends AppCompatActivity {
                                         public boolean isEnabled(int position){
                                             if(position == 0)
                                             {
-                                                // Disable the first item from Spinner
-                                                // First item will be use for hint
                                                 return false;
                                             }
                                             else
@@ -1727,7 +1669,6 @@ public class RenewActivity extends AppCompatActivity {
                                                 // Set the hint text color gray
                                                 tv.setTextColor(Color.GRAY);
                                                 tv.setText(getResources().getString(R.string.prompt_instructor));
-                                                // tv.setTextColor(Color.GRAY);
                                             }
                                             else {
                                                 tv.setTextColor(Color.BLACK);
@@ -1757,8 +1698,7 @@ public class RenewActivity extends AppCompatActivity {
                         public boolean isEnabled(int position){
                             if(position == 0)
                             {
-                                // Disable the first item from Spinner
-                                // First item will be use for hint
+
                                 return false;
                             }
                             else
@@ -1775,7 +1715,6 @@ public class RenewActivity extends AppCompatActivity {
                                 // Set the hint text color gray
                                 tv.setTextColor(Color.GRAY);
                                 tv.setText(getResources().getString(R.string.prompt_instructor));
-                                // tv.setTextColor(Color.GRAY);
                             }
                             else {
                                 tv.setTextColor(Color.BLACK);
@@ -1820,10 +1759,8 @@ public class RenewActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             HashMap<String, String> TimeDetails = new HashMap<String, String>();
-           // TimeDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(RenewActivity.this));
             TimeDetails.put("action", "show_master_time");
             String domainurl= SharedPrefereneceUtil.getDomainUrl(RenewActivity.this);
-            //TimeloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(Timeloyee.this));
             String loginResult = ruc.sendPostRequest(domainurl+ ServiceUrls.LOGIN_URL, TimeDetails);
             Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
@@ -1836,12 +1773,10 @@ public class RenewActivity extends AppCompatActivity {
     private void TimeDetails(String jsonResponse) {
 
 
-        Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
         if (jsonResponse != null) {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
@@ -1856,7 +1791,6 @@ public class RenewActivity extends AppCompatActivity {
                             timeArrayList.add(1,timelist);
                             for (int i = 0; i < jsonArrayCountry.length(); i++) {
                                 timelist = new Spinner_List();
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayCountry.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -1872,8 +1806,6 @@ public class RenewActivity extends AppCompatActivity {
                                         public boolean isEnabled(int position){
                                             if(position == 0)
                                             {
-                                                // Disable the first item from Spinner
-                                                // First item will be use for hint
                                                 return false;
                                             }
                                             else
@@ -1890,7 +1822,6 @@ public class RenewActivity extends AppCompatActivity {
                                                 // Set the hint text color gray
                                                 tv.setTextColor(Color.GRAY);
                                                 tv.setText(getResources().getString(R.string.prompt_time));
-                                                // tv.setTextColor(Color.GRAY);
                                             }
                                             else {
                                                 tv.setTextColor(Color.BLACK);
@@ -1920,8 +1851,6 @@ public class RenewActivity extends AppCompatActivity {
                         public boolean isEnabled(int position){
                             if(position == 0)
                             {
-                                // Disable the first item from Spinner
-                                // First item will be use for hint
                                 return false;
                             }
                             else
@@ -1938,7 +1867,6 @@ public class RenewActivity extends AppCompatActivity {
                                 // Set the hint text color gray
                                 tv.setTextColor(Color.GRAY);
                                 tv.setText(getResources().getString(R.string.prompt_time));
-                                // tv.setTextColor(Color.GRAY);
                             }
                             else {
                                 tv.setTextColor(Color.BLACK);
@@ -1948,8 +1876,6 @@ public class RenewActivity extends AppCompatActivity {
 
                     };
                     spinTime.setAdapter(timeadapter);
-                    //forumCount.setVisibility(View.INVISBLE);
-                    // queCount.setVisibility(View.INVISIBLE);
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");
@@ -1986,7 +1912,6 @@ public class RenewActivity extends AppCompatActivity {
             HashMap<String, String> PaymentTypeDetails = new HashMap<String, String>();
             PaymentTypeDetails.put("action", "show_payment_type_list");
             String domainurl= SharedPrefereneceUtil.getDomainUrl(RenewActivity.this);
-            //PaymentTypeloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(PaymentTypeloyee.this));
             String loginResult = ruc.sendPostRequest(domainurl+ ServiceUrls.LOGIN_URL, PaymentTypeDetails);
             Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
@@ -2004,7 +1929,6 @@ public class RenewActivity extends AppCompatActivity {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
@@ -2017,17 +1941,12 @@ public class RenewActivity extends AppCompatActivity {
                         if (jsonArrayCountry != null && jsonArrayCountry.length() > 0){
                             for (int i = 0; i < jsonArrayCountry.length(); i++) {
                                 paymentTypeList = new Spinner_List();
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayCountry.getJSONObject(i);
                                 if (jsonObj != null) {
 
                                     String PaymentType     = jsonObj.getString("PaymentType");
 
                                     String id=jsonObj.getString("Auto_Id");
-//                               if(i==0){
-//                                   paymentTypeList.setName(getResources().getString(R.string.promt_country));
-//                                   enqF.add(0,paymentTypeList);
-//                               }
                                     paymentTypeList.setName(PaymentType);
                                     paymentTypeList.setId(id);
 
@@ -2038,8 +1957,6 @@ public class RenewActivity extends AppCompatActivity {
                                         public boolean isEnabled(int position){
                                             if(position == 0)
                                             {
-                                                // Disable the first item from Spinner
-                                                // First item will be use for hint
                                                 return false;
                                             }
                                             else
@@ -2056,7 +1973,6 @@ public class RenewActivity extends AppCompatActivity {
                                                 // Set the hint text color gray
                                                 tv.setTextColor(Color.GRAY);
                                                 tv.setText(getResources().getString(R.string.prompt_payment_type));
-                                                // tv.setTextColor(Color.GRAY);
                                             }
                                             else {
                                                 tv.setTextColor(Color.BLACK);
@@ -2074,10 +1990,6 @@ public class RenewActivity extends AppCompatActivity {
                             System.out.println("No records found");
                         }
                     }
-                }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
-
-                    //forumCount.setVisibility(View.INVISBLE);
-                    // queCount.setVisibility(View.INVISIBLE);
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");
@@ -3010,7 +2922,6 @@ public class RenewActivity extends AppCompatActivity {
 
                         for (int i = 0; i < 1; i++) {
 
-                            Log.v(TAG, "JsonResponseOpeartion ::");
                             JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                             if (jsonObj != null) {
 
@@ -3049,9 +2960,6 @@ public class RenewActivity extends AppCompatActivity {
                                 afterEnquirySms = afterEnquirySms.replace("#TPaid#", tpaid);
 
 
-
-
-
                                 final String message="Dear "+inputName.getText().toString()+" Thanks For Joining Us." +afterEnquirySms;
                                 if(!afterEnquirySms.equals("")) {
                                     RenewActivity.this.runOnUiThread(new Runnable() {
@@ -3083,8 +2991,6 @@ public class RenewActivity extends AppCompatActivity {
 
                                         }
                                     });
-                                }else{
-                                  //  submitAction();
                                 }
                             }
                         }
@@ -3204,7 +3110,6 @@ public class RenewActivity extends AppCompatActivity {
                     if (jsonArrayResult != null && jsonArrayResult.length() > 0){
                         for (int i = 0; i < jsonArrayResult.length(); i++) {
                             searchModel = new Search_list();
-                            Log.v(TAG, "JsonResponseOpeartion ::");
                             JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                             if (jsonObj != null) {
 

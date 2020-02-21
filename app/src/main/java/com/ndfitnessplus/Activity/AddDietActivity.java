@@ -175,13 +175,6 @@ public class AddDietActivity extends AppCompatActivity {
         spinDietitionName=(Spinner)findViewById(R.id.spinner_dietition_name);
         txtDietitionName=(TextView)findViewById(R.id.txt_dietition_name);
 
-        //step Three
-//        inputLayoutMeal = (TextInputLayout) findViewById(R.id.input_layout_meal);
-//        inputLayoutTime = (TextInputLayout) findViewById(R.id.input_layout_time);
-//        inputLayoutMessage = (TextInputLayout) findViewById(R.id.input_layout_message);
-//        inputMeal = (EditText) findViewById(R.id.input_meal);
-//        inputTime = (EditText) findViewById(R.id.input_time);
-//        message = (AppCompatEditText) findViewById(R.id.input_message);
 
         //Step Four
         inputLayoutAdvice = (TextInputLayout) findViewById(R.id.input_layout_advice);
@@ -294,9 +287,6 @@ public class AddDietActivity extends AppCompatActivity {
                     }
 
                 }
-                // ((TextView) spinDietitionName.getSelectedView()).setTextColor(getResources().getColor(R.color.black));
-                // Showing selected spinner item
-                //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -317,8 +307,6 @@ public class AddDietActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                // String selection = (String)parent.getItemAtPosition(position);
-                // Toast.makeText(MainNavigationActivity.this,"this is autocomplete suggestions"+selection,Toast.LENGTH_SHORT).show();
                 String countryName = searchcontactadapter.getItem(position).getCustName();
                 String contact = searchcontactadapter.getItem(position).getCustContact();
                 MemberID = searchcontactadapter.getItem(position).getMemberId();
@@ -362,8 +350,6 @@ public class AddDietActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
 
-                // String selection = (String)parent.getItemAtPosition(position);
-                // Toast.makeText(MainNavigationActivity.this,"this is autocomplete suggestions"+selection,Toast.LENGTH_SHORT).show();
                 String countryName = searchnameadapter.getItem(position).getCustName();
                 String contact = searchnameadapter.getItem(position).getCustContact();
                 MemberID = searchnameadapter.getItem(position).getMemberId();
@@ -415,7 +401,6 @@ public class AddDietActivity extends AppCompatActivity {
                         int radioId = radioGroup.indexOfChild(radioButton);
                         RadioButton btn = (RadioButton) radioGroup.getChildAt(radioId);
                         gender= (String) btn.getText();
-                        //  Toast.makeText(AddEnquiryActivity.this, gender, Toast.LENGTH_SHORT).show();
                     }else{
                         Toast.makeText(AddDietActivity.this, "Please Select Gender", Toast.LENGTH_SHORT).show();
                     }
@@ -440,8 +425,6 @@ public class AddDietActivity extends AppCompatActivity {
                             MealEditTextList editTextList=new MealEditTextList();
                             LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                             final View rowView = inflater.inflate(R.layout.add_meals, null);
-                            // Add the new row before the add field button.
-                            // inputMeal.setHint((getResources().getString(R.string.meals))+i);
                             inputLayoutMeal = rowView.findViewById(R.id.input_layout_meal);
                             inputLayoutTime = rowView.findViewById(R.id.input_layout_time);
                             inputLayoutMessage = (TextInputLayout)rowView.findViewById(R.id.input_layout_message);
@@ -456,13 +439,11 @@ public class AddDietActivity extends AppCompatActivity {
                             inputMeal.setHint(mhint);
                             inputLayoutMessage.setHint(mhint);
                             inputLayoutTime.setHint(getResources().getString(R.string.time) + " " + (i + 1));
-//                            for (int j = 0; j < 10; j++) {
                                 editTextList.setInputTime(inputTime);
                                 editTextList.setInputMeal(inputMeal);
                                 editTextList.setInputMessage(message);
                                 allEds.add(editTextList);
-//                            }
-                            //inputTime.setText(10 + ":" + 19);
+
                             inputTime.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(final View v) {
@@ -471,8 +452,6 @@ public class AddDietActivity extends AppCompatActivity {
                                 }
                             });
                             final  int j=i;
-                            Log.v(TAG, String.format("meal id = %s", allEds.get(i).getInputMeal().getId()));
-
                             allEds.get(i).getInputMeal().addTextChangedListener(new TextWatcher() {
                                 //
                                 public void onTextChanged(CharSequence s, int start, int before,
@@ -483,8 +462,6 @@ public class AddDietActivity extends AppCompatActivity {
                                         int idd=0;
                                         if(mmll.length>0){
                                             idd=Integer.parseInt(mmll[1]);
-                                            Log.v(TAG, String.format("id = %s", idd));
-                                            //inputTime.setError("please enter time");
                                             stepThreeValation.addValidation(AddDietActivity.this,(idd-1), RegexTemplate.NOT_EMPTY, R.string.err_msg_time);
                                         }
                                     }else{
@@ -502,8 +479,6 @@ public class AddDietActivity extends AppCompatActivity {
 
                                 }
                             });
-
-                           // stepThreeValation.addValidation(AddDietActivity.this,i, RegexTemplate.NOT_EMPTY, R.string.err_msg_charges);
                             k++;
                             parentLinearLayout.addView(rowView, parentLinearLayout.getChildCount() - 1);
                             stepThreeValation.addValidation(AddDietActivity.this, allEds.get(j).getInputMeal().getId(), RegexTemplate.NOT_EMPTY, R.string.err_msg_meal);
@@ -528,12 +503,6 @@ public class AddDietActivity extends AppCompatActivity {
                 if (stepFourValation.validate()) {
 
                         AddDietClass();
-
-                    //step2process.setProgress(100);
-
-                    //Toast.makeText(AddDietActivity.this ,"Text then: "+inputTime.getText().toString() , Toast.LENGTH_LONG).show();
-                    //collapseAll();
-                    //stepregisterUser();
                 }
 
                 break;
@@ -542,10 +511,6 @@ public class AddDietActivity extends AppCompatActivity {
 
                 collapseAndBack(1);
                 break;
-//            case R.id.btn_back2:
-//                // validate input user here
-//                collapseAndBack(2);
-//                break;
             case R.id.btn_back3:
                 // validate input user here
                 collapseAndBack(3);
@@ -562,22 +527,12 @@ public class AddDietActivity extends AppCompatActivity {
     }
     private void collapseAndBack(int index) {
         ViewAnimation.collapse(view_list.get(index));
-        //setCheckedStep(index);
         index--;
         current_step = index;
         success_step = index > success_step ? index : success_step;
         ViewAnimation.expand(view_list.get(index));
     }
 
-    private void collapseAll() {
-        for (View v : view_list) {
-            ViewAnimation.collapse(v);
-        }
-    }
-
-    public void hideSoftKeyboard() {
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-    }
     private void setCheckedStep(int index) {
         RelativeLayout relative = step_view_list.get(index);
         relative.removeAllViews();
@@ -603,7 +558,6 @@ public class AddDietActivity extends AppCompatActivity {
 
                         mHour = hourOfDay;
                         mMinute = minute;
-                        //nextfolltime=hourOfDay + ":" + minute;
                         inputTime = (EditText)row. findViewById(pos);
                         try {
                             SimpleDateFormat fmt = new SimpleDateFormat("HH:mm");
@@ -616,7 +570,6 @@ public class AddDietActivity extends AppCompatActivity {
 
                         }
 
-                       // stepThreeValation.clear();
                     }
                 }, mHour, mMinute, false);
         timePickerDialog.show();
@@ -637,7 +590,6 @@ public class AddDietActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            // showProgressDialog();
             viewDialog.showDialog();
         }
 
@@ -645,17 +597,13 @@ public class AddDietActivity extends AppCompatActivity {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            // dismissProgressDialog();
             viewDialog.hideDialog();
-            //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
-            //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
             CheckContactDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EnquiryForDetails = new HashMap<String, String>();
 
             EnquiryForDetails.put("mobileno",inputContact.getText().toString() );
@@ -663,7 +611,6 @@ public class AddDietActivity extends AppCompatActivity {
             EnquiryForDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(AddDietActivity.this) );
             EnquiryForDetails.put("action", "check_mobile_already_exist_or_not");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(AddDietActivity.this);
-            //EnquiryForloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(EnquiryForloyee.this));
             String loginResult = ruc.sendPostRequest(domainurl+ ServiceUrls.LOGIN_URL, EnquiryForDetails);
             Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
@@ -680,12 +627,10 @@ public class AddDietActivity extends AppCompatActivity {
 
             if (success.equalsIgnoreCase(getResources().getString(R.string.zero))) {
                 Toast.makeText(AddDietActivity.this,"Member is not registred. Please register Member first",Toast.LENGTH_SHORT).show();
-                //inputContact.getText().clear();
-                // showCustomDialog();
+
                 Intent intent=new Intent(AddDietActivity.this,AddMemberActivity.class);
                 intent.putExtra("contact",inputContact.getText().toString());
                 startActivity(intent);
-                //inputEmail, inputPhone,inputAdd,inputReq,inputFollowupdate;
             }
             else if (success.equalsIgnoreCase(getResources().getString(R.string.two)))
             {
@@ -694,7 +639,6 @@ public class AddDietActivity extends AppCompatActivity {
                 if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
                     for (int i = 0; i < jsonArrayResult.length(); i++) {
 
-                        Log.v(TAG, "JsonResponseOpeartion ::");
                         JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                         if (jsonObj != null) {
 
@@ -714,14 +658,12 @@ public class AddDietActivity extends AppCompatActivity {
                 } else if (jsonArrayResult.length() == 0) {
                     System.out.println("No records found");
                 }
-                // Toast.makeText(AddEnquiryActivity.this,"Please Enter New Mobile Number",Toast.LENGTH_SHORT).show();
             }else if (success.equalsIgnoreCase(getResources().getString(R.string.one)))
             {
-                Toast.makeText(AddDietActivity.this,"member has no active course.Please add course first",Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddDietActivity.this,"member has no active course.Please add course first",Toast.LENGTH_LONG).show();
                 Intent intent=new Intent(AddDietActivity.this,RenewActivity.class);
                 intent.putExtra("contact",inputContact.getText().toString());
                 startActivity(intent);
-                // Toast.makeText(AddEnquiryActivity.this,"Please Enter New Mobile Number",Toast.LENGTH_SHORT).show();
             }
 
         } catch (JSONException e) {
@@ -743,7 +685,6 @@ public class AddDietActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
             viewDialog.showDialog();
         }
 
@@ -751,17 +692,13 @@ public class AddDietActivity extends AppCompatActivity {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
             viewDialog.hideDialog();
-            //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
-            //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
             AddDietDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
 
             HashMap<String, String> AddDietDetails = new HashMap<String, String>();
             AddDietDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(AddDietActivity.this));
@@ -878,27 +815,22 @@ public class AddDietActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             DietitionNameDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> DietitionNameDetails = new HashMap<String, String>();
             DietitionNameDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(AddDietActivity.this));
             DietitionNameDetails.put("action", "show_dietition_name_list");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(AddDietActivity.this);
-            //DietitionNameloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(DietitionNameloyee.this));
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, DietitionNameDetails);
             Log.v(TAG, String.format("doInBackground :: show_dietition_name_list= %s", loginResult));
             return loginResult;
@@ -912,12 +844,11 @@ public class AddDietActivity extends AppCompatActivity {
 
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
+
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
@@ -930,16 +861,12 @@ public class AddDietActivity extends AppCompatActivity {
                         if (jsonArrayCountry != null && jsonArrayCountry.length() > 0){
                             for (int i = 0; i < jsonArrayCountry.length(); i++) {
                                 dietitionNamelist = new Spinner_List();
-                                Log.v(TAG, "JsonResponseOpeartion ::");
+
                                 JSONObject jsonObj = jsonArrayCountry.getJSONObject(i);
                                 if (jsonObj != null) {
 
                                     String Name     = jsonObj.getString("Name");
 
-//                               if(i==0){
-//                                   dietitionNamelist.setName(getResources().getString(R.string.promt_country));
-//                                   enqF.add(0,dietitionNamelist);
-//                               }
                                     dietitionNamelist.setName(Name);
 
                                     dietitionNameArrayList.add(dietitionNamelist);
@@ -967,7 +894,7 @@ public class AddDietActivity extends AppCompatActivity {
                                                 // Set the hint text color gray
                                                 tv.setTextColor(Color.GRAY);
                                                 tv.setText(getResources().getString(R.string.prompt_dietition_name));
-                                                // tv.setTextColor(Color.GRAY);
+
                                             }
                                             else {
                                                 tv.setTextColor(Color.BLACK);
@@ -997,8 +924,7 @@ public class AddDietActivity extends AppCompatActivity {
                     dialog.setCancelable(false);
                     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     dialog.show();
-                    //forumCount.setVisibility(View.INVISBLE);
-                    // queCount.setVisibility(View.INVISIBLE);
+
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");
@@ -1019,28 +945,24 @@ public class AddDietActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-           // showProgressDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
+
             SearchDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> SearchDetails = new HashMap<String, String>();
 
             SearchDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(AddDietActivity.this) );
             SearchDetails.put("action", "show_all_member_list");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(AddDietActivity.this);
-            //EmployeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(Employee.this));
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, SearchDetails);
             Log.v(TAG, String.format("doInBackground :: show_all_member_list= %s", loginResult));
             return loginResult;
@@ -1054,12 +976,10 @@ public class AddDietActivity extends AppCompatActivity {
 
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 if (object != null) {
                     JSONArray jsonArrayResult = object.getJSONArray("result");
@@ -1067,7 +987,6 @@ public class AddDietActivity extends AppCompatActivity {
                     if (jsonArrayResult != null && jsonArrayResult.length() > 0){
                         for (int i = 0; i < jsonArrayResult.length(); i++) {
                             searchModel = new Search_list();
-                            Log.v(TAG, "JsonResponseOpeartion ::");
                             JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                             if (jsonObj != null) {
 
@@ -1077,9 +996,6 @@ public class AddDietActivity extends AppCompatActivity {
                                 String Email = jsonObj.getString("Email");
                                 String Gender = jsonObj.getString("Gender");
 
-
-                                //  String email = jsonObj.getString("email");
-                                // String phn_no = jsonObj.getString("mobile");
 
                                 String namec=Name+"-"+Contact;
                                 searchModel.setCustName(Name);
@@ -1093,13 +1009,11 @@ public class AddDietActivity extends AppCompatActivity {
                                 searchnameadapter = new SearchNameAdapter(AddDietActivity.this, searchArrayList);
 
                                 inputName.setAdapter(searchnameadapter);
-                               // inputName.setDropDownBackgroundResource(R.drawable.search_background);
                                 inputName.setThreshold(1);
 
                                 searchcontactadapter = new SearchContactAdapter(AddDietActivity.this, searchArrayList);
 
                                 inputContact.setAdapter(searchcontactadapter);
-                               // textContact.setDropDownBackgroundResource(R.drawable.search_background);
                                 inputContact.setThreshold(1);
 
 

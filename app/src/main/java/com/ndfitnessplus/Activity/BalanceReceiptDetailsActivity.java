@@ -258,7 +258,6 @@ private void preparedListItem() {
         balanceReceiptoffsetclass();// check login details are valid or not from server
         }
         else {
-        //Toast.makeText(BalanceReceiptDetailsActivity.this, R.string.internet_unavailable, Toast.LENGTH_LONG).show();
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(BalanceReceiptDetailsActivity.this);
         builder.setMessage(R.string.internet_unavailable);
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
@@ -273,23 +272,6 @@ public void onClick(DialogInterface dialog, int id) {
         }
 
         }
-//Showing progress dialog
-private void showProgressDialog() {
-        Log.v(TAG, String.format("showProgressDialog"));
-        pd = new ProgressDialog(BalanceReceiptDetailsActivity.this);
-        pd.setMessage("loading");
-        pd.setCancelable(false);
-        pd.show();
-        }
-
-/**
- * Dismiss Progress Dialog.
- */
-private void dismissProgressDialog() {
-        Log.v(TAG, String.format("dismissProgressDialog"));
-
-        pd.cancel();
-        }
 // Asycc class for loading data for database
 private void balanceReceiptclass() {
         BalanceReceiptDetailsActivity.BalanceReceiptTrackclass ru = new BalanceReceiptDetailsActivity.BalanceReceiptTrackclass();
@@ -302,9 +284,7 @@ public void onRefresh() {
         currentPage = PAGE_START;
         Log.d(TAG, "currentPage: " + currentPage);
         isLastPage = false;
-        // adapter.clear();
         onRestart();
-        //preparedListItem();
 
 
         }
@@ -318,22 +298,18 @@ class BalanceReceiptTrackclass extends AsyncTask<String, Void, String> {
     protected void onPreExecute() {
         super.onPreExecute();
         Log.v(TAG, "onPreExecute");
-        //showProgressDialog();
     }
 
     @Override
     protected void onPostExecute(String response) {
         super.onPostExecute(response);
         Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-        //dismissProgressDialog();
-        //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
         BalanceReceiptDetails(response);
 
     }
 
     @Override
     protected String doInBackground(String... params) {
-        //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
         HashMap<String, String> BalanceReceiptDetails = new HashMap<String, String>();
         BalanceReceiptDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(BalanceReceiptDetailsActivity.this));
         BalanceReceiptDetails.put("offset", String.valueOf(offset));
@@ -341,7 +317,6 @@ class BalanceReceiptTrackclass extends AsyncTask<String, Void, String> {
         BalanceReceiptDetails.put("action","show_balance_receipt_list");
         String domainurl=SharedPrefereneceUtil.getDomainUrl(BalanceReceiptDetailsActivity.this);
         String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, BalanceReceiptDetails);
-        //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
         return loginResult;
     }
 
@@ -350,12 +325,10 @@ class BalanceReceiptTrackclass extends AsyncTask<String, Void, String> {
     private void BalanceReceiptDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
 
@@ -369,24 +342,14 @@ class BalanceReceiptTrackclass extends AsyncTask<String, Void, String> {
                     progressBar.setVisibility(View.GONE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
-                        int count=0;
+
                         ArrayList<CourseList> item = new ArrayList<CourseList>();
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
-                            if(jsonArrayResult.length()<100){
-                                count=jsonArrayResult.length();
-                            }else{
-                                count=100;
-                            }
-                            for (int i = 0; i < count; i++) {
+                            for (int i = 0; i < jsonArrayResult.length(); i++) {
 
 
                                 subList = new CourseList();
-                                Log.d(TAG, "i: " + i);
 
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -411,9 +374,6 @@ class BalanceReceiptTrackclass extends AsyncTask<String, Void, String> {
                                     String Financial_Year = jsonObj.getString("Financial_Year");
 
 
-                                    //  for (int j = 0; j < 5; j++) {
-                                    itemCount++;
-                                    Log.d(TAG, "run: " + itemCount);
                                     subList.setName(name);
                                     String sdate= Utility.formatDate(Start_Date);
                                     String edate=Utility.formatDate(End_Date);
@@ -445,9 +405,7 @@ class BalanceReceiptTrackclass extends AsyncTask<String, Void, String> {
                                     subList.setNextPaymentdate(nextpaydate);
                                     subList.setFinancialYear(Financial_Year);
                                     subList.setFollowuptype("Payment");
-                                    //Toast.makeText(BalanceReceiptDetailsActivity.this, "followup date: "+next_foll_date, Toast.LENGTH_SHORT).show();
 
-                                    //Toast.makeText(MainActivity.this, "j "+j, Toast.LENGTH_SHORT).show();
                                     item.add(subList);
                                     adapter = new BalanceReceiptAdapter( item,BalanceReceiptDetailsActivity.this);
                                     recyclerView.setAdapter(adapter);
@@ -463,7 +421,6 @@ class BalanceReceiptTrackclass extends AsyncTask<String, Void, String> {
                     swipeRefresh.setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
                 android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(BalanceReceiptDetailsActivity.this);
                 builder.setMessage(R.string.server_exception);
@@ -492,22 +449,18 @@ class BalanceReceiptOffsetTrackclass extends AsyncTask<String, Void, String> {
     protected void onPreExecute() {
         super.onPreExecute();
         Log.v(TAG, "onPreExecute");
-        //showProgressDialog();
     }
 
     @Override
     protected void onPostExecute(String response) {
         super.onPostExecute(response);
         Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-        // dismissProgressDialog();
-        //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
         BalanceReceiptOffsetDetails(response);
 
     }
 
     @Override
     protected String doInBackground(String... params) {
-        //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
         HashMap<String, String> BalanceReceiptOffsetDetails = new HashMap<String, String>();
         BalanceReceiptOffsetDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(BalanceReceiptDetailsActivity.this));
         BalanceReceiptOffsetDetails.put("offset", String.valueOf(offset));
@@ -515,7 +468,6 @@ class BalanceReceiptOffsetTrackclass extends AsyncTask<String, Void, String> {
         BalanceReceiptOffsetDetails.put("action","show_balance_receipt_list");
         String domainurl=SharedPrefereneceUtil.getDomainUrl(BalanceReceiptDetailsActivity.this);
         String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, BalanceReceiptOffsetDetails);
-        //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
         return loginResult;
     }
 
@@ -525,12 +477,10 @@ class BalanceReceiptOffsetTrackclass extends AsyncTask<String, Void, String> {
     private void BalanceReceiptOffsetDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
@@ -548,18 +498,14 @@ class BalanceReceiptOffsetTrackclass extends AsyncTask<String, Void, String> {
                     progressBar.setVisibility(View.GONE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
+
                         ArrayList<CourseList> subListArrayList = new ArrayList<CourseList>();
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
                             for (int i = 0; i < jsonArrayResult.length(); i++) {
 
 
                                 subList = new CourseList();
-                                Log.d(TAG, "i: " + i);
-                                // Log.d(TAG, "run: " + itemCount);
-                                Log.v(TAG, "JsonResponseOpeartion ::");
+
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -583,10 +529,6 @@ class BalanceReceiptOffsetTrackclass extends AsyncTask<String, Void, String> {
                                     String Next_payment_date = jsonObj.getString("Next_payment_date");
                                     String Financial_Year = jsonObj.getString("Financial_Year");
 
-
-                                    //  for (int j = 0; j < 5; j++) {
-                                    itemCount++;
-                                    Log.d(TAG, "run: " + itemCount);
                                     subList.setName(name);
                                     String sdate=Utility.formatDate(Start_Date);
                                     String edate=Utility.formatDate(End_Date);
@@ -618,7 +560,6 @@ class BalanceReceiptOffsetTrackclass extends AsyncTask<String, Void, String> {
                                     subList.setNextPaymentdate(nextpaydate);
                                     subList.setFinancialYear(Financial_Year);
                                     subList.setFollowuptype("Payment");
-                                    //Toast.makeText(BalanceReceiptDetailsActivity.this, "followup date: "+next_foll_date, Toast.LENGTH_SHORT).show();
                                     subListArrayList.add(subList);
 
                                 }
@@ -635,19 +576,15 @@ class BalanceReceiptOffsetTrackclass extends AsyncTask<String, Void, String> {
                         }
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
-                    // nodata.setVisibility(View.VISIBLE);
 
                     progressBar.setVisibility(View.GONE);
                     if (currentPage != PAGE_START)
                         adapter.removeblank();
                     currentPage = PAGE_START;
-                    //adapter.addAll(subListArrayList);
                     swipeRefresh.setRefreshing(false);
                     isLoading = false;
-                    //recyclerView.setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
                 recyclerView.setVisibility(View.GONE);
                 frame.setVisibility(View.VISIBLE);
@@ -667,7 +604,6 @@ class BalanceReceiptSearchTrackclass extends AsyncTask<String, Void, String> {
     protected void onPreExecute() {
         super.onPreExecute();
         Log.v(TAG, "onPreExecute");
-        //showProgressDialog();
         viewDialog.showDialog();
     }
 
@@ -675,16 +611,13 @@ class BalanceReceiptSearchTrackclass extends AsyncTask<String, Void, String> {
     protected void onPostExecute(String response) {
         super.onPostExecute(response);
         Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-        //dismissProgressDialog();
         viewDialog.hideDialog();
-        //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
         BalanceReceiptSearchDetails(response);
 
     }
 
     @Override
     protected String doInBackground(String... params) {
-        //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
         HashMap<String, String> BalanceReceiptSearchDetails = new HashMap<String, String>();
         BalanceReceiptSearchDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(BalanceReceiptDetailsActivity.this));
         BalanceReceiptSearchDetails.put("text",inputsearch.getText().toString());
@@ -692,7 +625,6 @@ class BalanceReceiptSearchTrackclass extends AsyncTask<String, Void, String> {
         BalanceReceiptSearchDetails.put("action","show_search_balance_receipt");
         String domainurl=SharedPrefereneceUtil.getDomainUrl(BalanceReceiptDetailsActivity.this);
         String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, BalanceReceiptSearchDetails);
-        //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
         return loginResult;
     }
 
@@ -702,12 +634,10 @@ class BalanceReceiptSearchTrackclass extends AsyncTask<String, Void, String> {
     private void BalanceReceiptSearchDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
@@ -719,18 +649,12 @@ class BalanceReceiptSearchTrackclass extends AsyncTask<String, Void, String> {
                     total_balance.setText(rt);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
                         final   ArrayList<CourseList> subListArrayList = new ArrayList<CourseList>();
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
                             for (int i = 0; i < jsonArrayResult.length(); i++) {
 
 
                                 subList = new CourseList();
-                                Log.d(TAG, "i: " + i);
-                                // Log.d(TAG, "run: " + itemCount);
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -755,9 +679,6 @@ class BalanceReceiptSearchTrackclass extends AsyncTask<String, Void, String> {
                                     String Financial_Year = jsonObj.getString("Financial_Year");
 
 
-                                    //  for (int j = 0; j < 5; j++) {
-                                    itemCount++;
-                                    Log.d(TAG, "run: " + itemCount);
                                     subList.setName(name);
                                     String sdate=Utility.formatDate(Start_Date);
                                     String edate=Utility.formatDate(End_Date);
@@ -803,14 +724,10 @@ class BalanceReceiptSearchTrackclass extends AsyncTask<String, Void, String> {
                         }
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
-                    // nodata.setVisibility(View.VISIBLE);
                     Toast.makeText(BalanceReceiptDetailsActivity.this, "NO Record Found", Toast.LENGTH_SHORT).show();
                     progressBar.setVisibility(View.GONE);
-
-                    //recyclerView.setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
                 recyclerView.setVisibility(View.GONE);
                 frame.setVisibility(View.VISIBLE);

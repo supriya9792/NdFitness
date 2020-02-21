@@ -145,8 +145,6 @@ public class MemberDetailsActivity extends AppCompatActivity {
         renew=findViewById(R.id.btn_renew);
         followup=findViewById(R.id.btn_followup);
         before_after=findViewById(R.id.btn_before_after);
-//        adapter = new EnquiryAdapter( new ArrayList<EnquiryList>(),EnquiryFollowupDetailsActivity.this);
-//        recyclerView.setAdapter(adapter);
         Intent intent = getIntent();
          Bundle args = intent.getBundleExtra("BUNDLE");
         if (args != null) {

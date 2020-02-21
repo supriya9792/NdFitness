@@ -64,7 +64,6 @@ public class TodaysEnrollmentActivity extends AppCompatActivity {
     MemberAdapter adapter;
 
     MemberDataList subList;
-    //SwipeRefreshLayout swipeRefresh;
     private RecyclerView recyclerView;
     private LinearLayoutManager layoutManager;
     ProgressBar progressBar;
@@ -201,11 +200,8 @@ public class TodaysEnrollmentActivity extends AppCompatActivity {
         noInternet=findViewById(R.id.no_internet);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         lyt_no_connection = (LinearLayout) findViewById(R.id.lyt_no_connection);
-       // swipeRefresh.setOnRefreshListener(this);
         progressBar.setVisibility(View.VISIBLE);
         lyt_no_connection.setVisibility(View.VISIBLE);
-//        adapter = new EnquiryAdapter( new ArrayList<EnquiryList>(),EnquiryActivity.this);
-//        recyclerView.setAdapter(adapter);
 
 
         Intent intent = getIntent();
@@ -269,8 +265,6 @@ public class TodaysEnrollmentActivity extends AppCompatActivity {
                     }
                     else
                     {
-                        //isLoading = false;
-                       // Toast.makeText(TodaysEnrollmentActivity.this ,"Text vhanged count  is 10 then: " , Toast.LENGTH_LONG).show();
                       int ttlenroll=  TodaysEnrollmentActivity.this.adapter.filter(String.valueOf(arg0));
                       ttl_enrollment.setText(String.valueOf(ttlenroll));
 
@@ -288,8 +282,6 @@ public class TodaysEnrollmentActivity extends AppCompatActivity {
                                           int arg3) {
                     // TODO Auto-generated method stub
                     if(inputsearch.getText().length()==0) {
-                        //do your work here
-                        // Toast.makeText(AddEnquiryActivity.this ,"Text vhanged count  is 10 then: " , Toast.LENGTH_LONG).show();
                         enrollmentclass();
                     }
 
@@ -309,7 +301,6 @@ public class TodaysEnrollmentActivity extends AppCompatActivity {
                         currentPage = PAGE_START;
                         Log.d(TAG, "currentPage: " + currentPage);
                         isLastPage = false;
-                        //preparedListItem();
                     }
 
 
@@ -329,8 +320,6 @@ public class TodaysEnrollmentActivity extends AppCompatActivity {
     }
     public void CampareTwoDates(){
         //******************campare two dates****************
-//        String date = "03/26/2012 11:00:00";
-//        String dateafter = "03/26/2012 11:59:00";
         SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "dd-MM-yyyy");
         Date convertedDate = new Date();
@@ -339,7 +328,6 @@ public class TodaysEnrollmentActivity extends AppCompatActivity {
             convertedDate = dateFormat.parse(todate.getText().toString());
             convertedDate2 = dateFormat.parse(fromdate.getText().toString());
             if (convertedDate2.after(convertedDate) || convertedDate2.equals(convertedDate)) {
-                //.setText("true");
             } else {
                 String firstday= Utility.getFirstDayofMonth();
                 todate.setText(firstday);
@@ -352,8 +340,6 @@ public class TodaysEnrollmentActivity extends AppCompatActivity {
     }
     public void CampareFronTwoDates(){
         //******************campare two dates****************
-//        String date = "03/26/2012 11:00:00";
-//        String dateafter = "03/26/2012 11:59:00";
         SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "dd-MM-yyyy");
         Date convertedDate = new Date();
@@ -362,7 +348,6 @@ public class TodaysEnrollmentActivity extends AppCompatActivity {
             convertedDate = dateFormat.parse(fromdate.getText().toString());
             convertedDate2 = dateFormat.parse(todate.getText().toString());
             if (convertedDate2.before(convertedDate) || convertedDate2.equals(convertedDate)) {
-                //.setText("true");
             } else {
                 String firstday= Utility.getCurrentDate();
                 fromdate.setText(firstday);
@@ -405,22 +390,18 @@ public class TodaysEnrollmentActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             EnrollmentDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EnrollmentDetails = new HashMap<String, String>();
             EnrollmentDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(TodaysEnrollmentActivity.this));
            // EnrollmentDetails.put("offset", String.valueOf(offset));
@@ -580,7 +561,6 @@ public class TodaysEnrollmentActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String>  SearchActiveMemberDetails = new HashMap<String, String>();
             SearchActiveMemberDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(TodaysEnrollmentActivity.this));
             Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(TodaysEnrollmentActivity.this)));
@@ -744,14 +724,12 @@ public class TodaysEnrollmentActivity extends AppCompatActivity {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
             dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             EnquirySearchDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EnquirySearchDetails = new HashMap<String, String>();
             EnquirySearchDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(TodaysEnrollmentActivity.this));
             EnquirySearchDetails.put("text", inputsearch.getText().toString());
@@ -759,7 +737,6 @@ public class TodaysEnrollmentActivity extends AppCompatActivity {
             EnquirySearchDetails.put("action","show_search_member");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(TodaysEnrollmentActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EnquirySearchDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
 
@@ -769,7 +746,6 @@ public class TodaysEnrollmentActivity extends AppCompatActivity {
     private void EnquirySearchDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
@@ -782,19 +758,15 @@ public class TodaysEnrollmentActivity extends AppCompatActivity {
                     recyclerView.setVisibility(View.VISIBLE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//
 
                         ttl_enrollment.setText(String.valueOf(jsonArrayResult.length()));
-//                        total_member.setText(cnt);
                         final   ArrayList<MemberDataList> subListArrayList = new ArrayList<MemberDataList>();
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
                             for (int i = 0; i < jsonArrayResult.length(); i++) {
 
 
                                 subList = new MemberDataList();
-                                Log.d(TAG, "i: " + i);
-                                // Log.d(TAG, "run: " + itemCount);
-                                Log.v(TAG, "JsonResponseOpeartion ::");
+
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -846,24 +818,18 @@ public class TodaysEnrollmentActivity extends AppCompatActivity {
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
                     nodata.setVisibility(View.VISIBLE);
                     recyclerView.setVisibility(View.GONE);
-                    // nodata.setVisibility(View.VISIBLE);
                     Toast.makeText(TodaysEnrollmentActivity.this, "NO Record Found", Toast.LENGTH_SHORT).show();
                     progressBar.setVisibility(View.GONE);
-
-                    //recyclerView.setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
-                //recyclerView.setVisibility(View.GONE);
-//                frame.setVisibility(View.VISIBLE);
             }
         }
     }
     @Override
     protected void onRestart() {
         super.onRestart();
-        //swipeRefresh.setRefreshing(false);
         Intent intent=new Intent(TodaysEnrollmentActivity.this,TodaysEnrollmentActivity.class);
         startActivity(intent);
     }

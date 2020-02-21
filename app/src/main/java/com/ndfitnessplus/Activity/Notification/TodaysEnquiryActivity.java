@@ -198,9 +198,6 @@ public class TodaysEnquiryActivity extends AppCompatActivity implements SwipeRef
 
         swipeRefresh.setOnRefreshListener(this);
         viewDialog = new ViewDialog(this);
-//        adapter = new EnquiryAdapter( new ArrayList<EnquiryList>(),EnquiryActivity.this);
-//        recyclerView.setAdapter(adapter);
-
 
             if (isOnline(TodaysEnquiryActivity.this)) {
                 enquiryclass();// check login details are valid or not from server
@@ -251,8 +248,7 @@ public class TodaysEnquiryActivity extends AppCompatActivity implements SwipeRef
                                       int arg3) {
                 // TODO Auto-generated method stub
                 if(inputsearch.getText().length()==0) {
-                    //do your work here
-                    // Toast.makeText(AddEnquiryActivity.this ,"Text vhanged count  is 10 then: " , Toast.LENGTH_LONG).show();
+
                    enquiryclass();
                 }
 
@@ -272,7 +268,6 @@ public class TodaysEnquiryActivity extends AppCompatActivity implements SwipeRef
                     currentPage = PAGE_START;
                     Log.d(TAG, "currentPage: " + currentPage);
                     isLastPage = false;
-                    //preparedListItem();
                 }
 
 
@@ -302,8 +297,6 @@ public class TodaysEnquiryActivity extends AppCompatActivity implements SwipeRef
     }
     public void CampareTwoDates(){
         //******************campare two dates****************
-//        String date = "03/26/2012 11:00:00";
-//        String dateafter = "03/26/2012 11:59:00";
         SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "dd-MM-yyyy");
         Date convertedDate = new Date();
@@ -312,7 +305,6 @@ public class TodaysEnquiryActivity extends AppCompatActivity implements SwipeRef
             convertedDate = dateFormat.parse(todate.getText().toString());
             convertedDate2 = dateFormat.parse(fromdate.getText().toString());
             if (convertedDate2.after(convertedDate) || convertedDate2.equals(convertedDate)) {
-                //.setText("true");
             } else {
                 String firstday= Utility.getFirstDayofMonth();
                 todate.setText(firstday);
@@ -325,8 +317,6 @@ public class TodaysEnquiryActivity extends AppCompatActivity implements SwipeRef
     }
     public void CampareFronTwoDates(){
         //******************campare two dates****************
-//        String date = "03/26/2012 11:00:00";
-//        String dateafter = "03/26/2012 11:59:00";
         SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "dd-MM-yyyy");
         Date convertedDate = new Date();
@@ -335,7 +325,6 @@ public class TodaysEnquiryActivity extends AppCompatActivity implements SwipeRef
             convertedDate = dateFormat.parse(fromdate.getText().toString());
             convertedDate2 = dateFormat.parse(todate.getText().toString());
             if (convertedDate2.before(convertedDate) || convertedDate2.equals(convertedDate)) {
-                //.setText("true");
             } else {
                 String firstday= Utility.getCurrentDate();
                 fromdate.setText(firstday);
@@ -362,23 +351,6 @@ public class TodaysEnquiryActivity extends AppCompatActivity implements SwipeRef
         return super.onOptionsItemSelected(item);
     }
 
-    //Showing progress dialog
-    private void showProgressDialog() {
-        Log.v(TAG, String.format("showProgressDialog"));
-        pd = new ProgressDialog(TodaysEnquiryActivity.this);
-        pd.setMessage("loading");
-        pd.setCancelable(false);
-        pd.show();
-    }
-
-    /**
-     * Dismiss Progress Dialog.
-     */
-    private void dismissProgressDialog() {
-        Log.v(TAG, String.format("dismissProgressDialog"));
-
-        pd.cancel();
-    }
     // Asycc class for loading data for database
     private void enquiryclass() {
         TodaysEnquiryActivity.EnquiryTrackclass ru = new TodaysEnquiryActivity.EnquiryTrackclass();
@@ -402,7 +374,6 @@ public class TodaysEnquiryActivity extends AppCompatActivity implements SwipeRef
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
             viewDialog.showDialog();
         }
 
@@ -410,24 +381,19 @@ public class TodaysEnquiryActivity extends AppCompatActivity implements SwipeRef
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-           // dismissProgressDialog();
             viewDialog.hideDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             EnquiryDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EnquiryDetails = new HashMap<String, String>();
             EnquiryDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(TodaysEnquiryActivity.this));
-           // EnquiryDetails.put("offset", String.valueOf(offset));
             Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getCompanyAutoId(TodaysEnquiryActivity.this)));
             EnquiryDetails.put("action","show_todays_enquiry");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(TodaysEnquiryActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EnquiryDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
 
@@ -437,7 +403,6 @@ public class TodaysEnquiryActivity extends AppCompatActivity implements SwipeRef
     private void EnquiryDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
@@ -451,25 +416,15 @@ public class TodaysEnquiryActivity extends AppCompatActivity implements SwipeRef
                     nodata.setVisibility(View.GONE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
-                        int count=0;
                         ttl_enquiry.setText(String.valueOf(jsonArrayResult.length()));
                         ArrayList<EnquiryList> item = new ArrayList<EnquiryList>();
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
-//                            if(jsonArrayResult.length()<100){
-//                                count=jsonArrayResult.length();
-//                            }else{
-//                                count=100;
-//                            }
+
                             for (int i = 0; i < jsonArrayResult.length(); i++) {
 
 
                                 subList = new EnquiryList();
-                                Log.d(TAG, "i: " + i);
 
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -485,9 +440,7 @@ public class TodaysEnquiryActivity extends AppCompatActivity implements SwipeRef
                                     String CallResponse = jsonObj.getString("CallResponse");
                                     String Rating = jsonObj.getString("Rating");
                                     String Followup_Date = jsonObj.getString("FollowupDate");
-                                    //  for (int j = 0; j < 5; j++) {
-                                    itemCount++;
-                                    Log.d(TAG, "run: " + itemCount);
+
                                     subList.setName(name);
                                     subList.setGender(gender);
                                     String cont=Utility.lastFour(Contact);
@@ -505,9 +458,7 @@ public class TodaysEnquiryActivity extends AppCompatActivity implements SwipeRef
                                     subList.setRating(Rating);
                                     String foll_date= Utility.formatDate(Followup_Date);
                                     subList.setFollowupdate(foll_date);
-                                    //Toast.makeText(TodaysEnquiryActivity.this, "followup date: "+next_foll_date, Toast.LENGTH_SHORT).show();
 
-                                    //Toast.makeText(MainActivity.this, "j "+j, Toast.LENGTH_SHORT).show();
                                     item.add(subList);
                                     adapter = new EnquiryAdapter( item,TodaysEnquiryActivity.this);
                                     recyclerView.setAdapter(adapter);
@@ -554,7 +505,6 @@ public class TodaysEnquiryActivity extends AppCompatActivity implements SwipeRef
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            // showProgressDialog();
             viewDialog.showDialog();
 
         }
@@ -563,17 +513,14 @@ public class TodaysEnquiryActivity extends AppCompatActivity implements SwipeRef
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: search_active_member_filter = %s", response));
-            //   dismissProgressDialog();
             viewDialog.hideDialog();
 
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             SearchActiveMemberDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String>  SearchActiveMemberDetails = new HashMap<String, String>();
             SearchActiveMemberDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(TodaysEnquiryActivity.this));
             Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(TodaysEnquiryActivity.this)));
@@ -584,7 +531,6 @@ public class TodaysEnquiryActivity extends AppCompatActivity implements SwipeRef
             SearchActiveMemberDetails.put("action","search_todays_enquiry_filter");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(TodaysEnquiryActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL,  SearchActiveMemberDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
 
@@ -594,7 +540,6 @@ public class TodaysEnquiryActivity extends AppCompatActivity implements SwipeRef
     private void  SearchActiveMemberDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: search_active_member_filter = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
@@ -608,9 +553,6 @@ public class TodaysEnquiryActivity extends AppCompatActivity implements SwipeRef
                     progressBar.setVisibility(View.GONE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
                         ttl_enquiry.setText(String.valueOf(jsonArrayResult.length()));
                         ArrayList<EnquiryList> item = new ArrayList<EnquiryList>();
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
@@ -619,9 +561,7 @@ public class TodaysEnquiryActivity extends AppCompatActivity implements SwipeRef
 
 
                                 subList = new EnquiryList();
-                                Log.d(TAG, "i: " + i);
-                                // Log.d(TAG, "run: " + itemCount);
-                                Log.v(TAG, "JsonResponseOpeartion ::");
+
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -633,13 +573,11 @@ public class TodaysEnquiryActivity extends AppCompatActivity implements SwipeRef
                                     String Comment = jsonObj.getString("Comment");
                                     String NextFollowup_Date = jsonObj.getString("NextFollowupDate");
                                     String Enquiry_ID = jsonObj.getString("Enquiry_ID");
-//                                    String Image = jsonObj.getString("Image");
-//                                    String CallResponse = jsonObj.getString("CallResponse");
+                                    String Image = jsonObj.getString("Image");
+                                    String CallResponse = jsonObj.getString("CallResponse");
                                     String Rating = jsonObj.getString("Rating");
                                     String Followup_Date = jsonObj.getString("FollowupDate");
-                                    //  for (int j = 0; j < 5; j++) {
-                                    itemCount++;
-                                    Log.d(TAG, "run offset: " + itemCount);
+
                                     subList.setName(name);
                                     subList.setGender(gender);
                                     String cont=Utility.lastFour(Contact);
@@ -652,13 +590,12 @@ public class TodaysEnquiryActivity extends AppCompatActivity implements SwipeRef
                                     subList.setNextFollowUpDate(next_foll_date);
                                     subList.setID(Enquiry_ID);
 
-//                                    Image.replace("\"", "");
-//                                    subList.setImage(Image);
-//                                    subList.setCallResponse(CallResponse);
+                                    Image.replace("\"", "");
+                                    subList.setImage(Image);
+                                    subList.setCallResponse(CallResponse);
                                     subList.setRating(Rating);
                                     String foll_date= Utility.formatDate(Followup_Date);
                                     subList.setFollowupdate(foll_date);
-                                    //Toast.makeText(EnquiryActivity.this, "followup date: "+next_foll_date, Toast.LENGTH_SHORT).show();
                                     item.add(subList);
                                     adapter = new EnquiryAdapter( item,TodaysEnquiryActivity.this);
                                     recyclerView.setAdapter(adapter);
@@ -703,7 +640,6 @@ public class TodaysEnquiryActivity extends AppCompatActivity implements SwipeRef
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            // showProgressDialog();
             viewDialog.showDialog();
         }
 
@@ -711,15 +647,12 @@ public class TodaysEnquiryActivity extends AppCompatActivity implements SwipeRef
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            // dismissProgressDialog();
             viewDialog.hideDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             EnquirySearchDetails(response);
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EnquirySearchDetails = new HashMap<String, String>();
             EnquirySearchDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(TodaysEnquiryActivity.this));
             EnquirySearchDetails.put("text", inputsearch.getText().toString());
@@ -727,7 +660,6 @@ public class TodaysEnquiryActivity extends AppCompatActivity implements SwipeRef
             EnquirySearchDetails.put("action","show_search_enquiry");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(TodaysEnquiryActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EnquirySearchDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
 
@@ -737,7 +669,6 @@ public class TodaysEnquiryActivity extends AppCompatActivity implements SwipeRef
     private void EnquirySearchDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
@@ -750,21 +681,15 @@ public class TodaysEnquiryActivity extends AppCompatActivity implements SwipeRef
                     mainframe.setVisibility(View.VISIBLE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }\
                         ttl_enquiry.setText(String.valueOf(jsonArrayResult.length()));
                         String ttl_enq = String.valueOf(jsonArrayResult.length());
-//                        total_enquiry.setText(ttl_enq);
                         final   ArrayList<EnquiryList> subListArrayList = new ArrayList<EnquiryList>();
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
                             for (int i = 0; i < jsonArrayResult.length(); i++) {
 
 
                                 subList = new EnquiryList();
-                                Log.d(TAG, "i: " + i);
-                                // Log.d(TAG, "run: " + itemCount);
-                                Log.v(TAG, "JsonResponseOpeartion ::");
+
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -776,14 +701,12 @@ public class TodaysEnquiryActivity extends AppCompatActivity implements SwipeRef
                                     String Comment = jsonObj.getString("Comment");
                                     String NextFollowup_Date = jsonObj.getString("NextFollowupDate");
                                     String Enquiry_ID = jsonObj.getString("Enquiry_ID");
-//                                    String Image = jsonObj.getString("Image");
-//                                    String CallResponse = jsonObj.getString("CallResponse");
+                                    String Image = jsonObj.getString("Image");
+                                    String CallResponse = jsonObj.getString("CallResponse");
                                     String Rating = jsonObj.getString("Rating");
                                     String Followup_Date = jsonObj.getString("FollowupDate");
                                     String Budget = jsonObj.getString("Budget");
-                                    //  for (int j = 0; j < 5; j++) {
-                                    itemCount++;
-                                    Log.d(TAG, "run offset: " + itemCount);
+
                                     subList.setName(name);
                                     subList.setGender(gender);
                                     String cont=Utility.lastFour(Contact);
@@ -795,10 +718,10 @@ public class TodaysEnquiryActivity extends AppCompatActivity implements SwipeRef
                                     String next_foll_date= Utility.formatDate(NextFollowup_Date);
                                     subList.setNextFollowUpDate(next_foll_date);
                                     subList.setID(Enquiry_ID);
-//                                    Image.replace("\"", "");
-//                                    subList.setImage(Image);
+                                    Image.replace("\"", "");
+                                    subList.setImage(Image);
                                     subList.setRating(Rating);
-//                                    subList.setCallResponse(CallResponse);
+                                    subList.setCallResponse(CallResponse);
                                     String foll_date= Utility.formatDate(Followup_Date);
                                     subList.setFollowupdate(foll_date);
                                     if(Budget.equals(".00")){
@@ -819,18 +742,12 @@ public class TodaysEnquiryActivity extends AppCompatActivity implements SwipeRef
                         }
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
-                    // nodata.setVisibility(View.VISIBLE);
-//                    nodata.setVisibility(View.VISIBLE);
-//                    swipeRefresh.setVisibility(View.GONE);
                     progressBar.setVisibility(View.GONE);
                     Toast.makeText(TodaysEnquiryActivity.this, "NO Record Found", Toast.LENGTH_SHORT).show();
-                    //frame.setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
-                //recyclerView.setVisibility(View.GONE);
-//                frame.setVisibility(View.VISIBLE);
             }
         }
     }

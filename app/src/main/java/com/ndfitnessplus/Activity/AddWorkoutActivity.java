@@ -132,9 +132,7 @@ public class AddWorkoutActivity extends AppCompatActivity {
             Log.v(LOG_TAG, "External Storage not available or you don't have permission to write");
         }
         else {
-            //path for the PDF file in the external storage
-            // pdfFile = new File(getExternalFilesDir(filepath), filename);
-//            String root = Environment.getExternalStoragePublicDirectory().getAbsolutePath();
+
             String root = Environment.getExternalStorageDirectory().getPath();
             File myDir = new File(root + "/Workout");
             myDir.mkdirs();
@@ -190,7 +188,6 @@ public class AddWorkoutActivity extends AppCompatActivity {
         awesomeValidation.addValidation(this, R.id.input_name, RegexTemplate.NOT_EMPTY, R.string.err_msg_name);
         awesomeValidation.addValidation(this, R.id.input_cont, RegexTemplate.NOT_EMPTY, R.string.err_msg_cont);
 
-       // swipeRefresh=findViewById(R.id.swipeRefresh);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
@@ -202,8 +199,6 @@ public class AddWorkoutActivity extends AppCompatActivity {
         workoutLevelClass();
         instructorNameClass();
 
-        //spinWorkoutLevel.setSelection(1);
-        //txtWorkoutLevel.setVisibility(View.VISIBLE);
         spinWorkoutLevel.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -226,17 +221,13 @@ public class AddWorkoutActivity extends AppCompatActivity {
                         workout_detailsclass();
                     }
                     if(!workoutLevel.equals(getResources().getString(R.string.workout_level))){
-                        //  awesomeValidation.addValidation(AddEnquiryActivity.this, R.id.spinner_enq_for,RegexTemplate.NOT_EMPTY, R.string.err_msg_next_foll_date);
+
                     }
-                    // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.black));
-                    // Showing selected spinner item
-                    //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                //Toast.makeText(parent.getContext(), "Please Select Enquiry For ", Toast.LENGTH_LONG).show();
             }
         });
         spinWorkoutLevel.setOnTouchListener(new View.OnTouchListener() {
@@ -272,9 +263,6 @@ public class AddWorkoutActivity extends AppCompatActivity {
                     }
 
                 }
-                // ((TextView) spinInstructorName.getSelectedView()).setTextColor(getResources().getColor(R.color.black));
-                // Showing selected spinner item
-                //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -306,8 +294,6 @@ public class AddWorkoutActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                // String selection = (String)parent.getItemAtPosition(position);
-                // Toast.makeText(MainNavigationActivity.this,"this is autocomplete suggestions"+selection,Toast.LENGTH_SHORT).show();
                 String countryName = searchcontactadapter.getItem(position).getCustName();
                 String contact = searchcontactadapter.getItem(position).getCustContact();
                 MemberID = searchcontactadapter.getItem(position).getMemberId();
@@ -337,7 +323,7 @@ public class AddWorkoutActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
                 if(inputContact.getText().length()==0){
                     inputName.getText().clear();
-                    //radioGroup.clearCheck();
+
                 }
             }
         });
@@ -346,9 +332,6 @@ public class AddWorkoutActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-
-                // String selection = (String)parent.getItemAtPosition(position);
-                // Toast.makeText(MainNavigationActivity.this,"this is autocomplete suggestions"+selection,Toast.LENGTH_SHORT).show();
                 String countryName = searchnameadapter.getItem(position).getCustName();
                 String contact = searchnameadapter.getItem(position).getCustContact();
                 MemberID = searchnameadapter.getItem(position).getMemberId();
@@ -431,7 +414,6 @@ public class AddWorkoutActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
         }
 
         @Override
@@ -445,7 +427,6 @@ public class AddWorkoutActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            //  Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> WorkoutLevelDetails = new HashMap<String, String>();
             WorkoutLevelDetails.put("action", "show_workout_level_master");
             WorkoutLevelDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(AddWorkoutActivity.this));
@@ -463,12 +444,10 @@ public class AddWorkoutActivity extends AppCompatActivity {
 
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
@@ -479,17 +458,15 @@ public class AddWorkoutActivity extends AppCompatActivity {
                         workoutLevellist.setName(getResources().getString(R.string.workout_level));
                         workoutLevelArrayList.add(0,workoutLevellist);
                         if (jsonArrayCountry != null && jsonArrayCountry.length() > 0){
-//
                             for (int i = 0; i < jsonArrayCountry.length(); i++) {
                                 workoutLevellist = new Spinner_List();
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayCountry.getJSONObject(i);
                                 if (jsonObj != null) {
 
                                     String WorkoutplanName     = jsonObj.getString("WorkoutplanName");
 
                                     String id=jsonObj.getString("Auto_Id");
-//
+
                                     workoutLevellist.setName(WorkoutplanName);
                                     workoutLevellist.setId(id);
 
@@ -518,7 +495,6 @@ public class AddWorkoutActivity extends AppCompatActivity {
                                                 // Set the hint text color gray
                                                 tv.setTextColor(Color.GRAY);
                                                 tv.setText(getResources().getString(R.string.prompt_workout_level));
-                                                // tv.setTextColor(Color.GRAY);
                                             }
                                             else {
                                                 tv.setTextColor(Color.BLACK);
@@ -558,27 +534,22 @@ public class AddWorkoutActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             InstructorNameDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> InstructorNameDetails = new HashMap<String, String>();
             InstructorNameDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(AddWorkoutActivity.this));
             InstructorNameDetails.put("action", "show_instructor_name_list");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(AddWorkoutActivity.this);
-            //InstructorNameloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(InstructorNameloyee.this));
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, InstructorNameDetails);
             Log.v(TAG, String.format("doInBackground :: show_dietition_name_list= %s", loginResult));
             return loginResult;
@@ -592,12 +563,10 @@ public class AddWorkoutActivity extends AppCompatActivity {
 
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
@@ -610,16 +579,11 @@ public class AddWorkoutActivity extends AppCompatActivity {
                         if (jsonArrayCountry != null && jsonArrayCountry.length() > 0){
                             for (int i = 0; i < jsonArrayCountry.length(); i++) {
                                 instructorNamelist = new Spinner_List();
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayCountry.getJSONObject(i);
                                 if (jsonObj != null) {
 
                                     String Name     = jsonObj.getString("Name");
 
-//                               if(i==0){
-//                                   instructorNamelist.setName(getResources().getString(R.string.promt_country));
-//                                   enqF.add(0,instructorNamelist);
-//                               }
                                     instructorNamelist.setName(Name);
 
                                     instructorNameArrayList.add(instructorNamelist);
@@ -647,7 +611,6 @@ public class AddWorkoutActivity extends AppCompatActivity {
                                                 // Set the hint text color gray
                                                 tv.setTextColor(Color.GRAY);
                                                 tv.setText(getResources().getString(R.string.prompt_instructor));
-                                                // tv.setTextColor(Color.GRAY);
                                             }
                                             else {
                                                 tv.setTextColor(Color.BLACK);
@@ -678,8 +641,6 @@ public class AddWorkoutActivity extends AppCompatActivity {
                     dialog.setCancelable(false);
                     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     dialog.show();
-                    //forumCount.setVisibility(View.INVISBLE);
-                    // queCount.setVisibility(View.INVISIBLE);
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");
@@ -700,28 +661,23 @@ public class AddWorkoutActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            // showProgressDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             SearchDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> SearchDetails = new HashMap<String, String>();
 
             SearchDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(AddWorkoutActivity.this) );
             SearchDetails.put("action", "show_all_member_list");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(AddWorkoutActivity.this);
-            //EmployeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(Employee.this));
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, SearchDetails);
             Log.v(TAG, String.format("doInBackground :: show_all_member_list= %s", loginResult));
             return loginResult;
@@ -735,12 +691,10 @@ public class AddWorkoutActivity extends AppCompatActivity {
 
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 if (object != null) {
                     JSONArray jsonArrayResult = object.getJSONArray("result");
@@ -748,7 +702,6 @@ public class AddWorkoutActivity extends AppCompatActivity {
                     if (jsonArrayResult != null && jsonArrayResult.length() > 0){
                         for (int i = 0; i < jsonArrayResult.length(); i++) {
                             searchModel = new Search_list();
-                            Log.v(TAG, "JsonResponseOpeartion ::");
                             JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                             if (jsonObj != null) {
 
@@ -770,13 +723,11 @@ public class AddWorkoutActivity extends AppCompatActivity {
                                 searchnameadapter = new SearchNameAdapter(AddWorkoutActivity.this, searchArrayList);
 
                                 inputName.setAdapter(searchnameadapter);
-                                // inputName.setDropDownBackgroundResource(R.drawable.search_background);
                                 inputName.setThreshold(1);
 
                                 searchcontactadapter = new SearchContactAdapter(AddWorkoutActivity.this, searchArrayList);
 
                                 inputContact.setAdapter(searchcontactadapter);
-                                // textContact.setDropDownBackgroundResource(R.drawable.search_background);
                                 inputContact.setThreshold(1);
 
                             }
@@ -806,7 +757,6 @@ public class AddWorkoutActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            // showProgressDialog();
             viewDialog.showDialog();
         }
 
@@ -814,17 +764,13 @@ public class AddWorkoutActivity extends AppCompatActivity {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
             viewDialog.hideDialog();
-            //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
-            //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
             CheckContactDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //  Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EnquiryForDetails = new HashMap<String, String>();
 
             EnquiryForDetails.put("mobileno",inputContact.getText().toString() );
@@ -832,7 +778,6 @@ public class AddWorkoutActivity extends AppCompatActivity {
             EnquiryForDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(AddWorkoutActivity.this) );
             EnquiryForDetails.put("action", "check_mobile_already_exist_or_not");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(AddWorkoutActivity.this);
-            //EnquiryForloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(EnquiryForloyee.this));
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EnquiryForDetails);
             Log.v(TAG, String.format("doInBackground :: check_mobile_already_exist_or_not= %s", loginResult));
             return loginResult;
@@ -849,13 +794,10 @@ public class AddWorkoutActivity extends AppCompatActivity {
 
             if (success.equalsIgnoreCase(getResources().getString(R.string.zero))) {
                 Toast.makeText(AddWorkoutActivity.this,"Member is not registred. Please register Member first",Toast.LENGTH_SHORT).show();
-                //inputContact.getText().clear();
-                // showCustomDialog();
                 finish();
                 Intent intent=new Intent(AddWorkoutActivity.this,AddMemberActivity.class);
                 intent.putExtra("contact",inputContact.getText().toString());
                 startActivity(intent);
-                //inputEmail, inputPhone,inputAdd,inputReq,inputFollowupdate;
             }
             else if (success.equalsIgnoreCase(getResources().getString(R.string.two)))
             {
@@ -864,7 +806,6 @@ public class AddWorkoutActivity extends AppCompatActivity {
                 if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
                     for (int i = 0; i < jsonArrayResult.length(); i++) {
 
-                        Log.v(TAG, "JsonResponseOpeartion ::");
                         JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                         if (jsonObj != null) {
 
@@ -872,14 +813,12 @@ public class AddWorkoutActivity extends AppCompatActivity {
                             String Name = jsonObj.getString("Name");
                             Email = jsonObj.getString("Email");
                             inputName.setText(Name);
-                            //invoiceRefIdClass();
 
                         }
                     }
                 } else if (jsonArrayResult.length() == 0) {
                     System.out.println("No records found");
                 }
-                // Toast.makeText(AddEnquiryActivity.this,"Please Enter New Mobile Number",Toast.LENGTH_SHORT).show();
             }else if(success.equalsIgnoreCase(getResources().getString(R.string.one))){
                 Toast.makeText(AddWorkoutActivity.this,"member has no active course.Please add course first",Toast.LENGTH_SHORT).show();
                 Intent intent=new Intent(AddWorkoutActivity.this,RenewActivity.class);
@@ -905,7 +844,6 @@ private void workout_detailsclass() {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
             viewDialog.showDialog();
         }
 
@@ -913,17 +851,13 @@ private void workout_detailsclass() {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
             viewDialog.hideDialog();
-           //progressBar.setVisibility(View.GONE);
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             WorkoutDetailsDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> WorkoutDetailsDetails = new HashMap<String, String>();
             WorkoutDetailsDetails.put("level_name", workoutLevel);
             WorkoutDetailsDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(AddWorkoutActivity.this));
@@ -931,7 +865,6 @@ private void workout_detailsclass() {
             WorkoutDetailsDetails.put("action","show_workout_level_details");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(AddWorkoutActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, WorkoutDetailsDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
 
@@ -941,25 +874,21 @@ private void workout_detailsclass() {
     private void WorkoutDetailsDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
                     nodata.setVisibility(View.GONE);
                     recyclerView.setVisibility(View.VISIBLE);
-                   //subListArrayList.clear();
-                    if (object != null) {
+                        if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
 
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
                             for (int i = 0; i < jsonArrayResult.length(); i++) {
                                 subList1 = new WorkOutDetailsList();
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -973,7 +902,6 @@ private void workout_detailsclass() {
 
                                         for (int j = 0; j < jsonArrayday_info.length(); j++) {
                                             subList = new WorkOutDetailsList();
-                                            Log.v(TAG, "JsonResponseOpeartion ::");
                                             JSONObject jsonObjdiet = jsonArrayday_info.getJSONObject(j);
                                             if (jsonObj != null) {
 
@@ -996,7 +924,6 @@ private void workout_detailsclass() {
                                                 subList.setVideoLink(Vediolink);
                                                 subList.setSection(false);
                                                 subList.setDay(Days);
-                                                //Toast.makeText(MainActivity.this, "j "+j, Toast.LENGTH_SHORT).show();
                                                 subListArrayList.add(subList);
                                                 subListArrayList1.add(subList);
 
@@ -1018,7 +945,6 @@ private void workout_detailsclass() {
                     recyclerView.setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
-//                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
             }
         }
@@ -1039,8 +965,6 @@ private void workout_detailsclass() {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
-            // viewDialog.showDialog();
         }
 
         @Override
@@ -1087,7 +1011,6 @@ private void workout_detailsclass() {
                 e.printStackTrace();
             }
 
-            //  Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> AddWorkoutDetails = new HashMap<String, String>();
             AddWorkoutDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(AddWorkoutActivity.this));
             Log.v(TAG, String.format("doInBackground :: comp_id= %s",SharedPrefereneceUtil.getSelectedBranchId(AddWorkoutActivity.this)));
@@ -1128,7 +1051,6 @@ private void workout_detailsclass() {
                 Toast.makeText(AddWorkoutActivity.this,"Workout added succesfully",Toast.LENGTH_SHORT).show();
 
                 EmailLoginClass();
-                //finish();
                 Intent intent=new Intent(AddWorkoutActivity.this, WorkoutActivity.class);
                 startActivity(intent);
             }
@@ -1156,28 +1078,22 @@ private void workout_detailsclass() {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            // dismissProgressDialog();
-            //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
-            //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
             EmailLoginDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EmailLoginDetails = new HashMap<String, String>();
             EmailLoginDetails.put("comp_id",SharedPrefereneceUtil.getSelectedBranchId(AddWorkoutActivity.this) );
             EmailLoginDetails.put("action", "show_email_login");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(AddWorkoutActivity.this);
-            //EnquiryForloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(EnquiryForloyee.this));
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EmailLoginDetails);
 
             Log.v(TAG, String.format("doInBackground :: show_email_login= %s", loginResult));
@@ -1195,9 +1111,6 @@ private void workout_detailsclass() {
 
             if (success.equalsIgnoreCase(getResources().getString(R.string.zero))) {
 
-                // showCustomDialog();
-
-                //inputEmail, inputPhone,inputAdd,inputReq,inputFollowupdate;
             }
             else if (success.equalsIgnoreCase(getResources().getString(R.string.two)))
             {
@@ -1206,7 +1119,6 @@ private void workout_detailsclass() {
 
                     if (jsonArrayCountry != null && jsonArrayCountry.length() > 0){
                         for (int i = 0; i < jsonArrayCountry.length(); i++) {
-                            Log.v(TAG, "JsonResponseOpeartion ::");
                             JSONObject jsonObj = jsonArrayCountry.getJSONObject(i);
                             if (jsonObj != null) {
 
@@ -1248,7 +1160,6 @@ private void workout_detailsclass() {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
             viewDialog.showDialog();
         }
 
@@ -1256,16 +1167,13 @@ private void workout_detailsclass() {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: show_receipt_data = %s", response));
-            //dismissProgressDialog();
             viewDialog.hideDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             ReceiptDataDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> ReceiptDataDetails = new HashMap<String, String>();
             ReceiptDataDetails.put("Company_Id", SharedPrefereneceUtil.getSelectedBranchId(AddWorkoutActivity.this));
             Log.v(TAG, String.format("doInBackground ::  company id = %s", SharedPrefereneceUtil.getSelectedBranchId(AddWorkoutActivity.this)));
@@ -1275,19 +1183,15 @@ private void workout_detailsclass() {
             Log.v(TAG, String.format("doInBackground :: show_branch_details= %s", loginResult));
             return loginResult;
         }
-
-
     }
 
     private void ReceiptDataDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
@@ -1297,7 +1201,6 @@ private void workout_detailsclass() {
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
                             for (int i = 0; i < jsonArrayResult.length(); i++) {
 
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -1313,13 +1216,10 @@ private void workout_detailsclass() {
 
                                     String domainurl=SharedPrefereneceUtil.getDomainUrl(AddWorkoutActivity.this);
                                     final  String imgurl=domainurl+ServiceUrls.IMAGES_URL+l;
-                                    Log.d(TAG, "imgurl: " +imgurl);
 
                                     String textBody = "";
 
                                     String currentdate=Utility.getCurrentDate();
-                                    //JSONArray jsonArrayPayTrasa = jsonObj.getJSONArray("payment_transa");
-                                    //if (jsonArrayPayTrasa != null && jsonArrayPayTrasa.length() > 0) {
                                         for (WorkOutDetailsList data : subListArrayList1)
                                         {
 
@@ -1333,7 +1233,6 @@ private void workout_detailsclass() {
                                                         "    <td width='18%'>"+data.getRepitation()+"</td>\n\n" +
                                                         "    <td width='14%'>"+data.getTime()+"</td>\n\n" +
                                                         "    </tr>\n";
-                                          //  }
                                         }
 
                                     final String messagehtml = "<!DOCTYPE html>\n" +
@@ -1449,18 +1348,10 @@ private void workout_detailsclass() {
 
                                         PdfWriter docWriter = PdfWriter.getInstance(document, new FileOutputStream(pdfFile));
                                         document.open();
-//
 
                                         PdfContentByte cb = docWriter.getDirectContent();
                                         //initialize fonts for text printing
                                         initializeFonts();
-
-                                        //the company logo is stored in the assets which is read only
-                                        //get the logo and print on the document
-                                        String urlOfImage = "https://lh5.googleusercontent.com/E3eX_"
-                                                + "hgl-eK9cX6j6XMyM6eOkCPvYs9Us5ySKIu60_fYFGlKywKP9pGfNcTj"
-                                                + "7WDSnDb4zrHubFRLHGK4DqBiLBa4HzRAWx728iHpDrL21HxzsEXSHAa"
-                                                + "lK49-rBzvU3DlmGURrwg";
 
                                         //Add Image from some URL
                                         Thread thread = new Thread(new Runnable() {
@@ -1470,15 +1361,7 @@ private void workout_detailsclass() {
                                                 try  {
                                                     Image image = Image.getInstance(new URL(imgurl));
                                                     image.setAbsolutePosition(510,750);
-                                                    image.scalePercent(50);
-//                                                    //Set absolute position for image in PDF (or fixed)
-//                                                    image.setAbsolutePosition(100, 500);
-//                                                    //Scale image's width and height
-//                                                    image.scaleAbsolute(200, 200);
-//                                                    //Scale image's height
-//                                                    image.scaleAbsoluteWidth(200);
-//                                                    //Scale image's width
-//                                                    image.scaleAbsoluteHeight(200);
+                                                    image.scalePercent(10);
                                                     document.add(image);
                                                     //Your code goes here
                                                 } catch (Exception e) {
@@ -1498,7 +1381,6 @@ private void workout_detailsclass() {
                                         createText(cb,50,700,inputName.getText().toString());
                                         createText(cb,50,685,Email);
                                         createText(cb,50,670,inputContact.getText().toString());
-                                       // createText(cb,50,655,MemberGST_No);
                                         createHeadings(cb,455,715,"Date :"+currentdate);
                                         createText(cb,455,700,"Member Id : "+MemberID);
                                         createText(cb,455,685,"Programmer : "+instructorName);
@@ -1507,7 +1389,6 @@ private void workout_detailsclass() {
                                         HTMLWorker htmlWorker = new HTMLWorker(document);
                                         htmlWorker.parse(new StringReader(messagehtml));
                                         document.close();
-                                        // document.close();
                                     }
                                     catch(Exception e){
                                         e.printStackTrace();
@@ -1587,8 +1468,6 @@ private void workout_detailsclass() {
                         }
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
-                    //nodata.setVisibility(View.VISIBLE);
-                    //.setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");
