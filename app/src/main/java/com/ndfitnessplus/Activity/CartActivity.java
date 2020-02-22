@@ -119,44 +119,12 @@ public class CartActivity extends AppCompatActivity implements RecyclerItemTouch
 
             if(subArrayList.size()>0) {
 
-                Log.d(TAG, "User List: " + subArrayList);
                 adapter = new CartAdapter(subArrayList, this, new CustomItemClickListener() {
                     @Override
                     public void onSpinnerQty(View v, int position) {
 
                         subArrayList = adapter.selctedProduct();
                         TotalCalculation();
-//                    for (POSItemList data : subArrayList) {
-//                       final POSItemList data = cartarrayList.get(position);
-//                        String quantity = data.getQuantity();
-//                        String totl = data.getRate();
-//                        String sp[] = totl.split(" ");
-//                        if (!totl.equals("null")) {
-//                            if (!quantity.equals("null")) {
-//                                double quantityst = Double.parseDouble(quantity);
-//                                double totaal = Double.parseDouble(sp[1]);
-//                                double chetotal = totaal * quantityst;
-//                                String prate="₹ "+chetotal;
-//                                data.setProductFinalRate(prate);
-//                                //cartarrayList.add(data);
-//
-////                                double chttl = 0;
-////                                if (quantityst == 1) {
-////                                    chttl = chetotal - 0;
-////
-////                                } else {
-////                                    chttl = chetotal - totaal;
-////                                }
-////
-////                                total += chttl;
-//                            }
-//                        }
-                        //Log.v(TAG, String.format(" :: total adapter = %s", totl));
-                        //Log.v(TAG, String.format(" :: Total = %s", total));
-                        //Log.v(TAG, String.format(" :: selected prod id *********************** %s",));
-//                    }
-
-//                        calculate(position);
                     }
 
                 });
@@ -169,9 +137,6 @@ public class CartActivity extends AppCompatActivity implements RecyclerItemTouch
                 recyclerView.setVisibility(View.GONE);
             }
 
-//
-//            String totlaprice="₹ "+String.valueOf(total);
-//            TotalTv.setText(totlaprice);
         }
         else {
             frame.setVisibility(View.GONE);
@@ -241,14 +206,8 @@ public class CartActivity extends AppCompatActivity implements RecyclerItemTouch
     public void TotalCalculation(){
         double total=0;
         for (int i =0;i<subArrayList.size(); i++) {
-            Log.d(TAG, "Size: " + subArrayList.size());
             final POSItemList data = subArrayList.get(i);
-//            subList =new POSItemList();
-//            subList.setProductCode(data.getProductCode());
-//            subList.setProductName(data.getProductName());
-//            subList.setQuantity(data.getQuantity());
-//            subList.setRate(data.getRate());
-//            subList.setProductImage(data.getProductImage());
+
             String quantity=data.getQuantity();
             String totl=data.getRate();
             String sp[]=totl.split(" ");
@@ -258,12 +217,11 @@ public class CartActivity extends AppCompatActivity implements RecyclerItemTouch
                     double totaal=Double.parseDouble(sp[1]);
                     double chetotal=totaal*quantityst;
                     String ttl="₹ "+chetotal;
-//                    subList.setProductFinalRate(ttl);
+
                     total +=chetotal;
 
                 }
             }
-            //subArrayList.add(subList);
 
         }
         String totlaprice="₹ "+String.valueOf(total);
@@ -286,25 +244,9 @@ public class CartActivity extends AppCompatActivity implements RecyclerItemTouch
     public void onSwiped(final RecyclerView.ViewHolder viewHolder, int direction,final int position) {
         final POSItemList deletedItem = subArrayList.get(position);
         final int deletedIndex = viewHolder.getAdapterPosition();
-       // adapter.removeItem(deletedIndex);
-
-//        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-//        alertDialogBuilder.setTitle("Exit Application?");
-//        alertDialogBuilder
-//                .setMessage("Click yes to exit!")
-//                .setCancelable(false)
-//                .setPositiveButton("Yes",
-//                        new DialogInterface.OnClickListener() {
-//                            public void onClick(DialogInterface dialog, int id) {
                                 if (viewHolder instanceof CartAdapter.ViewHolder) {
                                     // get the removed item name to display it in snack bar
                                     String name = deletedItem.getProductName();
-
-                                    // backup of removed item for undo purpose
-
-
-
-                                   // final  POSItemList data = subArrayList.get(position);
 
                                     double total=0;
                                     String sp=TotalTv.getText().toString();
@@ -320,42 +262,14 @@ public class CartActivity extends AppCompatActivity implements RecyclerItemTouch
                                     // remove the item from recycler view
                                     db.remove_on_swipe(subArrayList.get(deletedIndex).getProductCode());
                                     adapter.removeItem(position);
-                                    //adapter.notifyDataSetChanged();
+
 
 
                                     // showing snack bar with Undo option
                                     final   String compid= SharedPrefereneceUtil.getSelectedBranchId(CartActivity.this);
                                     Snackbar snackbar = Snackbar
                                             .make(linearLayout1, name + " removed from cart!", Snackbar.LENGTH_LONG);
-//            snackbar.setAction("UNDO", new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//
-//                    // undo is selected, restore the deleted item
-//                    adapter.restoreItem(deletedItem, deletedIndex);
-//
-//                    //Log.v(TAG, String.format(" :: product rate = %s", subArrayList.get(position).getRate()));
-//                   // String ratesp[]=subArrayList.get(position).getRate().split(" ");
-//                    long returnid=  db.insertCartes(data.getAutoId(),data.getProductCode(),data.getProductName(),data.getProductDisc(),
-//                            data.getProductImage(),compid,data.getQuantity(),data.getSelectedQuantity(),ratesp[1],data.getTax(),data.getMaxDiscount(),data.getPurchaseAmount());
-//
-//                    if(returnid > 0){
-////                        double total=0;
-////                        String sp=TotalTv.getText().toString();
-////                        String split[]=sp.split(" ");
-////                        double totalprice=Double.parseDouble(split[1]);
-////                       // String ratesp[]=subArrayList.get(position).getRate().split(" ");
-////                        double rate=Double.parseDouble(ratesp[1]);
-////                        total=totalprice+rate;
-////                        String ttlprice="₹ "+total;
-////                        TotalTv.setText(ttlprice);
-//                        String  userId = String.valueOf(returnid);
-//                        Log.v(TAG, String.format(" :: product id = %s", userId));
-//                        Snackbar.make(view, "Product Added Into Cart Successfully", Snackbar.LENGTH_SHORT).show();
-//                    }
-//
-//                }
-//            });
+
                                     snackbar.setActionTextColor(Color.YELLOW);
                                     snackbar.show();
 
@@ -363,7 +277,6 @@ public class CartActivity extends AppCompatActivity implements RecyclerItemTouch
 
                                         @Override
                                         public void onDismissed(Snackbar snackbar, int event) {
-                                            //see Snackbar.Callback docs for event details
 
                                         }
 
@@ -372,22 +285,9 @@ public class CartActivity extends AppCompatActivity implements RecyclerItemTouch
 
                                         }
                                     });
-//            overridePendingTransition( 0, 0);
-//            startActivity(getIntent());
-                                }
-//                            }
-//                        })
 
-//                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int id) {
-//                        adapter.restoreItem(deletedItem, deletedIndex);
-//                        recyclerView.scrollToPosition(deletedIndex);
-//                        dialog.cancel();
-//                    }
-//                });
-//
-//        AlertDialog alertDialog = alertDialogBuilder.create();
-//        alertDialog.show();
+                                }
+
 
     }
 }

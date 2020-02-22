@@ -60,7 +60,6 @@ public class CourseCongratulationActivity extends AppCompatActivity {
         Packagename=findViewById(R.id.package_name);
         StartDate=findViewById(R.id.start_date);
         EndDate=findViewById(R.id.end_date);
-        // PaymentMode=findViewById(R.id.payment_type);
         Paid=findViewById(R.id.paid);
         InvoiceId=findViewById(R.id.invoice_idTV);
         Date=findViewById(R.id.reg_dateTV);
@@ -69,7 +68,6 @@ public class CourseCongratulationActivity extends AppCompatActivity {
         MobileNo=findViewById(R.id.contact);
         BalanceTV=findViewById(R.id.balance);
         MemberID=findViewById(R.id.member_id);
-        //Total=findViewById(R.id.total);
         imageView=findViewById(R.id.user_image);
         sendWhatsapp=findViewById(R.id.send_to_whatsapp);
 
@@ -88,7 +86,6 @@ public class CourseCongratulationActivity extends AppCompatActivity {
         ((FloatingActionButton) findViewById(R.id.fab)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // dismiss();
                 Intent intent = new Intent(CourseCongratulationActivity.this, CourseActivity.class);
                 startActivity(intent);
 
@@ -108,7 +105,6 @@ public class CourseCongratulationActivity extends AppCompatActivity {
                             Method m = StrictMode.class.getMethod("disableDeathOnFileUriExposure");
                             m.invoke(null);
                             sendIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(pdfFile));
-//                            shareImage(Uri.fromFile(new File(Path)));
                         }catch(Exception e){
                             e.printStackTrace();
                         }
@@ -117,9 +113,6 @@ public class CourseCongratulationActivity extends AppCompatActivity {
 
                     }
                     sendIntent.putExtra("jid", toNumber + "@s.whatsapp.net");
-//                sendIntent.setType("*/*");
-//                String[] mimetypes = {"image/*", "text/plain"};
-//                sendIntent.putExtra(Intent.EXTRA_MIME_TYPES, mimetypes);       Image with message
                     sendIntent.setAction(Intent.ACTION_SEND);
                     sendIntent.setPackage("com.whatsapp");
                     sendIntent.setType("application/pdf");
@@ -150,7 +143,7 @@ public class CourseCongratulationActivity extends AppCompatActivity {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
             viewDialog.showDialog();
-            //showProgressDialog();
+
         }
 
         @Override
@@ -158,15 +151,12 @@ public class CourseCongratulationActivity extends AppCompatActivity {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
             viewDialog.hideDialog();
-            //dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             CourseDetailsDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> CourseDetailsDetails = new HashMap<String, String>();
             CourseDetailsDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(CourseCongratulationActivity.this));
             CourseDetailsDetails.put("member_id",member_id );
@@ -177,7 +167,6 @@ public class CourseCongratulationActivity extends AppCompatActivity {
             String domainurl=SharedPrefereneceUtil.getDomainUrl(CourseCongratulationActivity.this);
             CourseDetailsDetails.put("action","show_course_details_by_member_id");
             String loginResult = ruc.sendPostRequest(domainurl+ ServiceUrls.LOGIN_URL,  CourseDetailsDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
 
@@ -187,11 +176,9 @@ public class CourseCongratulationActivity extends AppCompatActivity {
     private void  CourseDetailsDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
-            try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
+                try {
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
@@ -205,10 +192,7 @@ public class CourseCongratulationActivity extends AppCompatActivity {
                             for (int i = 0; i < jsonArrayResult.length(); i++) {
 
 
-                                // filterArrayList = new CourseList();
-                                Log.d(TAG, "i: " + i);
 
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -232,7 +216,7 @@ public class CourseCongratulationActivity extends AppCompatActivity {
                                     String Financial_Year = jsonObj.getString("Financial_Year");
                                     String PaymentType = jsonObj.getString("PaymentType");
 
-                                    //  for (int j = 0; j < 5; j++) {
+
 
                                     String sdate= Utility.formatDate(Start_Date);
                                     String edate=Utility.formatDate(End_Date);
@@ -267,20 +251,20 @@ public class CourseCongratulationActivity extends AppCompatActivity {
 
                                     StartDate.setText(sdate);
                                     EndDate.setText(edate);
-                                    // PaymentMode.setText(PaymentType);
+
                                     Paid.setText(fpaid);
                                     String ino="Receipt No: "+Invoice_ID;
                                     InvoiceId.setText(ino);
                                     Date.setText(reg_date);
                                     SessionTv.setText(session);
                                     DurationTv.setText(dur_sess);
-                                    // Total.setText(ttl);
+
                                     BalanceTV.setText(fbalance);
 
                                     String domainurl= SharedPrefereneceUtil.getDomainUrl(CourseCongratulationActivity.this);
                                     String url= domainurl+ServiceUrls.IMAGES_URL + Image;
 
-                                    // Glide.with(this).load(url).placeholder(R.drawable.nouser).into(imageView);
+
                                     RequestOptions requestOptions = new RequestOptions();
                                     requestOptions.placeholder(R.drawable.nouser);
                                     requestOptions.error(R.drawable.nouser);
@@ -291,19 +275,12 @@ public class CourseCongratulationActivity extends AppCompatActivity {
                                                 .load(url).into(imageView);
                                     }
 
-                                    Tax=Tax;
-
-
-
                                 }
                             }
                         } else if (jsonArrayResult.length() == 0) {
                             System.out.println("No records found");
                         }
                     }
-                }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
-                    //nodata.setVisibility(View.VISIBLE);
-                    // recyclerView.setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");

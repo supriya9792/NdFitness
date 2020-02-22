@@ -119,15 +119,14 @@ public class CourseWiseAttendanceActivity extends AppCompatActivity {
 
             @Override
             public void onMonthScroll(float positionOffset) {
-//                Log.i("listener", "onMonthScroll:" + positionOffset);
+
             }
         });
 
         expCalendarView.setOnDateClickListener(new OnDateClickListener() {
             @Override
             public void onDateClick(View view, DateData date) {
-                // expCalendarView.getMarkedDates().removeAdd();
-                //expCalendarView.markDate(date);
+
                 selectedDate = date;
             }
         });
@@ -142,7 +141,6 @@ public class CourseWiseAttendanceActivity extends AppCompatActivity {
 
         Calendar calendar = Calendar.getInstance();
         selectedDate = new DateData(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH));
-        // expCalendarView.markDate(selectedDate);
 
     }
     private void initToolbar() {
@@ -170,8 +168,6 @@ public class CourseWiseAttendanceActivity extends AppCompatActivity {
             intent.putExtra("member_id",member_id);
             startActivity(intent);
         }else if(id== android.R.id.home){
-            //Toast.makeText(this,"Navigation back pressed",Toast.LENGTH_SHORT).show();
-            // NavUtils.navigateUpFromSameTask(this);
             finish();
         }
 
@@ -192,7 +188,6 @@ public class CourseWiseAttendanceActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            // showProgressDialog();
             viewDialog.showDialog();
         }
 
@@ -200,16 +195,13 @@ public class CourseWiseAttendanceActivity extends AppCompatActivity {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: show_balance_trasaction_details = %s", response));
-            //  dismissProgressDialog();
             viewDialog.hideDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             AttendanceDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> AttendanceDetails = new HashMap<String, String>();
             AttendanceDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(CourseWiseAttendanceActivity.this));
             AttendanceDetails.put("member_id",member_id );
@@ -230,31 +222,23 @@ public class CourseWiseAttendanceActivity extends AppCompatActivity {
     private void AttendanceDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
+
         if (jsonResponse != null) {
             ArrayList<String> stringArrayListPresent = new ArrayList<>();
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
-                    //progressBar.setVisibility(View.GONE);
+
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
                         ArrayList<BalanceTrasactionList> item = new ArrayList<BalanceTrasactionList>();
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
                             String yest="";
                             for (int i = 0; i < jsonArrayResult.length(); i++) {
 
 
-
-                                Log.d(TAG, "i: " + i);
-
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -298,7 +282,6 @@ public class CourseWiseAttendanceActivity extends AppCompatActivity {
 
 
                                     start_date=Start_Date;
-                                    //  for (int j = 0; j < 5; j++) {
                                     String att="Attended:"+String.valueOf(stringArrayListPresent.size());
                                     if(Remaining_Session.equals("null") ){
                                         Remaining_Session="0";
@@ -309,7 +292,6 @@ public class CourseWiseAttendanceActivity extends AppCompatActivity {
 
                                 }
                             }
-                            // String yest=Utility.getyesterdayDate();
                             showAttendance(start_date,yest,stringArrayListPresent);
                         } else if (jsonArrayResult.length() == 0) {
                             System.out.println("No records found");
@@ -340,13 +322,11 @@ public class CourseWiseAttendanceActivity extends AppCompatActivity {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
-                    // yest=Utility.getyesterdayDate();
                     String sdate=start_date;
                     showAttendance(sdate,yest,stringArrayListPresent);
                     String rem="Remaning:"+RemainingSession;
                     remaining.setText(rem);
-                    //nodata.setVisibility(View.VISIBLE);
-                    // recyclerView.setVisibility(View.GONE);
+
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");
@@ -443,7 +423,6 @@ public class CourseWiseAttendanceActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        //dismissProgressDialog();
         finish();
     }
 }

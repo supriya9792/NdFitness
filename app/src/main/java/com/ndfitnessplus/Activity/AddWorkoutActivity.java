@@ -1095,8 +1095,6 @@ private void workout_detailsclass() {
             EmailLoginDetails.put("action", "show_email_login");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(AddWorkoutActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EmailLoginDetails);
-
-            Log.v(TAG, String.format("doInBackground :: show_email_login= %s", loginResult));
             return loginResult;
         }
     }
@@ -1371,8 +1369,7 @@ private void workout_detailsclass() {
                                         });
 
                                         thread.start();
-//
-                                        // creating a sample invoice with some customer data
+
                                         createHeadings(cb,50,780,Company_Name);
                                         createText(cb,50,765,Address);
                                         createText(cb,50,750,Contact);

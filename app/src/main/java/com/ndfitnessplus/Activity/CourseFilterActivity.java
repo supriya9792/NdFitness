@@ -195,7 +195,7 @@ public class CourseFilterActivity extends AppCompatActivity {
                         // Set the hint text color gray
                         tv.setTextColor(Color.GRAY);
                         tv.setText(getResources().getString(R.string.prompt_mem_date));
-                        // tv.setTextColor(Color.GRAY);
+
                     } else {
                         tv.setTextColor(Color.BLACK);
                     }
@@ -206,7 +206,7 @@ public class CourseFilterActivity extends AppCompatActivity {
             spinDateWise.setAdapter(datewiseadapter);
         }
         spinDateWise.setSelection(1);
-        //Toast.makeText(MainActivity.this,genderradioButton.getText(), Toast.LENGTH_SHORT).show();
+
         spinDateWise.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -219,7 +219,6 @@ public class CourseFilterActivity extends AppCompatActivity {
                         tv.setText(getResources().getString(R.string.prompt_mem_date));
                     }
 
-//                tv.setTextColor(getResources().getColor(R.color.black));
                     Datewise = tv.getText().toString();
                     if ((Datewise.equals(getResources().getString(R.string.prompt_mem_date))) ||
                             (Datewise.equals(getResources().getString(R.string.all)))) {
@@ -282,9 +281,6 @@ public class CourseFilterActivity extends AppCompatActivity {
                         packagename = "";
                     }
                 }
-                // ((TextView) spinPackageType.getSelectedView()).setTextColor(getResources().getColor(R.color.black));
-                // Showing selected spinner item
-                //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -303,15 +299,11 @@ public class CourseFilterActivity extends AppCompatActivity {
                     if(index==0){
                         tv.setText(getResources().getString(R.string.prompt_executive));
                     }
-//                tv.setTextColor(getResources().getColor(R.color.black));
                     salesExecutiveName = tv.getText().toString();
                     if((salesExecutiveName.equals(getResources().getString(R.string.prompt_executive)))||
                             (salesExecutiveName.equals(getResources().getString(R.string.all)))){
                         salesExecutiveName="";
                     }
-                    // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.white));
-                    // Showing selected spinner item
-                    //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
                 }}
 
             @Override
@@ -338,9 +330,7 @@ public class CourseFilterActivity extends AppCompatActivity {
                     }
 
                 }
-                // ((TextView) spinPackageType.getSelectedView()).setTextColor(getResources().getColor(R.color.black));
-                // Showing selected spinner item
-                //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+
             }
 
             @Override
@@ -359,8 +349,6 @@ public class CourseFilterActivity extends AppCompatActivity {
     }
     public void CampareTwoDates(){
         //******************campare two dates****************
-//        String date = "03/26/2012 11:00:00";
-//        String dateafter = "03/26/2012 11:59:00";
         SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "dd-MM-yyyy");
         Date convertedDate = new Date();
@@ -369,7 +357,6 @@ public class CourseFilterActivity extends AppCompatActivity {
             convertedDate = dateFormat.parse(todate.getText().toString());
             convertedDate2 = dateFormat.parse(fromdate.getText().toString());
             if (convertedDate2.after(convertedDate) || convertedDate2.equals(convertedDate)) {
-                //.setText("true");
             } else {
                 String firstday= Utility.getFirstDayofMonth();
                 todate.setText(firstday);
@@ -382,8 +369,6 @@ public class CourseFilterActivity extends AppCompatActivity {
     }
     public void CampareFronTwoDates(){
         //******************campare two dates****************
-//        String date = "03/26/2012 11:00:00";
-//        String dateafter = "03/26/2012 11:59:00";
         SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "dd-MM-yyyy");
         Date convertedDate = new Date();
@@ -392,7 +377,6 @@ public class CourseFilterActivity extends AppCompatActivity {
             convertedDate = dateFormat.parse(fromdate.getText().toString());
             convertedDate2 = dateFormat.parse(todate.getText().toString());
             if (convertedDate2.before(convertedDate) || convertedDate2.equals(convertedDate)) {
-                //.setText("true");
             } else {
                 String firstday= Utility.getCurrentDate();
                 fromdate.setText(firstday);
@@ -403,23 +387,7 @@ public class CourseFilterActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-    private void showProgressDialog() {
-        Log.v(TAG, String.format("showProgressDialog"));
-        pd = new ProgressDialog(CourseFilterActivity.this);
-        pd.setMessage("loading");
-        pd.setCancelable(false);
-        pd.show();
-    }
 
-    /**
-     * Dismiss Progress Dialog.
-     */
-    private void dismissProgressDialog() {
-        Log.v(TAG, String.format("dismissProgressDialog"));
-        pd.cancel();
-
-
-    }
     // ************* Package Type spinner *******************
     public void  packageTypeClass() {
         CourseFilterActivity.PackageTypeTrackClass ru = new CourseFilterActivity.PackageTypeTrackClass();
@@ -434,15 +402,12 @@ public class CourseFilterActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             PackageTypeDetails(response);
 
         }
@@ -468,7 +433,6 @@ public class CourseFilterActivity extends AppCompatActivity {
 
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
@@ -489,7 +453,7 @@ public class CourseFilterActivity extends AppCompatActivity {
                             packageTypeArrayList.add(1,packagetypelist);
                             for (int i = 0; i < jsonArrayCountry.length(); i++) {
                                 packagetypelist = new Spinner_List();
-                                Log.v(TAG, "JsonResponseOpeartion ::");
+
                                 JSONObject jsonObj = jsonArrayCountry.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -522,7 +486,7 @@ public class CourseFilterActivity extends AppCompatActivity {
                                                 // Set the hint text color gray
                                                 tv.setTextColor(Color.GRAY);
                                                 tv.setText(getResources().getString(R.string.prompt_packagetype));
-                                                // tv.setTextColor(Color.GRAY);
+
                                             }
                                             else {
                                                 tv.setTextColor(Color.BLACK);
@@ -572,7 +536,7 @@ public class CourseFilterActivity extends AppCompatActivity {
                                 // Set the hint text color gray
                                 tv.setTextColor(Color.GRAY);
                                 tv.setText(getResources().getString(R.string.prompt_packagetype));
-                                // tv.setTextColor(Color.GRAY);
+
                             }
                             else {
                                 tv.setTextColor(Color.BLACK);
@@ -604,22 +568,18 @@ public class CourseFilterActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             PackageNameDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> PackageNameDetails = new HashMap<String, String>();
             PackageNameDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(CourseFilterActivity.this));
             PackageNameDetails.put("action", "show_package_name");
@@ -638,7 +598,6 @@ public class CourseFilterActivity extends AppCompatActivity {
 
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
@@ -659,7 +618,7 @@ public class CourseFilterActivity extends AppCompatActivity {
                             packagenameArrayList.add(1,packageNamelist);
                             for (int i = 0; i < jsonArrayCountry.length(); i++) {
                                 packageNamelist = new Spinner_List();
-                                Log.v(TAG, "JsonResponseOpeartion ::");
+
                                 JSONObject jsonObj = jsonArrayCountry.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -694,7 +653,7 @@ public class CourseFilterActivity extends AppCompatActivity {
                                                 // Set the hint text color gray
                                                 tv.setTextColor(Color.GRAY);
                                                 tv.setText(getResources().getString(R.string.prompt_package_name));
-                                                // tv.setTextColor(Color.GRAY);
+
                                             }
                                             else {
                                                 tv.setTextColor(Color.BLACK);
@@ -743,7 +702,7 @@ public class CourseFilterActivity extends AppCompatActivity {
                                 // Set the hint text color gray
                                 tv.setTextColor(Color.GRAY);
                                 tv.setText(getResources().getString(R.string.prompt_package_name));
-                                // tv.setTextColor(Color.GRAY);
+
                             }
                             else {
                                 tv.setTextColor(Color.BLACK);
@@ -773,29 +732,24 @@ public class CourseFilterActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            // showProgressDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            // dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             ExecutiveNameDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> ExecutiveNameDetails = new HashMap<String, String>();
             String comp_name=SharedPrefereneceUtil.getCompanyName(CourseFilterActivity.this);
             String location=SharedPrefereneceUtil.getSelectedBranch(CourseFilterActivity.this);
             String compid=comp_name+"-"+location+",";
             ExecutiveNameDetails.put("comp_id", compid);
             ExecutiveNameDetails.put("action", "show_executive_list");
-            //ExecutiveNameloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(ExecutiveNameloyee.this));
             String domainurl=SharedPrefereneceUtil.getDomainUrl(CourseFilterActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, ExecutiveNameDetails);
             Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
@@ -810,7 +764,6 @@ public class CourseFilterActivity extends AppCompatActivity {
 
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
@@ -822,21 +775,20 @@ public class CourseFilterActivity extends AppCompatActivity {
                     if (object != null) {
                         JSONArray jsonArrayCountry = object.getJSONArray("result");
                         SalesExecutiveArrayList.clear();
-                        //for(int j=0;j<2;j++){
+
                         saleExecutiveList = new Spinner_List();
 
                         saleExecutiveList.setName(getResources().getString(R.string.prompt_executive));
 
                         SalesExecutiveArrayList.add(0,saleExecutiveList);
 
-                        // }
                         if (jsonArrayCountry != null && jsonArrayCountry.length() > 0){
                             saleExecutiveList.setName(getResources().getString(R.string.all));
 
                             SalesExecutiveArrayList.add(1,saleExecutiveList);
                             for (int i = 0; i < jsonArrayCountry.length(); i++) {
                                 saleExecutiveList = new Spinner_List();
-                                Log.v(TAG, "JsonResponseOpeartion ::");
+
                                 JSONObject jsonObj = jsonArrayCountry.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -868,7 +820,7 @@ public class CourseFilterActivity extends AppCompatActivity {
                                                 // Set the hint text color gray
                                                 tv.setTextColor(Color.GRAY);
                                                 tv.setText(getResources().getString(R.string.prompt_executive));
-                                                // tv.setTextColor(Color.GRAY);
+
                                             }
                                             else {
                                                 tv.setTextColor(Color.BLACK);
@@ -889,7 +841,7 @@ public class CourseFilterActivity extends AppCompatActivity {
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
 
                     SalesExecutiveArrayList.clear();
-                    //for(int j=0;j<2;j++){
+
                     saleExecutiveList = new Spinner_List();
 
                     saleExecutiveList.setName(getResources().getString(R.string.prompt_executive));
@@ -921,7 +873,7 @@ public class CourseFilterActivity extends AppCompatActivity {
                                 // Set the hint text color gray
                                 tv.setTextColor(Color.GRAY);
                                 tv.setText(getResources().getString(R.string.prompt_executive));
-                                // tv.setTextColor(Color.GRAY);
+
                             }
                             else {
                                 tv.setTextColor(Color.BLACK);
@@ -952,26 +904,21 @@ public class CourseFilterActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             InstructorNameDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> InstructorNameDetails = new HashMap<String, String>();
             InstructorNameDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(CourseFilterActivity.this));
             InstructorNameDetails.put("action", "show_instructor_name_list");
-            //InstructorNameloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(InstructorNameloyee.this));
             String domainurl=SharedPrefereneceUtil.getDomainUrl(CourseFilterActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, InstructorNameDetails);
             Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
@@ -986,7 +933,6 @@ public class CourseFilterActivity extends AppCompatActivity {
 
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
@@ -1004,14 +950,13 @@ public class CourseFilterActivity extends AppCompatActivity {
                         instructorArrayList.add(0,instructorList);
 
                         if (jsonArrayCountry != null && jsonArrayCountry.length() > 0){
-                           // instructorList.setName("NA");
+
                             instructorList.setName(getResources().getString(R.string.all));
                             instructorArrayList.add(1,instructorList);
-//                            instructorList.setName("NA");
-//                            instructorArrayList.add(2,instructorList);
+
                             for (int i = 0; i < jsonArrayCountry.length(); i++) {
                                 instructorList = new Spinner_List();
-                                Log.v(TAG, "JsonResponseOpeartion ::");
+
                                 JSONObject jsonObj = jsonArrayCountry.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -1045,7 +990,7 @@ public class CourseFilterActivity extends AppCompatActivity {
                                                 // Set the hint text color gray
                                                 tv.setTextColor(Color.GRAY);
                                                 tv.setText(getResources().getString(R.string.prompt_instructor));
-                                                // tv.setTextColor(Color.GRAY);
+
                                             }
                                             else {
                                                 tv.setTextColor(Color.BLACK);
@@ -1093,7 +1038,7 @@ public class CourseFilterActivity extends AppCompatActivity {
                                 // Set the hint text color gray
                                 tv.setTextColor(Color.GRAY);
                                 tv.setText(getResources().getString(R.string.prompt_instructor));
-                                // tv.setTextColor(Color.GRAY);
+
                             }
                             else {
                                 tv.setTextColor(Color.BLACK);
@@ -1103,8 +1048,7 @@ public class CourseFilterActivity extends AppCompatActivity {
 
                     };
                     spinInstructor.setAdapter(instructoradapter);
-                    //forumCount.setVisibility(View.INVISBLE);
-                    // queCount.setVisibility(View.INVISIBLE);
+
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");
@@ -1127,25 +1071,18 @@ public class CourseFilterActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-         //   showProgressDialog();
-           // viewDialog.showDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-           // dismissProgressDialog();
-          //  viewDialog.hideDialog();
-            //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
-            //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
             SearchEnquiryDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> SearchEnquiryDetails = new HashMap<String, String>();
             SearchEnquiryDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(CourseFilterActivity.this));
             Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(CourseFilterActivity.this)));
@@ -1183,21 +1120,15 @@ public class CourseFilterActivity extends AppCompatActivity {
             String success = object.getString(getResources().getString(R.string.success));
 
             if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
-                //Toast.makeText(CourseFilterActivity.this,"Enquiry added succesfully",Toast.LENGTH_SHORT).show();
 
                 if (object != null) {
                     JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
                     if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
                         for (int i = 0; i < jsonArrayResult.length(); i++) {
 
 
                             subList = new CourseList();
-                            Log.d(TAG, "i: " + i);
-                            // Log.d(TAG, "run: " + itemCount);
-                            Log.v(TAG, "JsonResponseOpeartion ::");
+
                             JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                             if (jsonObj != null) {
 
@@ -1220,10 +1151,6 @@ public class CourseFilterActivity extends AppCompatActivity {
                                 String Member_Email_ID = jsonObj.getString("Member_Email_ID");
                                 String Financial_Year = jsonObj.getString("Financial_Year");
 
-
-                                //  for (int j = 0; j < 5; j++) {
-                                //itemCount++;
-                               // Log.d(TAG, "run: " + itemCount);
                                 subList.setName(name);
                                 String sdate=Utility.formatDate(Start_Date);
                                 String edate=Utility.formatDate(End_Date);
@@ -1253,7 +1180,6 @@ public class CourseFilterActivity extends AppCompatActivity {
                                 String cont=Utility.lastFour(Contact);
                                 subList.setContact(Contact);
                                 subList.setContactEncrypt(cont);
-//                                    String pack=Package_Name;
                                 subList.setPackageName(Package_Name);
                                 subList.setExecutiveName(ExecutiveName);
                                 subList.setTax(Tax);
@@ -1265,12 +1191,11 @@ public class CourseFilterActivity extends AppCompatActivity {
                                 subList.setInvoiceID(Invoice_ID);
 
                                 subList.setRate(Rate);
-                                // String fpaid="₹ "+Final_paid;
+
                                 subList.setPaid(Final_paid);
                                 if(Final_Balance.equals(".00")){
                                     Final_Balance="0.00";
                                 }
-                                //String fbalance="₹ "+Final_Balance;
                                 subList.setBalance(Final_Balance);
                                 Image.replace("\"", "");
                                 subList.setImage(Image);

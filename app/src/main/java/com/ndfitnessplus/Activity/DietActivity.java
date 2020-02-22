@@ -296,11 +296,11 @@ public class DietActivity extends AppCompatActivity implements SwipeRefreshLayou
     public void onRefresh() {
         itemCount = 0;
         currentPage = PAGE_START;
-        Log.d(TAG, "currentPage: " + currentPage);
+
         isLastPage = false;
-        // adapter.clear();
+
         onRestart();
-        //preparedListItem();
+
 
 
     }
@@ -314,29 +314,28 @@ public class DietActivity extends AppCompatActivity implements SwipeRefreshLayou
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
+
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
+
             DietDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+
             HashMap<String, String> DietDetails = new HashMap<String, String>();
             DietDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(DietActivity.this));
             Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(DietActivity.this)));
             DietDetails.put("action","show_existing_diet_list");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(DietActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ ServiceUrls.LOGIN_URL, DietDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
+
             return loginResult;
         }
 
@@ -345,7 +344,6 @@ public class DietActivity extends AppCompatActivity implements SwipeRefreshLayou
     private void DietDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
@@ -471,7 +469,6 @@ public class DietActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> DietSearchDetails = new HashMap<String, String>();
             DietSearchDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(DietActivity.this));
             DietSearchDetails.put("text",inputsearch.getText().toString());
@@ -479,7 +476,6 @@ public class DietActivity extends AppCompatActivity implements SwipeRefreshLayou
             DietSearchDetails.put("action","show_search_diet");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(DietActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, DietSearchDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
 
@@ -489,7 +485,6 @@ public class DietActivity extends AppCompatActivity implements SwipeRefreshLayou
     private void DietSearchDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
@@ -511,9 +506,7 @@ public class DietActivity extends AppCompatActivity implements SwipeRefreshLayou
 
 
                                 subList = new DietList();
-                                Log.d(TAG, "i: " + i);
-                                // Log.d(TAG, "run: " + itemCount);
-                                Log.v(TAG, "JsonResponseOpeartion ::");
+
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -529,10 +522,6 @@ public class DietActivity extends AppCompatActivity implements SwipeRefreshLayou
                                     String Charges = jsonObj.getString("Charges");
 
 
-
-                                    //  for (int j = 0; j < 5; j++) {
-                                    itemCount++;
-                                    Log.d(TAG, "run: " + itemCount);
                                     subList.setDietId(Diet_Id);
                                     String ddate=Utility.formatDate(Diet_Date);
                                     subList.setDietStartDate(ddate);
@@ -559,12 +548,10 @@ public class DietActivity extends AppCompatActivity implements SwipeRefreshLayou
                         }
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
-                    // nodata.setVisibility(View.VISIBLE);
                     Toast.makeText(DietActivity.this, "NO Record Found", Toast.LENGTH_SHORT).show();
                     progressBar.setVisibility(View.GONE);
                     nodata.setVisibility(View.VISIBLE);
                     swipeRefresh.setVisibility(View.GONE);
-                    //recyclerView.setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");

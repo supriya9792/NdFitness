@@ -303,8 +303,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
 
             String cont = filterArrayList.getContact();
             ContactNumber = cont;
-//                Log.v(TAG, String.format("Selected  ::contact= %s", cont));
-//                Log.v(TAG, String.format("Selected  ::name= %s", filterArrayList.getName()));
+
             contactTV.setText(cont);
             nameTV.setText(filterArrayList.getName());
             String fpaid = "₹ " + filterArrayList.getPaid();
@@ -341,7 +340,6 @@ public class CourseDetailsActivity extends AppCompatActivity {
             String domainurl = SharedPrefereneceUtil.getDomainUrl(CourseDetailsActivity.this);
             String url = domainurl + ServiceUrls.IMAGES_URL + filterArrayList.getImage();
 
-            // Glide.with(this).load(url).placeholder(R.drawable.nouser).into(imageView);
             RequestOptions requestOptions = new RequestOptions();
             requestOptions.placeholder(R.drawable.nouser);
             requestOptions.error(R.drawable.nouser);
@@ -356,37 +354,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
             balanceTrasactionclass();
             coursedetailsclass();
         }
-//        requestPermission();
-//        if (!isExternalStorageAvailable() || isExternalStorageReadOnly()) {
-//            Log.v(LOG_TAG, "External Storage not available or you don't have permission to write");
-//        } else {
-//            String root = Environment.getExternalStorageDirectory().getPath();
-//            File myDir = new File(root + "/MyInvoices");
-//            myDir.mkdirs();
-//            long n = System.currentTimeMillis() / 1000L;
-//            String iname = SharedPrefereneceUtil.getSelectedBranchId(CourseDetailsActivity.this) + member_id;
-//            fname = "Invoice" + n + ".pdf";
-//            FilePath = root + "/MyInvoices/" + fname;
-//            pdfFile = new File(myDir, fname);
-//            if (pdfFile.exists())
-//                pdfFile.delete();
-//
-//            try {
-//                pdfFile.createNewFile();
-//                FileOutputStream out = new FileOutputStream(pdfFile);
-//                out.flush();
-//                out.close();
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//            MediaScannerConnection.scanFile(this, new String[]{pdfFile.toString()}, null,
-//                    new MediaScannerConnection.OnScanCompletedListener() {
-//                        public void onScanCompleted(String path, Uri uri) {
-//                            Log.i("ExternalStorage", "Scanned " + path + ":");
-//                            Log.i("ExternalStorage", "-> uri=" + uri);
-//                        }
-//                    });
-//        }
+
         phone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -414,18 +382,15 @@ public class CourseDetailsActivity extends AppCompatActivity {
 
                 PackageManager pm = getPackageManager();
                 try {
-                    // Uri uri = Uri.parse("smsto:" + Contact);
+
                     Uri uri = Uri.parse("whatsapp://send?phone=+91" + contactTV.getText().toString());
                     Intent waIntent = new Intent(Intent.ACTION_VIEW, uri);
-                    //waIntent.setType("text/plain");
-                    String text = "YOUR TEXT HERE";
 
                     PackageInfo info = pm.getPackageInfo("com.whatsapp", PackageManager.GET_META_DATA);
                     //Check if package exists or not. If not then code
                     //in catch block will be called
                     waIntent.setPackage("com.whatsapp");
 
-                    // waIntent.putExtra(Intent.EXTRA_TEXT, text);
                     startActivity(waIntent);
 
                 } catch (PackageManager.NameNotFoundException e) {
@@ -500,10 +465,9 @@ public class CourseDetailsActivity extends AppCompatActivity {
                 dialog.dismiss();
             }
         });
-        //  if(i==0){
+
         SetSpinner();
-        //i++;
-        //}
+
         PaymenttypeClass();
         // ************* rate and paid same then next followup date is null ***********
         inputPaid.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -522,27 +486,25 @@ public class CourseDetailsActivity extends AppCompatActivity {
                     double tax_amt = paid - i;
                     TaxAmount = String.valueOf(tax_amt);
                     subtotal = String.valueOf(i);
-                    // Log.v(TAG, String.format("Max Discount  :: souble max discout= %s", maxdisc));
                     if (rate == paid) {
                         inputNextFollDate.getText().clear();
                         inputNextFollDate.setEnabled(false);
                         inputNextFollDate.setKeyListener(null);
-                        //   awesomeValidation.clear();
+
                     } else {
                         inputNextFollDate.setEnabled(true);
-                        // awesomeValidation.addValidation(CourseDetailsActivity.this,R.id.input_nextfollDate, RegexTemplate.NOT_EMPTY,R.string.err_msg_next_foll_date);
                     }
                     if (paid > rate) {
                         Toast.makeText(CourseDetailsActivity.this, "Your paying more than your fees", Toast
                                 .LENGTH_SHORT).show();
                         inputBalance.setText(balanceTV.getText().toString());
                         inputPaid.setText("");
-                        //awesomeValidation.clear();
+
                         inputNextFollDate.getText().clear();
                         inputNextFollDate.setEnabled(false);
                         inputNextFollDate.setKeyListener(null);
                     } else {
-                        // inputBalance.setText(balanceTV.getText().toString());
+
                     }
 
                 } else {
@@ -581,7 +543,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                         inputNextFollDate.getText().clear();
                         inputNextFollDate.setEnabled(false);
                         inputNextFollDate.setKeyListener(null);
-                        // awesomeValidation.clear();
+
                     } else {
                         inputNextFollDate.setEnabled(true);
 
@@ -589,7 +551,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                     if (paid > rate) {
                         Toast.makeText(CourseDetailsActivity.this, "Your paying more than your fees", Toast
                                 .LENGTH_SHORT).show();
-                        // awesomeValidation.clear();
+
                         inputBalance.setText(balanceTV.getText().toString());
                         inputPaid.setText("");
                         inputNextFollDate.getText().clear();
@@ -633,10 +595,9 @@ public class CourseDetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (!(inputBalance.getText().toString().equals("0.0"))) {
-                    // Toast.makeText(this, "Please fill Payment type or Package type", Toast.LENGTH_LONG).show();
-                    //awesomeValidation.addValidation(CourseDetailsActivity.this,R.id.input_nextfollDate,RegexTemplate.NOT_EMPTY,R.string.err_msg_next_payment_date);
+
                     if (inputNextFollDate.getText().length() > 0) {
-                        // Log.v(TAG, String.format("Remaining balance= %s", inputBalance.getText().toString()));
+
                         double paid = 0;
                         if (inputPaid.getText().length() > 0) {
                             paid = Double.parseDouble(inputPaid.getText().toString());
@@ -656,14 +617,12 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                 dialog.dismiss();
                             }
 
-                            Log.v(TAG, String.format("calling function= %s", "Add Balnce receipt"));
                         }
 
                     } else {
                         Toast.makeText(CourseDetailsActivity.this, "Please select next payment date", Toast.LENGTH_LONG).show();
                     }
                 } else {
-                    // Log.v(TAG, String.format("Remaining balance= %s", inputBalance.getText().toString()));
                     double paid = Double.parseDouble(inputPaid.getText().toString());
                     if (paymentType.equals(getResources().getString(R.string.payment_type))) {
                         Toast.makeText(CourseDetailsActivity.this, "Please fill Payment type or Package type", Toast.LENGTH_LONG).show();
@@ -679,7 +638,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                             AddBalanceReceiptClass();
                             dialog.dismiss();
                         }
-                        Log.v(TAG, String.format("calling function= %s", "Add Balnce receipt"));
+
                     }
 
                 }
@@ -734,7 +693,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
         txtFollType = (TextView) dialog.findViewById(R.id.txt_folltype);
 
         inputfollComment = (EditText) dialog.findViewById(R.id.input_enquiry_comment);
-        //final EditText veri_otp=(EditText)dialog.findViewById(R.id.et_otp);
+
         inputNextFollowupdate = (EditText) dialog.findViewById(R.id.input_next_foll_date);
 
         ((ImageButton) dialog.findViewById(R.id.bt_close)).setOnClickListener(new View.OnClickListener() {
@@ -743,13 +702,12 @@ public class CourseDetailsActivity extends AppCompatActivity {
                 dialog.dismiss();
             }
         });
-        //  if(i==0){
+
         SetFollowupSpinner();
-        //i++;
-        //}
+
         callResponseClass();
         follTypeClass();
-        // inputNextFollowupdate.setText(NextFollowupDate);
+
         String curr_date = Utility.getCurrentDate();
         inputNextFollowupdate.setText(curr_date);
 
@@ -771,7 +729,6 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                                   int monthOfYear, int dayOfMonth) {
 
                                 inputNextFollowupdate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
-                                //tiemPicker();
                             }
                         }, mYear, mMonth, mDay);
                 datePickerDialog.getDatePicker().setMinDate(c.getTimeInMillis());
@@ -841,7 +798,6 @@ public class CourseDetailsActivity extends AppCompatActivity {
                  public void run() {
                      try  {
                          if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                             Log.d("FilePath", FilePath);
                              PrintManager printManager = (PrintManager)CourseDetailsActivity.this.getSystemService(Context.PRINT_SERVICE);
                              final String jobName = CourseDetailsActivity.this.getString(R.string.app_name) + " Document";
                              PrintDocumentAdapter pda = new PrintDocumentAdapter() {
@@ -852,9 +808,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                      OutputStream output = null;
 
                                      try {
-//                        AssetManager assetManager = getAssets();
-//                        String root = Environment.getExternalStorageDirectory().getPath();
-//                        String path=root+"/MyInvoices/Invoice1578297168.pdf";
+
                                          File file = new File(FilePath);
                                          Log.d("FilePath", FilePath);
                                          input = new FileInputStream(file);
@@ -869,9 +823,9 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                          callback.onWriteFinished(new PageRange[]{PageRange.ALL_PAGES});
 
                                      } catch (FileNotFoundException ee) {
-                                         //Catch exception
+
                                      } catch (Exception e) {
-                                         //Catch exception
+
                                      } finally {
                                          try {
                                              input.close();
@@ -889,16 +843,6 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                          callback.onLayoutCancelled();
                                          return;
                                      }
-                                     Log.d("FilePath", FilePath);
-//                    File file = new File(FilePath);
-                                     // int pages = computePageCount(newAttributes);
-//                                     PDDocument myDocument = null;
-//                                     try {
-//                                         myDocument = PDDocument.load(new File(FilePath));
-//                                     } catch (IOException e) {
-//                                         e.printStackTrace();
-//                                     }
-//                                     pages = myDocument.getNumberOfPages();
 
                                      if (pages > 0) {
                                          PrintDocumentInfo pdi = new PrintDocumentInfo.Builder("invoice.pdf")
@@ -925,18 +869,14 @@ public class CourseDetailsActivity extends AppCompatActivity {
         } else if (id == R.id.whatsapp) {
             PackageManager pm = getPackageManager();
             try {
-                // Uri uri = Uri.parse("smsto:" + Contact);
                 Uri uri = Uri.parse("whatsapp://send?phone=+91" + contactTV.getText().toString());
                 Intent waIntent = new Intent(Intent.ACTION_VIEW, uri);
-                //waIntent.setType("text/plain");
                 String text = "YOUR TEXT HERE";
 
                 PackageInfo info = pm.getPackageInfo("com.whatsapp", PackageManager.GET_META_DATA);
-                //Check if package exists or not. If not then code
-                //in catch block will be called
+
                 waIntent.setPackage("com.whatsapp");
 
-                // waIntent.putExtra(Intent.EXTRA_TEXT, text);
                 startActivity(waIntent);
 
             } catch (PackageManager.NameNotFoundException e) {
@@ -946,8 +886,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
             return true;
         } else if (id == R.id.share_pdf) {
             try {
-                File outputFile = new File(FilePath);
-//                   Uri uri = Uri.parse("whatsapp://send?phone=+91" + contactTV.getText().toString());
+
                 String toNumber = "91" + ContactNumber; // contains spaces.
                 toNumber = toNumber.replace("+", "").replace(" ", "");
 
@@ -957,7 +896,6 @@ public class CourseDetailsActivity extends AppCompatActivity {
                             Method m = StrictMode.class.getMethod("disableDeathOnFileUriExposure");
                             m.invoke(null);
                             sendIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(pdfFile));
-//                            shareImage(Uri.fromFile(new File(Path)));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -965,13 +903,8 @@ public class CourseDetailsActivity extends AppCompatActivity {
                             sendIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(pdfFile));
 
                     }
-                   //  sendIntent.setComponent(new ComponentName("com.whatsapp","com.whatsapp.Conversation"));
+
                     sendIntent.putExtra("jid", toNumber + "@s.whatsapp.net");
-//                      sendIntent.putExtra(Intent.ACTION_VIEW, uri);
-//                    sendIntent.putExtra("jid", toNumber + "@s.whatsapp.net");
-//                sendIntent.setType("*/*");
-//                String[] mimetypes = {"image/*", "text/plain"};
-//                sendIntent.putExtra(Intent.EXTRA_MIME_TYPES, mimetypes);       Image with message
                     sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                     sendIntent.setAction(Intent.ACTION_SEND);
                     sendIntent.setPackage("com.whatsapp");
@@ -1012,7 +945,6 @@ public class CourseDetailsActivity extends AppCompatActivity {
                             payment_date.setText(pdate);
                         }
 
-//            try {
                         String domainurl= SharedPrefereneceUtil.getDomainUrl(CourseDetailsActivity.this);
                         final  String strurl= domainurl+ServiceUrls.IMAGES_URL + Logo;
                         Log.e("Imageurl", strurl);
@@ -1029,44 +961,24 @@ public class CourseDetailsActivity extends AppCompatActivity {
 
                             }
                         });
-//            shareview.setMinimumWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
-//            shareview.setMinimumHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
-//            lp.copyFrom(shareview.getWindowVisibility());
-//            lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
-//            lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+
                         int width=shareview.getMeasuredWidth();
                         int height=shareview.getMeasuredHeight();
 
                         Bitmap bitmap1 = loadBitmapFromView(shareview, width,height);
                         saveBitmap(bitmap1);
-                        //  String str_screenshot = "/sdcard/Testing/"+"testing" + ".jpg";
                         String str_screenshot = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+"/testing" + ".png";
                         fn_share(str_screenshot);
 
             }else{
                 Toast.makeText(CourseDetailsActivity.this, "No Outstanding Remaining", Toast.LENGTH_SHORT).show();
             }
-//            LinearLayout wrapper = new LinearLayout(this);
-//            wrapper.setLayoutParams(new LinearLayout.LayoutParams(500,500,1));
 
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
-//    private int computePageCount(PrintAttributes printAttributes) {
-//        int itemsPerPage = 4; // default item count for portrait mode
-//
-//        PrintAttributes.MediaSize pageSize = printAttributes.getMediaSize();
-//        if (!pageSize.isPortrait()) {
-//            // Six items per page in landscape orientation
-//            itemsPerPage = 6;
-//        }
-//
-//        // Determine number of print items
-//        int printItemCount = getPrintItemCount();
-//
-//        return (int) Math.ceil(printItemCount / itemsPerPage);
-//    }
+
     public void saveBitmap(Bitmap bitmap) {
         File imagePath = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+"/testing" + ".png");
         FileOutputStream fos;
@@ -1104,11 +1016,8 @@ public class CourseDetailsActivity extends AppCompatActivity {
     public void fn_share(String path) {
 
         File file = new File(path);
-        Uri uri = Uri.parse("whatsapp://send?phone=+91" + contactTV.getText().toString());
-        Bitmap bmp = BitmapFactory.decodeFile(file.getAbsolutePath());
-        // Uri uri = Uri.fromFile(file);
+
         try {
-            File outputFile = new File(FilePath);
             String toNumber = "91"+ContactNumber; // contains spaces.
             toNumber = toNumber.replace("+", "").replace(" ", "");
 
@@ -1118,21 +1027,14 @@ public class CourseDetailsActivity extends AppCompatActivity {
                     Method m = StrictMode.class.getMethod("disableDeathOnFileUriExposure");
                     m.invoke(null);
                     sendIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
-//                            shareImage(Uri.fromFile(new File(Path)));
                 }catch(Exception e){
                     e.printStackTrace();
                 }
             }else{
                     sendIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
-//                            shareImage(Uri.fromFile(new File(Path)));
             }
-           // sendIntent.setComponent(new  ComponentName("com.whatsapp","com.whatsapp.Conversation"));
             sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             sendIntent.putExtra("jid", PhoneNumberUtils.stripSeparators(toNumber) + "@s.whatsapp.net");
-//            sendIntent.putExtra(Intent.ACTION_VIEW, uri);
-//                sendIntent.setType("*/*");
-//                String[] mimetypes = {"image/*", "text/plain"};
-//                sendIntent.putExtra(Intent.EXTRA_MIME_TYPES, mimetypes);       Image with message
             sendIntent.setAction(Intent.ACTION_SEND);
 
             sendIntent.setPackage("com.whatsapp");
@@ -1237,18 +1139,12 @@ public class CourseDetailsActivity extends AppCompatActivity {
                     }
                     if (!(FollowupType == null)) {
                         if (FollowupType.equals("Member BirthDay")||FollowupType.equals("Staff BirthDay")) {
-                            //Toast.makeText(parent.getContext(), "no interetsed: ", Toast.LENGTH_LONG).show();
                             inputNextFollowupdate.setText("");
                             inputNextFollowupdate.setEnabled(false);
                             inputNextFollowupdate.setKeyListener(null);
                         } else {
                             inputNextFollowupdate.setEnabled(true);
                         }
-//                        if(FollowupType.equals("Payment")&&(Rating.equals("Not Interested"))){
-//                            inputNextFollowupdate.setEnabled(true);
-//                            String curr_date = Utility.getCurrentDate();
-//                            inputNextFollowupdate.setText(curr_date);
-//                        }
                     }
                 }
             }
@@ -1281,13 +1177,10 @@ public class CourseDetailsActivity extends AppCompatActivity {
                 View view = super.getDropDownView(position, convertView, parent);
                 if(view !=null){
                     TextView tv = (TextView) view.findViewById(R.id.tv_Name);
-//                    View layView = super.getView(position, convertView, parent);
-//                    layView.setPadding(0, 0, layView.getPaddingRight(), 0);
                     if(position == 0){
                         // Set the hint text color gray
                         tv.setTextColor(Color.GRAY);
                         tv.setText(getResources().getString(R.string.rating));
-                        // tv.setTextColor(Color.GRAY);
                     }
                     else {
                         tv.setTextColor(Color.BLACK);
@@ -1300,10 +1193,8 @@ public class CourseDetailsActivity extends AppCompatActivity {
         spinnerArrayAdapter1.setDropDownViewResource(R.layout.spinner_item);
         spinRating.setAdapter(spinnerArrayAdapter1);
         int spinnerPositionrating = spinnerArrayAdapter1.getPosition(Rating);
-        //Toast.makeText(this, "position: " + spinnerPositionrating, Toast.LENGTH_LONG).show();
         spinRating.setSelection(spinnerPositionrating);
         ArrayList<Spinner_List> ratingArrayList = new ArrayList<Spinner_List>();
-//
         spinRating.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -1311,7 +1202,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                 int index = parent.getSelectedItemPosition();
                 if (view != null) {
                     TextView tv = (TextView) view.findViewById(R.id.tv_Name);
-                    //View layView = super.getView(position, convertView, parent);
+
                     view.setPadding(0, 0, 0, 0);
                     tv.setTextColor(getResources().getColor(R.color.black));
                     if (!(Rating == null)) {
@@ -1323,25 +1214,19 @@ public class CourseDetailsActivity extends AppCompatActivity {
                     }
                     if (!(Rating == null)) {
                         if (Rating.equals("Not Interested") || Rating.equals("Converted")) {
-                            //Toast.makeText(parent.getContext(), "no interetsed: ", Toast.LENGTH_LONG).show();
+
                             inputNextFollowupdate.setText("");
                             inputNextFollowupdate.setEnabled(false);
                             inputNextFollowupdate.setKeyListener(null);
                         } else {
                             inputNextFollowupdate.setEnabled(true);
                         }
-//                        if(FollowupType.equals("Payment")&&(Rating.equals("Not Interested"))){
-//                            inputNextFollowupdate.setEnabled(true);
-//                            String curr_date = Utility.getCurrentDate();
-//                            inputNextFollowupdate.setText(curr_date);
-//                        }else{
-                            if (Rating.equals("Not Interested") || Rating.equals("Converted")) {
-                                //Toast.makeText(parent.getContext(), "no interetsed: ", Toast.LENGTH_LONG).show();
+                     if (Rating.equals("Not Interested") || Rating.equals("Converted")) {
+
                                 inputNextFollowupdate.setText("");
                                 inputNextFollowupdate.setEnabled(false);
                                 inputNextFollowupdate.setKeyListener(null);
                             }
-//                        }
                     }
                     if(index==0){
                         txtrating.setVisibility(View.VISIBLE);
@@ -1356,23 +1241,6 @@ public class CourseDetailsActivity extends AppCompatActivity {
             }
         });
 
-    }
-
-    private void showProgressDialog() {
-        Log.v(TAG, String.format("showProgressDialog"));
-        pd = new ProgressDialog(CourseDetailsActivity.this);
-        pd.setMessage("loading");
-        pd.setCancelable(false);
-        pd.show();
-    }
-
-    /**
-     * Dismiss Progress Dialog.
-     */
-    private void dismissProgressDialog() {
-        Log.v(TAG, String.format("dismissProgressDialog"));
-
-        pd.cancel();
     }
     //*********** Asycc class for loading data for database **************
     private void balanceTrasactionclass() {
@@ -1390,7 +1258,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-           // showProgressDialog();
+
             viewDialog.showDialog();
         }
 
@@ -1398,16 +1266,13 @@ public class CourseDetailsActivity extends AppCompatActivity {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: show_balance_trasaction_details = %s", response));
-          //  dismissProgressDialog();
             viewDialog.hideDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             BalanceTrasactionDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> BalanceTrasactionDetails = new HashMap<String, String>();
             BalanceTrasactionDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(CourseDetailsActivity.this));
             BalanceTrasactionDetails.put("member_id",member_id );
@@ -1420,7 +1285,6 @@ public class CourseDetailsActivity extends AppCompatActivity {
             BalanceTrasactionDetails.put("action","show_balance_trasaction_details");
             String domainurl= SharedPrefereneceUtil.getDomainUrl(CourseDetailsActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, BalanceTrasactionDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
 
@@ -1430,21 +1294,17 @@ public class CourseDetailsActivity extends AppCompatActivity {
     private void BalanceTrasactionDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
                     progressBar.setVisibility(View.GONE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
+
                         ArrayList<BalanceTrasactionList> item = new ArrayList<BalanceTrasactionList>();
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
 
@@ -1452,9 +1312,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
 
 
                                 subList = new BalanceTrasactionList();
-                                Log.d(TAG, "i: " + i);
 
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -1465,8 +1323,6 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                     String ReceiptDate = jsonObj.getString("ReceiptDate");
                                     String Receipt_Id = jsonObj.getString("Receipt_Id");
 
-
-                                    //  for (int j = 0; j < 5; j++) {
 
                                     subList.setPaid(Paid);
                                     subList.setBalance(RemainingBalance);
@@ -1486,12 +1342,8 @@ public class CourseDetailsActivity extends AppCompatActivity {
                             System.out.println("No records found");
                         }
                     }
-                }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
-                    //nodata.setVisibility(View.VISIBLE);
-                    // recyclerView.setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
                 android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(CourseDetailsActivity.this);
                 builder.setMessage(R.string.server_exception);
@@ -1521,25 +1373,24 @@ public class CourseDetailsActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
+
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
+
             PaymentTypeDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+
             HashMap<String, String> PaymentTypeDetails = new HashMap<String, String>();
             PaymentTypeDetails.put("action", "show_payment_type_list");
-            //PaymentTypeloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(PaymentTypeloyee.this));
+
             String domainurl= SharedPrefereneceUtil.getDomainUrl(CourseDetailsActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, PaymentTypeDetails);
             Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
@@ -1554,12 +1405,10 @@ public class CourseDetailsActivity extends AppCompatActivity {
 
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
@@ -1579,10 +1428,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                     String PaymentType     = jsonObj.getString("PaymentType");
 
                                     String id=jsonObj.getString("Auto_Id");
-//                               if(i==0){
-//                                   paymentTypeList.setName(getResources().getString(R.string.promt_country));
-//                                   enqF.add(0,paymentTypeList);
-//                               }
+
                                     paymentTypeList.setName(PaymentType);
                                     paymentTypeList.setId(id);
 
@@ -1611,7 +1457,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                                 // Set the hint text color gray
                                                 tv.setTextColor(Color.GRAY);
                                                 tv.setText(getResources().getString(R.string.prompt_payment_type));
-                                                // tv.setTextColor(Color.GRAY);
+
                                             }
                                             else {
                                                 tv.setTextColor(Color.BLACK);
@@ -1629,10 +1475,6 @@ public class CourseDetailsActivity extends AppCompatActivity {
                             System.out.println("No records found");
                         }
                     }
-                }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
-
-                    //forumCount.setVisibility(View.INVISBLE);
-                    // queCount.setVisibility(View.INVISIBLE);
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");
@@ -1654,26 +1496,21 @@ public class CourseDetailsActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            // showProgressDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            // dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             CallResponseDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> CallResponseDetails = new HashMap<String, String>();
             CallResponseDetails.put("action", "show_call_response_list");
             String domainurl= SharedPrefereneceUtil.getDomainUrl(CourseDetailsActivity.this);
-            //CallResponseloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(CallResponseloyee.this));
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, CallResponseDetails);
             Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
@@ -1685,12 +1522,10 @@ public class CourseDetailsActivity extends AppCompatActivity {
 
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
@@ -1708,10 +1543,6 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                     String CallResponse     = jsonObj.getString("CallResponse");
 
                                     String id=jsonObj.getString("Auto_Id");
-//                               if(i==0){
-//                                   spinCallReslist.setName(getResources().getString(R.string.promt_country));
-//                                   enqF.add(0,spinCallReslist);
-//                               }
                                     spinCallReslist.setName(CallResponse);
                                     spinCallReslist.setId(id);
 
@@ -1741,14 +1572,12 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                 public View getDropDownView(int position, View convertView,
                                                             ViewGroup parent) {
                                     View view = super.getDropDownView(position, convertView, parent);
-//                                    View layView = super.getView(position, convertView, parent);
-//                                    layView.setPadding(0, 0, layView.getPaddingRight(), 0);
+
                                     TextView tv = (TextView) view.findViewById(R.id.tv_Name);
                                     if(position == 0){
                                         // Set the hint text color gray
                                         tv.setTextColor(Color.GRAY);
                                         tv.setText(getResources().getString(R.string.call_res));
-                                        // tv.setTextColor(Color.GRAY);
                                     }
                                     else {
                                         tv.setTextColor(Color.BLACK);
@@ -1791,15 +1620,12 @@ public class CourseDetailsActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            // showProgressDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            // dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             FollTypeDetails(response);
 
         }
@@ -1822,12 +1648,10 @@ public class CourseDetailsActivity extends AppCompatActivity {
 
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
@@ -1879,13 +1703,10 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                                             ViewGroup parent) {
                                     View view = super.getDropDownView(position, convertView, parent);
                                     TextView tv = (TextView) view.findViewById(R.id.tv_Name);
-//                                    View layView = super.getView(position, convertView, parent);
-//                                    layView.setPadding(0, 0, layView.getPaddingRight(), 0);
                                     if(position == 0){
                                         // Set the hint text color gray
                                         tv.setTextColor(Color.GRAY);
                                         tv.setText(getResources().getString(R.string.hint_foll_type));
-                                        // tv.setTextColor(Color.GRAY);
                                     }
                                     else {
                                         tv.setTextColor(Color.BLACK);
@@ -1897,16 +1718,11 @@ public class CourseDetailsActivity extends AppCompatActivity {
                             spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_item);
                             spinFollType.setAdapter(spinnerArrayAdapter);
                             int spinnerPosition = spinnerArrayAdapter.getPosition(FollowupType);
-                            // Toast.makeText(this, "position: " + spinnerPosition, Toast.LENGTH_LONG).show();
                             spinFollType.setSelection(spinnerPosition);
                         }else if(jsonArrayCountry.length()==0){
                             System.out.println("No records found");
                         }
                     }
-                }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
-
-                    //forumCount.setVisibility(View.INVISBLE);
-                    // queCount.setVisibility(View.INVISIBLE);
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");
@@ -1928,7 +1744,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
+
             viewDialog.showDialog();
         }
 
@@ -1938,15 +1754,12 @@ public class CourseDetailsActivity extends AppCompatActivity {
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
           //  dismissProgressDialog();
             viewDialog.hideDialog();
-            //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
-            //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
             TakeFollowupDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> TakeFollowupDetails = new HashMap<String, String>();
             TakeFollowupDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(CourseDetailsActivity.this));
             Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(CourseDetailsActivity.this)));
@@ -1995,17 +1808,12 @@ public class CourseDetailsActivity extends AppCompatActivity {
                 startActivity(intent);
                 overridePendingTransition(0, 0);
                 moveTaskToBack(false);
-                // showCustomDialog();
-
-                //inputEmail, inputPhone,inputAdd,inputReq,inputFollowupdate;
             }
 
             else if (success.equalsIgnoreCase(getResources().getString(R.string.zero)))
             {
                 Toast.makeText(CourseDetailsActivity.this,"Something went wrong",Toast.LENGTH_SHORT).show();
 
-                // inputContact.getText().clear();
-                //Toast.makeText(CourseDetailsActivity.this,"Please Enter New Mobile Number",Toast.LENGTH_SHORT).show();
             }
 
         } catch (JSONException e) {
@@ -2025,7 +1833,6 @@ public class CourseDetailsActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-           // showProgressDialog();
             viewDialog.showDialog();
         }
 
@@ -2033,10 +1840,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
             viewDialog.hideDialog();
-            //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
-            //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
             AddBalanceReceiptDetails(response);
 
         }
@@ -2131,23 +1935,19 @@ public class CourseDetailsActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
+
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            // dismissProgressDialog();
-            //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
-            //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
             EmailLoginDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EmailLoginDetails = new HashMap<String, String>();
             EmailLoginDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(CourseDetailsActivity.this) );
             EmailLoginDetails.put("action", "show_email_login");
@@ -2224,7 +2024,6 @@ public class CourseDetailsActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            // showProgressDialog();
             viewDialog.showDialog();
         }
 
@@ -2232,16 +2031,13 @@ public class CourseDetailsActivity extends AppCompatActivity {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: show_receipt_data = %s", response));
-            //dismissProgressDialog();
             viewDialog.hideDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             ReceiptDataDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> ReceiptDataDetails = new HashMap<String, String>();
             ReceiptDataDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(CourseDetailsActivity.this));
             ReceiptDataDetails.put("invoice_id", invoice_id);
@@ -2263,12 +2059,10 @@ public class CourseDetailsActivity extends AppCompatActivity {
     private void ReceiptDataDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("show_receipt_data :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
@@ -2995,7 +2789,6 @@ public class CourseDetailsActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-           // showProgressDialog();
            // viewDialog.showDialog();
         }
 
@@ -3003,7 +2796,6 @@ public class CourseDetailsActivity extends AppCompatActivity {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-           // dismissProgressDialog();
            // viewDialog.hideDialog();
             SendEnquirySmsDetails(response);
 
@@ -3127,22 +2919,19 @@ public class CourseDetailsActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
+
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
              CourseDetailsDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String>  CourseDetailsDetails = new HashMap<String, String>();
              CourseDetailsDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(CourseDetailsActivity.this));
              CourseDetailsDetails.put("member_id",member_id );
@@ -3163,21 +2952,17 @@ public class CourseDetailsActivity extends AppCompatActivity {
     private void  CourseDetailsDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
                     progressBar.setVisibility(View.GONE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
+
                         ArrayList<BalanceTrasactionList> item = new ArrayList<BalanceTrasactionList>();
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
 
@@ -3185,9 +2970,6 @@ public class CourseDetailsActivity extends AppCompatActivity {
 
 
                                 filterArrayList = new CourseList();
-                                Log.d(TAG, "i: " + i);
-
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -3210,7 +2992,6 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                     String Member_Email_ID = jsonObj.getString("Member_Email_ID");
                                     String Financial_Year = jsonObj.getString("Financial_Year");
 
-                                    //  for (int j = 0; j < 5; j++) {
                                     start_date=Start_Date;
                                     end_date=End_Date;
                                     filterArrayList.setName(name);
@@ -3219,7 +3000,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                     String todate=sdate+" to "+edate;
                                     filterArrayList.setStartToEndDate(todate);
                                     filterArrayList.setContact(Contact);
-//                                    String pack=Package_Name;
+
                                     filterArrayList.setPackageName(Package_Name);
                                     filterArrayList.setExecutiveName(ExecutiveName);
                                     filterArrayList.setTax(Tax);
@@ -3232,21 +3013,18 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                     filterArrayList.setInvoiceID(Invoice_ID);
 
                                     filterArrayList.setRate(Rate);
-                                    // String fpaid="₹ "+Final_paid;
+
                                     filterArrayList.setPaid(Final_paid);
                                     if(Final_Balance.equals(".00")){
                                         Final_Balance="0.00";
                                     }
-                                    //String fbalance="₹ "+Final_Balance;
+
                                     filterArrayList.setBalance(Final_Balance);
                                     Image.replace("\"", "");
                                     filterArrayList.setImage(Image);
                                     filterArrayList.setEmail(Member_Email_ID);
                                     filterArrayList.setFinancialYear(Financial_Year);
-//                                    String domainurl= SharedPrefereneceUtil.getDomainUrl(CourseDetailsActivity.this);
-//                                    String url= domainurl+ServiceUrls.IMAGES_URL + filterArrayList.getImage();
 //
-//                                    Glide.with(this).load(url).placeholder(R.drawable.nouser).into(imageView);
                                     contactTV.setText(Contact);
                                     nameTV.setText(name);
                                     String fpaid="₹ "+Final_paid;
@@ -3256,10 +3034,6 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                     packagenameTV.setText(Package_Name);
                                     durationTv.setText(dur_sess);
 
-//                                    String sdate=Utility.formatDate(Start_Date);
-//                                    String edate=Utility.formatDate(End_Date);
-//                                    String todate=sdate+" to "+edate;
-//                                    start_to_end_dateTV.setText(todate);
                                     paidTV.setText(fpaid);
                                     executiveNameTV.setText(ExecutiveName);
                                     balanceTV.setText(Final_Balance);
@@ -3276,9 +3050,6 @@ public class CourseDetailsActivity extends AppCompatActivity {
                             System.out.println("No records found");
                         }
                     }
-                }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
-                    //nodata.setVisibility(View.VISIBLE);
-                    // recyclerView.setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");
@@ -3312,22 +3083,19 @@ public class CourseDetailsActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
+
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             FollowupDetailsDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String>  FollowupDetailsDetails = new HashMap<String, String>();
             FollowupDetailsDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(CourseDetailsActivity.this));
            FollowupDetailsDetails.put("member_id",member_id );
@@ -3338,7 +3106,6 @@ public class CourseDetailsActivity extends AppCompatActivity {
             String domainurl= SharedPrefereneceUtil.getDomainUrl(CourseDetailsActivity.this);
            FollowupDetailsDetails.put("action","show_other_followup_details");
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, FollowupDetailsDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
 
@@ -3348,30 +3115,24 @@ public class CourseDetailsActivity extends AppCompatActivity {
     private void FollowupDetailsDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
                     progressBar.setVisibility(View.GONE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
+
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
 
                             for (int i = 0; i < jsonArrayResult.length(); i++) {
 
 
                                 filterArrayList = new CourseList();
-                                Log.d(TAG, "i: " + i);
 
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -3387,9 +3148,6 @@ public class CourseDetailsActivity extends AppCompatActivity {
                             System.out.println("No records found");
                         }
                     }
-                }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
-                    //nodata.setVisibility(View.VISIBLE);
-                    // recyclerView.setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");
@@ -3453,7 +3211,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        //dismissProgressDialog();
+
         finish();
     }
     private static boolean isExternalStorageReadOnly() {
@@ -3502,14 +3260,13 @@ public class CourseDetailsActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //viewDialog.showDialog();
+
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: show_receipt_data = %s", response));
-            //viewDialog.hideDialog();
             PDFGenerationDataDetails(response);
 
         }
@@ -3534,12 +3291,10 @@ public class CourseDetailsActivity extends AppCompatActivity {
 
     private void PDFGenerationDataDetails(String jsonResponse) {
 
-        Log.v(TAG, String.format("show_receipt_data :: Pdf Generation = %s", jsonResponse));
         if (jsonResponse != null) {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
@@ -3549,7 +3304,6 @@ public class CourseDetailsActivity extends AppCompatActivity {
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
                             for (int i = 0; i < jsonArrayResult.length(); i++) {
 
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -3600,7 +3354,6 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                     String l=Logo.replaceAll("\\s+","%20");
                                     String domainurl= SharedPrefereneceUtil.getDomainUrl(CourseDetailsActivity.this);
                                     final String imgurl=domainurl+ServiceUrls.IMAGES_URL+l;
-                                    Log.d(TAG, "imgurl: " +imgurl);
 
                                     String textBody = "";
                                     String CGST="";
@@ -3648,205 +3401,6 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                         }
 
                                     }
-//                                    final String messagehtml = "<!DOCTYPE html>\n" +
-//                                            "\n" +
-//                                            "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n" +
-//                                            "<head runat=\"server\">\n" +
-//                                            "    <title></title>\n" +
-//                                            "</head>\n" +
-//                                            "<body>\n" +
-//                                            "    <form runat=\"server\">\n" +
-//                                            "\n" +
-//                                            " <div class=\"row\">\n" +
-//                                            "                <div class=\"column\" >\n" +
-//                                            "                    <div >\n" +
-//                                            "                        <address>\n" +
-//                                            "                            <strong style=\"font: 700;\">\n" +
-//                                            "                               </strong><br/>" +
-//                                            "                          <br/>" +
-//                                            "                           <br/>" +
-//                                            "                        </address>" +
-//                                            "                    </div>" +
-//                                            "                    <div >" +
-//                                            "                        <address>" +
-//                                            "                        " +
-////                                            "                            <img src="+ imgurl +">" +
-//                                            "                        </address>\n" +
-//                                            "                    </div>" +
-//                                            "                </div>" +
-//                                            "                <div class=\"column\" >\n" +
-//                                            "                    <div  >\n" +
-//                                            "                        <address>\n" +
-//                                            "                            <strong></strong><br/>\n" +
-//                                            "                            <strong style=\"font: 900;\">"+"</strong><br/>\n" +
-//                                            "                           <br/>\n" +
-//                                            "                        </address>\n" +
-//                                            "                    </div>" +
-//                                            "                    <div >" +
-//                                            "                        <address>" +
-//                                            "                            <strong>"+"</strong><br/>\n" +
-//                                            "\n" +
-//                                            "                            <strong> "+"</strong><br/>\n" +
-//                                            "                            <strong>  "+"</strong>\n" +
-//                                            "                        </address>\n" +
-//                                            "                    </div>\n" +
-//                                            "                </div>\n" +
-//                                            "      </div>\n" +
-//                                            "    <div >\n" +
-//
-//                                            "            <div >\n" +
-//                                            "                <div  >\n" +
-//                                            "                        <h3 ><strong>Bill To</strong></h3>\n" +
-//                                            "                    </div>\n" +
-//                                            "                <div >\n" +
-//                                            "              <div >\n" +
-//                                            "             <table border = '1' cellpadding=\"6\"  width=\"100%\" >\n" +
-//                                            "             <thead height=\"100\">\n" +
-//                                            "                   <tr height=\"100\" >\n" +
-//                                            "                      <th ><strong>ID</strong></th>\n" +
-//                                            "                      <th ><strong>Name</strong></th>\n" +
-//                                            "                      <th ><strong>Email Id</strong></th>                                    \n" +
-//                                            "                      <th ><strong>Contact</strong></th>\n" +
-//                                            "                      <th ><strong>GST No</strong></th>\n" +
-//                                            "                    </tr>\n" +
-//                                            "             </thead>\n" +
-//                                            "           <tbody >\n" +
-//                                            "  <tr >\n \n" +
-//                                            "    <td width='12%'>"+member_id+"</td>\n \n" +
-//                                            "     <td width='25%'>"+Name+"</td>\n\n" +
-//                                            "    <td width='30%'>"+Email+"</td> \n\n" +
-//                                            "    <td width='16%'>"+Member_Contact+"</td>\n\n" +
-//                                            "    <td width='17%'>"+MemberGST_No+"</td>\n\n" +
-//                                            "    </tr>\n"+
-//                                            "          </tbody>\n" +
-//                                            "       </table>\n" +
-//                                            "       </div>\n" +
-//                                            "       </div>\n" +
-//                                            "                     \n" +
-//                                            "      </div>\n" +
-//                                            "     </div>\n" +
-//                                            "                           <br/>\n" +
-//                                            "\n" +
-//                                            "        <div  >\n" +
-//                                            "\n" +
-//                                            "            <div >\n" +
-//                                            "                <div >\n" +
-//                                            "                    <div  >\n" +
-//                                            "                        <h3 ><strong>Package Summary</strong></h3>\n" +
-//                                            "                    </div>\n" +
-//                                            "                    <div  >\n" +
-//                                            "                        <div  >\n" +
-//                                            "   <table border = '1' cellpadding=\"6\"  width=\"100%\" >\n" +
-//                                            "                             <thead height=\"100\" >\n" +
-//                                            "                                    <tr height=\"100\" >\n" +
-//                                            "                                      <th ><strong>Package</strong></th>\n" +
-//                                            "                                       <th ><strong>Duration</strong></th>\n" +
-//                                            "                                       <th ><strong>Session</strong></th>                                    \n" +
-//                                            "                                       <th ><strong>StartDate</strong></th>\n" +
-//                                            "                                       <th ><strong>EndDate</strong></th>\n" +
-//                                            "                                       <th ><strong>Time</strong></th>\n" +
-//                                            "                                       <th ><strong>Instructor</strong></th>\n" +
-//                                            "                                       <th ><strong>Package Fees</strong></th>\n" +
-//                                            "                                    </tr>\n" +
-//                                            "                                </thead>\n" +
-//                                            "                               <tbody height=\"100\" >\n" +
-//                                            "                                    <tr height=\"100\" >\n" +
-//                                            "                                        <td width='12.5%'>"+Package_Name+"</td>\n" +
-//                                            "                                         <td width='11.5%'>"+Duration_Days+"</td>\n" +
-//                                            "                                        <td width='11%'>"+Session+"</td>                                       \n" +
-//                                            "                                        <td width='14%'>"+s_date+"</td>\n" +
-//                                            "                                        <td width='14%'>"+edate+"</td>\n" +
-//                                            "                                        <td width='8%'>"+Time+"</td>\n" +
-//                                            "                                        <td width='13%'>"+Instructor_Name+"</td>\n" +
-//                                            "                                        <td width='12%'>"+Package_Fees+"</td>\n" +
-//                                            "                                    </tr>\n" +
-//                                            "                                </tbody>\n" +
-//                                            "                            </table>\n" +
-//                                            "                        </div>\n" +
-//                                            "                    </div>\n" +
-//                                            "                    <div >\n" +
-//                                            "                        <div  >\n" +
-//                                            "                            <table border = '1' cellpadding=\"6\"  width=\"100%\" >\n" +
-//                                            "                                <thead height=\"100\">\n" +
-//                                            "                                    <tr height=\"100\" >\n" +
-//                                            "                                        <th ><strong>Discount</strong></th>\n" +
-//                                            "                                        <th ><strong>Reg Fees</strong></th>\n" +
-//                                            "                                        <th ><strong>Total Amount</strong></th>\n" +
-//                                            "                                        <th ><strong>Paid Amount</strong></th>\n" +
-//                                            "                                        <th ><strong>Balance</strong></th>\n" +
-//                                            "                                    </tr>\n" +
-//                                            "                                </thead>\n" +
-//                                            "                                <tbody >\n" +
-//                                            "                                    <tr>\n" +
-//                                            "                                        <td >"+Discount+"</td>\n" +
-//                                            "                                        <td >"+Registration_Fees+"</td>\n" +
-//                                            "                                       \n" +
-//                                            "                                        <td >"+Rate+"</td>\n" +
-//                                            "                                        <td >"+Final_paid+"</td>\n" +
-//                                            "                                        <td >"+Final_Balance+"</td>\n" +
-//                                            "                                    </tr>\n" +
-//                                            "                                </tbody>\n" +
-//                                            "                            </table>\n" +
-//                                            "                        </div>\n" +
-//                                            "                    </div>\n" +
-//                                            "\n" +
-//                                            "                </div>\n" +
-//                                            "            </div>\n" +
-//                                            "        </div>\n" +
-//                                            "\n" +  "                           <br/>\n" +
-//                                            "       \n" +
-//                                            " <div  >\n" +
-//                                            "\n" +
-//                                            "    <div >\n" +
-//
-//                                            "            <div >\n" +
-//                                            "                <div  >\n" +
-//                                            "                        <h3 ><strong>Payment Transaction</strong></h3>\n" +
-//                                            "                    </div>\n" +
-//                                            "                <div >\n" +
-//                                            "              <div >\n" +
-//                                            "             <table border = '1' cellpadding=\"6\"  width=\"100%\" >\n" +
-//                                            "             <thead height=\"100\">\n" +
-//                                            "                   <tr height=\"100\" >\n" +
-//                                            "                      <th ><strong>#RNo</strong></th>\n" +
-//                                            "                      <th ><strong>Date</strong></th>\n" +
-//                                            "                      <th ><strong>Tax</strong></th>                                    \n" +
-//                                            "                      <th ><strong>Tax Amount</strong></th>\n" +
-//                                            "                      <th ><strong>Paid Amount</strong></th>\n" +
-//                                            "                       <th ><strong>Payment Mode</strong></th>\n" +
-//                                            "                       <th ><strong>Payment Details</strong></th>\n" +
-//                                            "                       <th ><strong>Executive</strong></th>\n" +
-//                                            "                    </tr>\n" +
-//                                            "             </thead>\n" +
-//                                            "           <tbody >\n" +
-//                                            textBody+
-//                                            "          </tbody>\n" +
-//                                            "       </table>\n" +
-//                                            "       </div>\n" +
-//                                            "       </div>\n" +
-//                                            "                     \n" +
-//                                            "      </div>\n" +
-//                                            "     </div>\n" +
-//                                            "  </div>\n" +
-//                                            "\n" +  "                           <br/>\n" +
-//                                            "      \n" +
-//                                            "\n" +
-//                                            "  <div  >\n" +
-//                                            "    <div >\n" +
-//                                            "       <div  >\n" +
-//                                            "          <h3 ><strong>Terms And Conditions</strong></h3>\n" +
-//                                            "       </div>\n" +
-//                                            "                  \n" +
-//                                            "                           "+TermsAndConditions+"\n" +
-//                                            "                     \n" +
-//                                            "    \n" +
-//                                            "                \n" +
-//                                            "            </div>\n" +
-//                                            "        </div>\n" +
-//                                            "\n" +
-//                                            "        </form>\n" +
-//                                            "</body>\n" +
-//                                            "</html>";
                                     final Document documentpdf = new Document(PageSize.A4);
 
                                     try {
@@ -3854,11 +3408,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                         OutputStream file = new FileOutputStream(pdfFile);
                                         PdfWriter docWriter = PdfWriter.getInstance(documentpdf, file);
                                         documentpdf.open();
-//
-//                                        PdfContentByte cb = docWriter.getDirectContent();
-//                                        //initialize fonts for text printing
-//                                        initializeFonts();
-//                                        //Add Image from some URL
+                                       //Add Image from some URL
                                         Thread thread = new Thread(new Runnable() {
                                             //
                                             @Override
@@ -3875,18 +3425,13 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                             }
                                         });
                                         thread.start();
-//                                        createHeadings(cb,50,780,Company_Name);
                                         String delimiter = " ";
                                         int partitionSize = 6;
                                         String add="";
-                                        int x=50;
-                                        int y=765;
+
                                         for (Iterable<String> iterable : Iterables.partition(Splitter.on(delimiter).split(Address), partitionSize)) {
                                             System.out.println(Joiner.on(delimiter).join(iterable));
                                             add+=Joiner.on(delimiter).join(iterable)+"<br/>";
-
-                                           // createText(cb,x,y,Joiner.on(delimiter).join(iterable));
-                                            y= y-10;
                                         }
 
                                         String csstext=" .text-right { text-align: right;} .p{border: 1px solid black;font-family: Helvetica,Arial,sans-serif;font-size: 12px;}" +
@@ -4147,43 +3692,11 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                                 "                </div>\n" +
                                                 "            </div>\n" +
                                                 "</body></html>";
-//                                        CSSResolver cssResolver = new StyleAttrCSSResolver();
-//                                        CssFile cssFile = XMLWorkerHelper.getCSS(new ByteArrayInputStream(csstext.getBytes()));
-//                                        cssResolver.addCss(cssFile);
-//
-////                                        CSSResolver cssResolver =
-////                                                XMLWorkerHelper.getInstance().getDefaultCssResolver(false);
-////                                        FileRetrieve retrieve = new FileRetrieveImpl(CSS_DIR);
-////                                        cssResolver.setFileRetrieve(retrieve);
-//
-//                                        HtmlPipelineContext htmlContext = new HtmlPipelineContext(null);
-//                                        htmlContext.setTagFactory(Tags.getHtmlTagProcessorFactory());
-//                                        htmlContext.setImageProvider(new AbstractImageProvider() {
-//                                            public String getImageRootPath() {
-//                                                return imgurl;
-//                                            }
-//                                        });
-//                                        htmlContext.setLinkProvider(new LinkProvider() {
-//                                            public String getLinkRoot() {
-//                                                return imgurl;
-//                                            }
-//                                        });
-//
-//                                        PdfWriterPipeline pdf = new PdfWriterPipeline(documentpdf, docWriter);
-//                                        HtmlPipeline html = new HtmlPipeline(htmlContext, pdf);
-//                                        CssResolverPipeline css = new CssResolverPipeline(cssResolver, html);
-//
-//                                        XMLWorker worker = new XMLWorker(css, true);
-//                                        XMLParser p = new XMLParser(worker);
-//                                        p.parse(new ByteArrayInputStream(HTML.getBytes()));
-//                                      p.parse(new FileInputStream(HTML));
 
                                         InputStream is = new ByteArrayInputStream(HTML.getBytes());
                                         InputStream cssggh = new ByteArrayInputStream(csstext.getBytes());
                                         XMLWorkerHelper.getInstance().parseXHtml(docWriter, documentpdf, is, cssggh,Charset.forName("UTF-8"));
 
-//                                        HTMLWorker htmlWorker = new HTMLWorker(documentpdf);
-//                                        htmlWorker.parse(new StringReader(messagehtml));
                                         documentpdf.close();
                                         file.close();
 
@@ -4200,8 +3713,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                         }
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
-                    //nodata.setVisibility(View.VISIBLE);
-                    //.setVisibility(View.GONE);
+
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");

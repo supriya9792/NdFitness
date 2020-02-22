@@ -127,8 +127,6 @@ public class CourseActivity extends AppCompatActivity implements SwipeRefreshLay
         swipeRefresh.setOnRefreshListener(this);
         progress_bar.setVisibility(View.GONE);
         lyt_no_connection.setVisibility(View.VISIBLE);
-//        adapter = new CourseAdapter( new ArrayList<EnquiryList>(),CourseActivity.this);
-//        recyclerView.setAdapter(adapter);
 
 
         Intent intent = getIntent();
@@ -206,10 +204,7 @@ public class CourseActivity extends AppCompatActivity implements SwipeRefreshLay
             public void afterTextChanged(final Editable arg0) {
                 // TODO Auto-generated method stub
                 if (CourseActivity.this.adapter == null){
-                    // some print statement saying it is null
-//                   // Toast toast = Toast.makeText(CourseActivity.this,"no record found", Toast.LENGTH_SHORT);
-//                    toast.setGravity(Gravity.CENTER, 0, 0);
-//                    toast.show();
+
                 }
                 else
                 {
@@ -244,12 +239,8 @@ public class CourseActivity extends AppCompatActivity implements SwipeRefreshLay
             @Override
             protected void loadMoreItems() {
                 isLoading = true;
-
-                Log.d(TAG, "prepare called current item: " + currentPage+"Total page"+totalPage);
                 int countc=Integer.parseInt(total_courses.getText().toString());
                 if(currentPage<=totalPage && countc >100){
-                  //  currentPage = PAGE_START;
-                    Log.d(TAG, "currentPage: " + currentPage);
                     isLastPage = false;
                     preparedListItem();
                 }
@@ -277,7 +268,6 @@ public class CourseActivity extends AppCompatActivity implements SwipeRefreshLay
             enquiryoffsetclass();// check login details are valid or not from server
         }
         else {
-            //Toast.makeText(CourseActivity.this, R.string.internet_unavailable, Toast.LENGTH_LONG).show();
             android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(CourseActivity.this);
             builder.setMessage(R.string.internet_unavailable);
             builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
@@ -291,23 +281,7 @@ public class CourseActivity extends AppCompatActivity implements SwipeRefreshLay
             dialog.show();
         }
     }
-    //Showing progress dialog
-    private void showProgressDialog() {
-        Log.v(TAG, String.format("showProgressDialog"));
-        pd = new ProgressDialog(CourseActivity.this);
-        pd.setMessage("loading");
-        pd.setCancelable(false);
-        pd.show();
-    }
 
-    /**
-     * Dismiss Progress Dialog.
-     */
-    private void dismissProgressDialog() {
-        Log.v(TAG, String.format("dismissProgressDialog"));
-
-        pd.cancel();
-    }
     // Asycc class for loading data for database
     private void enquiryclass() {
         CourseActivity.EnquiryTrackclass ru = new CourseActivity.EnquiryTrackclass();
@@ -318,11 +292,10 @@ public class CourseActivity extends AppCompatActivity implements SwipeRefreshLay
     public void onRefresh() {
         itemCount = 0;
         currentPage = PAGE_START;
-        Log.d(TAG, "currentPage: " + currentPage);
         isLastPage = false;
-        // adapter.clear();
+
         onRestart();
-        //preparedListItem();
+
 
 
     }
@@ -336,22 +309,18 @@ public class CourseActivity extends AppCompatActivity implements SwipeRefreshLay
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             EnquiryDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EnquiryDetails = new HashMap<String, String>();
             EnquiryDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(CourseActivity.this));
             EnquiryDetails.put("offset", String.valueOf(offset));
@@ -359,7 +328,6 @@ public class CourseActivity extends AppCompatActivity implements SwipeRefreshLay
             EnquiryDetails.put("action","show_course_list");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(CourseActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EnquiryDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
 
@@ -368,12 +336,10 @@ public class CourseActivity extends AppCompatActivity implements SwipeRefreshLay
     private void EnquiryDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
 
@@ -383,9 +349,6 @@ public class CourseActivity extends AppCompatActivity implements SwipeRefreshLay
                     progressBar.setVisibility(View.GONE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
                         int count=0;
                         ArrayList<CourseList> item = new ArrayList<CourseList>();
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
@@ -398,9 +361,7 @@ public class CourseActivity extends AppCompatActivity implements SwipeRefreshLay
 
 
                                 subList = new CourseList();
-                                Log.d(TAG, "i: " + i);
 
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -424,9 +385,7 @@ public class CourseActivity extends AppCompatActivity implements SwipeRefreshLay
                                     String Financial_Year = jsonObj.getString("Financial_Year");
 
 
-                                    //  for (int j = 0; j < 5; j++) {
-                                    itemCount++;
-                                    Log.d(TAG, "run: " + itemCount);
+
                                     subList.setName(name);
                                     String sdate=Utility.formatDate(Start_Date);
                                     String edate=Utility.formatDate(End_Date);
@@ -456,7 +415,6 @@ public class CourseActivity extends AppCompatActivity implements SwipeRefreshLay
                                     String cont=Utility.lastFour(Contact);
                                     subList.setContact(Contact);
                                     subList.setContactEncrypt(cont);
-//                                    String pack=Package_Name;
                                     subList.setPackageName(Package_Name);
                                     subList.setExecutiveName(ExecutiveName);
                                     subList.setTax(Tax);
@@ -468,20 +426,18 @@ public class CourseActivity extends AppCompatActivity implements SwipeRefreshLay
                                     subList.setInvoiceID(Invoice_ID);
 
                                     subList.setRate(Rate);
-                                   // String fpaid="₹ "+Final_paid;
+
                                     subList.setPaid(Final_paid);
                                     if(Final_Balance.equals(".00")){
                                         Final_Balance="0.00";
                                     }
-                                    //String fbalance="₹ "+Final_Balance;
+
                                     subList.setBalance(Final_Balance);
                                     Image.replace("\"", "");
                                     subList.setImage(Image);
                                     subList.setEmail(Member_Email_ID);
                                     subList.setFinancialYear(Financial_Year);
-                                    //Toast.makeText(CourseActivity.this, "followup date: "+next_foll_date, Toast.LENGTH_SHORT).show();
 
-                                    //Toast.makeText(MainActivity.this, "j "+j, Toast.LENGTH_SHORT).show();
                                     item.add(subList);
                                     adapter = new CourseAdapter( item,CourseActivity.this);
                                     recyclerView.setAdapter(adapter);
@@ -526,22 +482,18 @@ public class CourseActivity extends AppCompatActivity implements SwipeRefreshLay
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            // dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             EnquiryOffsetDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EnquiryOffsetDetails = new HashMap<String, String>();
             EnquiryOffsetDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(CourseActivity.this));
             EnquiryOffsetDetails.put("offset", String.valueOf(offset));
@@ -549,7 +501,6 @@ public class CourseActivity extends AppCompatActivity implements SwipeRefreshLay
             EnquiryOffsetDetails.put("action","show_course_list");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(CourseActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EnquiryOffsetDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
 
@@ -559,12 +510,10 @@ public class CourseActivity extends AppCompatActivity implements SwipeRefreshLay
     private void EnquiryOffsetDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
@@ -574,18 +523,12 @@ public class CourseActivity extends AppCompatActivity implements SwipeRefreshLay
                     progressBar.setVisibility(View.GONE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
                         ArrayList<CourseList> subListArrayList = new ArrayList<CourseList>();
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
                             for (int i = 0; i < jsonArrayResult.length(); i++) {
 
 
                                 subList = new CourseList();
-                                Log.d(TAG, "i: " + i);
-                                // Log.d(TAG, "run: " + itemCount);
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -713,7 +656,6 @@ public class CourseActivity extends AppCompatActivity implements SwipeRefreshLay
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-           // showProgressDialog();
             viewDialog.showDialog();
         }
 
@@ -721,16 +663,13 @@ public class CourseActivity extends AppCompatActivity implements SwipeRefreshLay
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
             viewDialog.hideDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             EnquirySearchDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EnquirySearchDetails = new HashMap<String, String>();
             EnquirySearchDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(CourseActivity.this));
             EnquirySearchDetails.put("text",inputsearch.getText().toString());
@@ -748,20 +687,15 @@ public class CourseActivity extends AppCompatActivity implements SwipeRefreshLay
     private void EnquirySearchDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
                         total_courses.setText(String.valueOf(jsonArrayResult.length()));
                         final   ArrayList<CourseList> subListArrayList = new ArrayList<CourseList>();
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
@@ -770,9 +704,6 @@ public class CourseActivity extends AppCompatActivity implements SwipeRefreshLay
 
 
                                 subList = new CourseList();
-                                Log.d(TAG, "i: " + i);
-                                // Log.d(TAG, "run: " + itemCount);
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -796,9 +727,6 @@ public class CourseActivity extends AppCompatActivity implements SwipeRefreshLay
                                     String Financial_Year = jsonObj.getString("Financial_Year");
 
 
-                                    //  for (int j = 0; j < 5; j++) {
-                                    itemCount++;
-                                    Log.d(TAG, "run: " + itemCount);
                                     subList.setName(name);
                                     String sdate=Utility.formatDate(Start_Date);
                                     String edate=Utility.formatDate(End_Date);
@@ -813,8 +741,7 @@ public class CourseActivity extends AppCompatActivity implements SwipeRefreshLay
                                     try {
                                         endDate = dateFormat.parse(endc);
                                         currentdate = dateFormat.parse(Utility.getCurrentDate());
-                                        Log.v(TAG, String.format(" ::endDate = %s", endDate));
-                                        Log.v(TAG, String.format(" :: currentdate = %s",currentdate));
+
                                         if (currentdate.before(endDate)|| currentdate.equals(endDate) ) {
                                             subList.setStatus("Active");
                                         } else {
@@ -828,7 +755,6 @@ public class CourseActivity extends AppCompatActivity implements SwipeRefreshLay
                                     String cont=Utility.lastFour(Contact);
                                     subList.setContact(Contact);
                                     subList.setContactEncrypt(cont);
-//                                    String pack=Package_Name;
                                     subList.setPackageName(Package_Name);
                                     subList.setExecutiveName(ExecutiveName);
                                     subList.setTax(Tax);
@@ -840,12 +766,12 @@ public class CourseActivity extends AppCompatActivity implements SwipeRefreshLay
                                     subList.setInvoiceID(Invoice_ID);
 
                                     subList.setRate(Rate);
-                                    // String fpaid="₹ "+Final_paid;
+
                                     subList.setPaid(Final_paid);
                                     if(Final_Balance.equals(".00")){
                                         Final_Balance="0.00";
                                     }
-                                    //String fbalance="₹ "+Final_Balance;
+
                                     subList.setBalance(Final_Balance);
                                     Image.replace("\"", "");
                                     subList.setImage(Image);
@@ -865,14 +791,12 @@ public class CourseActivity extends AppCompatActivity implements SwipeRefreshLay
                         }
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
-                    // nodata.setVisibility(View.VISIBLE);
                     Toast.makeText(CourseActivity.this, "NO Record Found", Toast.LENGTH_SHORT).show();
                     progressBar.setVisibility(View.GONE);
 
-                    //recyclerView.setVisibility(View.GONE);
+
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
                 recyclerView.setVisibility(View.GONE);
                 frame.setVisibility(View.VISIBLE);

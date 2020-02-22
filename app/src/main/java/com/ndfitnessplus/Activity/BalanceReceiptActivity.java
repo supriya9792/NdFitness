@@ -432,7 +432,6 @@ public class BalanceReceiptActivity extends AppCompatActivity {
                         inputNextFollDate.setKeyListener(null);
                         awesomeValidation.clear();
                     }
-//
                 }else{
                     inputBalance.setText(inputRemBal.getText().toString());
                 }

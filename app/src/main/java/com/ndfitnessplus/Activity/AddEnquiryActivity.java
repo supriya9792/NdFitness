@@ -845,7 +845,6 @@ public class AddEnquiryActivity extends AppCompatActivity  {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
             viewDialog.hideDialog();
             //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
             //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
@@ -1017,7 +1016,6 @@ public class AddEnquiryActivity extends AppCompatActivity  {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
             EnquiryForDetails(response);
 
         }
@@ -1026,7 +1024,6 @@ public class AddEnquiryActivity extends AppCompatActivity  {
         protected String doInBackground(String... params) {
             HashMap<String, String> EnquiryForDetails = new HashMap<String, String>();
             EnquiryForDetails.put("action", "show_enq_for_list");
-            //EnquiryForloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(EnquiryForloyee.this));
             String domainurl=SharedPrefereneceUtil.getDomainUrl(AddEnquiryActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EnquiryForDetails);
             Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
@@ -1389,10 +1386,7 @@ public class AddEnquiryActivity extends AppCompatActivity  {
                                     String SourceOf_Enquiry     = jsonObj.getString("SourceOf_Enquiry");
 
                                     String id=jsonObj.getString("Auto_Id");
-//                               if(i==0){
-//                                   enquirySourcelist.setName(getResources().getString(R.string.promt_country));
-//                                   enqF.add(0,enquirySourcelist);
-//                               }
+
                                     enquirySourcelist.setName(SourceOf_Enquiry);
                                     enquirySourcelist.setId(id);
 
@@ -1672,7 +1666,6 @@ public class AddEnquiryActivity extends AppCompatActivity  {
         protected String doInBackground(String... params) {
             HashMap<String, String> CallResponseDetails = new HashMap<String, String>();
             CallResponseDetails.put("action", "show_call_response_list");
-            //CallResponseloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(CallResponseloyee.this));
             String domainurl=SharedPrefereneceUtil.getDomainUrl(AddEnquiryActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, CallResponseDetails);
             Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
@@ -1822,7 +1815,6 @@ public class AddEnquiryActivity extends AppCompatActivity  {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
             viewDialog.hideDialog();
             //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
             //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
@@ -1918,8 +1910,6 @@ public class AddEnquiryActivity extends AppCompatActivity  {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
             viewDialog.hideDialog();
-            //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
-            //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
             CheckContactDetails(response);
 
         }
@@ -1932,7 +1922,6 @@ public class AddEnquiryActivity extends AppCompatActivity  {
             EnquiryForDetails.put("user","Enquiry" );
             EnquiryForDetails.put("comp_id",SharedPrefereneceUtil.getSelectedBranchId(AddEnquiryActivity.this) );
             EnquiryForDetails.put("action", "check_mobile_already_exist_or_not");
-            //EnquiryForloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(EnquiryForloyee.this));
             String domainurl=SharedPrefereneceUtil.getDomainUrl(AddEnquiryActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EnquiryForDetails);
             Log.v(TAG, String.format("doInBackground :: check_mobile_already_exist_or_not= %s", loginResult));
@@ -1950,15 +1939,13 @@ public class AddEnquiryActivity extends AppCompatActivity  {
 
             if (success.equalsIgnoreCase(getResources().getString(R.string.zero))) {
                 CheckContactInMemberClass();
-                // showCustomDialog();
 
-                //inputEmail, inputPhone,inputAdd,inputReq,inputFollowupdate;
             }
             else if (success.equalsIgnoreCase(getResources().getString(R.string.two)))
             {
                 Toast.makeText(AddEnquiryActivity.this,"Contact Already Exits",Toast.LENGTH_SHORT).show();
                 inputContact.getText().clear();
-               // Toast.makeText(AddEnquiryActivity.this,"Please Enter New Mobile Number",Toast.LENGTH_SHORT).show();
+
             }
 
         } catch (JSONException e) {
@@ -1987,7 +1974,6 @@ public class AddEnquiryActivity extends AppCompatActivity  {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
             viewDialog.hideDialog();
             SendEnquirySmsDetails(response);
 
@@ -2000,7 +1986,6 @@ public class AddEnquiryActivity extends AppCompatActivity  {
             EnquiryForDetails.put("type","Enquiry" );
             EnquiryForDetails.put("comp_id",SharedPrefereneceUtil.getSelectedBranchId(AddEnquiryActivity.this) );
             EnquiryForDetails.put("action", "sms_for_add_enquiry");
-            //EnquiryForloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(EnquiryForloyee.this));
             String domainurl=SharedPrefereneceUtil.getDomainUrl(AddEnquiryActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EnquiryForDetails);
             Log.v(TAG, String.format("doInBackground :: sms_for_add_enquiry= %s", loginResult));
@@ -2019,9 +2004,6 @@ public class AddEnquiryActivity extends AppCompatActivity  {
             if (success.equalsIgnoreCase(getResources().getString(R.string.zero))) {
                 Intent intent = new Intent(AddEnquiryActivity.this, EnquiryActivity.class);
                 startActivity(intent);
-                // showCustomDialog();
-
-                //inputEmail, inputPhone,inputAdd,inputReq,inputFollowupdate;
             }
             else if (success.equalsIgnoreCase(getResources().getString(R.string.two)))
             {
@@ -2107,9 +2089,6 @@ public class AddEnquiryActivity extends AppCompatActivity  {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-          //  viewDialog.hideDialog();
-            //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
-            //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
             CheckContactInEnquiryDetails(response);
 
         }

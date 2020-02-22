@@ -118,8 +118,6 @@ public class AttendenceActivity extends AppCompatActivity implements SwipeRefres
         swipeRefresh.setOnRefreshListener(this);
         progress_bar.setVisibility(View.GONE);
         lyt_no_connection.setVisibility(View.VISIBLE);
-//        adapter = new CourseAdapter( new ArrayList<EnquiryList>(),CourseActivity.this);
-//        recyclerView.setAdapter(adapter);
 
 
         Intent intent = getIntent();
@@ -159,18 +157,7 @@ public class AttendenceActivity extends AppCompatActivity implements SwipeRefres
                         }, 1000);
                     }
                 });
-                //Toast.makeText(CourseActivity.this, R.string.internet_unavailable, Toast.LENGTH_LONG).show();
-//                android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(CourseActivity.this);
-//                builder.setMessage(R.string.internet_unavailable);
-//                builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int id) {
-//                        dialog.dismiss();
-//                    }
-//                });
-//                android.app.AlertDialog dialog = builder.create();
-//                dialog.setCancelable(false);
-//                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-//                dialog.show();
+
 
             }
         }
@@ -198,9 +185,6 @@ public class AttendenceActivity extends AppCompatActivity implements SwipeRefres
                 // TODO Auto-generated method stub
                 if (AttendenceActivity.this.adapter == null){
                     // some print statement saying it is null
-//                   // Toast toast = Toast.makeText(AttendenceActivity.this,"no record found", Toast.LENGTH_SHORT);
-//                    toast.setGravity(Gravity.CENTER, 0, 0);
-//                    toast.show();
                 }
                 else
                 {
@@ -223,8 +207,7 @@ public class AttendenceActivity extends AppCompatActivity implements SwipeRefres
                                       int arg3) {
                 // TODO Auto-generated method stub
                 if(inputsearch.getText().length()==0) {
-                    //do your work here
-                    // Toast.makeText(AddEnquiryActivity.this ,"Text vhanged count  is 10 then: " , Toast.LENGTH_LONG).show();
+
                     measurementclass();
                 }
 
@@ -240,10 +223,10 @@ public class AttendenceActivity extends AppCompatActivity implements SwipeRefres
 
                 Log.d(TAG, "prepare called current item: " + currentPage+"Total page"+totalPage);
                 if(currentPage<=totalPage){
-                    //currentPage = PAGE_START;
+
                     Log.d(TAG, "currentPage: " + currentPage);
                     isLastPage = false;
-                    // preparedListItem();
+
                 }
 
 
@@ -279,29 +262,27 @@ class MeasurementTrackclass extends AsyncTask<String, Void, String> {
     protected void onPreExecute() {
         super.onPreExecute();
         Log.v(TAG, "onPreExecute");
-        //showProgressDialog();
+
     }
 
     @Override
     protected void onPostExecute(String response) {
         super.onPostExecute(response);
         Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-        //dismissProgressDialog();
-        //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
+
         MeasurementDetails(response);
 
     }
 
     @Override
     protected String doInBackground(String... params) {
-        //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+
         HashMap<String, String> MeasurementDetails = new HashMap<String, String>();
         MeasurementDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(AttendenceActivity.this));
         Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(AttendenceActivity.this)));
         MeasurementDetails.put("action","show_all_attendance");
         String domainurl=SharedPrefereneceUtil.getDomainUrl(AttendenceActivity.this);
         String loginResult = ruc.sendPostRequest(domainurl+ ServiceUrls.LOGIN_URL, MeasurementDetails);
-        //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
         return loginResult;
     }
 
@@ -310,26 +291,19 @@ class MeasurementTrackclass extends AsyncTask<String, Void, String> {
     private void MeasurementDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
 
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
-//                    nodata.setVisibility(View.GONE);
-//                    swipeRefresh.setVisibility(View.VISIBLE);
                     String ttl_enq = object.getString("total_attendance_count");
                     total_present.setText(ttl_enq);
                     progressBar.setVisibility(View.GONE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
 
                         ArrayList<AttendanceList> item = new ArrayList<AttendanceList>();
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
@@ -338,9 +312,7 @@ class MeasurementTrackclass extends AsyncTask<String, Void, String> {
 
 
                                 subList = new AttendanceList();
-                              //  Log.d(TAG, "i: " + i);
 
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -357,7 +329,6 @@ class MeasurementTrackclass extends AsyncTask<String, Void, String> {
                                     String Image = jsonObj.getString("Image");
                                     String Status = jsonObj.getString("Status");
 
-                                    Log.d(TAG, "Status: " + Status);
                                     subList.setMemberID(MemberID);
                                     subList.setContact(Contact);
                                     String cont=Utility.lastFour(Contact);
@@ -389,9 +360,7 @@ class MeasurementTrackclass extends AsyncTask<String, Void, String> {
                                     subList.setStatus(Status);
 
                                     item.add(subList);
-                                    //Toast.makeText(AttendenceActivity.this, "followup date: "+next_foll_date, Toast.LENGTH_SHORT).show();
 
-                                    //Toast.makeText(MainActivity.this, "j "+j, Toast.LENGTH_SHORT).show();
 
                                     adapter = new AttendanceAdapter(AttendenceActivity.this, item);
                                     recyclerView.setAdapter(adapter);
@@ -436,7 +405,7 @@ class MeasurementSearchTrackclass extends AsyncTask<String, Void, String> {
     protected void onPreExecute() {
         super.onPreExecute();
         Log.v(TAG, "onPreExecute");
-        // showProgressDialog();
+
         viewDialog.showDialog();
     }
 
@@ -444,16 +413,15 @@ class MeasurementSearchTrackclass extends AsyncTask<String, Void, String> {
     protected void onPostExecute(String response) {
         super.onPostExecute(response);
         Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-        // dismissProgressDialog();
+
         viewDialog.hideDialog();
-        //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
         MeasurementSearchDetails(response);
 
     }
 
     @Override
     protected String doInBackground(String... params) {
-        //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+
         HashMap<String, String> MeasurementSearchDetails = new HashMap<String, String>();
         MeasurementSearchDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(AttendenceActivity.this));
         MeasurementSearchDetails.put("text", inputsearch.getText().toString());
@@ -461,7 +429,6 @@ class MeasurementSearchTrackclass extends AsyncTask<String, Void, String> {
         MeasurementSearchDetails.put("action","show_search_attendance");
         String domainurl=SharedPrefereneceUtil.getDomainUrl(AttendenceActivity.this);
         String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, MeasurementSearchDetails);
-        //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
         return loginResult;
     }
 
@@ -471,12 +438,10 @@ class MeasurementSearchTrackclass extends AsyncTask<String, Void, String> {
     private void MeasurementSearchDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
@@ -484,9 +449,7 @@ class MeasurementSearchTrackclass extends AsyncTask<String, Void, String> {
                     swipeRefresh.setVisibility(View.VISIBLE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
+
                         String ttl_enq = String.valueOf(jsonArrayResult.length());
                         total_present.setText(ttl_enq);
                         final   ArrayList<AttendanceList> subListArrayList = new ArrayList<AttendanceList>();
@@ -495,9 +458,7 @@ class MeasurementSearchTrackclass extends AsyncTask<String, Void, String> {
 
 
                                 subList = new AttendanceList();
-                                Log.d(TAG, "i: " + i);
-                                // Log.d(TAG, "run: " + itemCount);
-                                Log.v(TAG, "JsonResponseOpeartion ::");
+
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -540,7 +501,6 @@ class MeasurementSearchTrackclass extends AsyncTask<String, Void, String> {
                                     subList.setAttendanceMode(Attendance_Mode);
                                     subList.setImage(Image);
                                     subList.setStatus(Status);
-                                    //  for (int j = 0; j < 5; j++) {
 
                                     subListArrayList.add(subList);
 
@@ -556,12 +516,9 @@ class MeasurementSearchTrackclass extends AsyncTask<String, Void, String> {
                         }
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
-                    // nodata.setVisibility(View.VISIBLE);
-//                    nodata.setVisibility(View.VISIBLE);
-//                    swipeRefresh.setVisibility(View.GONE);
+
                     progressBar.setVisibility(View.GONE);
                     Toast.makeText(AttendenceActivity.this, "NO Record Found", Toast.LENGTH_SHORT).show();
-                    //frame.setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");

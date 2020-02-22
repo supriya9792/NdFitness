@@ -121,7 +121,6 @@ public class CollectionFilterActivity extends AppCompatActivity {
                                         + (monthOfYear + 1) + "-" + dayOfMonth).toString();
                                 String cdate=Utility.formatDateDB(date);
                                 todate.setText(cdate);
-                                //todate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
                                 CampareTwoDates();
 
                             }
@@ -157,7 +156,7 @@ public class CollectionFilterActivity extends AppCompatActivity {
         //api of spinners
         executiveClass();
         PaymenttypeClass();
-        //Date Wise date type spinners
+
         final  String[] memberDateArray = getResources().getStringArray(R.array.balance_date_array);
 
         for(int i=0;i<memberDateArray.length;i++) {
@@ -185,7 +184,6 @@ public class CollectionFilterActivity extends AppCompatActivity {
                         // Set the hint text color gray
                         tv.setTextColor(Color.GRAY);
                         tv.setText(getResources().getString(R.string.prompt_mem_date));
-                        // tv.setTextColor(Color.GRAY);
                     } else {
                         tv.setTextColor(Color.BLACK);
                     }
@@ -364,7 +362,6 @@ public class CollectionFilterActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
             viewDialog.showDialog();
         }
 
@@ -372,9 +369,7 @@ public class CollectionFilterActivity extends AppCompatActivity {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-//            dismissProgressDialog();
             viewDialog.hideDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             PaymentTypeDetails(response);
 
         }
@@ -399,7 +394,6 @@ public class CollectionFilterActivity extends AppCompatActivity {
 
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
@@ -456,7 +450,6 @@ public class CollectionFilterActivity extends AppCompatActivity {
                                                 // Set the hint text color gray
                                                 tv.setTextColor(Color.GRAY);
                                                 tv.setText(getResources().getString(R.string.prompt_payment_type));
-                                                // tv.setTextColor(Color.GRAY);
                                             }
                                             else {
                                                 tv.setTextColor(Color.BLACK);
@@ -506,7 +499,6 @@ public class CollectionFilterActivity extends AppCompatActivity {
                                 // Set the hint text color gray
                                 tv.setTextColor(Color.GRAY);
                                 tv.setText(getResources().getString(R.string.prompt_payment_type));
-                                // tv.setTextColor(Color.GRAY);
                             }
                             else {
                                 tv.setTextColor(Color.BLACK);
@@ -518,7 +510,6 @@ public class CollectionFilterActivity extends AppCompatActivity {
                     spinPaymentType.setAdapter(paymenttypeadapter);
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
             }
         }
@@ -536,22 +527,18 @@ public class CollectionFilterActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            // showProgressDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            // dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             ExecutiveNameDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> ExecutiveNameDetails = new HashMap<String, String>();
             String comp_name= SharedPrefereneceUtil.getCompanyName(CollectionFilterActivity.this);
             String location=SharedPrefereneceUtil.getSelectedBranch(CollectionFilterActivity.this);
@@ -559,7 +546,6 @@ public class CollectionFilterActivity extends AppCompatActivity {
             ExecutiveNameDetails.put("comp_id", compid);
             ExecutiveNameDetails.put("action", "show_executive_list");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(CollectionFilterActivity.this);
-            //ExecutiveNameloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(ExecutiveNameloyee.this));
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, ExecutiveNameDetails);
             Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
@@ -573,7 +559,6 @@ public class CollectionFilterActivity extends AppCompatActivity {
 
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
@@ -585,14 +570,12 @@ public class CollectionFilterActivity extends AppCompatActivity {
                     if (object != null) {
                         JSONArray jsonArrayCountry = object.getJSONArray("result");
                         SalesExecutiveArrayList.clear();
-                        //for(int j=0;j<2;j++){
                         saleExecutiveList = new Spinner_List();
 
                         saleExecutiveList.setName(getResources().getString(R.string.prompt_executive));
 
                         SalesExecutiveArrayList.add(0,saleExecutiveList);
 
-                        // }
                         if (jsonArrayCountry != null && jsonArrayCountry.length() > 0){
                             saleExecutiveList.setName(getResources().getString(R.string.all));
 
@@ -604,12 +587,6 @@ public class CollectionFilterActivity extends AppCompatActivity {
                                 if (jsonObj != null) {
 
                                     String EnquiryOwnerExecutive     = jsonObj.getString("EnquiryOwnerExecutive");
-
-//                               if(i==0){
-//                                   saleExecutiveList.setName(getResources().getString(R.string.promt_country));
-//                                   enqF.add(0,saleExecutiveList);
-//                               }
-
 
                                     saleExecutiveList.setName(EnquiryOwnerExecutive);
 
@@ -638,7 +615,6 @@ public class CollectionFilterActivity extends AppCompatActivity {
                                                 // Set the hint text color gray
                                                 tv.setTextColor(Color.GRAY);
                                                 tv.setText(getResources().getString(R.string.prompt_executive));
-                                                // tv.setTextColor(Color.GRAY);
                                             }
                                             else {
                                                 tv.setTextColor(Color.BLACK);
@@ -691,7 +667,6 @@ public class CollectionFilterActivity extends AppCompatActivity {
                                 // Set the hint text color gray
                                 tv.setTextColor(Color.GRAY);
                                 tv.setText(getResources().getString(R.string.prompt_executive));
-                                // tv.setTextColor(Color.GRAY);
                             }
                             else {
                                 tv.setTextColor(Color.BLACK);
@@ -723,7 +698,6 @@ public class CollectionFilterActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
             viewDialog.showDialog();
         }
 
@@ -738,7 +712,6 @@ public class CollectionFilterActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> SearchCollectionDetails = new HashMap<String, String>();
             SearchCollectionDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(CollectionFilterActivity.this));
             Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(CollectionFilterActivity.this)));
@@ -773,26 +746,18 @@ public class CollectionFilterActivity extends AppCompatActivity {
             String success = object.getString(getResources().getString(R.string.success));
 
             if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
-                //Toast.makeText(CollectionFilterActivity.this,"Enquiry added succesfully",Toast.LENGTH_SHORT).show();
                 String col = object.getString("collection");
-                // total_balance.setText(ttl_enq);
                 double ttlcol=Double.parseDouble(col);
                 DecimalFormat df = new DecimalFormat("##,##,##,##,##,##,##0.00");
                 String rt= df.format(ttlcol);
 
-                //collection.setText(rt);
                 if (object != null) {
                     JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
                     if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
                         for (int i = 0; i < jsonArrayResult.length(); i++) {
 
                             subList = new CourseList();
-                            Log.d(TAG, "i: " + i);
-                            // Log.d(TAG, "run: " + itemCount);
-                            Log.v(TAG, "JsonResponseOpeartion ::");
+
                             JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                             if (jsonObj != null) {
 
@@ -821,14 +786,13 @@ public class CollectionFilterActivity extends AppCompatActivity {
                                 String Duration_Days = jsonObj.getString("Duration_Days");
                                 String Session = jsonObj.getString("Session");
                                 String Financial_Year = jsonObj.getString("Financial_Year");
-                                //  for (int j = 0; j < 5; j++) {
+
 
                                 subList.setName(name);
 
                                 String cont=Utility.lastFour(Contact);
                                 subList.setContact(Contact);
                                 subList.setContactEncrypt(cont);
-                                // String pack=Package_Name+"(Duration:"+Duration_Days+","+"Session:"+Session+")";
                                 subList.setPaymentType(PaymentType);
                                 subList.setExecutiveName(ExecutiveName);
                                 subList.setTax(Tax);
@@ -889,7 +853,6 @@ public class CollectionFilterActivity extends AppCompatActivity {
                                 subList.setRegistrationDate(reg_date);
                                 subList.setRate(Rate);
                                 subList.setFinancialYear(Financial_Year);
-                                //Toast.makeText(EnquiryActivity.this, "followup date: "+next_foll_date, Toast.LENGTH_SHORT).show();
                                 subListArrayList.add(subList);
 
 

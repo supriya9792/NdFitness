@@ -164,12 +164,9 @@ public class AddExpensesActivity extends AppCompatActivity  {
                         txtExpenseGrp.setVisibility(View.VISIBLE);
                     }
                     if (!expenseGroup.equals(getResources().getString(R.string.exepnses_group))) {
-                        //awesomeValidation.addValidation(AddEnquiryActivity.this, R.id.spinner_occupation,RegexTemplate.NOT_EMPTY, R.string.err_msg_next_foll_date);
                     }
                 }
-                // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.black));
-                // Showing selected spinner item
-                //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+
             }
 
             @Override
@@ -198,12 +195,9 @@ public class AddExpensesActivity extends AppCompatActivity  {
                         txtPaymentType.setVisibility(View.VISIBLE);
                     }
                     if (!paymentType.equals(getResources().getString(R.string.hint_pyment_mode))) {
-                        //awesomeValidation.addValidation(AddEnquiryActivity.this, R.id.spinner_occupation,RegexTemplate.NOT_EMPTY, R.string.err_msg_next_foll_date);
                     }
                 }
-                // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.black));
-                // Showing selected spinner item
-                //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+
             }
 
             @Override
@@ -230,23 +224,6 @@ public class AddExpensesActivity extends AppCompatActivity  {
         }
         return super.onOptionsItemSelected(item);
     }
-    private void showProgressDialog() {
-        Log.v(TAG, String.format("showProgressDialog"));
-        pd = new ProgressDialog(AddExpensesActivity.this);
-        pd.setMessage("loading");
-        pd.setCancelable(false);
-        pd.show();
-    }
-
-    /**
-     * Dismiss Progress Dialog.
-     */
-    private void dismissProgressDialog() {
-        Log.v(TAG, String.format("dismissProgressDialog"));
-        pd.cancel();
-
-
-    }
     public void  ExpenseGroupClass() {
         AddExpensesActivity.ExpenseGroupTrackClass ru = new AddExpensesActivity.ExpenseGroupTrackClass();
         ru.execute("5");
@@ -254,22 +231,15 @@ public class AddExpensesActivity extends AppCompatActivity  {
 
 
     private void submitForm() {
-        //first validate the form then move ahead
-        //if this becomes true that means validation is successfull
-        //if(inputPassword.getText().toString().equals(inputCfmPassword.getText().toString())){
         if (awesomeValidation.validate()) {
             if(expenseGroup.equals(getResources().getString(R.string.exepnses_group)) || paymentType.equals(getResources().getString(R.string.hint_pyment_mode))
             ){           Toast.makeText(this, "Please fill all fields", Toast.LENGTH_LONG).show();
             }else{
                 AddExpenseClass();
             }
-            // Toast.makeText(this, "Validation Successfull", Toast.LENGTH_LONG).show();
-
-            // uploadimageClass();
             //process the data further
         }else{
             Toast.makeText(this, "Validation Failed", Toast.LENGTH_LONG).show();
-            // awesomeValidation.addValidation(this, R.id.input_cfn_password,RegexTemplate.NOT_EMPTY,R.string.err_msg_cfm_password);
 
         }
 
@@ -283,25 +253,21 @@ public class AddExpensesActivity extends AppCompatActivity  {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             ExpenseGroupDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+
             HashMap<String, String> ExpenseGroupDetails = new HashMap<String, String>();
             ExpenseGroupDetails.put("action", "show_expense_group_list");
-            //ExpenseGrouployeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(ExpenseGrouployee.this));
             String domainurl=SharedPrefereneceUtil.getDomainUrl(AddExpensesActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, ExpenseGroupDetails);
             Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
@@ -316,12 +282,10 @@ public class AddExpensesActivity extends AppCompatActivity  {
 
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
@@ -334,17 +298,13 @@ public class AddExpensesActivity extends AppCompatActivity  {
                         if (jsonArrayCountry != null && jsonArrayCountry.length() > 0){
                             for (int i = 0; i < jsonArrayCountry.length(); i++) {
                                 expensegrplist = new Spinner_List();
-                                Log.v(TAG, "JsonResponseOpeartion ::");
+
                                 JSONObject jsonObj = jsonArrayCountry.getJSONObject(i);
                                 if (jsonObj != null) {
 
                                     String Exepense     = jsonObj.getString("Exepense");
 
                                     String id=jsonObj.getString("Auto_Id");
-//                               if(i==0){
-//                                   expensegrplist.setName(getResources().getString(R.string.promt_country));
-//                                   enqF.add(0,expensegrplist);
-//                               }
                                     expensegrplist.setName(Exepense);
                                     expensegrplist.setId(id);
 
@@ -373,7 +333,6 @@ public class AddExpensesActivity extends AppCompatActivity  {
                                                 // Set the hint text color gray
                                                 tv.setTextColor(Color.GRAY);
                                                 tv.setText(getResources().getString(R.string.prompt_expense_grp));
-                                                // tv.setTextColor(Color.GRAY);
                                             }
                                             else {
                                                 tv.setTextColor(Color.BLACK);
@@ -391,10 +350,6 @@ public class AddExpensesActivity extends AppCompatActivity  {
                             System.out.println("No records found");
                         }
                     }
-                }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
-
-                    //forumCount.setVisibility(View.INVISBLE);
-                    // queCount.setVisibility(View.INVISIBLE);
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");
@@ -415,25 +370,23 @@ public class AddExpensesActivity extends AppCompatActivity  {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
+
             PaymentTypeDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+
             HashMap<String, String> PaymentTypeDetails = new HashMap<String, String>();
             PaymentTypeDetails.put("action", "show_payment_type_list");
-            //PaymentTypeloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(PaymentTypeloyee.this));
+
             String domainurl=SharedPrefereneceUtil.getDomainUrl(AddExpensesActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, PaymentTypeDetails);
             Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
@@ -448,12 +401,10 @@ public class AddExpensesActivity extends AppCompatActivity  {
 
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
@@ -466,17 +417,14 @@ public class AddExpensesActivity extends AppCompatActivity  {
                         if (jsonArrayCountry != null && jsonArrayCountry.length() > 0){
                             for (int i = 0; i < jsonArrayCountry.length(); i++) {
                                 paymentTypeList = new Spinner_List();
-                                Log.v(TAG, "JsonResponseOpeartion ::");
+
                                 JSONObject jsonObj = jsonArrayCountry.getJSONObject(i);
                                 if (jsonObj != null) {
 
                                     String PaymentType     = jsonObj.getString("PaymentType");
 
                                     String id=jsonObj.getString("Auto_Id");
-//                               if(i==0){
-//                                   paymentTypeList.setName(getResources().getString(R.string.promt_country));
-//                                   enqF.add(0,paymentTypeList);
-//                               }
+
                                     paymentTypeList.setName(PaymentType);
                                     paymentTypeList.setId(id);
 
@@ -505,7 +453,6 @@ public class AddExpensesActivity extends AppCompatActivity  {
                                                 // Set the hint text color gray
                                                 tv.setTextColor(Color.GRAY);
                                                 tv.setText(getResources().getString(R.string.prompt_payment_type));
-                                                // tv.setTextColor(Color.GRAY);
                                             }
                                             else {
                                                 tv.setTextColor(Color.BLACK);
@@ -523,10 +470,6 @@ public class AddExpensesActivity extends AppCompatActivity  {
                             System.out.println("No records found");
                         }
                     }
-                }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
-
-                    //forumCount.setVisibility(View.INVISBLE);
-                    // queCount.setVisibility(View.INVISIBLE);
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");
@@ -553,7 +496,6 @@ public class AddExpensesActivity extends AppCompatActivity  {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
             viewDialog.showDialog();
         }
 
@@ -561,17 +503,13 @@ public class AddExpensesActivity extends AppCompatActivity  {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-           // dismissProgressDialog();
             viewDialog.hideDialog();
-            //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
-            //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
             AddExpenseDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> AddExpenseDetails = new HashMap<String, String>();
             AddExpenseDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(AddExpensesActivity.this));
             AddExpenseDetails.put("expense_date",inputExepnseDate.getText().toString());
@@ -610,15 +548,10 @@ public class AddExpensesActivity extends AppCompatActivity  {
                 inputAmount.getText().clear();
                 Intent intent=new Intent(AddExpensesActivity.this,ExpensesActivity.class);
                 startActivity(intent);
-                // showCustomDialog();
-
-                //inputEmail, inputPhone,inputAdd,inputReq,inputFollowupdate;
             }
             else if (success.equalsIgnoreCase(getResources().getString(R.string.zero)))
             {
                 Toast.makeText(AddExpensesActivity.this,"Somethind went wrong",Toast.LENGTH_SHORT).show();
-                //inputContact.getText().clear();
-               // Toast.makeText(AddExpensesActivity.this,"Please Enter New Mobile Number",Toast.LENGTH_SHORT).show();
             }
 
         } catch (JSONException e) {

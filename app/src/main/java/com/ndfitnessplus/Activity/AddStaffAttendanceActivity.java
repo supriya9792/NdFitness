@@ -340,7 +340,6 @@ public class AddStaffAttendanceActivity extends AppCompatActivity {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 if (object != null) {
                     JSONArray jsonArrayResult = object.getJSONArray("result");
@@ -348,7 +347,6 @@ public class AddStaffAttendanceActivity extends AppCompatActivity {
                     if (jsonArrayResult != null && jsonArrayResult.length() > 0){
                         for (int i = 0; i < jsonArrayResult.length(); i++) {
                             searchModel = new Search_list();
-                            Log.v(TAG, "JsonResponseOpeartion ::");
                             JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                             if (jsonObj != null) {
 
@@ -390,7 +388,6 @@ public class AddStaffAttendanceActivity extends AppCompatActivity {
                     }
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
             }
         }
@@ -511,7 +508,6 @@ public class AddStaffAttendanceActivity extends AppCompatActivity {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
@@ -521,7 +517,6 @@ public class AddStaffAttendanceActivity extends AppCompatActivity {
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
                             for (int i = 0; i < jsonArrayResult.length(); i++) {
 
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -549,7 +544,6 @@ public class AddStaffAttendanceActivity extends AppCompatActivity {
                     inputStaffId.getText().clear();
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
             }
         }
@@ -597,7 +591,6 @@ public class AddStaffAttendanceActivity extends AppCompatActivity {
         if (jsonResponse != null) {
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
@@ -607,7 +600,6 @@ public class AddStaffAttendanceActivity extends AppCompatActivity {
                     if (jsonArrayResult != null && jsonArrayResult.length() > 0){
                         for (int i = 0; i < jsonArrayResult.length(); i++) {
 
-                            Log.v(TAG, "JsonResponseOpeartion ::");
                             JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                             if (jsonObj != null) {
 
@@ -633,7 +625,6 @@ public class AddStaffAttendanceActivity extends AppCompatActivity {
                     inputStaffId.getText().clear();
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
             }
         }
@@ -682,7 +673,6 @@ public class AddStaffAttendanceActivity extends AppCompatActivity {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
@@ -692,7 +682,6 @@ public class AddStaffAttendanceActivity extends AppCompatActivity {
                     if (jsonArrayResult != null && jsonArrayResult.length() > 0){
                         for (int i = 0; i < jsonArrayResult.length(); i++) {
 
-                            Log.v(TAG, "JsonResponseOpeartion ::");
                             JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                             if (jsonObj != null) {
 
@@ -717,7 +706,6 @@ public class AddStaffAttendanceActivity extends AppCompatActivity {
                     inputStaffId.getText().clear();
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
             }
         }

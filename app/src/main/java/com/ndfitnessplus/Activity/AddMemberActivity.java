@@ -341,7 +341,7 @@ public class AddMemberActivity extends AppCompatActivity implements View.OnClick
                         // Set the hint text color gray
                         tv.setTextColor(Color.GRAY);
                         tv.setText(getResources().getString(R.string.prompt_blood_group));
-                        // tv.setTextColor(Color.GRAY);
+
                     } else {
                         tv.setTextColor(Color.BLACK);
                     }
@@ -397,18 +397,14 @@ public class AddMemberActivity extends AppCompatActivity implements View.OnClick
                     TextView tv = (TextView) view.findViewById(R.id.tv_Name);
                     View layout = (View) view.findViewById(R.id.layout);
                     layout.setPadding(0, 0, 0, 0);
-//                    if (index == 0) {
 
-//                        tv.setTextColor((Color.GRAY));
-//                    } else {
                         tv.setTextColor((Color.BLACK));
-//                    }
                     occupation = tv.getText().toString();
 
                         txtoccupation.setVisibility(View.VISIBLE);
 
                     if (!occupation.equals(getResources().getString(R.string.occupation))) {
-                        //awesomeValidation.addValidation(AddEnquiryActivity.this, R.id.spinner_occupation,RegexTemplate.NOT_EMPTY, R.string.err_msg_next_foll_date);
+
                     }
                 }
 
@@ -465,9 +461,6 @@ public class AddMemberActivity extends AppCompatActivity implements View.OnClick
                 Manifest.permission.CAMERA))
         {
 
-            // Printing toast message after enabling runtime permission.
-            //Toast.makeText(AddMemberActivity.this,"CAMERA permission allows us to Access CAMERA app", Toast.LENGTH_LONG).show();
-
         } else {
 
             ActivityCompat.requestPermissions(AddMemberActivity.this,new String[]{Manifest.permission.CAMERA}, RequestPermissionCode);
@@ -498,7 +491,6 @@ public class AddMemberActivity extends AppCompatActivity implements View.OnClick
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
                 CapturedImage.setVisibility(View.VISIBLE);
-                // ((ImageButton) findViewById(R.id.quick_start_cropped_image)).setImageURI(result.getUri());
                 CapturedImage.setImageURI(result.getUri());
                 try {
                     bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), result.getUri());
@@ -506,7 +498,6 @@ public class AddMemberActivity extends AppCompatActivity implements View.OnClick
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                Toast.makeText(this, "Cropping successful, Sample: " + result.getSampleSize(), Toast.LENGTH_LONG).show();
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Toast.makeText(this, "Cropping failed: " + result.getError(), Toast.LENGTH_LONG).show();
             }
@@ -516,10 +507,8 @@ public class AddMemberActivity extends AppCompatActivity implements View.OnClick
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         if (mCropImageUri != null && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            // required permissions granted, start crop image activity
             startCropImageActivity(mCropImageUri);
         } else {
-            //  Toast.makeText(this, "Cancelling, required permissions are not granted", Toast.LENGTH_LONG).show();
         }
     }
     private void startCropImageActivity(Uri imageUri) {
@@ -563,7 +552,6 @@ public class AddMemberActivity extends AppCompatActivity implements View.OnClick
                 int radioId = radioGroup.indexOfChild(radioButton);
                 RadioButton btn = (RadioButton) radioGroup.getChildAt(radioId);
                 gender= (String) btn.getText();
-                //  Toast.makeText(AddEnquiryActivity.this, gender, Toast.LENGTH_SHORT).show();
             }else{
                 Toast.makeText(AddMemberActivity.this, "Please Select Gender", Toast.LENGTH_SHORT).show();
             }
@@ -592,28 +580,10 @@ public class AddMemberActivity extends AppCompatActivity implements View.OnClick
             int radioId = radioGroup.indexOfChild(radioButton);
             RadioButton btn = (RadioButton) radioGroup.getChildAt(radioId);
             gender= (String) btn.getText();
-            //Toast.makeText(AddEnquiryActivity.this, gender, Toast.LENGTH_SHORT).show();
         }
         submitForm();
     }
 
-    private void showProgressDialog() {
-        Log.v(TAG, String.format("showProgressDialog"));
-        pd = new ProgressDialog(AddMemberActivity.this);
-        pd.setMessage("loading");
-        pd.setCancelable(false);
-        pd.show();
-    }
-
-    /**
-     * Dismiss Progress Dialog.
-     */
-    private void dismissProgressDialog() {
-        Log.v(TAG, String.format("dismissProgressDialog"));
-        pd.cancel();
-
-
-    }
     public void  occupationClass() {
         AddMemberActivity.OccupationTrackClass ru = new AddMemberActivity.OccupationTrackClass();
         ru.execute("5");
@@ -627,7 +597,6 @@ public class AddMemberActivity extends AppCompatActivity implements View.OnClick
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            // showProgressDialog();
         }
 
         @Override
@@ -641,10 +610,8 @@ public class AddMemberActivity extends AppCompatActivity implements View.OnClick
 
         @Override
         protected String doInBackground(String... params) {
-           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> OccupationDetails = new HashMap<String, String>();
             OccupationDetails.put("action", "show_occupation_list");
-            //OccupationloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(Occupationloyee.this));
             String domainurl=SharedPrefereneceUtil.getDomainUrl(AddMemberActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, OccupationDetails);
             Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
@@ -659,12 +626,10 @@ public class AddMemberActivity extends AppCompatActivity implements View.OnClick
 
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
@@ -679,14 +644,13 @@ public class AddMemberActivity extends AppCompatActivity implements View.OnClick
                             occupationArraylist.add(1,occupationList);
                             for (int i = 0; i < jsonArrayCountry.length(); i++) {
                                 occupationList = new Spinner_List();
-                                Log.v(TAG, "JsonResponseOpeartion ::");
+
                                 JSONObject jsonObj = jsonArrayCountry.getJSONObject(i);
                                 if (jsonObj != null) {
 
                                     String Occupation     = jsonObj.getString("Occupation");
 
                                     String id=jsonObj.getString("Auto_Id");
-//
                                     occupationList.setName(Occupation);
                                     occupationList.setId(id);
 
@@ -715,7 +679,7 @@ public class AddMemberActivity extends AppCompatActivity implements View.OnClick
                                                 // Set the hint text color gray
                                                 tv.setTextColor(Color.GRAY);
                                                 tv.setText(getResources().getString(R.string.prompt_occupation));
-                                                // tv.setTextColor(Color.GRAY);
+
                                             }
                                             else {
                                                 tv.setTextColor(Color.BLACK);
@@ -757,8 +721,7 @@ public class AddMemberActivity extends AppCompatActivity implements View.OnClick
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
-           // viewDialog.showDialog();
+
         }
 
         @Override
@@ -771,14 +734,12 @@ public class AddMemberActivity extends AppCompatActivity implements View.OnClick
 
         @Override
         protected String doInBackground(String... params) {
-          //  Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EnquiryForDetails = new HashMap<String, String>();
 
             EnquiryForDetails.put("mobileno",inputContact.getText().toString() );
             EnquiryForDetails.put("user","Member");
             EnquiryForDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(AddMemberActivity.this) );
             EnquiryForDetails.put("action", "check_mobile_already_exist_or_not");
-            //EnquiryForloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(EnquiryForloyee.this));
             String domainurl=SharedPrefereneceUtil.getDomainUrl(AddMemberActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EnquiryForDetails);
             Log.v(TAG, String.format("doInBackground :: check_mobile_already_exist_or_not= %s", loginResult));
@@ -796,94 +757,18 @@ public class AddMemberActivity extends AppCompatActivity implements View.OnClick
 
             if (success.equalsIgnoreCase(getResources().getString(R.string.zero))) {
                     CheckContactInEnquiryClass();
-                // showCustomDialog();
-
-                //inputEmail, inputPhone,inputAdd,inputReq,inputFollowupdate;
             }
             else if (success.equalsIgnoreCase(getResources().getString(R.string.two))||success.equalsIgnoreCase(getResources().getString(R.string.one)))
             {
                 Toast.makeText(AddMemberActivity.this,"Contact Already Exits. Please Enter New Mobile Number",Toast.LENGTH_SHORT).show();
                 inputContact.getText().clear();
-                //Toast.makeText(AddMemberActivity.this,"Please Enter New Mobile Number",Toast.LENGTH_SHORT).show();
             }
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
-    //  ********************** Check Email Already Exist or Not *********************
-    public void  CheckEmailClass() {
-        AddMemberActivity.CheckEmailTrackClass ru = new AddMemberActivity.CheckEmailTrackClass();
-        ru.execute("5");
-    }
 
-    class CheckEmailTrackClass extends AsyncTask<String, Void, String> {
-
-        ServerClass ruc = new ServerClass();
-
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            Log.v(TAG, "onPreExecute");
-           // showProgressDialog();
-            viewDialog.showDialog();
-        }
-
-        @Override
-        protected void onPostExecute(String response) {
-            super.onPostExecute(response);
-            Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
-            viewDialog.hideDialog();
-            //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
-            //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
-            CheckEmailDetails(response);
-
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
-            HashMap<String, String> EnquiryForDetails = new HashMap<String, String>();
-
-            EnquiryForDetails.put("email",inputEmail.getText().toString() );
-            EnquiryForDetails.put("user","Member");
-            EnquiryForDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(AddMemberActivity.this) );
-            EnquiryForDetails.put("action", "check_email_already_exist_or_not");
-            String domainurl=SharedPrefereneceUtil.getDomainUrl(AddMemberActivity.this);
-            //EnquiryForloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(EnquiryForloyee.this));
-            String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EnquiryForDetails);
-            Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
-            return loginResult;
-        }
-    }
-    private void CheckEmailDetails(String jsonResponse) {
-
-        Log.v(TAG, String.format("loginServerResponse :: response = %s", jsonResponse));
-
-        JSONObject jsonObjLoginResponse = null;
-        try {
-            jsonObjLoginResponse = new JSONObject(jsonResponse);
-            String success = jsonObjLoginResponse.getString(getResources().getString(R.string.success));
-
-            if (success.equalsIgnoreCase(getResources().getString(R.string.zero))) {
-
-                // showCustomDialog();
-
-                //inputEmail, inputPhone,inputAdd,inputReq,inputFollowupdate;
-            }
-            else if (success.equalsIgnoreCase(getResources().getString(R.string.two)))
-            {
-                Toast.makeText(AddMemberActivity.this,"Email Already Exits. Please Enter New Email",Toast.LENGTH_SHORT).show();
-                inputEmail.getText().clear();
-                //Toast.makeText(AddMemberActivity.this,"Please Enter New Mobile Number",Toast.LENGTH_SHORT).show();
-            }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
 
     public void  CheckContactInEnquiryClass() {
         AddMemberActivity.CheckContactInEnquiryTrackClass ru = new AddMemberActivity.CheckContactInEnquiryTrackClass();
@@ -899,8 +784,6 @@ public class AddMemberActivity extends AppCompatActivity implements View.OnClick
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-           // showProgressDialog();
-//            viewDialog.showDialog();
         }
 
         @Override
@@ -914,14 +797,12 @@ public class AddMemberActivity extends AppCompatActivity implements View.OnClick
 
         @Override
         protected String doInBackground(String... params) {
-           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EnquiryForDetails = new HashMap<String, String>();
 
             EnquiryForDetails.put("mobileno",inputContact.getText().toString() );
             EnquiryForDetails.put("user","Enquiry" );
             EnquiryForDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(AddMemberActivity.this) );
             EnquiryForDetails.put("action", "check_mobile_already_exist_in_enquiry_or_not");
-            //EnquiryForloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(EnquiryForloyee.this));
             String domainurl=SharedPrefereneceUtil.getDomainUrl(AddMemberActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EnquiryForDetails);
             Log.v(TAG, String.format("doInBackground :: check_mobile_already_exist_in_enquiry_or_not= %s", loginResult));
@@ -947,7 +828,7 @@ public class AddMemberActivity extends AppCompatActivity implements View.OnClick
                 if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
                     for (int i = 0; i < jsonArrayResult.length(); i++) {
 
-                        Log.v(TAG, "JsonResponseOpeartion ::");
+
                         JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                         if (jsonObj != null) {
 
@@ -969,7 +850,7 @@ public class AddMemberActivity extends AppCompatActivity implements View.OnClick
                             String img=Image.replace("\"", "");
                             String domainurl=SharedPrefereneceUtil.getDomainUrl(AddMemberActivity.this);
                             final String url= domainurl+ServiceUrls.IMAGES_URL + img;
-                            Log.d(TAG, "img url: "+url);
+
                             CapturedImage.setVisibility(View.VISIBLE);
 
                             if(!(img.equals("null")||img.equals(""))) {
@@ -981,7 +862,6 @@ public class AddMemberActivity extends AppCompatActivity implements View.OnClick
                                 Glide.with(this)
                                         .setDefaultRequestOptions(requestOptions)
                                         .load(url).into(CapturedImage);
-                               // Glide.with(AddMemberActivity.this).load(url).placeholder(R.drawable.nouser).into(CapturedImage);
                             }
                             AddMemberActivity.this.runOnUiThread(new Runnable() {
 
@@ -1040,7 +920,6 @@ public class AddMemberActivity extends AppCompatActivity implements View.OnClick
                 } else if (jsonArrayResult.length() == 0) {
                     System.out.println("No records found");
                 }
-                //Toast.makeText(AddMemberActivity.this,"Please Enter New Mobile Number",Toast.LENGTH_SHORT).show();
             }
 
         } catch (JSONException e) {
@@ -1061,7 +940,6 @@ public class AddMemberActivity extends AppCompatActivity implements View.OnClick
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
             viewDialog.showDialog();
         }
 
@@ -1069,17 +947,14 @@ public class AddMemberActivity extends AppCompatActivity implements View.OnClick
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
+
             viewDialog.hideDialog();
-            //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
-            //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
             AddMemberDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> AddMemberDetails = new HashMap<String, String>();
             AddMemberDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(AddMemberActivity.this));
             Log.v(TAG, String.format("doInBackground :: Comp_id= %s", SharedPrefereneceUtil.getSelectedBranchId(AddMemberActivity.this)));
@@ -1139,7 +1014,6 @@ public class AddMemberActivity extends AppCompatActivity implements View.OnClick
             {
                 Toast.makeText(AddMemberActivity.this,"Mobile Number Already Exits.Please Enter New Mobile Number",Toast.LENGTH_SHORT).show();
                 inputContact.getText().clear();
-              //Toast.makeText(AddMemberActivity.this,"Please Enter New Mobile Number",Toast.LENGTH_SHORT).show();
             }
 
         } catch (JSONException e) {
@@ -1156,13 +1030,11 @@ public class AddMemberActivity extends AppCompatActivity implements View.OnClick
         }
 
         if((inputEmail.length()>0) ){
-//            inputEmail.setError(getResources().getString(R.string.err_msg_email));
             awesomeValidation.addValidation(this, R.id.input_email, Patterns.EMAIL_ADDRESS, R.string.err_msg_email);
             if (awesomeValidation.validate()) {
                 addMemberClass();
             }
         }else{
-//            inputEmail.setError(null);
             awesomeValidation.clear();
             if (inputContact.length()>0 && inputName.length()>0) {
                 addMemberClass();

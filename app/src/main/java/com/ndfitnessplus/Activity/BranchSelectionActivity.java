@@ -137,7 +137,7 @@ public class BranchSelectionActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
+
             viewDialog.showDialog();
     }
 
@@ -145,23 +145,22 @@ public class BranchSelectionActivity extends AppCompatActivity {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
+
             viewDialog.hideDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             BranchSelctionDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+
             HashMap<String, String> BranchSelctionDetails = new HashMap<String, String>();
             BranchSelctionDetails.put("Company_Id", SharedPrefereneceUtil.getCompanyAutoId(BranchSelectionActivity.this));
             Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getCompanyAutoId(BranchSelectionActivity.this)));
             BranchSelctionDetails.put("action","show_branch_details");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(BranchSelectionActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, BranchSelctionDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
+
             return loginResult;
         }
 
@@ -171,12 +170,12 @@ public class BranchSelectionActivity extends AppCompatActivity {
     private void BranchSelctionDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
+
         if (jsonResponse != null) {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
+
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
@@ -186,7 +185,7 @@ public class BranchSelectionActivity extends AppCompatActivity {
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
                             for (int i = 0; i < jsonArrayResult.length(); i++) {
                                 subList = new BranchList();
-                                Log.v(TAG, "JsonResponseOpeartion ::");
+
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -208,7 +207,6 @@ public class BranchSelectionActivity extends AppCompatActivity {
                                    subList.setDailyCollection(Todays_Collection);
                                    subList.setMonthlyCollection(Month_Collection);
 
-                                    //Toast.makeText(MainActivity.this, "j "+j, Toast.LENGTH_SHORT).show();
                                     subListArrayList.add(subList);
                                     adapter = new BranchSelectionAdapter(BranchSelectionActivity.this, subListArrayList);
                                     recyclerView.setAdapter(adapter);
@@ -220,11 +218,10 @@ public class BranchSelectionActivity extends AppCompatActivity {
                         }
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
-                   // nodata.setVisibility(View.VISIBLE);
+
                     recyclerView.setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
             }
         }
@@ -246,9 +243,7 @@ public class BranchSelectionActivity extends AppCompatActivity {
                         return;
                     }
                     ImeiNo = telephonyManager.getDeviceId();
-                    Log.v(TAG, "IMEI No: "+ImeiNo);
-                   // Toast.makeText(BranchSelectionActivity.this,ImeiNo,Toast.LENGTH_LONG).show();
-                } else {
+                                   } else {
                     Toast.makeText(BranchSelectionActivity.this,"Without permission we check",Toast.LENGTH_LONG).show();
                 }
                 break;

@@ -140,7 +140,6 @@ public class AddMeasurementActivity extends AppCompatActivity {
         awesomeValidation.addValidation(this, R.id.input_nextfollDate, RegexTemplate.NOT_EMPTY, R.string.err_msg_next_foll_date);
 
         Intent intent = getIntent();
-        // Bundle args = intent.getBundleExtra("BUNDLE");
         if (intent != null) {
             String contact=intent.getStringExtra("contact");
             inputContact.setText(contact);
@@ -162,12 +161,9 @@ public class AddMeasurementActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                // String selection = (String)parent.getItemAtPosition(position);
-                // Toast.makeText(MainNavigationActivity.this,"this is autocomplete suggestions"+selection,Toast.LENGTH_SHORT).show();
                 String countryName = searchcontactadapter.getItem(position).getCustName();
                 String contact = searchcontactadapter.getItem(position).getCustContact();
                 MemberID = searchcontactadapter.getItem(position).getMemberId();
-               // Email=searchcontactadapter.getItem(position).getEmail();
 
                 inputName.setText(countryName);
                 inputContact.setText(contact);
@@ -200,13 +196,10 @@ public class AddMeasurementActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
 
-                // String selection = (String)parent.getItemAtPosition(position);
-                // Toast.makeText(MainNavigationActivity.this,"this is autocomplete suggestions"+selection,Toast.LENGTH_SHORT).show();
                 String countryName = searchnameadapter.getItem(position).getCustName();
                 String contact = searchnameadapter.getItem(position).getCustContact();
                 MemberID = searchnameadapter.getItem(position).getMemberId();
 
-                //Email=searchcontactadapter.getItem(position).getEmail();
 
                 inputName.setText(countryName);
                 inputContact.setText(contact);
@@ -302,7 +295,6 @@ public class AddMeasurementActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_save_enquiry) {
-            // sendEmail();
             submitForm();
             return true;
         }
@@ -329,7 +321,6 @@ public class AddMeasurementActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            // showProgressDialog();
             viewDialog.showDialog();
         }
 
@@ -337,17 +328,14 @@ public class AddMeasurementActivity extends AppCompatActivity {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            // dismissProgressDialog();
             viewDialog.hideDialog();
-            //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
-            //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
+
             CheckContactDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EnquiryForDetails = new HashMap<String, String>();
 
             EnquiryForDetails.put("mobileno",inputContact.getText().toString() );
@@ -355,7 +343,6 @@ public class AddMeasurementActivity extends AppCompatActivity {
             EnquiryForDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(AddMeasurementActivity.this) );
             EnquiryForDetails.put("action", "check_mobile_already_exist_or_not");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(AddMeasurementActivity.this);
-            //EnquiryForloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(EnquiryForloyee.this));
             String loginResult = ruc.sendPostRequest(domainurl+ ServiceUrls.LOGIN_URL, EnquiryForDetails);
             Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
@@ -372,12 +359,10 @@ public class AddMeasurementActivity extends AppCompatActivity {
 
             if (success.equalsIgnoreCase(getResources().getString(R.string.zero))) {
                 Toast.makeText(AddMeasurementActivity.this,"Member is not registred. Please register Member first",Toast.LENGTH_SHORT).show();
-                //inputContact.getText().clear();
-                // showCustomDialog();
                 Intent intent=new Intent(AddMeasurementActivity.this,AddMemberActivity.class);
                 intent.putExtra("contact",inputContact.getText().toString());
                 startActivity(intent);
-                //inputEmail, inputPhone,inputAdd,inputReq,inputFollowupdate;
+
             }
             else if (success.equalsIgnoreCase(getResources().getString(R.string.two)))
             {
@@ -386,7 +371,6 @@ public class AddMeasurementActivity extends AppCompatActivity {
                 if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
                     for (int i = 0; i < jsonArrayResult.length(); i++) {
 
-                        Log.v(TAG, "JsonResponseOpeartion ::");
                         JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                         if (jsonObj != null) {
 
@@ -400,7 +384,6 @@ public class AddMeasurementActivity extends AppCompatActivity {
                 } else if (jsonArrayResult.length() == 0) {
                     System.out.println("No records found");
                 }
-                // Toast.makeText(AddEnquiryActivity.this,"Please Enter New Mobile Number",Toast.LENGTH_SHORT).show();
             }else if (success.equalsIgnoreCase(getResources().getString(R.string.one)))
             {
                 JSONArray jsonArrayResult = object.getJSONArray("Data");
@@ -408,7 +391,6 @@ public class AddMeasurementActivity extends AppCompatActivity {
                 if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
                     for (int i = 0; i < jsonArrayResult.length(); i++) {
 
-                        Log.v(TAG, "JsonResponseOpeartion ::");
                         JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                         if (jsonObj != null) {
 
@@ -422,7 +404,6 @@ public class AddMeasurementActivity extends AppCompatActivity {
                 } else if (jsonArrayResult.length() == 0) {
                     System.out.println("No records found");
                 }
-                // Toast.makeText(AddEnquiryActivity.this,"Please Enter New Mobile Number",Toast.LENGTH_SHORT).show();
             }
 
         } catch (JSONException e) {
@@ -442,7 +423,6 @@ public class AddMeasurementActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
             viewDialog.showDialog();
         }
 
@@ -450,17 +430,14 @@ public class AddMeasurementActivity extends AppCompatActivity {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
             viewDialog.hideDialog();
-            //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
-            //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
             AddMeasurementDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-          //  Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+
             HashMap<String, String> AddMeasurementDetails = new HashMap<String, String>();
             AddMeasurementDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(AddMeasurementActivity.this));
             AddMeasurementDetails.put("member_id",MemberID);
@@ -491,8 +468,6 @@ public class AddMeasurementActivity extends AppCompatActivity {
             AddMeasurementDetails.put("action", "add_measurement");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(AddMeasurementActivity.this);
             String loginResult2 = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, AddMeasurementDetails);
-
-            Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult2));
             return loginResult2;
         }
     }
@@ -517,7 +492,6 @@ public class AddMeasurementActivity extends AppCompatActivity {
             else if (success.equalsIgnoreCase(getResources().getString(R.string.zero)))
             {
                 Toast.makeText(AddMeasurementActivity.this,"Something Went wrong",Toast.LENGTH_SHORT).show();
-//                inputContact.getText().clear();
             }
 
         } catch (JSONException e) {
@@ -537,28 +511,24 @@ public class AddMeasurementActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            // showProgressDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
+
             SearchDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> SearchDetails = new HashMap<String, String>();
 
             SearchDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(AddMeasurementActivity.this) );
             SearchDetails.put("action", "show_all_member_list");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(AddMeasurementActivity.this);
-            //EmployeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(Employee.this));
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, SearchDetails);
             Log.v(TAG, String.format("doInBackground :: show_all_member_list= %s", loginResult));
             return loginResult;
@@ -572,12 +542,10 @@ public class AddMeasurementActivity extends AppCompatActivity {
 
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 if (object != null) {
                     JSONArray jsonArrayResult = object.getJSONArray("result");
@@ -585,7 +553,6 @@ public class AddMeasurementActivity extends AppCompatActivity {
                     if (jsonArrayResult != null && jsonArrayResult.length() > 0){
                         for (int i = 0; i < jsonArrayResult.length(); i++) {
                             searchModel = new Search_list();
-                            Log.v(TAG, "JsonResponseOpeartion ::");
                             JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                             if (jsonObj != null) {
 
@@ -595,9 +562,6 @@ public class AddMeasurementActivity extends AppCompatActivity {
                                 String Email = jsonObj.getString("Email");
                                 String Gender = jsonObj.getString("Gender");
 
-
-                                //  String email = jsonObj.getString("email");
-                                // String phn_no = jsonObj.getString("mobile");
 
                                 String namec=Name+"-"+Contact;
                                 searchModel.setCustName(Name);
@@ -611,19 +575,13 @@ public class AddMeasurementActivity extends AppCompatActivity {
                                 searchnameadapter = new SearchNameAdapter(AddMeasurementActivity.this, searchArrayList);
 
                                 inputName.setAdapter(searchnameadapter);
-                                // inputName.setDropDownBackgroundResource(R.drawable.search_background);
                                 inputName.setThreshold(1);
 
                                 searchcontactadapter = new SearchContactAdapter(AddMeasurementActivity.this, searchArrayList);
 
                                 inputContact.setAdapter(searchcontactadapter);
-                                // textContact.setDropDownBackgroundResource(R.drawable.search_background);
                                 inputContact.setThreshold(1);
 
-                                //searchnameadapter = new SearchAdapter(MainNavigationActivity.this, searchArrayList);
-                                //text.setAdapter(searchnameadapter);
-                                // text.setDropDownBackgroundResource(R.drawable.layoutborder);
-                                // text.setThreshold(1);
 
 
                             }

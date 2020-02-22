@@ -61,7 +61,7 @@
                         android:layout_gravity="right"
                         android:gravity="right"
                         android:textSize="12sp"
-                        android:visibility="visible"/>
+                        android:visibility="gone"/>
                     <ImageView
                         android:id="@+id/contactIV"
                         android:layout_width="30dp"
