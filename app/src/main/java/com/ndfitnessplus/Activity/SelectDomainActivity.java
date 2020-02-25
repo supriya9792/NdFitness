@@ -42,7 +42,7 @@ public class SelectDomainActivity extends AppCompatActivity {
         initComponent();
     }
     private void initToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar=findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(getResources().getString(R.string.select_domain));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -50,7 +50,7 @@ public class SelectDomainActivity extends AppCompatActivity {
 
     private void initComponent() {
        btn_save=findViewById(R.id.save);
-       domain=(EditText) findViewById(R.id.domainurl);
+       domain=findViewById(R.id.domainurl);
 
        String domain_url= SharedPrefereneceUtil.getDomainUrl(SelectDomainActivity.this);
 
@@ -174,7 +174,6 @@ public class SelectDomainActivity extends AppCompatActivity {
                     dialog.show();
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
                 android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(SelectDomainActivity.this);
                 builder.setMessage(R.string.server_exception);

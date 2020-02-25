@@ -1,10 +1,5 @@
 package com.ndfitnessplus.Utility;
 
-/**
- * Created by admin on 7/11/2017.
- */
-
-
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -52,11 +47,6 @@ public class Utility {
     private static final String TAG = Utility.class.getSimpleName();
     private static ProgressDialog sProgressDialog;
 
-    /**
-     * This method will make the navigation bar and status bar transparent only for api 21+
-     *
-     * @param activity
-     */
     public static void makeFullScreen(Activity activity) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             // Set the status bar and navigation bar as transparent
@@ -149,7 +139,6 @@ public class Utility {
             }
         } else {
             if (connectivityManager != null) {
-                //noinspection deprecation
                 NetworkInfo[] info = connectivityManager.getAllNetworkInfo();
                 if (info != null) {
                     for (NetworkInfo networkInfo : info) {
@@ -181,97 +170,87 @@ public class Utility {
         }
     }
 
-
-    /* public static void setSpinnerAdapter(Context mContext, Spinner spinner, ArrayList<String> arrayList) {
-         ArrayAdapter spinnerAdapter = new ArrayAdapter(mContext, R.layout.spinner_item, arrayList);
-         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-         spinner.setAdapter(spinnerAdapter);
-
-     }*/
     public static String getDateFormatAsLastSeen(Calendar date) {
-
-        //   String dayNumberSuffix = getDayNumberSuffix(date.get(Calendar.DAY_OF_MONTH));
-        DateFormat dateFormat = new SimpleDateFormat(" d MMM yyyy");
+        DateFormat dateFormat = new SimpleDateFormat(" d MMM yyyy",Locale.US);
         return dateFormat.format(date.getTime());
     }
 
     public static String getCurrentDate() {
-        SimpleDateFormat sdfDate = new SimpleDateFormat("dd-MM-yyyy");//"yyyy-MM-dd"
+        SimpleDateFormat sdfDate = new SimpleDateFormat("dd-MM-yyyy",Locale.US);
         Date now = new Date();
-        String strDate = sdfDate.format(now);
-        return strDate;
+        String streeDate = sdfDate.format(now);
+        return streeDate;
     }
     public static String getFirstDayofMonth() {
-        SimpleDateFormat sdfDate = new SimpleDateFormat("MM-yyyy");//"yyyy-MM-dd"
+        SimpleDateFormat sdfDate = new SimpleDateFormat("MM-yyyy",Locale.US);
         Date now = new Date();
         Calendar cal = Calendar.getInstance();
 
-       // return cal.getTime();
         String strDate = sdfDate.format(now);
         return "01-"+strDate;
     }
     public static String getCurrentDateTime() {
-        SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z");//"yyyy-MM-dd"
+        SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z",Locale.US);//"yyyy-MM-dd"
         Date now = new Date();
-        String strDate = sdfDate.format(now);
-        return strDate;
+        String stretDate = sdfDate.format(now);
+        return stretDate;
     }
     public static String formatDate(String dateStr) {
         try {
-            SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd",Locale.US);
             Date date = fmt.parse(dateStr);
-            SimpleDateFormat fmtOut = new SimpleDateFormat("d MMM yyyy");
+            SimpleDateFormat fmtOut = new SimpleDateFormat("d MMM yyyy",Locale.US);
             return fmtOut.format(date);
         } catch (ParseException e) {
-
+            e.printStackTrace();
         }
 
         return "";
     }
     public static String formatDateDB(String dateStr) {
         try {
-            SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd",Locale.US);
             Date date = fmt.parse(dateStr);
-            SimpleDateFormat fmtOut = new SimpleDateFormat("dd-MM-yyyy");
+            SimpleDateFormat fmtOut = new SimpleDateFormat("dd-MM-yyyy",Locale.US);
             return fmtOut.format(date);
         } catch (ParseException e) {
-
+            e.printStackTrace();
         }
 
         return "";
     }
     public String formatMonYear(String dateStr) {
         try {
-            SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.US);
             Date date = fmt.parse(dateStr);
-            SimpleDateFormat fmtOut = new SimpleDateFormat("MMM yyyy");
+            SimpleDateFormat fmtOut = new SimpleDateFormat("MMM yyyy",Locale.US);
             return fmtOut.format(date);
         } catch (ParseException e) {
-
+              e.printStackTrace();
         }
 
         return "";
     }
     public String formatMonNumber(String dateStr) {
         try {
-            SimpleDateFormat fmt = new SimpleDateFormat("MMM yyyy");
+            SimpleDateFormat fmt = new SimpleDateFormat("MMM yyyy",Locale.US);
             Date date = fmt.parse(dateStr);
-            SimpleDateFormat fmtOut = new SimpleDateFormat("MM yyyy");
+            SimpleDateFormat fmtOut = new SimpleDateFormat("MM yyyy",Locale.US);
             return fmtOut.format(date);
         } catch (ParseException e) {
-
+           e.printStackTrace();
         }
 
         return "";
     }
     public String formatDayMon(String dateStr) {
         try {
-            SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.US);
             Date date = fmt.parse(dateStr);
-            SimpleDateFormat fmtOut = new SimpleDateFormat("dd MMM,h:mm a");
+            SimpleDateFormat fmtOut = new SimpleDateFormat("dd MMM,h:mm a",Locale.US);
             return fmtOut.format(date);
         } catch (ParseException e) {
-
+            e.printStackTrace();
         }
 
         return "";
@@ -279,7 +258,7 @@ public class Utility {
     public static String CalulateDateFromGivenDays(String date,int days){
     String enddate="";
         try {
-            SimpleDateFormat fmt = new SimpleDateFormat("dd-MM-yyyy");
+            SimpleDateFormat fmt = new SimpleDateFormat("dd-MM-yyyy",Locale.US);
             Date startdate = null;
             startdate = fmt.parse(date);
             Calendar c = Calendar.getInstance();
@@ -293,7 +272,7 @@ public class Utility {
         return enddate;
     }
     public static String getNextDate(String  curDate) {
-        final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd",Locale.US);
         final Date date;
         String nextdate="";
         try {
@@ -301,7 +280,7 @@ public class Utility {
             final Calendar calendar = Calendar.getInstance();
             calendar.setTime(date);
             calendar.add(Calendar.DAY_OF_YEAR, 1);
-            SimpleDateFormat fmt = new SimpleDateFormat("dd-MM-yyyy");
+            SimpleDateFormat fmt = new SimpleDateFormat("dd-MM-yyyy",Locale.US);
              nextdate=fmt.format(calendar.getTime());
         } catch (ParseException e) {
             e.printStackTrace();
@@ -312,28 +291,15 @@ public class Utility {
         String ago="";
         try
         {
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.US);
             Date past = format.parse(cret_date);
             // Date past = format.parse("2016.02.05 AD at 23:59:30");
             Date now = new Date();
-            System.out.println("Now date" +now);
-            System.out.println("cret date" +past);
-            System.out.println("Now time" +now.getTime());
-            System.out.println("Past time" + past.getTime());
+
             long seconds= TimeUnit.MILLISECONDS.toSeconds(now.getTime() - past.getTime());
             long minutes=TimeUnit.MILLISECONDS.toMinutes( now.getTime() - past.getTime());
             long hours=TimeUnit.MILLISECONDS.toHours(now.getTime() - past.getTime());
             long days=TimeUnit.MILLISECONDS.toDays( now.getTime() - past.getTime());
-
-//            long seconds= TimeUnit.MILLISECONDS.toSeconds( past.getTime()- now.getTime());
-//            long minutes=TimeUnit.MILLISECONDS.toMinutes(past.getTime() - now.getTime() );
-//            long hours=TimeUnit.MILLISECONDS.toHours(past.getTime() - now.getTime());
-//            long days=TimeUnit.MILLISECONDS.toDays( past.getTime() -  now.getTime());
-
-//          System.out.println(TimeUnit.MILLISECONDS.toSeconds(now.getTime() - past.getTime()) + " milliseconds ago");
-//          System.out.println(TimeUnit.MILLISECONDS.toMinutes(now.getTime() - past.getTime()) + " minutes ago");
-//          System.out.println(TimeUnit.MILLISECONDS.toHours(now.getTime() - past.getTime()) + " hours ago");
-//          System.out.println(TimeUnit.MILLISECONDS.toDays(now.getTime() - past.getTime()) + " days ago");
 
             if(seconds<60)
             {
@@ -366,18 +332,14 @@ public class Utility {
         Calendar c = Calendar.getInstance();
         int timeOfDay = c.get(Calendar.HOUR_OF_DAY);
 
-        if(timeOfDay >= 0 && timeOfDay < 12){
+        if(timeOfDay > 0 && timeOfDay < 12){
             return "Good Morning";
-          //  Toast.makeText(this, "Good Morning", Toast.LENGTH_SHORT).show();
         }else if(timeOfDay >= 12 && timeOfDay < 16){
             return "Good Afternoon";
-          //  Toast.makeText(this, "Good Afternoon", Toast.LENGTH_SHORT).show();
         }else if(timeOfDay >= 16 && timeOfDay < 21){
             return "Good Evening";
-           // Toast.makeText(this, "Good Evening", Toast.LENGTH_SHORT).show();
-        }else if(timeOfDay >= 21 && timeOfDay < 24){
+        }else if(timeOfDay >= 21 && timeOfDay <= 24){
             return "Good Night";
-          //  Toast.makeText(this, "Good Night", Toast.LENGTH_SHORT).show();
         }
         return "";
     }
@@ -389,11 +351,7 @@ public class Utility {
             StringBuilder sb = new StringBuilder();
             if (addresses.size() > 0) {
                 Address address = addresses.get(0);
-                //for (int i = 0; i < address.getMaxAddressLineIndex(); i++)
-                //  sb.append(address.getAddressLine(i)).append("\n");
                 sb.append(address.getSubLocality()).append("\n");
-                //    sb.append(address.getPostalCode()).append("\n");
-                //sb.append(address.getCountryName());
                 Toast.makeText(context, sb.toString(), Toast.LENGTH_SHORT).show();
                 return sb.toString();
             }
@@ -404,7 +362,7 @@ public class Utility {
     }
 
 
-    public static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 123;
+    private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 123;
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     public static boolean checkPermission(final Context context)
@@ -465,21 +423,21 @@ public class Utility {
         return lastFour.reverse().toString();
     }
     public static String getyesterdayDate() {
-        SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd");//"yyyy-MM-dd"
+        SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd",Locale.US);
         Date now = new Date();
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DATE, -1);
-        String strDate = sdfDate.format(cal.getTime());
-        return strDate;
+        String startdate = sdfDate.format(cal.getTime());
+        return startdate;
     }
     public static String formatDateMonthDB(String dateStr) {
         try {
-            SimpleDateFormat fmt = new SimpleDateFormat("d MMM yyyy");
+            SimpleDateFormat fmt = new SimpleDateFormat("d MMM yyyy",Locale.US);
             Date date = fmt.parse(dateStr);
-            SimpleDateFormat fmtOut = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat fmtOut = new SimpleDateFormat("yyyy-MM-dd",Locale.US);
             return fmtOut.format(date);
         } catch (ParseException e) {
-
+           e.printStackTrace();
         }
 
         return "";

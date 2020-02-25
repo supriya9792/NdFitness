@@ -17,8 +17,8 @@ import com.bumptech.glide.request.transition.Transition;
 import com.ndfitnessplus.R;
 
 public class ViewDialog {
-    Activity activity;
-    Dialog dialog;
+    public Activity activity;
+    public Dialog dialog;
     //..we need the context else we can not create the dialog so get context in constructor
     public ViewDialog(Activity activity) {
         this.activity = activity;
@@ -40,7 +40,6 @@ public class ViewDialog {
         it was never easy to load gif into an ImageView before Glide or Others library
         and for doing this we need DrawableImageViewTarget to that ImageView
         */
-       // GlideDrawableImageViewTarget imageViewTarget = new GlideDrawableImageViewTarget(gifImageView);
         Glide.with(activity)
                 .load(R.drawable.ndgymtimegif)
                 .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE))
