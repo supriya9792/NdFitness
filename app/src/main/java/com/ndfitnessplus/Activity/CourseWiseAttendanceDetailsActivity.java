@@ -135,22 +135,18 @@ public class CourseWiseAttendanceDetailsActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             CourseDetailsDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> CourseDetailsDetails = new HashMap<String, String>();
             CourseDetailsDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(CourseWiseAttendanceDetailsActivity.this));
             CourseDetailsDetails.put("member_id",member_id );
@@ -161,7 +157,6 @@ public class CourseWiseAttendanceDetailsActivity extends AppCompatActivity {
             String domainurl=SharedPrefereneceUtil.getDomainUrl(CourseWiseAttendanceDetailsActivity.this);
             CourseDetailsDetails.put("action","show_course_details_by_member_id");
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL,  CourseDetailsDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
     }
@@ -169,21 +164,17 @@ public class CourseWiseAttendanceDetailsActivity extends AppCompatActivity {
     private void  CourseDetailsDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
                     progressBar.setVisibility(View.GONE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
+
                         ArrayList<BalanceTrasactionList> item = new ArrayList<BalanceTrasactionList>();
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
 
@@ -191,9 +182,7 @@ public class CourseWiseAttendanceDetailsActivity extends AppCompatActivity {
 
 
                                 subList = new AttendanceDetailList();
-                                Log.d(TAG, "i: " + i);
 
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -236,7 +225,6 @@ public class CourseWiseAttendanceDetailsActivity extends AppCompatActivity {
                                     String domainurl= SharedPrefereneceUtil.getDomainUrl(CourseWiseAttendanceDetailsActivity.this);
                                     String url= domainurl+ServiceUrls.IMAGES_URL + Image;
 
-                                    // Glide.with(this).load(url).placeholder(R.drawable.nouser).into(imageView);
                                     RequestOptions requestOptions = new RequestOptions();
                                     requestOptions.placeholder(R.drawable.nouser);
                                     requestOptions.error(R.drawable.nouser);
@@ -252,12 +240,8 @@ public class CourseWiseAttendanceDetailsActivity extends AppCompatActivity {
                             System.out.println("No records found");
                         }
                     }
-                }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
-                    //nodata.setVisibility(View.VISIBLE);
-                    // recyclerView.setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
                 android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(CourseWiseAttendanceDetailsActivity.this);
                 builder.setMessage(R.string.server_exception);
@@ -289,7 +273,6 @@ public class CourseWiseAttendanceDetailsActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            // showProgressDialog();
             viewDialog.showDialog();
         }
 
@@ -297,27 +280,20 @@ public class CourseWiseAttendanceDetailsActivity extends AppCompatActivity {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: show_balance_trasaction_details = %s", response));
-            //  dismissProgressDialog();
             viewDialog.hideDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             AttendanceDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> AttendanceDetails = new HashMap<String, String>();
             AttendanceDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(CourseWiseAttendanceDetailsActivity.this));
             AttendanceDetails.put("member_id",member_id );
             AttendanceDetails.put("invoice_id",invoice_id );
-            Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(CourseWiseAttendanceDetailsActivity.this)));
-            Log.v(TAG, String.format("doInBackground :: member_id = %s", member_id));
-            Log.v(TAG, String.format("doInBackground :: invoice_id = %s", invoice_id));
             AttendanceDetails.put("action","show_attendance");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(CourseWiseAttendanceDetailsActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, AttendanceDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
 
@@ -327,21 +303,17 @@ public class CourseWiseAttendanceDetailsActivity extends AppCompatActivity {
     private void AttendanceDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
                     progressBar.setVisibility(View.GONE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
+
                         ArrayList<AttendanceDetailList> item = new ArrayList<AttendanceDetailList>();
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
 
@@ -349,9 +321,7 @@ public class CourseWiseAttendanceDetailsActivity extends AppCompatActivity {
 
 
                                 subList = new AttendanceDetailList();
-                                Log.d(TAG, "i: " + i);
 
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -397,10 +367,8 @@ public class CourseWiseAttendanceDetailsActivity extends AppCompatActivity {
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
                     nodata.setVisibility(View.VISIBLE);
-                    // recyclerView.setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
                 android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(CourseWiseAttendanceDetailsActivity.this);
                 builder.setMessage(R.string.server_exception);
@@ -424,7 +392,6 @@ public class CourseWiseAttendanceDetailsActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        //dismissProgressDialog();
         finish();
     }
 }

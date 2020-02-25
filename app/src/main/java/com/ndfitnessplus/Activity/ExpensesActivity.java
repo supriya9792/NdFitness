@@ -84,15 +84,15 @@ public class ExpensesActivity extends AppCompatActivity implements SwipeRefreshL
                 WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_expenses);
           initToolbar();
-}
-private void initToolbar() {
+    }
+    private void initToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(getResources().getString(R.string.exi_expenses));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         initComponent();
         }
-private void initComponent(){
+    private void initComponent(){
         FloatingActionButton addenquiry=findViewById(R.id.fab);
         progressBar=findViewById(R.id.progressBar);
         swipeRefresh=findViewById(R.id.swipeRefresh);
@@ -110,8 +110,6 @@ private void initComponent(){
         expenses=findViewById(R.id.ttl_expense);
         progress_bar.setVisibility(View.GONE);
         lyt_no_connection.setVisibility(View.VISIBLE);
-//        adapter = new EnquiryAdapter( new ArrayList<EnquiryList>(),EnquiryActivity.this);
-//        recyclerView.setAdapter(adapter);
 
         Intent intent = getIntent();
         Bundle args = intent.getBundleExtra("BUNDLE");
@@ -121,7 +119,6 @@ private void initComponent(){
         String coll=intent.getStringExtra("expense");
         progressBar.setVisibility(View.GONE);
         expenses.setText(coll);
-        //total_courses.setText(String.valueOf(length));
         adapter = new ExpensesAdapter( filterArrayList,ExpensesActivity.this);
         recyclerView.setAdapter(adapter);
         }else {
@@ -152,18 +149,6 @@ public void run() {
         }, 1000);
         }
         });
-//                Toast.makeText(ExpensesActivity.this, R.string.internet_unavailable, Toast.LENGTH_LONG).show();
-//                android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(ExpensesActivity.this);
-//                builder.setMessage(R.string.internet_unavailable);
-//                builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int id) {
-//                        dialog.dismiss();
-//                    }
-//                });
-//                android.app.AlertDialog dialog = builder.create();
-//                dialog.setCancelable(false);
-//                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-//                dialog.show();
 
         }
         }
@@ -180,38 +165,36 @@ public void onClick(View v) {
 
         inputsearch.addTextChangedListener(new TextWatcher() {
 
-@Override
-public void afterTextChanged(Editable arg0) {
+    @Override
+    public void afterTextChanged(Editable arg0) {
         // TODO Auto-generated method stub
         if (ExpensesActivity.this.adapter == null){
 
-        }
-        else
-        {
-        ArrayList<ExpensesList> filterlist=ExpensesActivity.this.adapter.filter(String.valueOf(arg0));
-        double totalBudget=0;
-        for (final ExpensesList wp : filterlist) {
-        String bugdet=wp.getAmount();
-        if(!(bugdet.equals("")||bugdet.equals("null"))){
-        double budge=Double.parseDouble(bugdet);
-        totalBudget+=budge;
-        Log.d(TAG, "budget: " + bugdet);
-        Log.d(TAG, "totalBudget: " + totalBudget);
-        expenses.setText(String.valueOf(totalBudget));
-        }
+            }
+            else
+            {
+                ArrayList<ExpensesList> filterlist=ExpensesActivity.this.adapter.filter(String.valueOf(arg0));
+                double totalBudget=0;
+                for (final ExpensesList wp : filterlist) {
+                String bugdet=wp.getAmount();
+                if(!(bugdet.equals("")||bugdet.equals("null"))){
+                double budge=Double.parseDouble(bugdet);
+                totalBudget+=budge;
+                expenses.setText(String.valueOf(totalBudget));
+               }
 
+             }
+            }
         }
-        }
-        }
-@Override
-public void beforeTextChanged(CharSequence arg0, int arg1,
+    @Override
+    public void beforeTextChanged(CharSequence arg0, int arg1,
         int arg2, int arg3) {
         // TODO Auto-generated method stub
 
         }
 
-@Override
-public void onTextChanged(CharSequence arg0, int arg1, int arg2,
+    @Override
+    public void onTextChanged(CharSequence arg0, int arg1, int arg2,
         int arg3) {
         // TODO Auto-generated method stub
 
@@ -222,37 +205,33 @@ public void onTextChanged(CharSequence arg0, int arg1, int arg2,
          * add scroll listener while user reach in bottom load more will call
          */
         recyclerView.addOnScrollListener(new PaginationScrollListener(layoutManager) {
-@Override
-protected void loadMoreItems() {
+    @Override
+    protected void loadMoreItems() {
         isLoading = true;
         currentPage++;
-        Log.d(TAG, "prepare called current item: " + currentPage+"Total page"+totalPage);
         if(currentPage<=totalPage){
-        //preparedListItem();
+        }
         }
 
-
-        }
-
-@Override
-public boolean isLastPage() {
+    @Override
+    public boolean isLastPage() {
         return isLastPage;
         }
 
-@Override
-public boolean isLoading() {
+    @Override
+    public boolean isLoading() {
         return isLoading;
         }
         });
         }
 
-@Override
-public boolean onCreateOptionsMenu(Menu menu) {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.filter_action_menu, menu);
         return true;
         }
-@Override
-public boolean onOptionsItemSelected(MenuItem item) {
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
         if (id == R.id.action_home) {
@@ -267,50 +246,30 @@ public boolean onOptionsItemSelected(MenuItem item) {
         return super.onOptionsItemSelected(item);
         }
 
-//Showing progress dialog
-private void showProgressDialog() {
-        Log.v(TAG, String.format("showProgressDialog"));
-        pd = new ProgressDialog(ExpensesActivity.this);
-        pd.setMessage("loading");
-        pd.setCancelable(false);
-        pd.show();
-        }
-
-/**
- * Dismiss Progress Dialog.
- */
-private void dismissProgressDialog() {
-        Log.v(TAG, String.format("dismissProgressDialog"));
-
-        pd.cancel();
-        }
 // Asycc class for loading data for database
 private void expenseclass() {
         ExpensesActivity.ExpenseTrackclass ru = new ExpensesActivity.ExpenseTrackclass();
         ru.execute("5");
         }
 
-@Override
-public void onRefresh() {
-        // swipeRefresh.setRefreshing(false);
+    @Override
+    public void onRefresh() {
         onRestart();
         }
-@Override
-protected void onRestart() {
+    @Override
+    protected void onRestart() {
         super.onRestart();
         swipeRefresh.setRefreshing(false);
         finish();
         startActivity(getIntent());
-//        Intent intent=new Intent(ExpensesActivity.this,ExpensesActivity.class);
-//        startActivity(intent);
         }
-@Override
-protected void onResume() {
+    @Override
+    protected void onResume() {
         swipeRefresh.setRefreshing(false);
         super.onResume();
 
         }
-class ExpenseTrackclass extends AsyncTask<String, Void, String> {
+    class ExpenseTrackclass extends AsyncTask<String, Void, String> {
 
     ServerClass ruc = new ServerClass();
 
@@ -319,7 +278,6 @@ class ExpenseTrackclass extends AsyncTask<String, Void, String> {
     protected void onPreExecute() {
         super.onPreExecute();
         Log.v(TAG, "onPreExecute");
-        //  showProgressDialog();
         viewDialog.showDialog();
     }
 
@@ -327,23 +285,19 @@ class ExpenseTrackclass extends AsyncTask<String, Void, String> {
     protected void onPostExecute(String response) {
         super.onPostExecute(response);
         Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-        // dismissProgressDialog();
         viewDialog.hideDialog();
-        //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
         ExpenseDetails(response);
 
     }
 
     @Override
     protected String doInBackground(String... params) {
-        //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
         HashMap<String, String> ExpenseDetails = new HashMap<String, String>();
         ExpenseDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(ExpensesActivity.this));
         Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(ExpensesActivity.this)));
         ExpenseDetails.put("action","show_expenses_list");
         String domainurl=SharedPrefereneceUtil.getDomainUrl(ExpensesActivity.this);
         String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, ExpenseDetails);
-        //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
         return loginResult;
     }
 
@@ -353,17 +307,15 @@ class ExpenseTrackclass extends AsyncTask<String, Void, String> {
     private void ExpenseDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
+
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
                     String col = object.getString("ttl_expense");
-                    // total_balance.setText(ttl_enq);
                     double ttlcol=Double.parseDouble(col);
                     DecimalFormat df = new DecimalFormat("##,##,##,##,##,##,##0.00");
                     String rt= df.format(ttlcol);
@@ -377,7 +329,6 @@ class ExpenseTrackclass extends AsyncTask<String, Void, String> {
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
 
                             for (int i = 0; i < jsonArrayResult.length(); i++) {
-
 
                                 subList = new ExpensesList();
 
@@ -394,7 +345,6 @@ class ExpenseTrackclass extends AsyncTask<String, Void, String> {
                                     String PaymentDetails = jsonObj.getString("PaymentDetails");
                                     String Expence_ID = jsonObj.getString("Expence_ID");
 
-
                                     subList.setTtl_of_expenses(TitleExpences);
                                     subList.setDisc(Description);
                                     subList.setExpenses_group(GroupOfExpences);
@@ -405,9 +355,7 @@ class ExpenseTrackclass extends AsyncTask<String, Void, String> {
                                     subList.setExpensesId(Expence_ID);
                                     subList.setPayment_type(Payment_Type);
                                     subList.setPayment_dtl(PaymentDetails);
-                                    //Toast.makeText(ExpensesActivity.this, "followup date: "+next_foll_date, Toast.LENGTH_SHORT).show();
 
-                                    //Toast.makeText(MainActivity.this, "j "+j, Toast.LENGTH_SHORT).show();
                                     item.add(subList);
                                     adapter = new ExpensesAdapter( item,ExpensesActivity.this);
                                     recyclerView.setAdapter(adapter);
@@ -423,7 +371,6 @@ class ExpenseTrackclass extends AsyncTask<String, Void, String> {
                     swipeRefresh.setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
                 android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(ExpensesActivity.this);
                 builder.setMessage(R.string.server_exception);

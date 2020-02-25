@@ -113,8 +113,7 @@ public class EnrollmentActivity extends AppCompatActivity implements SwipeRefres
         swipeRefresh.setOnRefreshListener(this);
         progress_bar.setVisibility(View.GONE);
         lyt_no_connection.setVisibility(View.VISIBLE);
-//        adapter = new EnquiryAdapter( new ArrayList<EnquiryList>(),EnquiryActivity.this);
-//        recyclerView.setAdapter(adapter);
+
         viewDialog = new ViewDialog(this);
 
         Intent intent = getIntent();
@@ -128,7 +127,7 @@ public class EnrollmentActivity extends AppCompatActivity implements SwipeRefres
             recyclerView.setAdapter(adapter);
         }else{
             if (isOnline(EnrollmentActivity.this)) {
-                enrollmentclass();// check login details are valid or not from server
+                enrollmentclass();
             }
             else {
                 frame.setVisibility(View.GONE);
@@ -154,25 +153,8 @@ public class EnrollmentActivity extends AppCompatActivity implements SwipeRefres
                         }, 1000);
                     }
                 });
-                //Toast.makeText(EnrollmentActivity.this, R.string.internet_unavailable, Toast.LENGTH_LONG).show();
-//                android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(EnrollmentActivity.this);
-////                builder.setMessage(R.string.internet_unavailable);
-////                builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-////                    public void onClick(DialogInterface dialog, int id) {
-////                        dialog.dismiss();
-////                    }
-////                });
-////                android.app.AlertDialog dialog = builder.create();
-////                dialog.setCancelable(false);
-////                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-////                dialog.show();
-
             }
         }
-
-
-
-
 
         inputsearch=(EditText)findViewById(R.id.inputsearchid);
         search=findViewById(R.id.search);
@@ -195,9 +177,6 @@ public class EnrollmentActivity extends AppCompatActivity implements SwipeRefres
                 // TODO Auto-generated method stub
                 if (EnrollmentActivity.this.adapter == null){
                     // some print statement saying it is null
-//                   // Toast toast = Toast.makeText(EnrollmentActivity.this,"no record found", Toast.LENGTH_SHORT);
-//                    toast.setGravity(Gravity.CENTER, 0, 0);
-//                    toast.show();
                 }
                 else
                 {
@@ -220,8 +199,6 @@ public class EnrollmentActivity extends AppCompatActivity implements SwipeRefres
                                       int arg3) {
                 // TODO Auto-generated method stub
                 if(inputsearch.getText().length()==0) {
-                    //do your work here
-                    // Toast.makeText(AddEnquiryActivity.this ,"Text vhanged count  is 10 then: " , Toast.LENGTH_LONG).show();
                     enrollmentclass();
                 }
             }
@@ -234,15 +211,11 @@ public class EnrollmentActivity extends AppCompatActivity implements SwipeRefres
             protected void loadMoreItems() {
                 isLoading = true;
                 currentPage++;
-                Log.d(TAG, "prepare called current item: " + currentPage+"Total page"+totalPage);
                 if(currentPage<=totalPage){
                     currentPage = PAGE_START;
-                    Log.d(TAG, "currentPage: " + currentPage);
                     isLastPage = false;
                     preparedListItem();
                 }
-
-
             }
 
             @Override
@@ -261,10 +234,9 @@ public class EnrollmentActivity extends AppCompatActivity implements SwipeRefres
         offset=offset+100;
 
         if (isOnline(EnrollmentActivity.this)) {
-            enrollmentoffsetclass();// check login details are valid or not from server
+            enrollmentoffsetclass();
         }
         else {
-            //Toast.makeText(EnrollmentActivity.this, R.string.internet_unavailable, Toast.LENGTH_LONG).show();
             android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(EnrollmentActivity.this);
             builder.setMessage(R.string.internet_unavailable);
             builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
@@ -277,52 +249,6 @@ public class EnrollmentActivity extends AppCompatActivity implements SwipeRefres
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.show();
         }
-//        final ArrayList<MemberDataList> items = new ArrayList<>();
-//        new Handler().postDelayed(new Runnable() {
-//
-//            @Override
-//            public void run() {
-//
-//                for (int i = 0; i < 5; i++) {
-//                    itemCount++;
-//                    Log.d(TAG, "prepare called : " + itemCount);
-//
-//                    MemberDataList postItem = subListArrayList.get(i);
-//                    subList.setExecutiveName(postItem.getExecutiveName());
-//                    subList.setName(postItem.getName());
-//                    subList.setGender(postItem.getGender());
-//                    subList.setContact(postItem.getContact());
-//                    subList.setAddress(postItem.getAddress());
-//                    subList.setComment(postItem.getComment());
-//                    subList.setNextFollowUpDate(postItem.getNextFollowUpDate());
-//                    items.add(subList);
-//                }
-//                if (currentPage != PAGE_START) adapter.removeLoading();
-//                adapter.addAll(items);
-//                swipeRefresh.setRefreshing(false);
-//                if (currentPage < totalPage) adapter.addLoading();
-//                else isLastPage = true;
-//                isLoading = false;
-//
-//            }
-//        }, 2000);
-    }
-    //Showing progress dialog
-    private void showProgressDialog() {
-        Log.v(TAG, String.format("showProgressDialog"));
-        pd = new ProgressDialog(EnrollmentActivity.this);
-        pd.setMessage("loading");
-        pd.setCancelable(false);
-        pd.show();
-    }
-
-    /**
-     * Dismiss Progress Dialog.
-     */
-    private void dismissProgressDialog() {
-        Log.v(TAG, String.format("dismissProgressDialog"));
-
-        pd.cancel();
     }
     // Asycc class for loading data for database
     private void enrollmentclass() {
@@ -334,48 +260,36 @@ public class EnrollmentActivity extends AppCompatActivity implements SwipeRefres
     public void onRefresh() {
         itemCount = 0;
         currentPage = PAGE_START;
-        Log.d(TAG, "currentPage: " + currentPage);
         isLastPage = false;
-        // adapter.clear();
         onRestart();
-        //preparedListItem();
-
-
     }
 
     class EnrollmentTrackclass extends AsyncTask<String, Void, String> {
 
         ServerClass ruc = new ServerClass();
 
-
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             EnrollmentDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EnrollmentDetails = new HashMap<String, String>();
             EnrollmentDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(EnrollmentActivity.this));
             EnrollmentDetails.put("offset", String.valueOf(offset));
-            Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(EnrollmentActivity.this)));
             EnrollmentDetails.put("action","show_enquiry_enrollment_list");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(EnrollmentActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EnrollmentDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
 
@@ -384,12 +298,9 @@ public class EnrollmentActivity extends AppCompatActivity implements SwipeRefres
     private void EnrollmentDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
-
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
 
@@ -401,20 +312,13 @@ public class EnrollmentActivity extends AppCompatActivity implements SwipeRefres
                     progressBar.setVisibility(View.GONE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
-                        int count=0;
                         ArrayList<MemberDataList> item = new ArrayList<MemberDataList>();
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
 
                             for (int i = 0; i < jsonArrayResult.length(); i++) {
 
-
                                 subList = new MemberDataList();
-                                Log.d(TAG, "i: " + i);
 
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -432,9 +336,6 @@ public class EnrollmentActivity extends AppCompatActivity implements SwipeRefres
                                     String End_Date=jsonObj.getString("End_Date");
                                     String FinalBalance=jsonObj.getString("FinalBalance");
 
-                                    //  for (int j = 0; j < 5; j++) {
-                                    itemCount++;
-                                    Log.d(TAG, "run: " + itemCount);
                                     subList.setName(name);
                                     subList.setGender(gender);
                                     String cont=Utility.lastFour(Contact);
@@ -454,9 +355,6 @@ public class EnrollmentActivity extends AppCompatActivity implements SwipeRefres
                                     subList.setEndDate(enddate);
                                     subList.setFinalBalance(FinalBalance);
 
-                                    //Toast.makeText(EnrollmentActivity.this, "followup date: "+next_foll_date, Toast.LENGTH_SHORT).show();
-
-                                    //Toast.makeText(MainActivity.this, "j "+j, Toast.LENGTH_SHORT).show();
                                     item.add(subList);
                                     adapter = new MemberAdapter( item,EnrollmentActivity.this);
                                     recyclerView.setAdapter(adapter);
@@ -472,7 +370,6 @@ public class EnrollmentActivity extends AppCompatActivity implements SwipeRefres
                     swipeRefresh.setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
                 android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(EnrollmentActivity.this);
                 builder.setMessage(R.string.server_exception);
@@ -496,35 +393,28 @@ public class EnrollmentActivity extends AppCompatActivity implements SwipeRefres
 
         ServerClass ruc = new ServerClass();
 
-
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            // dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             EnrollmentOffsetDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EnrollmentOffsetDetails = new HashMap<String, String>();
             EnrollmentOffsetDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(EnrollmentActivity.this));
             EnrollmentOffsetDetails.put("offset", String.valueOf(offset));
-            Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(EnrollmentActivity.this)));
             EnrollmentOffsetDetails.put("action","show_enquiry_enrollment_list");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(EnrollmentActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EnrollmentOffsetDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
 
@@ -534,12 +424,8 @@ public class EnrollmentActivity extends AppCompatActivity implements SwipeRefres
     private void EnrollmentOffsetDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
-
-
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
@@ -549,18 +435,12 @@ public class EnrollmentActivity extends AppCompatActivity implements SwipeRefres
                     progressBar.setVisibility(View.GONE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
                         ArrayList<MemberDataList> subListArrayList = new ArrayList<MemberDataList>();
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
                             for (int i = 0; i < jsonArrayResult.length(); i++) {
 
 
                                 subList = new MemberDataList();
-                                Log.d(TAG, "i: " + i);
-                                // Log.d(TAG, "run: " + itemCount);
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -577,9 +457,7 @@ public class EnrollmentActivity extends AppCompatActivity implements SwipeRefres
                                     String Email=jsonObj.getString("Email");
                                     String End_Date=jsonObj.getString("End_Date");
                                     String FinalBalance=jsonObj.getString("FinalBalance");
-                                    //  for (int j = 0; j < 5; j++) {
-                                    itemCount++;
-                                    Log.d(TAG, "run: " + itemCount);
+
                                     subList.setName(name);
                                     subList.setGender(gender);
                                     String cont=Utility.lastFour(Contact);
@@ -598,7 +476,6 @@ public class EnrollmentActivity extends AppCompatActivity implements SwipeRefres
                                     String enddate= Utility.formatDateDB(End_Date);
                                     subList.setEndDate(enddate);
                                     subList.setFinalBalance(FinalBalance);
-                                    //Toast.makeText(EnrollmentActivity.this, "followup date: "+next_foll_date, Toast.LENGTH_SHORT).show();
                                     subListArrayList.add(subList);
 
                                 }
@@ -610,27 +487,21 @@ public class EnrollmentActivity extends AppCompatActivity implements SwipeRefres
                             else isLastPage = true;
                             isLoading = false;
 
-                        } else if (jsonArrayResult.length() == 0) {
-                            System.out.println("No records found");
                         }
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
-                    // nodata.setVisibility(View.VISIBLE);
+
                     nodata.setVisibility(View.VISIBLE);
                     swipeRefresh.setVisibility(View.GONE);
                     progressBar.setVisibility(View.GONE);
                     if (currentPage != PAGE_START)
                         adapter.removeblank();
-                    //adapter.addAll(subListArrayList);
                     swipeRefresh.setRefreshing(false);
                     isLoading = false;
-                    //recyclerView.setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
-//                recyclerView.setVisibility(View.GONE);
-//                frame.setVisibility(View.VISIBLE);
+
             }
         }
     }
@@ -647,7 +518,6 @@ public class EnrollmentActivity extends AppCompatActivity implements SwipeRefres
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-           // showProgressDialog();
             viewDialog.showDialog();
         }
 
@@ -655,24 +525,19 @@ public class EnrollmentActivity extends AppCompatActivity implements SwipeRefres
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-           // dismissProgressDialog();
             viewDialog.hideDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             EnrollmentSearchDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EnrollmentSearchDetails = new HashMap<String, String>();
             EnrollmentSearchDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(EnrollmentActivity.this));
             EnrollmentSearchDetails.put("text", inputsearch.getText().toString());
-            Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(EnrollmentActivity.this)));
             EnrollmentSearchDetails.put("action","show_search_enrollment");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(EnrollmentActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EnrollmentSearchDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
 
@@ -682,12 +547,10 @@ public class EnrollmentActivity extends AppCompatActivity implements SwipeRefres
     private void EnrollmentSearchDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
@@ -695,9 +558,6 @@ public class EnrollmentActivity extends AppCompatActivity implements SwipeRefres
                     swipeRefresh.setVisibility(View.VISIBLE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
                         String cnt= String.valueOf(jsonArrayResult.length());
                         total_enrollment.setText(cnt);
                         final   ArrayList<MemberDataList> subListArrayList = new ArrayList<MemberDataList>();
@@ -706,9 +566,6 @@ public class EnrollmentActivity extends AppCompatActivity implements SwipeRefres
 
 
                                 subList = new MemberDataList();
-                                Log.d(TAG, "i: " + i);
-                                // Log.d(TAG, "run: " + itemCount);
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -725,9 +582,7 @@ public class EnrollmentActivity extends AppCompatActivity implements SwipeRefres
                                     String Email=jsonObj.getString("Email");
                                     String End_Date=jsonObj.getString("End_Date");
                                     String FinalBalance=jsonObj.getString("FinalBalance");
-                                    //  for (int j = 0; j < 5; j++) {
-                                    itemCount++;
-                                    Log.d(TAG, "run: " + itemCount);
+
                                     subList.setName(name);
                                     subList.setGender(gender);
                                     String cont=Utility.lastFour(Contact);
@@ -760,15 +615,12 @@ public class EnrollmentActivity extends AppCompatActivity implements SwipeRefres
                         }
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
-                    // nodata.setVisibility(View.VISIBLE);
                     nodata.setVisibility(View.VISIBLE);
                     swipeRefresh.setVisibility(View.GONE);
                     progressBar.setVisibility(View.GONE);
 
-                    //recyclerView.setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
                 recyclerView.setVisibility(View.GONE);
                 frame.setVisibility(View.VISIBLE);

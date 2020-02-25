@@ -164,8 +164,6 @@ public class RenewActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_renew);
         initToolbar();
-//        InputStream license = this.getResources().openRawResource(R.raw.itextkey);
-//        LicenseKey.loadLicenseFile(license);
 
         //check if external storage is available so that we can dump our PDF file there
         requestContactPermission();
@@ -174,13 +172,11 @@ public class RenewActivity extends AppCompatActivity {
         }
         else {
             //path for the PDF file in the external storage
-           // pdfFile = new File(getExternalFilesDir(filepath), filename);
-//            String root = Environment.getExternalStoragePublicDirectory().getAbsolutePath();
             String root = Environment.getExternalStorageDirectory().getPath();
             File myDir = new File(root + "/MyInvoices");
             myDir.mkdirs();
             long n  = System.currentTimeMillis() / 1000L;
-             fname = "Invoice" + n + ".pdf";
+             fname = "Invoice"  + ".pdf";
             FilePath=root+"/MyInvoices/"+fname;
              pdfFile = new File(myDir, fname);
             if (pdfFile.exists())
@@ -202,7 +198,6 @@ public class RenewActivity extends AppCompatActivity {
                             Log.i("ExternalStorage", "-> uri=" + uri);
                         }
                     });
-            //generatePDF("Tulsa");
         }
     }
     private void initToolbar() {
@@ -251,7 +246,6 @@ public class RenewActivity extends AppCompatActivity {
 
 
         Intent intent = getIntent();
-        // Bundle args = intent.getBundleExtra("BUNDLE");
         if (intent != null) {
             MemberID=intent.getStringExtra("member_id");
           String  name=intent.getStringExtra("name");
@@ -335,9 +329,6 @@ public class RenewActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before,
                                       int count) {
             }
-
-
-
             public void beforeTextChanged(CharSequence s, int start, int count,
                                           int after) {
 
@@ -470,8 +461,6 @@ public class RenewActivity extends AppCompatActivity {
             }
         }) ;
         //*********** Discount Validation ****************
-
-        // ************* Discount focus up listner ***********
         inputDiscount.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -665,7 +654,6 @@ public class RenewActivity extends AppCompatActivity {
                     }
                     rate= (packfees+regfees)-discount;
                     inputRate.setText(String.valueOf(rate));
-                    Log.v(TAG, String.format("Discount  :: souble reg fees= %s", regfees));
 
                 }else{
                     double packfees=0;
@@ -705,8 +693,6 @@ public class RenewActivity extends AppCompatActivity {
                     double rate=0;
                     if(inputDiscount.getText().length()>0) {
                         discount = Double.parseDouble(inputDiscount.getText().toString());
-
-                        Log.v(TAG, String.format("Discount  :: rate = %s", rate));
                     }
                     rate= (packfees+regfees)-discount;
                     inputRate.setText(String.valueOf(rate));
@@ -772,7 +758,6 @@ public class RenewActivity extends AppCompatActivity {
 
                             inputRate.setText(String.valueOf(rate));
                         }
-                        Log.v(TAG, String.format("Discount  :: souble reg fees= %s", regfees));
                         if(inputPaid.getText().length()>0){
                             double rate= (packfees-discount)+regfees;
 
@@ -800,8 +785,6 @@ public class RenewActivity extends AppCompatActivity {
                     double tax_amt=paid-i;
                     TaxAmount=String.valueOf(tax_amt);
                     subtotal=String.valueOf(i);
-                    Log.v(TAG, String.format("Discount  ::Tax amount= %s", TaxAmount));
-                    Log.v(TAG, String.format("Discount  ::Tax = %s", Tax));
                    if(rate == paid){
                        awesomeValidation.clear();
                        inputNextFollDate.getText().clear();
@@ -909,10 +892,8 @@ public class RenewActivity extends AppCompatActivity {
                                     EndDate = Utility.CalulateDateFromGivenDays(inputStartDate.getText().toString(), (duration));
                                 }
                                 inputEndDate.setText(EndDate);
-                                Log.v(TAG, String.format("End Date  :: End date= %s", EndDate));
-                            }
+                                                           }
                         }, mYear, mMonth, mDay);
-                //datePickerDialog.getDatePicker().setMaxDate(c.getTimeInMillis());
                 datePickerDialog.show();
 
             }
@@ -956,7 +937,6 @@ public class RenewActivity extends AppCompatActivity {
                     layout.setPadding(0, 0, 0, 0);
                         tv.setTextColor((Color.BLACK));
                     txtInstructorName.setVisibility(View.VISIBLE);
-//                    }
                     instructorname = tv.getText().toString();
                     if (index != 0) {
                         txtInstructorName.setVisibility(View.VISIBLE);
@@ -996,7 +976,7 @@ public class RenewActivity extends AppCompatActivity {
 
                         tv.setTextColor((Color.BLACK));
                     txtTime.setVisibility(View.VISIBLE);
-//                    }
+
                     time = tv.getText().toString();
                     if (index != 0) {
                         txtTime.setVisibility(View.VISIBLE);
@@ -1062,7 +1042,6 @@ public class RenewActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_save_enquiry) {
-           // sendEmail();
             submitForm();
             return true;
         }
@@ -1174,7 +1153,7 @@ public class RenewActivity extends AppCompatActivity {
                 if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
                     for (int i = 0; i < jsonArrayResult.length(); i++) {
 
-                        Log.v(TAG, "JsonResponseOpeartion ::");
+
                         JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                         if (jsonObj != null) {
 
@@ -1196,7 +1175,7 @@ public class RenewActivity extends AppCompatActivity {
                 if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
                     for (int i = 0; i < jsonArrayResult.length(); i++) {
 
-                        Log.v(TAG, "JsonResponseOpeartion ::");
+
                         JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                         if (jsonObj != null) {
 
@@ -1337,7 +1316,6 @@ public class RenewActivity extends AppCompatActivity {
                     dialog.show();
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
             }
         }
@@ -1456,7 +1434,6 @@ public class RenewActivity extends AppCompatActivity {
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
             }
         }
@@ -1510,7 +1487,6 @@ public class RenewActivity extends AppCompatActivity {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
@@ -1522,7 +1498,7 @@ public class RenewActivity extends AppCompatActivity {
 
                             for (int i = 0; i < jsonArrayResult.length(); i++) {
 
-                                Log.v(TAG, "JsonResponseOpeartion ::");
+
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -1563,7 +1539,6 @@ public class RenewActivity extends AppCompatActivity {
                     }
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
                 android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(RenewActivity.this);
                 builder.setMessage(R.string.server_exception);
@@ -1727,7 +1702,6 @@ public class RenewActivity extends AppCompatActivity {
                         txtInstructorName.setVisibility(View.VISIBLE);
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
             }
         }
@@ -1878,7 +1852,6 @@ public class RenewActivity extends AppCompatActivity {
                     spinTime.setAdapter(timeadapter);
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
             }
         }
@@ -1992,7 +1965,6 @@ public class RenewActivity extends AppCompatActivity {
                     }
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
             }
         }
@@ -2263,7 +2235,6 @@ public class RenewActivity extends AppCompatActivity {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
@@ -2758,7 +2729,6 @@ public class RenewActivity extends AppCompatActivity {
                     }
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -2818,7 +2788,6 @@ public class RenewActivity extends AppCompatActivity {
             String domainurl= SharedPrefereneceUtil.getDomainUrl(RenewActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ ServiceUrls.LOGIN_URL, EnquiryForDetails);
 
-            Log.v(TAG, String.format("doInBackground :: check_package_already_assigned_to_member= %s", loginResult));
             return loginResult;
         }
     }
@@ -2848,7 +2817,6 @@ public class RenewActivity extends AppCompatActivity {
                     inputRegiFees.setText("");
                     inputPaid.setText("");
                     inputBalance.setText("");
-                    Log.v(TAG, String.format("End Date  :: End date= %s", EndDate));
                 }
 
             }
@@ -3086,7 +3054,6 @@ public class RenewActivity extends AppCompatActivity {
             SearchDetails.put("action", "show_all_member_list");
             String domainurl= SharedPrefereneceUtil.getDomainUrl(RenewActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ ServiceUrls.LOGIN_URL, SearchDetails);
-            Log.v(TAG, String.format("doInBackground :: show_all_member_list= %s", loginResult));
             return loginResult;
         }
 
@@ -3102,7 +3069,6 @@ public class RenewActivity extends AppCompatActivity {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 if (object != null) {
                     JSONArray jsonArrayResult = object.getJSONArray("result");
@@ -3140,12 +3106,9 @@ public class RenewActivity extends AppCompatActivity {
                                 inputContact.setThreshold(1);
 
                             }
-                        }}else if(jsonArrayResult.length()==0){
-                        System.out.println("No records found");
-                    }
+                        }}
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
             }
         }

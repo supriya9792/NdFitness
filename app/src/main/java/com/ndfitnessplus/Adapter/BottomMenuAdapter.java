@@ -16,7 +16,6 @@ import java.util.ArrayList;
 public class BottomMenuAdapter extends RecyclerView.Adapter<BottomMenuAdapter.MyViewHolder> {
 
     private ArrayList<BottomMenuList> dataSet;
-
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView textViewName;
@@ -28,7 +27,6 @@ public class BottomMenuAdapter extends RecyclerView.Adapter<BottomMenuAdapter.My
             this.imageViewIcon = (ImageButton) itemView.findViewById(R.id.icon);
         }
     }
-
     public BottomMenuAdapter(ArrayList<BottomMenuList> data) {
         this.dataSet = data;
     }

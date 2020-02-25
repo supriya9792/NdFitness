@@ -48,12 +48,6 @@ import static com.ndfitnessplus.Utility.HTTPRequestQueue.isOnline;
 public class NotificationActivity extends AppCompatActivity {
     private ProgressDialog pd;
     private static final String TAG = NotificationActivity.class.getSimpleName();
-//    int count=5;
-//    public String[] title ={"Member Birthday", "Staff Birthday", "Enquiry","Enquiry Followup","Todays Admission",
-//            "Active Member","Deactive Member","Membership End Date","Payment Date","Post Dated Cheque","Other Followup"};
-//    public static int[] tabicons = {R.drawable.ic_cake_black,R.drawable.birthdaycake, R.drawable.enquiry
-//            ,R.drawable.followup,R.drawable.admission,R.drawable.activemember,R.drawable.deactive_members,R.drawable.mem_end_date,R.drawable.payment_date,R.drawable.cheque,R.drawable.otherfollowup};
-
     //Notification Menu
     LinearLayout member_bday,staff_bday,enquiry,enquiry_followup,todays_admission,active_member,deactive_member,mem_end_date,payment_date,renew_followup,other_followup,done_followup;
     TextView mem_bday_count,staff_bday_count,enquiry_count,enq_foll_count,todays_admission_count,active_mem_count,
@@ -81,7 +75,6 @@ public class NotificationActivity extends AppCompatActivity {
          //intialization
         member_bday=findViewById(R.id.mem_bday);
         staff_bday=findViewById(R.id.staff_bday);
-        //anniversary=findViewById(R.id.anniversary);
         enquiry=findViewById(R.id.todays_enquiry);
         enquiry_followup=findViewById(R.id.enquiry_followup);
         todays_admission=findViewById(R.id.todays_admission);
@@ -96,7 +89,6 @@ public class NotificationActivity extends AppCompatActivity {
         //count textviews
         mem_bday_count=findViewById(R.id.mem_bday_count);
         staff_bday_count=findViewById(R.id.staff_bday_count);
-        //anniversary_count=findViewById(R.id.anniversary_count);
         enquiry_count=findViewById(R.id.enq_count);
         enq_foll_count=findViewById(R.id.enquiry_follwup_count);
         todays_admission_count=findViewById(R.id.todays_admission_count);
@@ -110,10 +102,9 @@ public class NotificationActivity extends AppCompatActivity {
 
 
         if (isOnline(NotificationActivity.this)) {
-            countclass();// check login details are valid or not from server
+            countclass();
         }
         else {
-            //Toast.makeText(EnquiryActivity.this, R.string.internet_unavailable, Toast.LENGTH_LONG).show();
             android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(NotificationActivity.this);
             builder.setMessage(R.string.internet_unavailable);
             builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
@@ -141,13 +132,7 @@ public class NotificationActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-//        anniversary.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent=new Intent(NotificationActivity.this, AnniversaryActivity.class);
-//                startActivity(intent);
-//            }
-//        });
+
         enquiry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -236,22 +221,6 @@ public class NotificationActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-    private void showProgressDialog() {
-        Log.v(TAG, String.format("showProgressDialog"));
-        pd = new ProgressDialog(NotificationActivity.this);
-        pd.setMessage("loading");
-        pd.setCancelable(false);
-        pd.show();
-    }
-
-    /**
-     * Dismiss Progress Dialog.
-     */
-    private void dismissProgressDialog() {
-        Log.v(TAG, String.format("dismissProgressDialog"));
-
-        pd.cancel();
-    }
 
     private void countclass() {
         NotificationActivity.CountTrackclass ru = new NotificationActivity.CountTrackclass();
@@ -266,7 +235,6 @@ public class NotificationActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
             viewDialog.showDialog();
         }
 
@@ -274,40 +242,30 @@ public class NotificationActivity extends AppCompatActivity {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
             viewDialog.hideDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             CountDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> CountDetails = new HashMap<String, String>();
             CountDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(NotificationActivity.this));
-//            CountDetails.put("authority", SharedPrefereneceUtil.getAuthority(NotificationActivity.this));
-//            CountDetails.put("exe_name", SharedPrefereneceUtil.getName(NotificationActivity.this));
-            Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(NotificationActivity.this)));
             CountDetails.put("action","show_notification_count");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(NotificationActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, CountDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
-
-
     }
 
     private void CountDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
+
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
@@ -317,7 +275,6 @@ public class NotificationActivity extends AppCompatActivity {
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
                             for (int i = 0; i < jsonArrayResult.length(); i++) {
 
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -349,16 +306,10 @@ public class NotificationActivity extends AppCompatActivity {
 
                                 }
                             }
-                        } else if (jsonArrayResult.length() == 0) {
-                            System.out.println("No records found");
                         }
                     }
-                }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
-                    //nodata.setVisibility(View.VISIBLE);
-                    //.setVisibility(View.GONE);
                 }
             } catch (Exception e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
                 android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(NotificationActivity.this);
                 builder.setMessage(R.string.server_exception);

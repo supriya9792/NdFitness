@@ -41,7 +41,6 @@ public class PostDateChequeAdapter extends RecyclerView.Adapter<PostDateChequeAd
         holder.paidWithTaxTV.setText(arrayList.get(position).getPaidWithTax());
         holder.statusTV.setText(arrayList.get(position).getStatus());
         holder.chequeExpDateTV.setText(arrayList.get(position).getChequeExpiryDate());
-//        holder.contactIV.setText(arrayList.get(position).getContact());
         holder.recieptNoTV.setText(arrayList.get(position).getRecieptNumber());
     }
 

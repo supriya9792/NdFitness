@@ -28,15 +28,13 @@ import com.ndfitnessplus.Utility.ServiceUrls;
 
 public class WorkoutDetailsDescriptionActivity extends AppCompatActivity implements YouTubePlayer.OnInitializedListener  {
     public static String TAG = WorkoutDetailsDescriptionActivity.class.getName();
-    ImageView image;
-    VideoView videoView;
+
     TextView WorkoutName,Musculargroup,Set,Repitation,description,Weight;
     WorkOutDetailsList filterArrayList;
     String videoUrl;
 
     //youtube video playing
     private static final int RECOVERY_REQUEST = 1;
-    /// private YouTubePlayerView youTubeView;
     private MyPlayerStateChangeListener playerStateChangeListener;
     private MyPlaybackEventListener playbackEventListener;
     private YouTubePlayer player;
@@ -59,7 +57,6 @@ public class WorkoutDetailsDescriptionActivity extends AppCompatActivity impleme
     }
     private void initComponent(){
 
-        //image=findViewById(R.id.image);
         WorkoutName=findViewById(R.id.workout_nameTV);
         Musculargroup=findViewById(R.id.musculargroup);
         description=findViewById(R.id.disc);
@@ -69,31 +66,19 @@ public class WorkoutDetailsDescriptionActivity extends AppCompatActivity impleme
         videoViewLyt=findViewById(R.id.lay_videoView);
 
 
-//
         playerStateChangeListener = new MyPlayerStateChangeListener();
         playbackEventListener = new MyPlaybackEventListener();
         frag =(YouTubePlayerSupportFragment) getSupportFragmentManager().findFragmentById(R.id.youtube_fragment);
         frag.initialize(Config.YOUTUBE_API_KEY, this);
-//        final EditText seekToText = (EditText) findViewById(R.id.seek_to_text);
-//        Button seekToButton = (Button) findViewById(R.id.seek_to_button);
-//        seekToButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                int skipToSecs = Integer.valueOf(seekToText.getText().toString());
-//                player.seekToMillis(skipToSecs * 1000);
-//            }
-//        });
 
         Intent intent = getIntent();
         Bundle args = intent.getBundleExtra("BUNDLE");
         if (args != null) {
             filterArrayList = (WorkOutDetailsList) args.getSerializable("filter_array_list");
 
-            // String image=filterArrayList.getProductImage();
             WorkoutName.setText(filterArrayList.getWorkoutName());
             Musculargroup.setText(filterArrayList.getBodyPart());
             description.setText(filterArrayList.getDiscription());
-            // Time.setText(filterArrayList.getTime());
             Set.setText(filterArrayList.getSet());
             Repitation.setText(filterArrayList.getRepitation());
             Weight.setText(filterArrayList.getWeight());
@@ -109,43 +94,12 @@ public class WorkoutDetailsDescriptionActivity extends AppCompatActivity impleme
 
 
             String vurl= filterArrayList.getVideoLink();
-            Log.e("Video Url", vurl);
+
             if((vurl.equals("")||vurl.equals("null"))) {
                 videoViewLyt.setVisibility(View.GONE);
             }
-//            Uri video = Uri.parse(vurl);
-//            if((filterArrayList.getVideoLink()==(null))){
-//                //videoView.setVisibility(View.INVISIBLE);
-//            }else {
-//                //Toast.makeText(mContext,"Video url "+ vurl,Toast.LENGTH_SHORT).show();
-//                videoView.setVisibility(View.VISIBLE);
-//                videoView.setVideoURI(video);
-//                videoView.start();
-//            }
-
-//            try {
-////                // Start the MediaController
-////                MediaController mediacontroller = new MediaController(this);
-////                mediacontroller.setAnchorView(videoView);
-////                // Get the URL from String videoUrl
-////                Uri video = Uri.parse("https://www.youtube.com/watch?v=fvwyPGBOEgY");
-////                videoView.setMediaController(mediacontroller);
-////                videoView.setVideoURI(video);
-////                videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-////                    public void onPrepared(MediaPlayer mp) {
-////                        videoView.start();
-////                    }
-////                });
-////
-////            } catch (Exception e) {
-////                Log.e("Error", e.getMessage());
-////                e.printStackTrace();
-////            }
-
 
         }
-
-        //new YourAsyncTask().execute();
 
     }
     @Override
@@ -161,8 +115,6 @@ public class WorkoutDetailsDescriptionActivity extends AppCompatActivity impleme
             Intent intent = new Intent(WorkoutDetailsDescriptionActivity.this, MainActivity.class);
             startActivity(intent);
         }else if(id== android.R.id.home){
-            //Toast.makeText(this,"Navigation back pressed",Toast.LENGTH_SHORT).show();
-            // NavUtils.navigateUpFromSameTask(this);
             finish();
         }
 
@@ -182,20 +134,8 @@ public class WorkoutDetailsDescriptionActivity extends AppCompatActivity impleme
                     player.cueVideo(vsp[1]);
                 else {
                     videoViewLyt.setVisibility(View.GONE);
-//                    android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(WorkoutDetailsDescriptionActivity.this);
-//                    builder.setMessage("Invalid url to play video");
-//                    builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-//                        public void onClick(DialogInterface dialog, int id) {
-//                            dialog.dismiss();
-//                        }
-//                    });
-//                    android.app.AlertDialog dialog = builder.create();
-//                    dialog.setCancelable(false);
-//                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-//                    dialog.show();
                 }
             }
-            // Plays https://www.youtube.com/watch?v=fhWaJi1Hsfo
         }
     }
 
@@ -213,7 +153,6 @@ public class WorkoutDetailsDescriptionActivity extends AppCompatActivity impleme
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == RECOVERY_REQUEST) {
-            // Retry initialization if user performed a recovery action
             getYouTubePlayerProvider().initialize(Config.YOUTUBE_API_KEY, this);
         }
     }
@@ -222,28 +161,22 @@ public class WorkoutDetailsDescriptionActivity extends AppCompatActivity impleme
         return frag;
     }
 
-    private void showMessage(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-    }
 
     private final class MyPlaybackEventListener implements YouTubePlayer.PlaybackEventListener {
 
         @Override
         public void onPlaying() {
-            // Called when playback starts, either due to user action or call to play().
-            // showMessage("Playing");
+
         }
 
         @Override
         public void onPaused() {
-            // Called when playback is paused, either due to user action or call to pause().
-            //showMessage("Paused");
+
         }
 
         @Override
         public void onStopped() {
-            // Called when playback stops for a reason other than being paused.
-            // showMessage("Stopped");
+
         }
 
         @Override

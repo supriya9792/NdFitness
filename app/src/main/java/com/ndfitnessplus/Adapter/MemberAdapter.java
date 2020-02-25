@@ -65,7 +65,6 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.BaseViewHo
     //Loading gif
     ViewDialog viewDialog;
     public MemberAdapter(ArrayList<MemberDataList> enquiryList, Context context) {
-        //this.arrayList = enquiryList;
         this.subList = enquiryList;
         this.arrayList = new ArrayList<MemberDataList>();
         this.context = context;
@@ -74,7 +73,6 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.BaseViewHo
 
     @Override
     public MemberAdapter.BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Log.d(TAG, "view type: "+viewType );
         switch (viewType) {
             case VIEW_TYPE_NORMAL:
                 return new MemberAdapter.ViewHolder(
@@ -90,8 +88,6 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.BaseViewHo
     @Override
     public void onBindViewHolder(MemberAdapter.BaseViewHolder holder, int position) {
         holder.onBind(position);
-
-        Log.d(TAG, "call onbind method of viewholder: " );
     }
     @Override
     public int getItemViewType(int position) {
@@ -108,8 +104,6 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.BaseViewHo
     }
     public void add(MemberDataList response) {
         arrayList.add(response);
-        //subList.add(response);
-        Log.d(TAG, "sublist size after add : "+String.valueOf(subList.size()) );
         notifyItemInserted(arrayList.size() - 1);
     }
 
@@ -118,9 +112,6 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.BaseViewHo
             add(response);
             subList.add(response);
         }
-
-        Log.d(TAG, "arraylist size after adding new data: "+String.valueOf(arrayList.size()) );
-
     }
 
 
@@ -145,7 +136,6 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.BaseViewHo
         if (item != null) {
             arrayList.remove(position);
             notifyItemRemoved(position);
-            // notifyDataSetChanged();
         }
     }
     public void removeblank(){
@@ -155,7 +145,6 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.BaseViewHo
         if (item != null) {
             arrayList.remove(position);
             notifyItemRemoved(position);
-            //notifyDataSetChanged();
         }
     }
     public void clear() {
@@ -168,10 +157,8 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.BaseViewHo
     }
     //filter for search
     public int filter(String charText) {
-        // subList=arrayList;
 
         charText = charText.toLowerCase(Locale.getDefault());
-        Log.d(TAG, "sublist size whentext  filter: "+String.valueOf(subList.size()) );
         arrayList.clear();
         if (charText.length() == 0) {
 
@@ -185,16 +172,13 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.BaseViewHo
                 }
             }
         }
-        Log.d(TAG, "sublist size filter: "+String.valueOf(subList.size()) );
         notifyDataSetChanged();
         return  arrayList.size();
     }
     //filter for search
     public int search( String charTex,final ArrayList<MemberDataList> subList) {
-        // subList=arrayList;
 
         final String charText = charTex.toLowerCase(Locale.getDefault());
-        Log.d(TAG, "sublist size whentext  filter: "+String.valueOf(subList.size()) );
         arrayList.clear();
         if (charText.length() == 0) {
 
@@ -216,10 +200,7 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.BaseViewHo
                 }
             });
 
-
-
         }
-        Log.d(TAG, "sublist size search: "+String.valueOf(subList.size()) );
         notifyDataSetChanged();
         return arrayList.size();
     }
@@ -235,9 +216,8 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.BaseViewHo
             contactTV = (TextView) itemView.findViewById(R.id.contactTV);
             occupationTV = (TextView) itemView.findViewById(R.id.occupationTV);
             nameTV = (TextView) itemView.findViewById(R.id.nameTV);
-           // contactIV = (ImageView) itemView.findViewById(R.id.contactIV);
+
             imageView=(CircularImageView) itemView.findViewById(R.id.input_image);
-           // contactIV.setOnClickListener(this);
             excecutive_nameTV = (TextView) itemView.findViewById(R.id.excecutive_nameTV);
             dobTV = (TextView) itemView.findViewById(R.id.dobTV);
             genderTV = (TextView) itemView.findViewById(R.id.genderTV);
@@ -265,10 +245,8 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.BaseViewHo
         public void onBind(final int position) {
             super.onBind(position);
             final MemberDataList enq = arrayList.get(position);
-            //Log.d(TAG, "enquiry name: " + enq.getName());
-            // idTV.setText(enq.getID());
             nameTV.setText(enq.getName());
-            //Log.d(TAG, "textview name: " + nameTV.getText().toString());
+
             contactTV.setText(enq.getContactEncrypt());
             excecutive_nameTV.setText(enq.getExecutiveName());
             dobTV.setText(enq.getBirthDate());
@@ -302,8 +280,8 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.BaseViewHo
 
             String domainurl= SharedPrefereneceUtil.getDomainUrl((Activity) context);
             String url= domainurl+ServiceUrls.IMAGES_URL + enq.getImage();
-            Log.d(TAG, "img url: "+url);
-           // Glide.with(context).load(url).placeholder(R.drawable.nouser).into(imageView);
+
+
             RequestOptions requestOptions = new RequestOptions();
             requestOptions.placeholder(R.drawable.nouser);
             requestOptions.error(R.drawable.nouser);
@@ -340,19 +318,14 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.BaseViewHo
         dialog.setContentView(R.layout.item_grid_image_two_line_light);
         dialog.setCancelable(true);
         final MemberDataList enq = arrayList.get(position);
-//        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-//        lp.copyFrom(dialog.getWindow().getAttributes());
-//        lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
-//        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+
         ImageView imageView = (ImageView) dialog. findViewById(R.id.image);
         TextView name = (TextView) dialog. findViewById(R.id.name);
         ImageButton phone=(ImageButton)dialog.findViewById(R.id.phone_call);
         ImageView whatsapp=(ImageView)dialog.findViewById(R.id.whatsapp);
         String domainurl= SharedPrefereneceUtil.getDomainUrl((Activity) context);
         String url= domainurl+ServiceUrls.IMAGES_URL + enq.getImage();
-        Log.d(TAG, "image: "+enq.getImage());
-        Log.d(TAG, "name: "+enq.getName());
-      //  Glide.with(context).load(url).placeholder(R.drawable.nouser).into(imageView);
+
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.placeholder(R.drawable.nouser);
         requestOptions.error(R.drawable.nouser);
@@ -377,18 +350,11 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.BaseViewHo
 
                 PackageManager pm=context.getPackageManager();
                 try {
-                    // Uri uri = Uri.parse("smsto:" + Contact);
+
                     Uri uri = Uri.parse("whatsapp://send?phone=+91" + enq.getContact());
                     Intent waIntent = new Intent(Intent.ACTION_VIEW,uri);
-                    //waIntent.setType("text/plain");
-                    String text = "YOUR TEXT HERE";
-
                     PackageInfo info=pm.getPackageInfo("com.whatsapp", PackageManager.GET_META_DATA);
-                    //Check if package exists or not. If not then code
-                    //in catch block will be called
                     waIntent.setPackage("com.whatsapp");
-
-                    // waIntent.putExtra(Intent.EXTRA_TEXT, text);
                     context.startActivity(waIntent);
 
                 } catch (PackageManager.NameNotFoundException e) {
@@ -409,7 +375,6 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.BaseViewHo
             }
         });
         dialog.show();
-        //dialog.getWindow().setAttributes(lp);
     }
 
     //view for loading on swipe of recyclerview
@@ -464,7 +429,6 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.BaseViewHo
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
             viewDialog.showDialog();
         }
 
@@ -472,47 +436,32 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.BaseViewHo
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            // dismissProgressDialog();
             viewDialog.hideDialog();
-            //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
-            //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
             MakeAttendanceDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> MakeAttendanceDetails = new HashMap<String, String>();
             MakeAttendanceDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId((Activity)context));
-            Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId((Activity)context)));
             MakeAttendanceDetails.put("member_id",member_id);
-            Log.v(TAG, String.format("doInBackground :: member_id = %s", member_id));
             MakeAttendanceDetails.put("invoice_id","");
-            Log.v(TAG, String.format("doInBackground :: invoice_id = %s", ""));
             MakeAttendanceDetails.put("pack_name","");
-            Log.v(TAG, String.format("doInBackground :: pack_name = %s", ""));
             MakeAttendanceDetails.put("name",name);
-            Log.v(TAG, String.format("doInBackground :: name = %s", name));
             MakeAttendanceDetails.put("contact",contact);
-            Log.v(TAG, String.format("doInBackground :: contact = %s", contact));
             MakeAttendanceDetails.put("balance",FinalBalance);
             MakeAttendanceDetails.put("expiry_date",End_Date);
             MakeAttendanceDetails.put("status",status);
             MakeAttendanceDetails.put("mode", "AdminApp");
             MakeAttendanceDetails.put("financial_yr", "");
-            Log.v(TAG, String.format("doInBackground :: expiry_date = %s", End_Date));
             MakeAttendanceDetails.put("action", "make_attendence");
             String domainurl=SharedPrefereneceUtil.getDomainUrl((Activity)context);
             String loginResult2 = ruc.sendPostRequest( domainurl+ServiceUrls.LOGIN_URL, MakeAttendanceDetails);
-
-            Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult2));
             return loginResult2;
         }
     }
     private void MakeAttendanceDetails(String jsonResponse) {
-
-        Log.v(TAG, String.format("loginServerResponse :: response = %s", jsonResponse));
 
         JSONObject jsonObjLoginResponse = null;
         try {
@@ -523,18 +472,11 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.BaseViewHo
                 ToneGenerator toneG = new ToneGenerator(AudioManager.STREAM_ALARM, 100);
                 toneG.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD, 200);
                 Toast.makeText(context,"Your Attendance Marked Successfully",Toast.LENGTH_SHORT).show();
-                // finish();
-
-                // showCustomDialog();
-
-                //inputEmail, inputPhone,inputAdd,inputReq,inputFollowupdate;
             }
 
             else if (success.equalsIgnoreCase(context.getResources().getString(R.string.one)))
             {
                 Toast.makeText(context,"Please try after 1 hour ,Your attendance is already marked",Toast.LENGTH_SHORT).show();
-                // inputContact.getText().clear();
-                //Toast.makeText(AttendanceActivity.this,"Please Enter New Mobile Number",Toast.LENGTH_SHORT).show();
             }
 
         } catch (JSONException e) {

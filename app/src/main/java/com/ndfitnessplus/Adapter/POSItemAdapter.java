@@ -50,7 +50,6 @@ public class POSItemAdapter extends RecyclerView.Adapter<POSItemAdapter.BaseView
     private boolean isLoaderVisible = false;
 
     public POSItemAdapter(ArrayList<POSItemList> enquiryList, Context context) {
-        //this.arrayList = enquiryList;
         this.subList = enquiryList;
         this.arrayList = new ArrayList<POSItemList>();
         this.context = context;
@@ -59,7 +58,6 @@ public class POSItemAdapter extends RecyclerView.Adapter<POSItemAdapter.BaseView
 
     @Override
     public POSItemAdapter.BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Log.d(TAG, "view type: "+viewType );
         switch (viewType) {
             case VIEW_TYPE_NORMAL:
                 return new POSItemAdapter.ViewHolder(
@@ -75,8 +73,6 @@ public class POSItemAdapter extends RecyclerView.Adapter<POSItemAdapter.BaseView
     @Override
     public void onBindViewHolder(POSItemAdapter.BaseViewHolder holder, int position) {
         holder.onBind(position);
-
-        Log.d(TAG, "call onbind method of viewholder: " );
     }
     @Override
     public int getItemViewType(int position) {
@@ -93,8 +89,6 @@ public class POSItemAdapter extends RecyclerView.Adapter<POSItemAdapter.BaseView
     }
     public void add(POSItemList response) {
         arrayList.add(response);
-        //subList.add(response);
-        Log.d(TAG, "sublist size after add : "+String.valueOf(subList.size()) );
         notifyItemInserted(arrayList.size() - 1);
     }
 
@@ -103,8 +97,6 @@ public class POSItemAdapter extends RecyclerView.Adapter<POSItemAdapter.BaseView
             add(response);
             subList.add(response);
         }
-
-        Log.d(TAG, "arraylist size after adding new data: "+String.valueOf(arrayList.size()) );
 
     }
 
@@ -130,7 +122,6 @@ public class POSItemAdapter extends RecyclerView.Adapter<POSItemAdapter.BaseView
         if (item != null) {
             arrayList.remove(position);
             notifyItemRemoved(position);
-            // notifyDataSetChanged();
         }
     }
     public void removeblank(){
@@ -140,7 +131,6 @@ public class POSItemAdapter extends RecyclerView.Adapter<POSItemAdapter.BaseView
         if (item != null) {
             arrayList.remove(position);
             notifyItemRemoved(position);
-            //notifyDataSetChanged();
         }
     }
     public void clear() {
@@ -153,10 +143,8 @@ public class POSItemAdapter extends RecyclerView.Adapter<POSItemAdapter.BaseView
     }
     //filter for search
     public int filter(String charText) {
-        // subList=arrayList;
 
         charText = charText.toLowerCase(Locale.getDefault());
-        Log.d(TAG, "sublist size whentext  filter: "+String.valueOf(subList.size()) );
         arrayList.clear();
         if (charText.length() == 0) {
 
@@ -166,21 +154,17 @@ public class POSItemAdapter extends RecyclerView.Adapter<POSItemAdapter.BaseView
                 if (wp.getProductCode().toLowerCase(Locale.getDefault())
                         .contains(charText) || wp.getProductName().toLowerCase(Locale.getDefault()).contains(charText)) {
                     arrayList.add(wp);
-                    // return arrayList.size();
                 }
             }
         }
         notifyDataSetChanged();
         return arrayList.size();
-        //Log.d(TAG, "sublist size filter: "+String.valueOf(subList.size()) );
 
     }
     //filter for search
     public int search( String charTex,final ArrayList<POSItemList> subList) {
-        // subList=arrayList;
 
         final String charText = charTex.toLowerCase(Locale.getDefault());
-        Log.d(TAG, "sublist size whentext  filter: "+String.valueOf(subList.size()) );
         arrayList.clear();
         if (charText.length() == 0) {
 
@@ -190,7 +174,6 @@ public class POSItemAdapter extends RecyclerView.Adapter<POSItemAdapter.BaseView
             Handler handler = new Handler(Looper.getMainLooper());
             handler.post(new Runnable() {
                 public void run() {
-                    // UI code goes here
                     for (final POSItemList wp : subList) {
                         if (wp.getProductCode().toLowerCase(Locale.getDefault())
                                 .contains(charText) || wp.getProductName().toLowerCase(Locale.getDefault()).contains(charText)) {
@@ -204,14 +187,12 @@ public class POSItemAdapter extends RecyclerView.Adapter<POSItemAdapter.BaseView
 
 
         }
-        Log.d(TAG, "sublist size search: "+String.valueOf(subList.size()) );
         notifyDataSetChanged();
         return arrayList.size();
     }
     //View for showing enquiry
     public class ViewHolder extends POSItemAdapter.BaseViewHolder  {
         TextView  prodCodeTV, prodnameTV,prodDiscTV,quantityTV,rateTV,purchaseAmountTV,taxTV,MaxdiscountTV;
-        //  ImageView contactIV;
         CircularImageView imageView;
         View layoutparent;
         public ViewHolder(View itemView) {
@@ -220,9 +201,7 @@ public class POSItemAdapter extends RecyclerView.Adapter<POSItemAdapter.BaseView
             prodCodeTV = (TextView) itemView.findViewById(R.id.prodcodeTV);
             prodnameTV = (TextView) itemView.findViewById(R.id.ProdnameTV);
             prodDiscTV = (TextView) itemView.findViewById(R.id.prodDiscTV);
-            // contactIV = (ImageView) itemView.findViewById(R.id.contactIV);
             imageView=(CircularImageView) itemView.findViewById(R.id.input_image);
-            // contactIV.setOnClickListener(this);
             quantityTV = (TextView) itemView.findViewById(R.id.quantityTV);
             rateTV = (TextView) itemView.findViewById(R.id.rateTV);
             purchaseAmountTV = (TextView) itemView.findViewById(R.id.purchaseAmountTV);
@@ -239,10 +218,8 @@ public class POSItemAdapter extends RecyclerView.Adapter<POSItemAdapter.BaseView
         public void onBind(final int position) {
             super.onBind(position);
             final POSItemList enq = arrayList.get(position);
-            //Log.d(TAG, "enquiry name: " + enq.getName());
-            // idTV.setText(enq.getID());
+
             prodCodeTV.setText(enq.getProductCode());
-            //Log.d(TAG, "textview name: " + nameTV.getText().toString());
             prodnameTV.setText(enq.getProductName());
             prodDiscTV.setText(enq.getProductDisc());
             rateTV.setText(enq.getRate());
@@ -252,8 +229,7 @@ public class POSItemAdapter extends RecyclerView.Adapter<POSItemAdapter.BaseView
             quantityTV.setText(enq.getQuantity());
             String domainurl= SharedPrefereneceUtil.getDomainUrl((Activity)context);
             String url= domainurl+ ServiceUrls.IMAGES_URL + enq.getProductImage();
-            Log.d(TAG, "product image: "+enq.getProductImage() );
-          //  Glide.with(context).load(url).placeholder(R.drawable.nouser).into(imageView);
+
             RequestOptions requestOptions = new RequestOptions();
             requestOptions.placeholder(R.drawable.nouser);
             requestOptions.error(R.drawable.nouser);
@@ -262,9 +238,6 @@ public class POSItemAdapter extends RecyclerView.Adapter<POSItemAdapter.BaseView
             Glide.with(context)
                     .setDefaultRequestOptions(requestOptions)
                     .load(url).into(imageView);
-            final android.view.animation.Animation animation_1 = android.view.animation.AnimationUtils.loadAnimation(context,R.anim.zoom_out);
-            final android.view.animation.Animation animation_2 = android.view.animation.AnimationUtils.loadAnimation(context,R.anim.zoom_in);
-
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -272,17 +245,6 @@ public class POSItemAdapter extends RecyclerView.Adapter<POSItemAdapter.BaseView
                 }
             });
 
-            layoutparent.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-//                    String   enquiryId=enq.getID();
-//                    Intent intent=new Intent(context, EnquiryFollowupDetailsActivity.class);
-//                    intent.putExtra("enquiry_id",enquiryId);
-//                    intent.putExtra("rating",enq.getRating());
-//                    intent.putExtra("call_response",enq.getCallResponse());
-//                    context.startActivity(intent);
-                }
-            });
         }
     }
 

@@ -30,7 +30,6 @@ public class WorkOutDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
         private List<WorkOutDetailsList> items = new ArrayList<>();
 
-
         private Context ctx;
         private WorkOutAdapter.OnItemClickListener mOnItemClickListener;
 
@@ -88,7 +87,6 @@ public class WorkOutDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 String domainurl= SharedPrefereneceUtil.getDomainUrl((Activity)ctx);
                 String url= domainurl+ServiceUrls.IMAGES_URL + p.getWorkoutImage();
 
-                // Glide.with(context).load(url).placeholder(R.drawable.nouser).into(imageView);
                 RequestOptions requestOptions = new RequestOptions();
                 requestOptions.placeholder(R.drawable.ic_fitness_center_black_24dp);
                 requestOptions.error(R.drawable.ic_fitness_center_black_24dp);
@@ -107,10 +105,6 @@ public class WorkOutDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                         ctx.startActivity(intent);
                     }
                 });
-
-
-
-
 
             }
         }

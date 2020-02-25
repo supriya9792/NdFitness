@@ -22,8 +22,6 @@ import java.util.List;
 public class WorkOutAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<WorkOutDayList> items = new ArrayList<>();
-
-
     private Context ctx;
     private WorkOutAdapter.OnItemClickListener mOnItemClickListener;
 

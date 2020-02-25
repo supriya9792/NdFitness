@@ -71,7 +71,6 @@ public class MemberBeforeAfterActivity extends AppCompatActivity {
     }
     private  void initComponent(){
         Intent intent = getIntent();
-        // Bundle args = intent.getBundleExtra("BUNDLE");
         if (intent != null) {
             member_id=intent.getStringExtra("member_id");
             name=intent.getStringExtra("name");
@@ -79,7 +78,6 @@ public class MemberBeforeAfterActivity extends AppCompatActivity {
             Image=intent.getStringExtra("image");
             After_Photo=intent.getStringExtra("After_Photo");
             Before_Photo=intent.getStringExtra("Before_Photo");
-           //memberdetailsclass();
         }
         username=findViewById(R.id.username);
         mobilenumber=findViewById(R.id.mobilenumber);
@@ -139,11 +137,9 @@ public class MemberBeforeAfterActivity extends AppCompatActivity {
         int tab_position=tab_layout.getSelectedTabPosition();
         if(tab_position == 0) {
             BeforeFragment fragment = (BeforeFragment) sectionsPagerAdapter.getItem(0);
-            // Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_before);
             fragment.onActivityResult(requestCode, resultCode, data);
         }else if(tab_position == 1) {
             AfterFragment fragment1 = (AfterFragment) sectionsPagerAdapter.getItem(1);
-            // Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_before);
             fragment1.onActivityResult(requestCode, resultCode, data);
         }
     }

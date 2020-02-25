@@ -86,7 +86,7 @@ public class WorkoutDetailsActivity extends AppCompatActivity {
 
 
         if (isOnline(WorkoutDetailsActivity.this)) {
-            workout_detailsclass();// check login details are valid or not from server
+            workout_detailsclass();
         }
         else {
             recyclerView.setVisibility(View.GONE);
@@ -130,8 +130,6 @@ public class WorkoutDetailsActivity extends AppCompatActivity {
             Intent intent = new Intent(WorkoutDetailsActivity.this, MainActivity.class);
             startActivity(intent);
         }else if(id== android.R.id.home){
-            //Toast.makeText(this,"Navigation back pressed",Toast.LENGTH_SHORT).show();
-            // NavUtils.navigateUpFromSameTask(this);
             finish();
         }
 
@@ -150,7 +148,6 @@ public class WorkoutDetailsActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
             viewDialog.showDialog();
         }
 
@@ -158,17 +155,14 @@ public class WorkoutDetailsActivity extends AppCompatActivity {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
             viewDialog.hideDialog();
             progressBar.setVisibility(View.GONE);
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             WorkoutDetailsDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> WorkoutDetailsDetails = new HashMap<String, String>();
             WorkoutDetailsDetails.put("member_id", member_id);
             WorkoutDetailsDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(WorkoutDetailsActivity.this));
@@ -177,7 +171,6 @@ public class WorkoutDetailsActivity extends AppCompatActivity {
             WorkoutDetailsDetails.put("action","show_workout_details");
              String domainurl=SharedPrefereneceUtil.getDomainUrl(WorkoutDetailsActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, WorkoutDetailsDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
 
@@ -187,22 +180,23 @@ public class WorkoutDetailsActivity extends AppCompatActivity {
     private void WorkoutDetailsDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
+
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
+                    nodata.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.VISIBLE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
 
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
                             for (int i = 0; i < jsonArrayResult.length(); i++) {
                                 subList = new WorkOutDetailsList();
-                                Log.v(TAG, "JsonResponseOpeartion ::");
+
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -211,12 +205,10 @@ public class WorkoutDetailsActivity extends AppCompatActivity {
                                     String Sets = jsonObj.getString("Sets");
                                     String Repetation = jsonObj.getString("Repetations");
                                     String Time = jsonObj.getString("Time");
-                                   // String Weight = jsonObj.getString("Weight");
                                     String Description = jsonObj.getString("Description");
                                     String Image = jsonObj.getString("Image");
                                     String Vediolink = jsonObj.getString("Vediolink");
 
-                                    //String musclegrp="Muscular Group: "+Bodypart;
                                     subList.setBodyPart(Bodypart);
                                     subList.setWorkoutName(Workoutname);
                                     String sets="Sets : "+Sets;
@@ -225,14 +217,12 @@ public class WorkoutDetailsActivity extends AppCompatActivity {
                                     subList.setRepitation(rep);
                                      String timee="Time: "+Time;
                                     subList.setTime(timee);
-                                   // subList.setWeight(Weight);
                                     subList.setDiscription(Description);
                                     subList.setWorkoutImage(Image);
                                     subList.setVideoLink(Vediolink);
                                     String setret=Sets+" x "+Repetation;
                                     subList.setSetAndRepitations(setret);
 
-                                    //Toast.makeText(MainActivity.this, "j "+j, Toast.LENGTH_SHORT).show();
                                     subListArrayList.add(subList);
                                     adapter = new WorkOutDetailsAdapter(WorkoutDetailsActivity.this, subListArrayList);
                                     recyclerView.setAdapter(adapter);
@@ -248,7 +238,6 @@ public class WorkoutDetailsActivity extends AppCompatActivity {
                     recyclerView.setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
             }
         }

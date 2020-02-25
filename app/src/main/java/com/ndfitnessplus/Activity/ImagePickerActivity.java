@@ -103,7 +103,6 @@ public class ImagePickerActivity extends AppCompatActivity {
                 }
             }
         });
-
         // create and show the alert dialog
         AlertDialog dialog = builder.create();
         dialog.show();

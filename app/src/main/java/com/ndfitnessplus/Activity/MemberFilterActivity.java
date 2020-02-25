@@ -165,19 +165,10 @@ public class MemberFilterActivity extends AppCompatActivity {
                 datePickerDialog.show();
             }
         });
-        //api's for spinners
-       // enqforClass();
-       // enqtypeClass();
-       // enqsourceClass();
-        //callResponseClass();
-        //locationClass();
+
         occupationClass();
         enquiryExecutiveClass();
         memberExecutiveClass();
-
-
-        //setting data to the spinners
-
 
         //Gender spinners
         final  String[] genderarray = getResources().getStringArray(R.array.gender_array);
@@ -211,7 +202,6 @@ public class MemberFilterActivity extends AppCompatActivity {
                         // Set the hint text color gray
                         tv.setTextColor(Color.GRAY);
                         tv.setText(getResources().getString(R.string.prompt_gender));
-                        // tv.setTextColor(Color.GRAY);
                     } else {
                         tv.setTextColor(Color.BLACK);
                     }
@@ -277,7 +267,6 @@ public class MemberFilterActivity extends AppCompatActivity {
                         // Set the hint text color gray
                         tv.setTextColor(Color.GRAY);
                         tv.setText(getResources().getString(R.string.prompt_mem_date));
-                        // tv.setTextColor(Color.GRAY);
                     } else {
                         tv.setTextColor(Color.BLACK);
                     }
@@ -371,7 +360,6 @@ public class MemberFilterActivity extends AppCompatActivity {
                         // Set the hint text color gray
                         tv.setTextColor(Color.GRAY);
                         tv.setText(getResources().getString(R.string.prompt_blood_group));
-                        // tv.setTextColor(Color.GRAY);
                     } else {
                         tv.setTextColor(Color.BLACK);
                     }
@@ -494,7 +482,6 @@ public class MemberFilterActivity extends AppCompatActivity {
                         // Set the hint text color gray
                         tv.setTextColor(Color.GRAY);
                         tv.setText(getResources().getString(R.string.prompt_status));
-                        // tv.setTextColor(Color.GRAY);
                     } else {
                         tv.setTextColor(Color.BLACK);
                     }
@@ -632,22 +619,18 @@ public class MemberFilterActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            // showProgressDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            // dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             OccupationDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> OccupationDetails = new HashMap<String, String>();
             OccupationDetails.put("action", "show_occupation_list");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(MemberFilterActivity.this);
@@ -665,7 +648,6 @@ public class MemberFilterActivity extends AppCompatActivity {
 
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
@@ -691,17 +673,13 @@ public class MemberFilterActivity extends AppCompatActivity {
                             OccupationArrayList.add(1,Occupationlist);
                             for (int i = 0; i < jsonArrayCountry.length(); i++) {
                                 Occupationlist = new Spinner_List();
-                                Log.v(TAG, "JsonResponseOpeartion ::");
+
                                 JSONObject jsonObj = jsonArrayCountry.getJSONObject(i);
                                 if (jsonObj != null) {
 
                                     String Occupation     = jsonObj.getString("Occupation");
 
                                     String id=jsonObj.getString("Auto_Id");
-//                               if(i==0){
-//                                   Occupationlist.setName(getResources().getString(R.string.promt_country));
-//                                   enqF.add(0,Occupationlist);
-//                               }
 
 
                                     Occupationlist.setName(Occupation);
@@ -732,7 +710,6 @@ public class MemberFilterActivity extends AppCompatActivity {
                                                 // Set the hint text color gray
                                                 tv.setTextColor(Color.GRAY);
                                                 tv.setText(getResources().getString(R.string.prompt_occupation));
-                                                // tv.setTextColor(Color.GRAY);
                                             }
                                             else {
                                                 tv.setTextColor(Color.BLACK);
@@ -752,11 +729,8 @@ public class MemberFilterActivity extends AppCompatActivity {
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
                     OccupationArrayList.clear();
-                    //for(int j=0;j<2;j++){
                     Occupationlist = new Spinner_List();
-
                     Occupationlist.setName(getResources().getString(R.string.prompt_occupation));
-
                     OccupationArrayList.add(0,Occupationlist);
                     Occupationlist.setName(getResources().getString(R.string.all));
 
@@ -784,7 +758,6 @@ public class MemberFilterActivity extends AppCompatActivity {
                                 // Set the hint text color gray
                                 tv.setTextColor(Color.GRAY);
                                 tv.setText(getResources().getString(R.string.prompt_occupation));
-                                // tv.setTextColor(Color.GRAY);
                             }
                             else {
                                 tv.setTextColor(Color.BLACK);
@@ -796,7 +769,6 @@ public class MemberFilterActivity extends AppCompatActivity {
                     spinOccupation.setAdapter(occupationadpater);
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
             }
         }
@@ -809,34 +781,27 @@ public class MemberFilterActivity extends AppCompatActivity {
 
         ServerClass ruc = new ServerClass();
 
-
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            // showProgressDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            // dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             EnqExecutiveDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-          //  Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EnqExecutiveDetails = new HashMap<String, String>();
             EnqExecutiveDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(MemberFilterActivity.this));
             EnqExecutiveDetails.put("action", "show_enquiry_executive_list_for_member");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(MemberFilterActivity.this);
-            //EnqExecutiveloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(EnqExecutiveloyee.this));
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EnqExecutiveDetails);
-            Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
 
@@ -848,7 +813,6 @@ public class MemberFilterActivity extends AppCompatActivity {
 
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
@@ -860,35 +824,24 @@ public class MemberFilterActivity extends AppCompatActivity {
                     if (object != null) {
                         JSONArray jsonArrayCountry = object.getJSONArray("result");
                         EnqExecutiveNameArrayList.clear();
-                        //for(int j=0;j<2;j++){
                         EnqExecutiveNameList = new Spinner_List();
-
                         EnqExecutiveNameList.setName(getResources().getString(R.string.prompt_enq_executive));
-
                         EnqExecutiveNameArrayList.add(0,EnqExecutiveNameList);
 
-                        // }
                         if (jsonArrayCountry != null && jsonArrayCountry.length() > 0){
                             EnqExecutiveNameList.setName(getResources().getString(R.string.all));
 
                             EnqExecutiveNameArrayList.add(1,EnqExecutiveNameList);
                             for (int i = 0; i < jsonArrayCountry.length(); i++) {
                                 EnqExecutiveNameList = new Spinner_List();
-                                Log.v(TAG, "JsonResponseOpeartion ::");
+
                                 JSONObject jsonObj = jsonArrayCountry.getJSONObject(i);
                                 if (jsonObj != null) {
 
                                     String EnquiryOwnerExecutive     = jsonObj.getString("EnquiryOwnerExecutive");
 
-                                   // String id=jsonObj.getString("Auto_Id");
-//                               if(i==0){
-//                                   EnqExecutiveNameList.setName(getResources().getString(R.string.promt_country));
-//                                   enqF.add(0,EnqExecutiveNameList);
-//                               }
-
 
                                     EnqExecutiveNameList.setName(EnquiryOwnerExecutive);
-                                    //EnqExecutiveNameList.setId(id);
 
                                     EnqExecutiveNameArrayList.add(EnqExecutiveNameList);
 
@@ -915,7 +868,6 @@ public class MemberFilterActivity extends AppCompatActivity {
                                                 // Set the hint text color gray
                                                 tv.setTextColor(Color.GRAY);
                                                 tv.setText(getResources().getString(R.string.prompt_enq_executive));
-                                                // tv.setTextColor(Color.GRAY);
                                             }
                                             else {
                                                 tv.setTextColor(Color.BLACK);
@@ -935,7 +887,6 @@ public class MemberFilterActivity extends AppCompatActivity {
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
                     EnqExecutiveNameArrayList.clear();
-                    //for(int j=0;j<2;j++){
                     EnqExecutiveNameList = new Spinner_List();
 
                     EnqExecutiveNameList.setName(getResources().getString(R.string.prompt_enq_executive));
@@ -967,7 +918,6 @@ public class MemberFilterActivity extends AppCompatActivity {
                                 // Set the hint text color gray
                                 tv.setTextColor(Color.GRAY);
                                 tv.setText(getResources().getString(R.string.prompt_enq_executive));
-                                // tv.setTextColor(Color.GRAY);
                             }
                             else {
                                 tv.setTextColor(Color.BLACK);
@@ -979,7 +929,6 @@ public class MemberFilterActivity extends AppCompatActivity {
                     spinEnqExecutive.setAdapter(enqExecutiveadapter);
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
             }
         }
@@ -997,29 +946,23 @@ public class MemberFilterActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            // showProgressDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            // dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             MemberExecutiveDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> MemberExecutiveDetails = new HashMap<String, String>();
             MemberExecutiveDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(MemberFilterActivity.this));
             MemberExecutiveDetails.put("action", "show_member_executive_list_for_member");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(MemberFilterActivity.this);
-            //MemberExecutiveloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(MemberExecutiveloyee.this));
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, MemberExecutiveDetails);
-            Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
 
@@ -1029,9 +972,7 @@ public class MemberFilterActivity extends AppCompatActivity {
 
     private void MemberExecutiveDetails(String jsonResponse) {
 
-
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
@@ -1043,35 +984,23 @@ public class MemberFilterActivity extends AppCompatActivity {
                     if (object != null) {
                         JSONArray jsonArrayCountry = object.getJSONArray("result");
                         MemExecutiveNameArrayList.clear();
-                        //for(int j=0;j<2;j++){
                         spinMemExecutiveNameList = new Spinner_List();
-
                         spinMemExecutiveNameList.setName(getResources().getString(R.string.prompt_mem_executive));
-
                         MemExecutiveNameArrayList.add(0,spinMemExecutiveNameList);
 
-                        // }
                         if (jsonArrayCountry != null && jsonArrayCountry.length() > 0){
                             spinMemExecutiveNameList.setName(getResources().getString(R.string.all));
 
                             MemExecutiveNameArrayList.add(1,spinMemExecutiveNameList);
                             for (int i = 0; i < jsonArrayCountry.length(); i++) {
                                 spinMemExecutiveNameList = new Spinner_List();
-                                Log.v(TAG, "JsonResponseOpeartion ::");
+
                                 JSONObject jsonObj = jsonArrayCountry.getJSONObject(i);
                                 if (jsonObj != null) {
 
                                     String MemberOwnerExecutive     = jsonObj.getString("MemberOwnerExecutive");
 
-                                    // String id=jsonObj.getString("Auto_Id");
-//                               if(i==0){
-//                                   spinMemExecutiveNameList.setName(getResources().getString(R.string.promt_country));
-//                                   enqF.add(0,spinMemExecutiveNameList);
-//                               }
-
-
                                     spinMemExecutiveNameList.setName(MemberOwnerExecutive);
-                                    //spinMemExecutiveNameList.setId(id);
 
                                     MemExecutiveNameArrayList.add(spinMemExecutiveNameList);
 
@@ -1098,7 +1027,6 @@ public class MemberFilterActivity extends AppCompatActivity {
                                                 // Set the hint text color gray
                                                 tv.setTextColor(Color.GRAY);
                                                 tv.setText(getResources().getString(R.string.prompt_mem_executive));
-                                                // tv.setTextColor(Color.GRAY);
                                             }
                                             else {
                                                 tv.setTextColor(Color.BLACK);
@@ -1118,7 +1046,6 @@ public class MemberFilterActivity extends AppCompatActivity {
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
                     MemExecutiveNameArrayList.clear();
-                    //for(int j=0;j<2;j++){
                     spinMemExecutiveNameList = new Spinner_List();
 
                     spinMemExecutiveNameList.setName(getResources().getString(R.string.prompt_mem_executive));
@@ -1150,7 +1077,6 @@ public class MemberFilterActivity extends AppCompatActivity {
                                 // Set the hint text color gray
                                 tv.setTextColor(Color.GRAY);
                                 tv.setText(getResources().getString(R.string.prompt_mem_executive));
-                                // tv.setTextColor(Color.GRAY);
                             }
                             else {
                                 tv.setTextColor(Color.BLACK);
@@ -1162,7 +1088,6 @@ public class MemberFilterActivity extends AppCompatActivity {
                     spinMemExecutive.setAdapter(memExecutiveAdapter);
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
             }
         }
@@ -1182,7 +1107,6 @@ public class MemberFilterActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
             viewDialog.showDialog();
         }
 
@@ -1190,43 +1114,28 @@ public class MemberFilterActivity extends AppCompatActivity {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-           // dismissProgressDialog();
             viewDialog.hideDialog();
-            //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
-            //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
             SearchEnquiryDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> SearchEnquiryDetails = new HashMap<String, String>();
             SearchEnquiryDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(MemberFilterActivity.this));
-            Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(MemberFilterActivity.this)));
             SearchEnquiryDetails.put("to_date",todate.getText().toString());
-            Log.v(TAG, String.format("doInBackground :: to_date = %s",todate.getText().toString() ));
             SearchEnquiryDetails.put("from_date",fromdate.getText().toString());
-            Log.v(TAG, String.format("doInBackground :: from_date = %s", fromdate.getText().toString()));
             SearchEnquiryDetails.put("gender", gender);
-            Log.v(TAG, String.format("doInBackground :: gender = %s", gender));
             SearchEnquiryDetails.put("occupation",occupation);
-            Log.v(TAG, String.format("doInBackground :: occupation = %s", occupation));
             SearchEnquiryDetails.put("mem_date_type",Datewise);
-            Log.v(TAG, String.format("doInBackground :: mem_date_type = %s",Datewise));
             SearchEnquiryDetails.put("blood_group",bloodgroup);
-            Log.v(TAG, String.format("doInBackground :: bloodgroup = %s",bloodgroup));
             SearchEnquiryDetails.put("enq_exe_name",enqExecutiveName);
-            Log.v(TAG, String.format("doInBackground :: enq_exe_name = %s",enqExecutiveName));
             SearchEnquiryDetails.put("mem_exe_name",memExecutiveName);
-            Log.v(TAG, String.format("doInBackground :: mem_exe_name = %s",memExecutiveName));
             SearchEnquiryDetails.put("status",status);
-            Log.v(TAG, String.format("doInBackground :: status = %s",status));
             SearchEnquiryDetails.put("action", "search_member_filter");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(MemberFilterActivity.this);
             String loginResult2 = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, SearchEnquiryDetails);
 
-            Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult2));
             return loginResult2;
         }
     }
@@ -1242,19 +1151,17 @@ public class MemberFilterActivity extends AppCompatActivity {
             String success = object.getString(getResources().getString(R.string.success));
 
             if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
-                //Toast.makeText(MemberFilterActivity.this,"Enquiry added succesfully",Toast.LENGTH_SHORT).show();
 
                 if (object != null) {
                     JSONArray jsonArrayResult = object.getJSONArray("result");
-                               Log.d(TAG, "array size: " + jsonArrayResult.length());
+
                     if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
                         for (int i = 0; i < jsonArrayResult.length(); i++) {
 
 
                             subList = new MemberDataList();
-                            Log.d(TAG, "i: " + i);
-                            // Log.d(TAG, "run: " + itemCount);
-                            Log.v(TAG, "JsonResponseOpeartion ::");
+
+
                             JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                             if (jsonObj != null) {
 
@@ -1271,7 +1178,6 @@ public class MemberFilterActivity extends AppCompatActivity {
                                 String Email=jsonObj.getString("Email");
                                 String End_Date=jsonObj.getString("End_Date");
                                 String FinalBalance=jsonObj.getString("FinalBalance");
-                                //  for (int j = 0; j < 5; j++) {
 
                                 subList.setName(name);
                                 subList.setGender(gender);
@@ -1291,7 +1197,7 @@ public class MemberFilterActivity extends AppCompatActivity {
                                 String enddate= Utility.formatDateDB(End_Date);
                                 subList.setEndDate(enddate);
                                 subList.setFinalBalance(FinalBalance);
-                                //Toast.makeText(EnquiryActivity.this, "followup date: "+next_foll_date, Toast.LENGTH_SHORT).show();
+
                                 subListArrayList.add(subList);
 
 
@@ -1307,15 +1213,9 @@ public class MemberFilterActivity extends AppCompatActivity {
                         System.out.println("No records found");
                     }
                 }
-
-                // showCustomDialog();
-
-                //inputEmail, inputPhone,inputAdd,inputReq,inputFollowupdate;
             }
             else if (success.equalsIgnoreCase(getResources().getString(R.string.zero)))
             {
-                //Toast.makeText(MemberFilterActivity.this,"Mobile Number Already Exits",Toast.LENGTH_SHORT).show();
-                //inputContact.getText().clear();
                 Toast.makeText(MemberFilterActivity.this,"No Records Found",Toast.LENGTH_SHORT).show();
             }
 

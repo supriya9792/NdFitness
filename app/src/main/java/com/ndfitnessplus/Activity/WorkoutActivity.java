@@ -113,10 +113,6 @@ public class WorkoutActivity extends AppCompatActivity  implements SwipeRefreshL
         progress_bar.setVisibility(View.GONE);
         lyt_no_connection.setVisibility(View.VISIBLE);
 
-//        adapter = new EnquiryAdapter( new ArrayList<WorkOutDayList>(),WorkoutActivity.this);
-//        recyclerView.setAdapter(adapter);
-
-
         Intent intent = getIntent();
         Bundle args = intent.getBundleExtra("BUNDLE");
         if (args != null) {
@@ -129,7 +125,7 @@ public class WorkoutActivity extends AppCompatActivity  implements SwipeRefreshL
             recyclerView.setAdapter(adapter);
         }else{
             if (isOnline(WorkoutActivity.this)) {
-                workoutclass();// check login details are valid or not from server
+                workoutclass();
             }
             else {
                 frame.setVisibility(View.GONE);
@@ -160,8 +156,6 @@ public class WorkoutActivity extends AppCompatActivity  implements SwipeRefreshL
             }
         }
 
-
-
         addenquiry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -191,17 +185,11 @@ public class WorkoutActivity extends AppCompatActivity  implements SwipeRefreshL
             public void afterTextChanged(final Editable arg0) {
                 // TODO Auto-generated method stub
                 if (WorkoutActivity.this.adapter == null){
-                    // some print statement saying it is null
-//                   // Toast toast = Toast.makeText(WorkoutActivity.this,"no record found", Toast.LENGTH_SHORT);
-//                    toast.setGravity(Gravity.CENTER, 0, 0);
-//                    toast.show();
+
                 }
                 else
                 {
                     isLoading = false;
-//                    int count=WorkoutActivity.this.adapter.filter(String.valueOf(arg0));
-//                    total_enquiry.setText(String.valueOf(count));
-//                    ttl_budget.setText(String.valueOf(count));
                     ArrayList<WorkOutDayList> filterlist=WorkoutActivity.this.adapter.filter(String.valueOf(arg0));
                     double totalBudget=0;
 
@@ -222,8 +210,6 @@ public class WorkoutActivity extends AppCompatActivity  implements SwipeRefreshL
                 // TODO Auto-generated method stub
 
                 if(inputsearch.getText().length()==0) {
-                    //do your work here
-                    // Toast.makeText(AddWorkoutActivity.this ,"Text vhanged count  is 10 then: " , Toast.LENGTH_LONG).show();
                     workoutclass();
                 }
             }
@@ -237,12 +223,9 @@ public class WorkoutActivity extends AppCompatActivity  implements SwipeRefreshL
 
     @Override
     public void onRefresh() {
-        // adapter.clear(
+
         swipeRefresh.setRefreshing(false);
         onRestart();
-        //preparedListItem();
-
-
     }
 
     class WorkoutTrackclass extends AsyncTask<String, Void, String> {
@@ -254,29 +237,27 @@ public class WorkoutActivity extends AppCompatActivity  implements SwipeRefreshL
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
+
             WorkoutDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+
             HashMap<String, String> WorkoutDetails = new HashMap<String, String>();
             WorkoutDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(WorkoutActivity.this));
-            Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(WorkoutActivity.this)));
+
             WorkoutDetails.put("action","show_workout_list");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(WorkoutActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ ServiceUrls.LOGIN_URL, WorkoutDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
+
             return loginResult;
         }
 
@@ -285,12 +266,11 @@ public class WorkoutActivity extends AppCompatActivity  implements SwipeRefreshL
     private void WorkoutDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
+
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
 
@@ -304,7 +284,6 @@ public class WorkoutActivity extends AppCompatActivity  implements SwipeRefreshL
                     progressBar.setVisibility(View.GONE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//
 
                         ArrayList<WorkOutDayList> item = new ArrayList<WorkOutDayList>();
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
@@ -314,7 +293,6 @@ public class WorkoutActivity extends AppCompatActivity  implements SwipeRefreshL
 
                                 subList = new WorkOutDayList();
 
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -329,14 +307,10 @@ public class WorkoutActivity extends AppCompatActivity  implements SwipeRefreshL
                                     String Instructarname = jsonObj.getString("Instructarname");
 
 
-                                    //  for (int j = 0; j < 5; j++) {
-
                                     subList.setMemberName(name);
-                                   // subList.setGender(gender);
                                     String cont= Utility.lastFour(Contact);
                                     subList.setMemberContact(Contact);
                                     subList.setEncryptContact(cont);
-//                                    subList.setAssignDate(Date);
                                     subList.setExerciseId(Exercise_Id);
                                     subList.setEmailId(Email_Id);
                                     String next_foll_date= Utility.formatDate(Date);
@@ -362,7 +336,7 @@ public class WorkoutActivity extends AppCompatActivity  implements SwipeRefreshL
                     swipeRefresh.setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
+
                 e.printStackTrace();
                 android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(WorkoutActivity.this);
                 builder.setMessage(R.string.server_exception);
@@ -391,7 +365,7 @@ public class WorkoutActivity extends AppCompatActivity  implements SwipeRefreshL
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            // showProgressDialog();
+
             viewDialog.showDialog();
         }
 
@@ -399,24 +373,20 @@ public class WorkoutActivity extends AppCompatActivity  implements SwipeRefreshL
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
             viewDialog.hideDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             EnquirySearchDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+
             HashMap<String, String> EnquirySearchDetails = new HashMap<String, String>();
             EnquirySearchDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(WorkoutActivity.this));
             EnquirySearchDetails.put("text",inputsearch.getText().toString());
-            Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(WorkoutActivity.this)));
             EnquirySearchDetails.put("action","show_search_workout");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(WorkoutActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EnquirySearchDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
 
@@ -426,12 +396,11 @@ public class WorkoutActivity extends AppCompatActivity  implements SwipeRefreshL
     private void EnquirySearchDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
+
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
@@ -448,9 +417,7 @@ public class WorkoutActivity extends AppCompatActivity  implements SwipeRefreshL
 
 
                                 subList = new WorkOutDayList();
-                                Log.d(TAG, "i: " + i);
-                                // Log.d(TAG, "run: " + itemCount);
-                                Log.v(TAG, "JsonResponseOpeartion ::");
+
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -465,14 +432,11 @@ public class WorkoutActivity extends AppCompatActivity  implements SwipeRefreshL
                                     String Instructarname = jsonObj.getString("Instructarname");
 
 
-                                    //  for (int j = 0; j < 5; j++) {
-
                                     subList.setMemberName(name);
-                                    // subList.setGender(gender);
                                     String cont= Utility.lastFour(Contact);
                                     subList.setMemberContact(Contact);
                                     subList.setEncryptContact(cont);
-//                                    subList.setAssignDate(Date);
+
                                     subList.setExerciseId(Exercise_Id);
                                     subList.setEmailId(Email_Id);
                                     String next_foll_date= Utility.formatDate(Date);
@@ -496,15 +460,13 @@ public class WorkoutActivity extends AppCompatActivity  implements SwipeRefreshL
                         }
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
-                    // nodata.setVisibility(View.VISIBLE);
                     Toast.makeText(WorkoutActivity.this, "NO Record Found", Toast.LENGTH_SHORT).show();
                     progressBar.setVisibility(View.GONE);
                     nodata.setVisibility(View.VISIBLE);
                     swipeRefresh.setVisibility(View.GONE);
-                    //recyclerView.setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
+
                 e.printStackTrace();
                 recyclerView.setVisibility(View.GONE);
                 frame.setVisibility(View.VISIBLE);

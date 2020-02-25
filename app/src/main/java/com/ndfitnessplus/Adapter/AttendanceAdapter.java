@@ -44,20 +44,14 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.Vi
 
         holder.attdateTV.setText(enq.getAttendanceDate());
         holder.timeTv.setText(enq.getTime());
-        //holder.packageNameTv.setText(enq.getPackageName());
-        //holder.ExpiryDateTv.setText(enq.getExpiryDate());
         holder.attendancemodeTv.setText(enq.getAttendanceMode());
         holder.member_idTV.setText(enq.getMemberID());
-
-        //holder.excecutive_nameTV.setText(enq.getExecutiveName());
-
 
         holder.nameTv.setText(enq.getName());
         holder.ContactTv.setText(enq.getContactEncrypt());
         String domainurl= SharedPrefereneceUtil.getDomainUrl((Activity) context);
         String url= domainurl+ ServiceUrls.IMAGES_URL + enq.getImage();
 
-        // Glide.with(context).load(url).placeholder(R.drawable.nouser).into(imageView);
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.placeholder(R.drawable.nouser);
         requestOptions.error(R.drawable.nouser);
@@ -91,9 +85,6 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.Vi
 
             attdateTV = (TextView) itemView.findViewById(R.id.attendacnedateTV);
             timeTv = (TextView) itemView.findViewById(R.id.timeTV);
-           // packageNameTv = (TextView) itemView.findViewById(R.id.packagenameTv);
-           // ExpiryDateTv = (TextView) itemView.findViewById(R.id.membershipEnddateTV);
-          //  excecutive_nameTV = (TextView) itemView.findViewById(R.id.exe_name);
             nameTv = (TextView) itemView.findViewById(R.id.nameTV);
             ContactTv = (TextView) itemView.findViewById(R.id.contactTV);
             attendancemodeTv = (TextView) itemView.findViewById(R.id.attendancemodeTv);
@@ -105,10 +96,8 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.Vi
     }
     //filter for search
     public int filter(String charText) {
-        // subList=arrayList;
 
         charText = charText.toLowerCase(Locale.getDefault());
-        // Log.d(TAG, "sublist size whentext  filter: "+String.valueOf(subList.size()) );
         arrayList.clear();
         if (charText.length() == 0) {
 
@@ -118,14 +107,11 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.Vi
                 if (wp.getName().toLowerCase(Locale.getDefault())
                         .contains(charText) || wp.getContact().toLowerCase(Locale.getDefault()).contains(charText)) {
                     arrayList.add(wp);
-                    // return arrayList.size();
                 }
             }
         }
         notifyDataSetChanged();
         return arrayList.size();
-        //Log.d(TAG, "sublist size filter: "+String.valueOf(subList.size()) );
-
     }
 
 }

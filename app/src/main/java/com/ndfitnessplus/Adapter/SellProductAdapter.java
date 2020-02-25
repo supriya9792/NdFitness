@@ -29,7 +29,6 @@ public class SellProductAdapter extends RecyclerView.Adapter<SellProductAdapter.
     @Override
     public void onBindViewHolder(SellProductAdapter.ViewHolder holder, int position) {
         holder.prodCodeTv.setText(arrayList.get(position).getProductCode());
-//        holder.contactTV.setText(arrayList.get(position).getContact());
         holder.prodNameTv.setText(arrayList.get(position).getProductName());
         holder.quantityTv.setText(arrayList.get(position).getQuantity());
         holder.rateTV.setText(arrayList.get(position).getRate());

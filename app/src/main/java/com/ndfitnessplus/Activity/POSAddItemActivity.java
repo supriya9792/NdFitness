@@ -90,7 +90,6 @@ public class POSAddItemActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(getResources().getString(R.string.pos_add_item));
-        // getSupportActionBar().setTitle(null);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         initComponent();
     }
@@ -129,12 +128,7 @@ public class POSAddItemActivity extends AppCompatActivity {
         awesomeValidation.addValidation(POSAddItemActivity.this, R.id.input_rate, RegexTemplate.NOT_EMPTY, R.string.err_msg_rate);
         awesomeValidation.addValidation(POSAddItemActivity.this, R.id.input_pur_amt, RegexTemplate.NOT_EMPTY, R.string.err_msg_pur_amt);
         awesomeValidation.addValidation(POSAddItemActivity.this, R.id.input_max_discount, RegexTemplate.NOT_EMPTY, R.string.err_msg_max_discount);
-//        save.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                submitForm();
-//            }
-//        });
+
         inputProdCode.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -198,13 +192,6 @@ public class POSAddItemActivity extends AppCompatActivity {
         });
 
         EnableRuntimePermissionToAccessCamera();
-//        imageView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-//                startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
-//            }
-//        });
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -237,8 +224,6 @@ public class POSAddItemActivity extends AppCompatActivity {
                 Manifest.permission.CAMERA))
         {
 
-            // Printing toast message after enabling runtime permission.
-            //Toast.makeText(AddEnquiryActivity.this,"CAMERA permission allows us to Access CAMERA app", Toast.LENGTH_LONG).show();
 
         } else {
 
@@ -270,7 +255,6 @@ public class POSAddItemActivity extends AppCompatActivity {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
                 CapturedImage.setVisibility(View.VISIBLE);
-                // ((ImageButton) findViewById(R.id.quick_start_cropped_image)).setImageURI(result.getUri());
                 CapturedImage.setImageURI(result.getUri());
                 try {
                     bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), result.getUri());
@@ -278,7 +262,6 @@ public class POSAddItemActivity extends AppCompatActivity {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                //  Toast.makeText(this, "Cropping successful, Sample: " + result.getSampleSize(), Toast.LENGTH_LONG).show();
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Toast.makeText(this, "Cropping failed: " + result.getError(), Toast.LENGTH_LONG).show();
             }
@@ -290,8 +273,6 @@ public class POSAddItemActivity extends AppCompatActivity {
         if (mCropImageUri != null && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             // required permissions granted, start crop image activity
             startCropImageActivity(mCropImageUri);
-        } else {
-            //  Toast.makeText(this, "Cancelling, required permissions are not granted", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -306,47 +287,11 @@ public class POSAddItemActivity extends AppCompatActivity {
                 .setFixAspectRatio(true)
                 .start(this);
     }
-//    @Override
-//    public void onActivityResult(int RC, int RQC, Intent I) {
-//
-//        super.onActivityResult(RC, RQC, I);
-//        if (RC == REQUEST_IMAGE_CAPTURE ) {
-//
-//
-////            uri = I.getData();
-////            Log.v(TAG, String.format("camera request "));
-////            Log.v(TAG, String.format("camera capture :: uri= %s", uri));
-////            try {
-//            if(I !=null){
-//                Bundle extras = I.getExtras();
-//                if (extras != null) {
-//                    Bitmap bitmap1 = (Bitmap) extras.get("data");
-//                    CapturedImage.setImageBitmap(bitmap1);
-//                    bitmap = Bitmap.createScaledBitmap(bitmap1, 75,
-//                            75, true);
-//                    //return newBitmap;
-//
-//                    CapturedImage.setVisibility(View.VISIBLE);
-////                String timeStamp =
-////                        new SimpleDateFormat("yyyyMMdd_HHmmss",
-////                                Locale.getDefault()).format(new Date());
-////                String imageFileName = "IMG_" + timeStamp;
-//
-//                    // bitmap=Utility.resizeAndCompressImageBeforeSend(POSAddItemActivity.this,bitmap1,imageFileName);
-//                    Log.v(TAG, String.format(" Bitmap= %s", bitmap));
-//                    uploadimageClass();
-//                }
-//            }
-////
-//        }
-//    }
     //*************** Add enquiry to database *************
     public void  AddProductClass() {
         POSAddItemActivity.AddProductTrackClass ru = new POSAddItemActivity.AddProductTrackClass();
         ru.execute("5");
     }
-
-
 
     class AddProductTrackClass extends AsyncTask<String, Void, String> {
 
@@ -357,7 +302,6 @@ public class POSAddItemActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            // showProgressDialog();
             viewDialog.showDialog();
         }
 
@@ -365,17 +309,13 @@ public class POSAddItemActivity extends AppCompatActivity {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
             viewDialog.hideDialog();
-            //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
-            //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
             AddProductDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> AddProductDetails = new HashMap<String, String>();
             AddProductDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(POSAddItemActivity.this));
             AddProductDetails.put("prod_code",inputProdCode.getText().toString());
@@ -388,12 +328,10 @@ public class POSAddItemActivity extends AppCompatActivity {
             AddProductDetails.put("max_discount",inputMaxDiscount.getText().toString());
             AddProductDetails.put("prod_image",ConvertImage);
             AddProductDetails.put("exe_name",SharedPrefereneceUtil.getName(POSAddItemActivity.this));
-            Log.v(TAG, String.format("doInBackground :: executive name= %s", SharedPrefereneceUtil.getName(POSAddItemActivity.this)));
             AddProductDetails.put("action", "add_pos_items");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(POSAddItemActivity.this);
             String loginResult2 = ruc.sendPostRequest(domainurl+ ServiceUrls.LOGIN_URL, AddProductDetails);
 
-            Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult2));
             return loginResult2;
         }
     }
@@ -445,7 +383,6 @@ public class POSAddItemActivity extends AppCompatActivity {
         byte[] byteArrayVar = byteArrayOutputStreamObject.toByteArray();
 
         ConvertImage = Base64.encodeToString(byteArrayVar, Base64.DEFAULT);
-        Log.v(TAG, String.format(" ConvertImage= %s", ConvertImage));
 
     }
 
@@ -478,7 +415,6 @@ public class POSAddItemActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            // showProgressDialog();
             viewDialog.showDialog();
         }
 
@@ -486,26 +422,21 @@ public class POSAddItemActivity extends AppCompatActivity {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
             viewDialog.hideDialog();
-            //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
-            //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
             CheckProdNameDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-          // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EnquiryForDetails = new HashMap<String, String>();
 
             EnquiryForDetails.put("prod_name",inputProdName.getText().toString() );
             EnquiryForDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(POSAddItemActivity.this) );
             EnquiryForDetails.put("action", "check_prod_name_exist");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(POSAddItemActivity.this);
-            //EnquiryForloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(EnquiryForloyee.this));
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EnquiryForDetails);
-            Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
+
             return loginResult;
         }
     }
@@ -520,15 +451,11 @@ public class POSAddItemActivity extends AppCompatActivity {
 
             if (success.equalsIgnoreCase(getResources().getString(R.string.zero))) {
 
-                // showCustomDialog();
-
-                //inputEmail, inputPhone,inputAdd,inputReq,inputFollowupdate;
             }
             else if (success.equalsIgnoreCase(getResources().getString(R.string.two)))
             {
                 Toast.makeText(POSAddItemActivity.this,"Product Name Already Exits. Please Enter New Product Name",Toast.LENGTH_SHORT).show();
                 inputProdName.getText().clear();
-                //Toast.makeText(AddMemberActivity.this,"Please Enter New Mobile Number",Toast.LENGTH_SHORT).show();
             }
 
         } catch (JSONException e) {
@@ -550,34 +477,25 @@ public class POSAddItemActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            // showProgressDialog();
-           // viewDialog.showDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
-         //   viewDialog.hideDialog();
-            //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
-            //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
             CheckProdCodeDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-          //  Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EnquiryForDetails = new HashMap<String, String>();
 
             EnquiryForDetails.put("prod_code",inputProdCode.getText().toString());
             EnquiryForDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(POSAddItemActivity.this) );
             EnquiryForDetails.put("action", "check_prod_code_exist");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(POSAddItemActivity.this);
-            //EnquiryForloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(EnquiryForloyee.this));
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EnquiryForDetails);
-            Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
     }
@@ -591,16 +509,11 @@ public class POSAddItemActivity extends AppCompatActivity {
             String success = jsonObjLoginResponse.getString(getResources().getString(R.string.success));
 
             if (success.equalsIgnoreCase(getResources().getString(R.string.zero))) {
-
-                // showCustomDialog();
-
-                //inputProdCode, inputPhone,inputAdd,inputReq,inputFollowupdate;
             }
             else if (success.equalsIgnoreCase(getResources().getString(R.string.two)))
             {
                 Toast.makeText(POSAddItemActivity.this,"Product Code Already Exits. Please Enter New Product Code",Toast.LENGTH_SHORT).show();
                 inputProdCode.getText().clear();
-                //Toast.makeText(AddMemberActivity.this,"Please Enter New Mobile Number",Toast.LENGTH_SHORT).show();
             }
 
         } catch (JSONException e) {

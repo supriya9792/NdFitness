@@ -162,19 +162,12 @@ public class ExpenseFilterActivity extends AppCompatActivity {
                     if (index == 0) {
                         tv.setText(getResources().getString(R.string.prompt_ttl_expense));
                     }
-//                tv.setTextColor(getResources().getColor(R.color.black));
                     ttlExpense = tv.getText().toString();
                     if ((ttlExpense.equals(getResources().getString(R.string.prompt_ttl_expense))) ||
                             (ttlExpense.equals(getResources().getString(R.string.all)))) {
                         ttlExpense = "";
                     }
-                    // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.white));
-                    // Showing selected spinner item
-                    //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
                 }
-                // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.black));
-                // Showing selected spinner item
-                //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -193,19 +186,12 @@ public class ExpenseFilterActivity extends AppCompatActivity {
                     if (index == 0) {
                         tv.setText(getResources().getString(R.string.prompt_expense_grp));
                     }
-//                tv.setTextColor(getResources().getColor(R.color.black));
                     GroupofExpense = tv.getText().toString();
                     if ((GroupofExpense.equals(getResources().getString(R.string.prompt_expense_grp))) ||
                             (GroupofExpense.equals(getResources().getString(R.string.all)))) {
                         GroupofExpense = "";
                     }
-                    // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.white));
-                    // Showing selected spinner item
-                    //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
                 }
-                // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.black));
-                // Showing selected spinner item
-                //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -224,15 +210,11 @@ public class ExpenseFilterActivity extends AppCompatActivity {
                     if (index == 0) {
                         tv.setText(getResources().getString(R.string.payment_type));
                     }
-//                tv.setTextColor(getResources().getColor(R.color.black));
                     PaymentType = tv.getText().toString();
                     if ((PaymentType.equals(getResources().getString(R.string.payment_type))) ||
                             (PaymentType.equals(getResources().getString(R.string.all)))) {
                         PaymentType = "";
                     }
-                    // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.white));
-                    // Showing selected spinner item
-                    //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
                 }
             }
             @Override
@@ -251,15 +233,11 @@ public class ExpenseFilterActivity extends AppCompatActivity {
                     if(index==0){
                         tv.setText(getResources().getString(R.string.prompt_executive));
                     }
-//                tv.setTextColor(getResources().getColor(R.color.black));
                     executiveName = tv.getText().toString();
                     if((executiveName.equals(getResources().getString(R.string.prompt_executive)))||
                             (executiveName.equals(getResources().getString(R.string.all)))){
                         executiveName="";
                     }
-                    // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.white));
-                    // Showing selected spinner item
-                    //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
                 }}
 
             @Override
@@ -276,8 +254,6 @@ public class ExpenseFilterActivity extends AppCompatActivity {
     }
     public void CampareTwoDates(){
         //******************campare two dates****************
-//        String date = "03/26/2012 11:00:00";
-//        String dateafter = "03/26/2012 11:59:00";
         SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "dd-MM-yyyy");
         Date convertedDate = new Date();
@@ -286,7 +262,7 @@ public class ExpenseFilterActivity extends AppCompatActivity {
             convertedDate = dateFormat.parse(todate.getText().toString());
             convertedDate2 = dateFormat.parse(fromdate.getText().toString());
             if (convertedDate2.after(convertedDate) || convertedDate2.equals(convertedDate)) {
-                //.setText("true");
+
             } else {
                 String firstday= Utility.getFirstDayofMonth();
                 todate.setText(firstday);
@@ -299,8 +275,6 @@ public class ExpenseFilterActivity extends AppCompatActivity {
     }
     public void CampareFronTwoDates(){
         //******************campare two dates****************
-//        String date = "03/26/2012 11:00:00";
-//        String dateafter = "03/26/2012 11:59:00";
         SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "dd-MM-yyyy");
         Date convertedDate = new Date();
@@ -309,7 +283,7 @@ public class ExpenseFilterActivity extends AppCompatActivity {
             convertedDate = dateFormat.parse(fromdate.getText().toString());
             convertedDate2 = dateFormat.parse(todate.getText().toString());
             if (convertedDate2.before(convertedDate) || convertedDate2.equals(convertedDate)) {
-                //.setText("true");
+
             } else {
                 String firstday= Utility.getCurrentDate();
                 fromdate.setText(firstday);
@@ -320,24 +294,6 @@ public class ExpenseFilterActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-    private void showProgressDialog() {
-        Log.v(TAG, String.format("showProgressDialog"));
-        pd = new ProgressDialog(ExpenseFilterActivity.this);
-        pd.setMessage("loading");
-        pd.setCancelable(false);
-        pd.show();
-    }
-
-    /**
-     * Dismiss Progress Dialog.
-     */
-    private void dismissProgressDialog() {
-        Log.v(TAG, String.format("dismissProgressDialog"));
-        pd.cancel();
-
-
-    }
-
     // *************** Payment Mode *******************
     public void  PaymenttypeClass() {
         ExpenseFilterActivity.PaymentTypeTrackClass ru = new ExpenseFilterActivity.PaymentTypeTrackClass();
@@ -352,7 +308,6 @@ public class ExpenseFilterActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
             viewDialog.showDialog();
         }
 
@@ -360,19 +315,15 @@ public class ExpenseFilterActivity extends AppCompatActivity {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-          //  dismissProgressDialog();
             viewDialog.hideDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             PaymentTypeDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> PaymentTypeDetails = new HashMap<String, String>();
             PaymentTypeDetails.put("action", "show_payment_type_list");
-            //PaymentTypeloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(PaymentTypeloyee.this));
             String domainurl=SharedPrefereneceUtil.getDomainUrl(ExpenseFilterActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, PaymentTypeDetails);
             Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
@@ -387,12 +338,10 @@ public class ExpenseFilterActivity extends AppCompatActivity {
 
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
@@ -407,17 +356,14 @@ public class ExpenseFilterActivity extends AppCompatActivity {
                             PaymenttypeArrayList.add(1,paymentTypeList);
                             for (int i = 0; i < jsonArrayCountry.length(); i++) {
                                 paymentTypeList = new Spinner_List();
-                                Log.v(TAG, "JsonResponseOpeartion ::");
+
                                 JSONObject jsonObj = jsonArrayCountry.getJSONObject(i);
                                 if (jsonObj != null) {
 
                                     String PaymentType     = jsonObj.getString("PaymentType");
 
                                     String id=jsonObj.getString("Auto_Id");
-//                               if(i==0){
-//                                   paymentTypeList.setName(getResources().getString(R.string.promt_country));
-//                                   enqF.add(0,paymentTypeList);
-//                               }
+
                                     paymentTypeList.setName(PaymentType);
                                     paymentTypeList.setId(id);
 
@@ -446,7 +392,6 @@ public class ExpenseFilterActivity extends AppCompatActivity {
                                                 // Set the hint text color gray
                                                 tv.setTextColor(Color.GRAY);
                                                 tv.setText(getResources().getString(R.string.prompt_payment_type));
-                                                // tv.setTextColor(Color.GRAY);
                                             }
                                             else {
                                                 tv.setTextColor(Color.BLACK);
@@ -494,7 +439,6 @@ public class ExpenseFilterActivity extends AppCompatActivity {
                                 // Set the hint text color gray
                                 tv.setTextColor(Color.GRAY);
                                 tv.setText(getResources().getString(R.string.prompt_payment_type));
-                                // tv.setTextColor(Color.GRAY);
                             }
                             else {
                                 tv.setTextColor(Color.BLACK);
@@ -506,7 +450,6 @@ public class ExpenseFilterActivity extends AppCompatActivity {
                     spinPaymentType.setAdapter(paymenttypeadapter);
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
             }
         }
@@ -524,32 +467,26 @@ public class ExpenseFilterActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            // showProgressDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            // dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             ExecutiveNameDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> ExecutiveNameDetails = new HashMap<String, String>();
             String comp_name= SharedPrefereneceUtil.getCompanyName(ExpenseFilterActivity.this);
             String location=SharedPrefereneceUtil.getSelectedBranch(ExpenseFilterActivity.this);
             String compid=comp_name+"-"+location+",";
             ExecutiveNameDetails.put("comp_id", compid);
             ExecutiveNameDetails.put("action", "show_executive_list");
-            //ExecutiveNameloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(ExecutiveNameloyee.this));
             String domainurl=SharedPrefereneceUtil.getDomainUrl(ExpenseFilterActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, ExecutiveNameDetails);
-            Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
 
@@ -561,48 +498,34 @@ public class ExpenseFilterActivity extends AppCompatActivity {
 
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
-
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
                     if (object != null) {
                         JSONArray jsonArrayCountry = object.getJSONArray("result");
                         ExecutiveNameArrayList.clear();
-                        //for(int j=0;j<2;j++){
+
                         ExecutiveNameList = new Spinner_List();
-
                         ExecutiveNameList.setName(getResources().getString(R.string.prompt_executive));
-
                         ExecutiveNameArrayList.add(0,ExecutiveNameList);
 
-                        // }
                         if (jsonArrayCountry != null && jsonArrayCountry.length() > 0){
                             ExecutiveNameList.setName(getResources().getString(R.string.all));
 
                             ExecutiveNameArrayList.add(1,ExecutiveNameList);
                             for (int i = 0; i < jsonArrayCountry.length(); i++) {
                                 ExecutiveNameList = new Spinner_List();
-                                Log.v(TAG, "JsonResponseOpeartion ::");
+
                                 JSONObject jsonObj = jsonArrayCountry.getJSONObject(i);
                                 if (jsonObj != null) {
 
                                     String EnquiryOwnerExecutive     = jsonObj.getString("EnquiryOwnerExecutive");
 
-//                               if(i==0){
-//                                   ExecutiveNameList.setName(getResources().getString(R.string.promt_country));
-//                                   enqF.add(0,ExecutiveNameList);
-//                               }
-
-
                                     ExecutiveNameList.setName(EnquiryOwnerExecutive);
-
                                     ExecutiveNameArrayList.add(ExecutiveNameList);
-
                                     executivenameadapter = new SpinnerAdapter(ExpenseFilterActivity.this, ExecutiveNameArrayList){
                                         @Override
                                         public boolean isEnabled(int position){
@@ -626,7 +549,6 @@ public class ExpenseFilterActivity extends AppCompatActivity {
                                                 // Set the hint text color gray
                                                 tv.setTextColor(Color.GRAY);
                                                 tv.setText(getResources().getString(R.string.prompt_executive));
-                                                // tv.setTextColor(Color.GRAY);
                                             }
                                             else {
                                                 tv.setTextColor(Color.BLACK);
@@ -646,7 +568,6 @@ public class ExpenseFilterActivity extends AppCompatActivity {
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
                     ExecutiveNameArrayList.clear();
-                    //for(int j=0;j<2;j++){
                     ExecutiveNameList = new Spinner_List();
 
                     ExecutiveNameList.setName(getResources().getString(R.string.prompt_executive));
@@ -678,7 +599,6 @@ public class ExpenseFilterActivity extends AppCompatActivity {
                                 // Set the hint text color gray
                                 tv.setTextColor(Color.GRAY);
                                 tv.setText(getResources().getString(R.string.prompt_executive));
-                                // tv.setTextColor(Color.GRAY);
                             }
                             else {
                                 tv.setTextColor(Color.BLACK);
@@ -690,7 +610,6 @@ public class ExpenseFilterActivity extends AppCompatActivity {
                     spinExecutive.setAdapter(executivenameadapter);
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
             }
         }
@@ -708,25 +627,20 @@ public class ExpenseFilterActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             ExpenseGroupDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> ExpenseGroupDetails = new HashMap<String, String>();
             ExpenseGroupDetails.put("action", "show_expense_group_list");
-            //ExpenseGrouployeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(ExpenseGrouployee.this));
             String domainurl=SharedPrefereneceUtil.getDomainUrl(ExpenseFilterActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, ExpenseGroupDetails);
             Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
@@ -741,12 +655,10 @@ public class ExpenseFilterActivity extends AppCompatActivity {
 
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
@@ -762,7 +674,7 @@ public class ExpenseFilterActivity extends AppCompatActivity {
                             groupofExpenseArrayList.add(1,group_of_Expenselist);
                             for (int i = 0; i < jsonArrayCountry.length(); i++) {
                                 group_of_Expenselist = new Spinner_List();
-                                Log.v(TAG, "JsonResponseOpeartion ::");
+
                                 JSONObject jsonObj = jsonArrayCountry.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -797,7 +709,6 @@ public class ExpenseFilterActivity extends AppCompatActivity {
                                                 // Set the hint text color gray
                                                 tv.setTextColor(Color.GRAY);
                                                 tv.setText(getResources().getString(R.string.prompt_expense_grp));
-                                                // tv.setTextColor(Color.GRAY);
                                             }
                                             else {
                                                 tv.setTextColor(Color.BLACK);
@@ -846,7 +757,6 @@ public class ExpenseFilterActivity extends AppCompatActivity {
                                 // Set the hint text color gray
                                 tv.setTextColor(Color.GRAY);
                                 tv.setText(getResources().getString(R.string.prompt_expense_grp));
-                                // tv.setTextColor(Color.GRAY);
                             }
                             else {
                                 tv.setTextColor(Color.BLACK);
@@ -858,7 +768,6 @@ public class ExpenseFilterActivity extends AppCompatActivity {
                     spinGroupofExpense.setAdapter(GroupOfExpenseadapter);
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
             }
         }
@@ -876,22 +785,17 @@ public class ExpenseFilterActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             TitleExpenseDetails(response);
-
         }
 
         @Override
         protected String doInBackground(String... params) {
-           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> TitleExpenseDetails = new HashMap<String, String>();
             TitleExpenseDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(ExpenseFilterActivity.this));
             TitleExpenseDetails.put("action", "show_title_expense_list");
@@ -909,12 +813,10 @@ public class ExpenseFilterActivity extends AppCompatActivity {
 
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
@@ -930,19 +832,13 @@ public class ExpenseFilterActivity extends AppCompatActivity {
                             ttlExpenseArrayList.add(1,ttlExpenselist);
                             for (int i = 0; i < jsonArrayCountry.length(); i++) {
                                 ttlExpenselist = new Spinner_List();
-                                Log.v(TAG, "JsonResponseOpeartion ::");
+
                                 JSONObject jsonObj = jsonArrayCountry.getJSONObject(i);
                                 if (jsonObj != null) {
 
                                     String TitleExpences     = jsonObj.getString("TitleExpences");
 
-                                   // String id=jsonObj.getString("Auto_Id");
-//                               if(i==0){
-//                                   ttlExpenselist.setName(getResources().getString(R.string.promt_country));
-//                                   enqF.add(0,ttlExpenselist);
-//                               }
                                     ttlExpenselist.setName(TitleExpences);
-                                    //ttlExpenselist.setId(id);
 
                                     ttlExpenseArrayList.add(ttlExpenselist);
 
@@ -969,7 +865,6 @@ public class ExpenseFilterActivity extends AppCompatActivity {
                                                 // Set the hint text color gray
                                                 tv.setTextColor(Color.GRAY);
                                                 tv.setText(getResources().getString(R.string.prompt_ttl_expense));
-                                                // tv.setTextColor(Color.GRAY);
                                             }
                                             else {
                                                 tv.setTextColor(Color.BLACK);
@@ -1018,7 +913,6 @@ public class ExpenseFilterActivity extends AppCompatActivity {
                                 // Set the hint text color gray
                                 tv.setTextColor(Color.GRAY);
                                 tv.setText(getResources().getString(R.string.prompt_ttl_expense));
-                                // tv.setTextColor(Color.GRAY);
                             }
                             else {
                                 tv.setTextColor(Color.BLACK);
@@ -1030,7 +924,6 @@ public class ExpenseFilterActivity extends AppCompatActivity {
                     spinTitleExpense.setAdapter(ttlExpenseadapter);
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
             }
         }
@@ -1050,47 +943,30 @@ public class ExpenseFilterActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-           // showProgressDialog();
             viewDialog.showDialog();
-
         }
-
-
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-         //   dismissProgressDialog();
             viewDialog.hideDialog();
-            //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
-            //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
             SearchExpenseDetails(response);
 
         }
-
         @Override
         protected String doInBackground(String... params) {
-           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> SearchExpenseDetails = new HashMap<String, String>();
             SearchExpenseDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(ExpenseFilterActivity.this));
-            Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(ExpenseFilterActivity.this)));
             SearchExpenseDetails.put("to_date",todate.getText().toString());
-            Log.v(TAG, String.format("doInBackground :: to_date = %s",todate.getText().toString() ));
             SearchExpenseDetails.put("from_date",fromdate.getText().toString());
-            Log.v(TAG, String.format("doInBackground :: from_date = %s", fromdate.getText().toString()));
             SearchExpenseDetails.put("ttl_of_expense", ttlExpense);
-            Log.v(TAG, String.format("doInBackground :: ttl_of_expense = %s", ttlExpense));
             SearchExpenseDetails.put("payment_type",PaymentType);
-            Log.v(TAG, String.format("doInBackground :: paymentType = %s", PaymentType));
             SearchExpenseDetails.put("exe_name",executiveName);
-            Log.v(TAG, String.format("doInBackground :: exe_name = %s",executiveName));
             SearchExpenseDetails.put("group_of_expenses",GroupofExpense);
-            Log.v(TAG, String.format("doInBackground :: group_of_expenses = %s",GroupofExpense));
             SearchExpenseDetails.put("action", "search_expense_filter");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(ExpenseFilterActivity.this);
             String loginResult2 = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, SearchExpenseDetails);
 
-            Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult2));
             return loginResult2;
         }
     }
@@ -1107,24 +983,17 @@ public class ExpenseFilterActivity extends AppCompatActivity {
 
             if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
                 String col = object.getString("ttl_expense");
-                // total_balance.setText(ttl_enq);
                 double ttlcol=Double.parseDouble(col);
                 DecimalFormat df = new DecimalFormat("##,##,##,##,##,##,##0.00");
                 String rt= df.format(ttlcol);
-                //Toast.makeText(ExpenseFilterActivity.this,"Enquiry added succesfully",Toast.LENGTH_SHORT).show();
 
                 if (object != null) {
                     JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
+
                     if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
                         for (int i = 0; i < jsonArrayResult.length(); i++) {
 
                             subList = new ExpensesList();
-                            Log.d(TAG, "i: " + i);
-
-                            Log.v(TAG, "JsonResponseOpeartion ::");
                             JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                             if (jsonObj != null) {
 
@@ -1138,9 +1007,6 @@ public class ExpenseFilterActivity extends AppCompatActivity {
                                 String PaymentDetails = jsonObj.getString("PaymentDetails");
                                 String Expence_ID = jsonObj.getString("Expence_ID");
 
-                                //  for (int j = 0; j < 5; j++) {
-
-
                                 subList.setTtl_of_expenses(TitleExpences);
                                 subList.setDisc(Description);
                                 subList.setExpenses_group(GroupOfExpences);
@@ -1151,7 +1017,6 @@ public class ExpenseFilterActivity extends AppCompatActivity {
                                 subList.setExpensesId(Expence_ID);
                                 subList.setPayment_type(Payment_Type);
                                 subList.setPayment_dtl(PaymentDetails);
-                                //Toast.makeText(EnquiryActivity.this, "followup date: "+next_foll_date, Toast.LENGTH_SHORT).show();
                                 subListArrayList.add(subList);
 
 
@@ -1168,17 +1033,11 @@ public class ExpenseFilterActivity extends AppCompatActivity {
                         System.out.println("No records found");
                     }
                 }
-
-                // showCustomDialog();
-
-                //inputEmail, inputPhone,inputAdd,inputReq,inputFollowupdate;
             }
 
 
             else if (success.equalsIgnoreCase(getResources().getString(R.string.zero)))
             {
-                //Toast.makeText(ExpenseFilterActivity.this,"Mobile Number Already Exits",Toast.LENGTH_SHORT).show();
-                //inputContact.getText().clear();
                 Toast.makeText(ExpenseFilterActivity.this,"No Records Found",Toast.LENGTH_SHORT).show();
             }
 

@@ -53,7 +53,6 @@ public class BalanceReceiptAdapter  extends RecyclerView.Adapter<BalanceReceiptA
     private boolean isLoaderVisible = false;
 
     public BalanceReceiptAdapter(ArrayList<CourseList> enquiryList, Context context) {
-        //this.arrayList = enquiryList;
         this.subList = enquiryList;
         this.arrayList = new ArrayList<CourseList>();
         this.context = context;
@@ -62,7 +61,6 @@ public class BalanceReceiptAdapter  extends RecyclerView.Adapter<BalanceReceiptA
 
     @Override
     public BalanceReceiptAdapter.BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Log.d(TAG, "view type: "+viewType );
         switch (viewType) {
             case VIEW_TYPE_NORMAL:
                 return new BalanceReceiptAdapter.ViewHolder(
@@ -78,8 +76,6 @@ public class BalanceReceiptAdapter  extends RecyclerView.Adapter<BalanceReceiptA
     @Override
     public void onBindViewHolder(BalanceReceiptAdapter.BaseViewHolder holder, int position) {
         holder.onBind(position);
-
-        Log.d(TAG, "call onbind method of viewholder: " );
     }
     @Override
     public int getItemViewType(int position) {
@@ -96,8 +92,6 @@ public class BalanceReceiptAdapter  extends RecyclerView.Adapter<BalanceReceiptA
     }
     public void add(CourseList response) {
         arrayList.add(response);
-        //subList.add(response);
-        Log.d(TAG, "sublist size after add : "+String.valueOf(subList.size()) );
         notifyItemInserted(arrayList.size() - 1);
     }
 
@@ -106,9 +100,6 @@ public class BalanceReceiptAdapter  extends RecyclerView.Adapter<BalanceReceiptA
             add(response);
             subList.add(response);
         }
-
-        Log.d(TAG, "arraylist size after adding new data: "+String.valueOf(arrayList.size()) );
-
     }
 
 
@@ -133,7 +124,6 @@ public class BalanceReceiptAdapter  extends RecyclerView.Adapter<BalanceReceiptA
         if (item != null) {
             arrayList.remove(position);
             notifyItemRemoved(position);
-            // notifyDataSetChanged();
         }
     }
     public void removeblank(){
@@ -143,7 +133,6 @@ public class BalanceReceiptAdapter  extends RecyclerView.Adapter<BalanceReceiptA
         if (item != null) {
             arrayList.remove(position);
             notifyItemRemoved(position);
-            //notifyDataSetChanged();
         }
     }
     public void clear() {
@@ -154,12 +143,8 @@ public class BalanceReceiptAdapter  extends RecyclerView.Adapter<BalanceReceiptA
     CourseList getItem(int position) {
         return arrayList.get(position);
     }
-    //filter for search
     public int filter(String charText) {
-        // subList=arrayList;
-
         charText = charText.toLowerCase(Locale.getDefault());
-        Log.d(TAG, "sublist size whentext  filter: "+String.valueOf(subList.size()) );
         arrayList.clear();
         if (charText.length() == 0) {
 
@@ -175,16 +160,13 @@ public class BalanceReceiptAdapter  extends RecyclerView.Adapter<BalanceReceiptA
                 }
             }
         }
-        Log.d(TAG, "sublist size filter: "+String.valueOf(subList.size()) );
         notifyDataSetChanged();
         return arrayList.size();
     }
     //filter for search
     public int search( String charTex,final ArrayList<CourseList> subList) {
-        // subList=arrayList;
 
         final String charText = charTex.toLowerCase(Locale.getDefault());
-        Log.d(TAG, "sublist size whentext  filter: "+String.valueOf(subList.size()) );
         arrayList.clear();
         if (charText.length() == 0) {
 
@@ -207,18 +189,13 @@ public class BalanceReceiptAdapter  extends RecyclerView.Adapter<BalanceReceiptA
                     }
                 }
             });
-
-
-
         }
-        Log.d(TAG, "sublist size search: "+String.valueOf(subList.size()) );
         notifyDataSetChanged();
         return arrayList.size();
     }
     //View for showing enquiry
     public class ViewHolder extends BalanceReceiptAdapter.BaseViewHolder implements View.OnClickListener {
         TextView nameTV,regdateTV,packagenameTV,start_to_end_dateTV,rateTV,paidTV,balanceTV,contactTV,executiveNameTV,invoiceidTv,nextPaymentTv,durationTv;
-        //ImageView contactIV;
         CircularImageView imageView;
         View layoutparent;
         public ViewHolder(View itemView) {
@@ -231,7 +208,6 @@ public class BalanceReceiptAdapter  extends RecyclerView.Adapter<BalanceReceiptA
             nextPaymentTv = (TextView) itemView.findViewById(R.id.next_payment_dateTV);
             durationTv = (TextView) itemView.findViewById(R.id.duration);
             imageView=(CircularImageView) itemView.findViewById(R.id.input_image);
-            // contactIV.setOnClickListener(this);
             regdateTV = (TextView) itemView.findViewById(R.id.reg_dateTV);
             packagenameTV = (TextView) itemView.findViewById(R.id.package_nameTV);
             start_to_end_dateTV = (TextView) itemView.findViewById(R.id.start_to_end_date_TV);
@@ -257,10 +233,7 @@ public class BalanceReceiptAdapter  extends RecyclerView.Adapter<BalanceReceiptA
         public void onBind(final int position) {
             super.onBind(position);
             final CourseList enq = arrayList.get(position);
-            //Log.d(TAG, "enquiry name: " + enq.getName());
-            // idTV.setText(enq.getID());
             nameTV.setText(enq.getName());
-            //Log.d(TAG, "textview name: " + nameTV.getText().toString());
             contactTV.setText(enq.getContactEncrypt());
             regdateTV.setText(enq.getRegistrationDate());
             packagenameTV.setText(enq.getPackageName());
@@ -278,7 +251,6 @@ public class BalanceReceiptAdapter  extends RecyclerView.Adapter<BalanceReceiptA
             String domainurl= SharedPrefereneceUtil.getDomainUrl((Activity) context);
             String url= domainurl+ServiceUrls.IMAGES_URL + enq.getImage();
 
-           // Glide.with(context).load(url).placeholder(R.drawable.nouser).into(imageView);
             RequestOptions requestOptions = new RequestOptions();
             requestOptions.placeholder(R.drawable.nouser);
             requestOptions.error(R.drawable.nouser);
@@ -313,19 +285,14 @@ public class BalanceReceiptAdapter  extends RecyclerView.Adapter<BalanceReceiptA
         dialog.setContentView(R.layout.item_grid_image_two_line_light);
         dialog.setCancelable(true);
         final CourseList enq = arrayList.get(position);
-//        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-//        lp.copyFrom(dialog.getWindow().getAttributes());
-//        lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
-//        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+
         ImageView imageView = (ImageView) dialog. findViewById(R.id.image);
         TextView name = (TextView) dialog. findViewById(R.id.name);
         ImageButton phone=(ImageButton)dialog.findViewById(R.id.phone_call);
         ImageView whatsapp=(ImageView)dialog.findViewById(R.id.whatsapp);
         String domainurl= SharedPrefereneceUtil.getDomainUrl((Activity) context);
         String url= domainurl+ServiceUrls.IMAGES_URL + enq.getImage();
-        Log.d(TAG, "image: "+enq.getImage());
-        Log.d(TAG, "name: "+enq.getName());
-       // Glide.with(context).load(url).placeholder(R.drawable.nouser).into(imageView);
+
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.placeholder(R.drawable.nouser);
         requestOptions.error(R.drawable.nouser);
@@ -351,18 +318,11 @@ public class BalanceReceiptAdapter  extends RecyclerView.Adapter<BalanceReceiptA
 
                 PackageManager pm=context.getPackageManager();
                 try {
-                    // Uri uri = Uri.parse("smsto:" + Contact);
+
                     Uri uri = Uri.parse("whatsapp://send?phone=+91" + enq.getContact());
                     Intent waIntent = new Intent(Intent.ACTION_VIEW,uri);
-                    //waIntent.setType("text/plain");
-                    String text = "YOUR TEXT HERE";
-
                     PackageInfo info=pm.getPackageInfo("com.whatsapp", PackageManager.GET_META_DATA);
-                    //Check if package exists or not. If not then code
-                    //in catch block will be called
                     waIntent.setPackage("com.whatsapp");
-
-                    // waIntent.putExtra(Intent.EXTRA_TEXT, text);
                     context.startActivity(waIntent);
 
                 } catch (PackageManager.NameNotFoundException e) {
@@ -383,7 +343,6 @@ public class BalanceReceiptAdapter  extends RecyclerView.Adapter<BalanceReceiptA
             }
         });
         dialog.show();
-        //dialog.getWindow().setAttributes(lp);
     }
     //view for loading on swipe of recyclerview
     public class FooterHolder extends BalanceReceiptAdapter.BaseViewHolder {

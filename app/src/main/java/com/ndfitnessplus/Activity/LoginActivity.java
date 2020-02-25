@@ -48,8 +48,8 @@ public class LoginActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_login);
            intiComponent();
-}
-private  void intiComponent(){
+    }
+    private  void intiComponent(){
 
         domain= SharedPrefereneceUtil.getDomainUrl(LoginActivity.this);
 
@@ -103,36 +103,22 @@ public void onClick(DialogInterface dialog, int id) {
                         }
         });
         }
-//  ************  Validation of username and password **********
-private boolean isValidUsername() {
+    //  ************  Validation of username and password **********
+    private boolean isValidUsername() {
         if (username.getText().length() < 4) {
         return false;
         }
         return true;
         }
-private boolean validatePassword() {
+    private boolean validatePassword() {
         if (password.getText().length() < 4) {
         return false;
         }
         return true;
         }
 
-private void showProgressDialog() {
-        Log.v(TAG, String.format("showProgressDialog"));
-        Utility.showProgressDialog(this);
 
-        }
-
-/**
- * Dismiss the Progress dialog.
- */
-
-private void dismissProgressDialog() {
-        Log.v(TAG, String.format("dismissProgressDialog"));
-        Utility.hideProgressBar();
-
-        }
-private void userLogin() {
+    private void userLogin() {
 
         if(InternetConnection.checkConnection(LoginActivity.this)) {
         UserLoginClass ulc = new UserLoginClass();
@@ -146,71 +132,52 @@ private void userLogin() {
         }
         }
 
-/**
- * Perform the asyncTask sends data to server and gets response.
- */
+    /**
+     * Perform the asyncTask sends data to server and gets response.
+     */
 
-class UserLoginClass extends AsyncTask<String, Void, String> {
-    @Override
-    protected void onPreExecute() {
-        Log.v(TAG,"onPreExecute");
-        super.onPreExecute();
-        //showProgressDialog();
-        viewDialog.showDialog();
-    }
+    class UserLoginClass extends AsyncTask<String, Void, String> {
+        @Override
+        protected void onPreExecute() {
+            Log.v(TAG,"onPreExecute");
+            super.onPreExecute();
+            viewDialog.showDialog();
+        }
 
-    @Override
-    protected void onPostExecute(String response) {
-        super.onPostExecute(response);
-        Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-        // dismissProgressDialog();
-        viewDialog.hideDialog();
-//            showToastMessage(response);
-        //Toast.makeText(LoginActivity.this, response, Toast.LENGTH_LONG).show();
-        loginServerResponse(response);
-    }
+        @Override
+        protected void onPostExecute(String response) {
+            super.onPostExecute(response);
+            Log.v(TAG, String.format("onPostExecute :: response = %s", response));
+            viewDialog.hideDialog();
+            loginServerResponse(response);
+        }
 
     /**
      *
      * @param params
      * @return
      */
-    @Override
-    protected String doInBackground(String... params) {
-//            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+        @Override
+        protected String doInBackground(String... params) {
+            HashMap<String, String> loginData = new HashMap<>();
+            loginData.put("username",username.getText().toString());
+            loginData.put("password",password.getText().toString());
+            SharedPrefereneceUtil.setUserNm(LoginActivity.this, username.getText().toString());
+            loginData.put("action","login");
+            ServerClass ruc = new ServerClass();
+            String domainurl=SharedPrefereneceUtil.getDomainUrl(LoginActivity.this);
+            String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, loginData);
+            return loginResult;
 
-        HashMap<String, String> loginData = new HashMap<>();
-        loginData.put("username",username.getText().toString());
-        Log.v(TAG, String.format("doInBackground :: username= %s",username.getText().toString()));
-        loginData.put("password",password.getText().toString());
-        Log.v(TAG, String.format("doInBackground :: password= %s", password.getText().toString()));
-        SharedPrefereneceUtil.setUserNm(LoginActivity.this, username.getText().toString());
-        loginData.put("action","login");
-
-        ServerClass ruc = new ServerClass();
-        String domainurl=SharedPrefereneceUtil.getDomainUrl(LoginActivity.this);
-        Log.v(TAG, String.format("doInBackground :: loginResult= %s", domainurl+ServiceUrls.LOGIN_URL));
-        String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, loginData);
-
-        Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
-
-        return loginResult;
-
+        }
     }
-}
-
-
-
     /**
      * Server response Operations.
      */
 
     private void loginServerResponse(String response) {
         Log.v(TAG, String.format("loginServerResponse :: response = %s", response));
-
-        // jsonObjLoginResponse = null;
         try {
-            // jsonObjLoginResponse = new JSONObject(response);
             JSONObject object = new JSONObject(response);
             String success = object.getString(getResources().getString(R.string.success));
 
@@ -222,7 +189,6 @@ class UserLoginClass extends AsyncTask<String, Void, String> {
                     if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
                         for (int i = 0; i < jsonArrayResult.length(); i++) {
 
-                            Log.v(TAG, "JsonResponseOpeartion ::");
                             JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                             if (jsonObj != null) {
 
@@ -234,24 +200,14 @@ class UserLoginClass extends AsyncTask<String, Void, String> {
                                 String Contact = jsonObj.getString("Contact");
                                 SharedPrefereneceUtil.setName(LoginActivity.this,name);
                                 SharedPrefereneceUtil.setUserId(LoginActivity.this,user_id);
-                                //  SharedPrefereneceUtil.setBranchAutoId(LoginActivity.this,jObject.getString("Branch_AutoID"));
-                                //  SharedPrefereneceUtil.setLoginId(LoginActivity.this,jObject.getString("Login_AutoID"));
                                 SharedPrefereneceUtil.setAuthority(LoginActivity.this,Authority);
                                 SharedPrefereneceUtil.setCompanyAutoId(LoginActivity.this,Company_Id);
-                                Log.v(TAG, String.format("responce :: company id = %s", Company_Id));
                                 SharedPrefereneceUtil.setMobile(LoginActivity.this,Contact);
                                 SharedPrefereneceUtil.setEmail(LoginActivity.this,user_email);
-                                //SharedPrefereneceUtil.setStatus(LoginActivity.this,jObject.getString("Status"));
-                                // SharedPrefereneceUtil.setStaff_auto_id(LoginActivity.this,jObject.getString("Staff_AutoID"));
-                                //  SharedPrefereneceUtil.setReg_date(LoginActivity.this,jObject.getString("RegDate"));
                                 SharedPrefereneceUtil.setUserNm(LoginActivity.this,username.getText().toString());
                                 SharedPrefereneceUtil.setPassword(LoginActivity.this,password.getText().toString());
-
-
                             }
                         }
-                    } else if (jsonArrayResult.length() == 0) {
-                        System.out.println("No records found");
                     }
                 }
                 nextadminActivity();
@@ -268,7 +224,6 @@ class UserLoginClass extends AsyncTask<String, Void, String> {
                 AlertDialog dialog = builder.create();
                 dialog.setCancelable(false);
                 dialog.show();
-                // Toast.makeText(LoginActivity.this,getResources().getString(R.string.inavlidlogin),Toast.LENGTH_LONG).show();
             }else if (success.equalsIgnoreCase(getResources().getString(R.string.one)))
             {
                 Toast.makeText(LoginActivity.this,getResources().getString(R.string.inavlidlogin),Toast.LENGTH_LONG).show();

@@ -58,7 +58,6 @@ public class MemberDetailsAdapter extends RecyclerView.Adapter<MemberDetailsAdap
     ViewDialog viewDialog;
 
     public MemberDetailsAdapter(ArrayList<CourseList> enquiryList, Context context) {
-        //this.arrayList = enquiryList;
         this.subList = enquiryList;
         this.arrayList = new ArrayList<CourseList>();
         this.context = context;
@@ -67,7 +66,6 @@ public class MemberDetailsAdapter extends RecyclerView.Adapter<MemberDetailsAdap
 
     @Override
     public MemberDetailsAdapter.BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Log.d(TAG, "view type: "+viewType );
         switch (viewType) {
             case VIEW_TYPE_NORMAL:
                 return new MemberDetailsAdapter.ViewHolder(
@@ -83,8 +81,6 @@ public class MemberDetailsAdapter extends RecyclerView.Adapter<MemberDetailsAdap
     @Override
     public void onBindViewHolder(MemberDetailsAdapter.BaseViewHolder holder, int position) {
         holder.onBind(position);
-
-        Log.d(TAG, "call onbind method of viewholder: " );
     }
     @Override
     public int getItemViewType(int position) {
@@ -101,8 +97,6 @@ public class MemberDetailsAdapter extends RecyclerView.Adapter<MemberDetailsAdap
     }
     public void add(CourseList response) {
         arrayList.add(response);
-        //subList.add(response);
-        Log.d(TAG, "sublist size after add : "+String.valueOf(subList.size()) );
         notifyItemInserted(arrayList.size() - 1);
     }
 
@@ -111,8 +105,6 @@ public class MemberDetailsAdapter extends RecyclerView.Adapter<MemberDetailsAdap
             add(response);
             subList.add(response);
         }
-
-        Log.d(TAG, "arraylist size after adding new data: "+String.valueOf(arrayList.size()) );
 
     }
 
@@ -138,7 +130,6 @@ public class MemberDetailsAdapter extends RecyclerView.Adapter<MemberDetailsAdap
         if (item != null) {
             arrayList.remove(position);
             notifyItemRemoved(position);
-            // notifyDataSetChanged();
         }
     }
     public void removeblank(){
@@ -148,7 +139,6 @@ public class MemberDetailsAdapter extends RecyclerView.Adapter<MemberDetailsAdap
         if (item != null) {
             arrayList.remove(position);
             notifyItemRemoved(position);
-            //notifyDataSetChanged();
         }
     }
     public void clear() {
@@ -161,10 +151,8 @@ public class MemberDetailsAdapter extends RecyclerView.Adapter<MemberDetailsAdap
     }
     //filter for search
     public void filter(String charText) {
-        // subList=arrayList;
 
         charText = charText.toLowerCase(Locale.getDefault());
-        Log.d(TAG, "sublist size whentext  filter: "+String.valueOf(subList.size()) );
         arrayList.clear();
         if (charText.length() == 0) {
 
@@ -180,15 +168,12 @@ public class MemberDetailsAdapter extends RecyclerView.Adapter<MemberDetailsAdap
                 }
             }
         }
-        Log.d(TAG, "sublist size filter: "+String.valueOf(subList.size()) );
         notifyDataSetChanged();
     }
     //filter for search
     public int search( String charTex,final ArrayList<CourseList> subList) {
-        // subList=arrayList;
 
         final String charText = charTex.toLowerCase(Locale.getDefault());
-        Log.d(TAG, "sublist size whentext  filter: "+String.valueOf(subList.size()) );
         arrayList.clear();
         if (charText.length() == 0) {
 
@@ -212,19 +197,14 @@ public class MemberDetailsAdapter extends RecyclerView.Adapter<MemberDetailsAdap
                 }
             });
 
-
-
         }
-        Log.d(TAG, "sublist size search: "+String.valueOf(subList.size()) );
         notifyDataSetChanged();
         return arrayList.size();
     }
     //View for showing enquiry
     public class ViewHolder extends MemberDetailsAdapter.BaseViewHolder implements View.OnClickListener {
-        TextView nameTV,regdateTV,packagenameTV,start_to_end_dateTV,rateTV,paidTV,balanceTV,contactTV,executiveNameTV;
-        ImageView contactIV;
+        TextView regdateTV,packagenameTV,start_to_end_dateTV,rateTV,paidTV,balanceTV,contactTV,executiveNameTV;
         ImageView statusIv,attendanceIv;
-        CircularImageView imageView;
         View layoutparent;
         public ViewHolder(View itemView) {
             super(itemView);
@@ -232,9 +212,6 @@ public class MemberDetailsAdapter extends RecyclerView.Adapter<MemberDetailsAdap
             contactTV = (TextView) itemView.findViewById(R.id.contactTV);
             rateTV = (TextView) itemView.findViewById(R.id.rateTV);
             statusIv = (ImageView) itemView.findViewById(R.id.status);
-           // contactIV = (ImageView) itemView.findViewById(R.id.contactIV);
-           // imageView=(CircularImageView) itemView.findViewById(R.id.input_image);
-            //contactIV.setOnClickListener(this);
             regdateTV = (TextView) itemView.findViewById(R.id.reg_dateTV);
             packagenameTV = (TextView) itemView.findViewById(R.id.package_nameTV);
             start_to_end_dateTV = (TextView) itemView.findViewById(R.id.start_to_end_date_TV);
@@ -262,8 +239,6 @@ public class MemberDetailsAdapter extends RecyclerView.Adapter<MemberDetailsAdap
         public void onBind(int position) {
             super.onBind(position);
             final CourseList enq = arrayList.get(position);
-            //Log.d(TAG, "enquiry name: " + enq.getName());
-            // idTV.setText(enq.getID());
 
             regdateTV.setText(enq.getRegistrationDate());
             packagenameTV.setText(enq.getPackageNameWithDS());
@@ -280,11 +255,9 @@ public class MemberDetailsAdapter extends RecyclerView.Adapter<MemberDetailsAdap
                     statusIv.setColorFilter(ContextCompat.getColor(context, R.color.red), android.graphics.PorterDuff.Mode.SRC_IN);
                 }
             }
-           // if(!enq.getBalance().equals("0.00")) {
              layoutparent.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        String member_id = enq.getID();
                         Intent intent = new Intent(context, CourseDetailsActivity.class);
                         Bundle bundle = new Bundle();
                         bundle.putSerializable("filter_array_list", enq);
@@ -315,8 +288,6 @@ public class MemberDetailsAdapter extends RecyclerView.Adapter<MemberDetailsAdap
                     }
                 }
             });
-          //  }
-
         }
     }
     //view for loading on swipe of recyclerview
@@ -371,7 +342,6 @@ public class MemberDetailsAdapter extends RecyclerView.Adapter<MemberDetailsAdap
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
             viewDialog.showDialog();
         }
 
@@ -379,47 +349,32 @@ public class MemberDetailsAdapter extends RecyclerView.Adapter<MemberDetailsAdap
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            // dismissProgressDialog();
             viewDialog.hideDialog();
-            //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
-            //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
             MakeAttendanceDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> MakeAttendanceDetails = new HashMap<String, String>();
             MakeAttendanceDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId((Activity)context));
-            Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId((Activity)context)));
             MakeAttendanceDetails.put("member_id",member_id);
-            Log.v(TAG, String.format("doInBackground :: member_id = %s", member_id));
             MakeAttendanceDetails.put("invoice_id",InvoiceId);
-            Log.v(TAG, String.format("doInBackground :: invoice_id = %s", InvoiceId));
             MakeAttendanceDetails.put("pack_name",PackName);
-            Log.v(TAG, String.format("doInBackground :: pack_name = %s", PackName));
             MakeAttendanceDetails.put("name",name);
-            Log.v(TAG, String.format("doInBackground :: name = %s", name));
             MakeAttendanceDetails.put("contact",contact);
-            Log.v(TAG, String.format("doInBackground :: contact = %s", contact));
             MakeAttendanceDetails.put("balance",FinalBalance);
             MakeAttendanceDetails.put("expiry_date",End_Date);
             MakeAttendanceDetails.put("status",status);
             MakeAttendanceDetails.put("mode", "AdminApp");
             MakeAttendanceDetails.put("financial_yr", FinicialYr);
-            Log.v(TAG, String.format("doInBackground :: expiry_date = %s", End_Date));
             MakeAttendanceDetails.put("action", "make_attendence");
             String domainurl=SharedPrefereneceUtil.getDomainUrl((Activity)context);
             String loginResult2 = ruc.sendPostRequest( domainurl+ServiceUrls.LOGIN_URL, MakeAttendanceDetails);
-
-            Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult2));
             return loginResult2;
         }
     }
     private void MakeAttendanceDetails(String jsonResponse) {
-
-        Log.v(TAG, String.format("loginServerResponse :: response = %s", jsonResponse));
 
         JSONObject jsonObjLoginResponse = null;
         try {
@@ -430,18 +385,11 @@ public class MemberDetailsAdapter extends RecyclerView.Adapter<MemberDetailsAdap
                 ToneGenerator toneG = new ToneGenerator(AudioManager.STREAM_ALARM, 100);
                 toneG.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD, 200);
                 Toast.makeText(context,"Your Attendance Marked Successfully",Toast.LENGTH_SHORT).show();
-                // finish();
-
-                // showCustomDialog();
-
-                //inputEmail, inputPhone,inputAdd,inputReq,inputFollowupdate;
             }
 
             else if (success.equalsIgnoreCase(context.getResources().getString(R.string.one)))
             {
                 Toast.makeText(context,"Please try after 1 hour ,Your attendance is already marked",Toast.LENGTH_SHORT).show();
-                // inputContact.getText().clear();
-                //Toast.makeText(AttendanceActivity.this,"Please Enter New Mobile Number",Toast.LENGTH_SHORT).show();
             }
 
         } catch (JSONException e) {

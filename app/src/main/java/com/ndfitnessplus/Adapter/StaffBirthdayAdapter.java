@@ -24,7 +24,6 @@ public class StaffBirthdayAdapter extends RecyclerView.Adapter<StaffBirthdayAdap
 
     ArrayList<StaffBirthdayList> arrayList;
     Context context;
-
     public StaffBirthdayAdapter(ArrayList<StaffBirthdayList> memberList, Context context) {
         arrayList = memberList;
         this.context = context;

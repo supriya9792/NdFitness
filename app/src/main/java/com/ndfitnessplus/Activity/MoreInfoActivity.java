@@ -85,13 +85,11 @@ public class MoreInfoActivity extends AppCompatActivity {
             enquiry_id=intent.getStringExtra("enquiry_id");
 
         }
-        //Toast.makeText(EnquiryFollowupDetailsActivity.this, enquiry_id+" rating :"+Rating+" call response" +callResponce, Toast.LENGTH_LONG).show();
 
         if (isOnline(MoreInfoActivity.this)) {
             followupclass();// check login details are valid or not from server
         }
         else {
-            //  Toast.makeText(EnquiryFollowupDetailsActivity.this, R.string.internet_unavailable, Toast.LENGTH_LONG).show();
             android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(MoreInfoActivity.this);
             builder.setMessage(R.string.internet_unavailable);
             builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
@@ -119,29 +117,12 @@ public class MoreInfoActivity extends AppCompatActivity {
             Intent intent = new Intent(MoreInfoActivity.this, MainActivity.class);
             startActivity(intent);
         }else if(id== android.R.id.home){
-            //Toast.makeText(this,"Navigation back pressed",Toast.LENGTH_SHORT).show();
-            // NavUtils.navigateUpFromSameTask(this);
             finish();
         }
 
         return true;
     }
-    private void showProgressDialog() {
-        Log.v(TAG, String.format("showProgressDialog"));
-        pd = new ProgressDialog(MoreInfoActivity.this);
-        pd.setMessage("loading");
-        pd.setCancelable(false);
-        pd.show();
-    }
 
-    /**
-     * Dismiss Progress Dialog.
-     */
-    private void dismissProgressDialog() {
-        Log.v(TAG, String.format("dismissProgressDialog"));
-
-        pd.cancel();
-    }
     //*********** Asycc class for loading data for database **************
     private void followupclass() {
         MoreInfoActivity.FollowupTrackclass ru = new MoreInfoActivity.FollowupTrackclass();
@@ -157,7 +138,6 @@ public class MoreInfoActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
             viewDialog.showDialog();
 
 
@@ -167,25 +147,19 @@ public class MoreInfoActivity extends AppCompatActivity {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-           // dismissProgressDialog();
             viewDialog.hideDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             FollowupDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> FollowupDetails = new HashMap<String, String>();
             FollowupDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(MoreInfoActivity.this));
             FollowupDetails.put("enquiry_id",enquiry_id );
-            Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(MoreInfoActivity.this)));
-            Log.v(TAG, String.format("doInBackground :: enquiry_id= %s", enquiry_id));
             FollowupDetails.put("action","show_enquiry_followup_more_details");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(MoreInfoActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, FollowupDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
 
@@ -195,7 +169,6 @@ public class MoreInfoActivity extends AppCompatActivity {
     private void FollowupDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
@@ -207,16 +180,13 @@ public class MoreInfoActivity extends AppCompatActivity {
 
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
+
                         int count=0;
                         ArrayList<FollowupList> item = new ArrayList<FollowupList>();
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
 
                             for (int i = 0; i < jsonArrayResult.length(); i++) {
 
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -238,7 +208,7 @@ public class MoreInfoActivity extends AppCompatActivity {
                                     String enquiry_For = jsonObj.getString("Enquiry_For");
                                     String budget = jsonObj.getString("Budget");
                                     String enquiry_Type = jsonObj.getString("Enquiry_Type");
-                                    //  for (int j = 0; j < 5; j++) {
+
 
                                     String foll_date= Utility.formatDate(dOB);
 
@@ -255,11 +225,10 @@ public class MoreInfoActivity extends AppCompatActivity {
                                     Glide.with(this)
                                             .setDefaultRequestOptions(requestOptions)
                                             .load(url).into(imageView);
-                                  //  Glide.with(this).load(url).placeholder(R.drawable.nouser).into(imageView);
+
                                     Email.setText(email);
                                     Gender.setText(gender);
                                     Address.setText(address);
-                                    Log.d(TAG, "converted DOB: " + foll_date);
                                     Birthday.setText(foll_date);
                                     BloodGroup.setText(blood_Group);
                                     Occupation.setText(occupation);
@@ -281,7 +250,6 @@ public class MoreInfoActivity extends AppCompatActivity {
 
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
                 android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(MoreInfoActivity.this);
                 builder.setMessage(R.string.server_exception);

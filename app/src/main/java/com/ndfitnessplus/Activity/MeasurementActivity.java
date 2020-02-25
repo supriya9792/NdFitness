@@ -160,24 +160,9 @@ public class MeasurementActivity extends AppCompatActivity implements SwipeRefre
                         }, 1000);
                     }
                 });
-                //Toast.makeText(CourseActivity.this, R.string.internet_unavailable, Toast.LENGTH_LONG).show();
-//                android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(CourseActivity.this);
-//                builder.setMessage(R.string.internet_unavailable);
-//                builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int id) {
-//                        dialog.dismiss();
-//                    }
-//                });
-//                android.app.AlertDialog dialog = builder.create();
-//                dialog.setCancelable(false);
-//                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-//                dialog.show();
 
             }
         }
-
-
-
         addenquiry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -207,10 +192,7 @@ public class MeasurementActivity extends AppCompatActivity implements SwipeRefre
             public void afterTextChanged(final Editable arg0) {
                 // TODO Auto-generated method stub
                 if (MeasurementActivity.this.adapter == null){
-                    // some print statement saying it is null
-//                   // Toast toast = Toast.makeText(MeasurementActivity.this,"no record found", Toast.LENGTH_SHORT);
-//                    toast.setGravity(Gravity.CENTER, 0, 0);
-//                    toast.show();
+
                 }
                 else
                 {
@@ -233,8 +215,7 @@ public class MeasurementActivity extends AppCompatActivity implements SwipeRefre
                                       int arg3) {
                 // TODO Auto-generated method stub
                 if(inputsearch.getText().length()==0) {
-                    //do your work here
-                    // Toast.makeText(AddEnquiryActivity.this ,"Text vhanged count  is 10 then: " , Toast.LENGTH_LONG).show();
+
                     measurementclass();
                 }
 
@@ -247,16 +228,9 @@ public class MeasurementActivity extends AppCompatActivity implements SwipeRefre
             @Override
             protected void loadMoreItems() {
                 isLoading = true;
-
-                Log.d(TAG, "prepare called current item: " + currentPage+"Total page"+totalPage);
                 if(currentPage<=totalPage){
-                    //currentPage = PAGE_START;
-                    Log.d(TAG, "currentPage: " + currentPage);
                     isLastPage = false;
-                   // preparedListItem();
                 }
-
-
             }
 
             @Override
@@ -289,29 +263,24 @@ public class MeasurementActivity extends AppCompatActivity implements SwipeRefre
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             MeasurementDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> MeasurementDetails = new HashMap<String, String>();
             MeasurementDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(MeasurementActivity.this));
             Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(MeasurementActivity.this)));
             MeasurementDetails.put("action","show_measurement");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(MeasurementActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ ServiceUrls.LOGIN_URL, MeasurementDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
 
@@ -320,18 +289,16 @@ public class MeasurementActivity extends AppCompatActivity implements SwipeRefre
     private void MeasurementDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
 
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
-//                    nodata.setVisibility(View.GONE);
-//                    swipeRefresh.setVisibility(View.VISIBLE);
+                    nodata.setVisibility(View.GONE);
+                    swipeRefresh.setVisibility(View.VISIBLE);
                     String ttl_enq = object.getString("total_measurement_count");
                     total_measurement.setText(ttl_enq);
                     progressBar.setVisibility(View.GONE);
@@ -343,12 +310,9 @@ public class MeasurementActivity extends AppCompatActivity implements SwipeRefre
 
                             for (int i = 0; i < jsonArrayResult.length(); i++) {
 
-
                                 subList = new MeasurementList();
-
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
-
                                     String Measurement_Date = jsonObj.getString("Measurement_Date");
                                     String Member_ID = jsonObj.getString("Member_ID");
                                     String MemberContact = jsonObj.getString("MemberContact");
@@ -380,7 +344,6 @@ public class MeasurementActivity extends AppCompatActivity implements SwipeRefre
                                     String cont=Utility.lastFour(MemberContact);
                                     subList.setContact(MemberContact);
                                     subList.setContactEncrypt(cont);
-//                                    String name = MemberName.substring(0,1).toUpperCase() + MemberName.substring(1);
                                     subList.setName(MemberName);
                                     if(!Weight.equals("")) {
                                         subList.setWeight(Weight);
@@ -401,19 +364,15 @@ public class MeasurementActivity extends AppCompatActivity implements SwipeRefre
                                     subList.setThigh_L(Thigh_L);
                                     subList.setCalf_R(Calf_R);
                                     subList.setCalf_L(Calf_L);
-//                                    subList.setNextFollowupDate(NextFollowupDate);
-//                                    subList.setExecutive_Name(Executive_Name);
+
                                     if(!NextFollowupDate.equals("null")){
-                                        Log.v(TAG, "Next Followup date is not null");
                                         String nextdate= Utility.formatDate(NextFollowupDate);
                                         String on="Your Next Measurement Date is "+nextdate;
                                         subList.setNextFollowupDate(on);
                                     }
                                     String takenby="Taken By:"+Executive_Name;
                                     subList.setExecutive_Name(takenby);
-                                    //Toast.makeText(MeasurementActivity.this, "followup date: "+next_foll_date, Toast.LENGTH_SHORT).show();
 
-                                    //Toast.makeText(MainActivity.this, "j "+j, Toast.LENGTH_SHORT).show();
                                     item.add(subList);
                                     adapter = new MeasurementAdapter(MeasurementActivity.this, item);
                                     recyclerView.setAdapter(adapter);
@@ -429,7 +388,6 @@ public class MeasurementActivity extends AppCompatActivity implements SwipeRefre
                     swipeRefresh.setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
                 android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(MeasurementActivity.this);
                 builder.setMessage(R.string.server_exception);
@@ -458,7 +416,6 @@ public class MeasurementActivity extends AppCompatActivity implements SwipeRefre
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            // showProgressDialog();
             viewDialog.showDialog();
         }
 
@@ -466,16 +423,13 @@ public class MeasurementActivity extends AppCompatActivity implements SwipeRefre
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            // dismissProgressDialog();
             viewDialog.hideDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             MeasurementSearchDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> MeasurementSearchDetails = new HashMap<String, String>();
             MeasurementSearchDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(MeasurementActivity.this));
             MeasurementSearchDetails.put("text", inputsearch.getText().toString());
@@ -483,22 +437,17 @@ public class MeasurementActivity extends AppCompatActivity implements SwipeRefre
             MeasurementSearchDetails.put("action","show_search_measurement");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(MeasurementActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, MeasurementSearchDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
-
-
     }
 
     private void MeasurementSearchDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
@@ -569,8 +518,7 @@ public class MeasurementActivity extends AppCompatActivity implements SwipeRefre
                                     subList.setThigh_L(Thigh_L);
                                     subList.setCalf_R(Calf_R);
                                     subList.setCalf_L(Calf_L);
-//                                    subList.setNextFollowupDate(NextFollowupDate);
-//                                    subList.setExecutive_Name(Executive_Name);
+
                                     if(NextFollowupDate ==null){
 
                                     }else{
@@ -578,8 +526,6 @@ public class MeasurementActivity extends AppCompatActivity implements SwipeRefre
                                         String on="Your Next Measurement Date is "+nextdate;
                                         subList.setNextFollowupDate(on);
                                     }
-
-
                                     String takenby="Taken By:"+Executive_Name;
                                     subList.setExecutive_Name(takenby);
 
@@ -597,15 +543,11 @@ public class MeasurementActivity extends AppCompatActivity implements SwipeRefre
                         }
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
-                    // nodata.setVisibility(View.VISIBLE);
-//                    nodata.setVisibility(View.VISIBLE);
-//                    swipeRefresh.setVisibility(View.GONE);
                     progressBar.setVisibility(View.GONE);
                     Toast.makeText(MeasurementActivity.this, "NO Record Found", Toast.LENGTH_SHORT).show();
-                    //frame.setVisibility(View.GONE);
+
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
                 recyclerView.setVisibility(View.GONE);
                 frame.setVisibility(View.VISIBLE);

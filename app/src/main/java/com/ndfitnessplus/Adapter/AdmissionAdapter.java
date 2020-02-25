@@ -15,24 +15,23 @@ import com.ndfitnessplus.R;
 
 import java.util.ArrayList;
 
-public class AdmissionAdapter extends RecyclerView.Adapter<AdmissionAdapter.ViewHolder> {
+    public class AdmissionAdapter extends RecyclerView.Adapter<AdmissionAdapter.ViewHolder> {
         ArrayList<AdmissionList> arrayList;
         Context context;
-public AdmissionAdapter(ArrayList<AdmissionList> admissionList, Context context) {
+    public AdmissionAdapter(ArrayList<AdmissionList> admissionList, Context context) {
         arrayList = admissionList;
         this.context = context;
         }
 
-@Override
-public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    @Override
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.admission_list_item, parent, false);
         return new ViewHolder(view);
         }
 
-@Override
-public void onBindViewHolder(ViewHolder holder, int position) {
+    @Override
+    public void onBindViewHolder(ViewHolder holder, int position) {
         holder.nameTV.setText(arrayList.get(position).getName());
-//        holder.contactTV.setText(arrayList.get(position).getContact());
         holder.reg_dateTV.setText(arrayList.get(position).getRegDate());
         holder.statusTV.setText(arrayList.get(position).getStatus());
         holder.excecutive_nameTV.setText(arrayList.get(position).getExecutiveName());
@@ -45,12 +44,12 @@ public void onBindViewHolder(ViewHolder holder, int position) {
         holder.totalFeeTV.setText(arrayList.get(position).getTotalFeeDue());
         }
 
-@Override
-public int getItemCount() {
+    @Override
+        public int getItemCount() {
         return arrayList.size();
         }
 
-public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
     TextView nameTV,reg_dateTV,contactTV,statusTV,excecutive_nameTV,start_dateTV,endDateTV,packageTV,balanceTV,totalPaidTV,sessionTV,totalFeeTV;
     ImageView contactIV;
@@ -79,6 +78,6 @@ public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickL
             dialIntent.setData(Uri.parse("tel:"+arrayList.get(getAdapterPosition()).getContact()));
             context.startActivity(dialIntent);
         }
+     }
     }
-}
 }

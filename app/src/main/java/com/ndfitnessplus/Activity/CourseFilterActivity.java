@@ -1085,26 +1085,16 @@ public class CourseFilterActivity extends AppCompatActivity {
         protected String doInBackground(String... params) {
             HashMap<String, String> SearchEnquiryDetails = new HashMap<String, String>();
             SearchEnquiryDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(CourseFilterActivity.this));
-            Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(CourseFilterActivity.this)));
             SearchEnquiryDetails.put("to_date",todate.getText().toString());
-            Log.v(TAG, String.format("doInBackground :: to_date = %s",todate.getText().toString() ));
             SearchEnquiryDetails.put("from_date",fromdate.getText().toString());
-            Log.v(TAG, String.format("doInBackground :: from_date = %s", fromdate.getText().toString()));
             SearchEnquiryDetails.put("date_wise", Datewise);
-            Log.v(TAG, String.format("doInBackground :: Datewise = %s", Datewise));
             SearchEnquiryDetails.put("package_type",packageType);
-            Log.v(TAG, String.format("doInBackground :: package_type = %s", packageType));
             SearchEnquiryDetails.put("package_name",packagename);
-            Log.v(TAG, String.format("doInBackground :: package_name = %s",packagename));
             SearchEnquiryDetails.put("instructor_name",instructorname);
-            Log.v(TAG, String.format("doInBackground :: instructorname = %s",instructorname));
             SearchEnquiryDetails.put("sales_executive",salesExecutiveName);
-            Log.v(TAG, String.format("doInBackground :: salesExecutiveName = %s",salesExecutiveName));
             SearchEnquiryDetails.put("action", "search_course_filter");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(CourseFilterActivity.this);
             String loginResult2 = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, SearchEnquiryDetails);
-
-            Log.v(TAG, String.format("doInBackground :: search_course_filter= %s", loginResult2));
             return loginResult2;
         }
     }
@@ -1165,8 +1155,7 @@ public class CourseFilterActivity extends AppCompatActivity {
                                 try {
                                     endDate = dateFormat.parse(endc);
                                     currentdate = dateFormat.parse(Utility.getCurrentDate());
-                                    Log.v(TAG, String.format(" ::endDate = %s", endDate));
-                                    Log.v(TAG, String.format(" :: currentdate = %s",currentdate));
+
                                     if (currentdate.before(endDate)|| currentdate.equals(endDate) ) {
                                         subList.setStatus("Active");
                                     } else {

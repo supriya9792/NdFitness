@@ -88,7 +88,7 @@ public class MemberMeasurementActivity extends AppCompatActivity {
             contact=intent.getStringExtra("contact");
         }
         if (isOnline(MemberMeasurementActivity.this)) {
-            measurementclass();// check login details are valid or not from server
+            measurementclass();
         }
         else {
             recyclerView.setVisibility(View.GONE);
@@ -139,8 +139,6 @@ public class MemberMeasurementActivity extends AppCompatActivity {
             Intent intent = new Intent(MemberMeasurementActivity.this, MainActivity.class);
             startActivity(intent);
         }else if(id== android.R.id.home){
-            //Toast.makeText(this,"Navigation back pressed",Toast.LENGTH_SHORT).show();
-            // NavUtils.navigateUpFromSameTask(this);
             finish();
         }
 
@@ -159,7 +157,6 @@ public class MemberMeasurementActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
             viewDialog.showDialog();
         }
 
@@ -167,24 +164,18 @@ public class MemberMeasurementActivity extends AppCompatActivity {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
             viewDialog.hideDialog();
-//            progressBar.setVisibility(View.GONE);
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             MeasurementDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> MeasurementDetails = new HashMap<String, String>();
             MeasurementDetails.put("member_id", member_id);
-            Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getCompanyAutoId(MemberMeasurementActivity.this)));
             MeasurementDetails.put("action","show_measurement_by_member");
              String domainurl=SharedPrefereneceUtil.getDomainUrl(MemberMeasurementActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, MeasurementDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
 
@@ -194,12 +185,10 @@ public class MemberMeasurementActivity extends AppCompatActivity {
     private void MeasurementDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
@@ -209,7 +198,6 @@ public class MemberMeasurementActivity extends AppCompatActivity {
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
                             for (int i = 0; i < jsonArrayResult.length(); i++) {
                                 subList = new MeasurementList();
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -259,8 +247,6 @@ public class MemberMeasurementActivity extends AppCompatActivity {
                                     String takenby="Taken By:"+Executive_Name;
                                     subList.setExecutive_Name(takenby);
 
-
-                                    //Toast.makeText(MainActivity.this, "j "+j, Toast.LENGTH_SHORT).show();
                                     subListArrayList.add(subList);
                                     adapter = new MeasurementAdapter(MemberMeasurementActivity.this, subListArrayList);
                                     recyclerView.setAdapter(adapter);
@@ -276,7 +262,6 @@ public class MemberMeasurementActivity extends AppCompatActivity {
                     recyclerView.setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
             }
         }

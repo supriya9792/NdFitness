@@ -120,9 +120,6 @@ public class StaffAttendanceActivity extends AppCompatActivity implements SwipeR
         progress_bar.setVisibility(View.GONE);
         lyt_no_connection.setVisibility(View.VISIBLE);
         addStaffAtt=findViewById(R.id.fab);
-//        adapter = new CourseAdapter( new ArrayList<EnquiryList>(),CourseActivity.this);
-//        recyclerView.setAdapter(adapter);
-
 
         Intent intent = getIntent();
         Bundle args = intent.getBundleExtra("BUNDLE");
@@ -135,7 +132,7 @@ public class StaffAttendanceActivity extends AppCompatActivity implements SwipeR
             recyclerView.setAdapter(adapter);
         }else{
             if (isOnline(StaffAttendanceActivity.this)) {
-                staffAttendanceclass();// check login details are valid or not from server
+                staffAttendanceclass();
             }
             else {
                 frame.setVisibility(View.GONE);
@@ -186,10 +183,8 @@ public class StaffAttendanceActivity extends AppCompatActivity implements SwipeR
             public void afterTextChanged(final Editable arg0) {
                 // TODO Auto-generated method stub
                 if (StaffAttendanceActivity.this.adapter == null){
-                    // some print statement saying it is null
-//                   // Toast toast = Toast.makeText(StaffAttendanceActivity.this,"no record found", Toast.LENGTH_SHORT);
-//                    toast.setGravity(Gravity.CENTER, 0, 0);
-//                    toast.show();
+
+
                 }
                 else
                 {
@@ -212,8 +207,6 @@ public class StaffAttendanceActivity extends AppCompatActivity implements SwipeR
                                       int arg3) {
                 // TODO Auto-generated method stub
                 if(inputsearch.getText().length()==0) {
-                    //do your work here
-                    // Toast.makeText(AddEnquiryActivity.this ,"Text vhanged count  is 10 then: " , Toast.LENGTH_LONG).show();
                     staffAttendanceclass();
                 }
 
@@ -226,13 +219,8 @@ public class StaffAttendanceActivity extends AppCompatActivity implements SwipeR
             @Override
             protected void loadMoreItems() {
                 isLoading = true;
-
-                Log.d(TAG, "prepare called current item: " + currentPage+"Total page"+totalPage);
                 if(currentPage<=totalPage){
-                    //currentPage = PAGE_START;
-                    Log.d(TAG, "currentPage: " + currentPage);
                     isLastPage = false;
-                    // preparedListItem();
                 }
 
 
@@ -276,29 +264,23 @@ public class StaffAttendanceActivity extends AppCompatActivity implements SwipeR
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             StaffAttendanceDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> StaffAttendanceDetails = new HashMap<String, String>();
             StaffAttendanceDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(StaffAttendanceActivity.this));
-            Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(StaffAttendanceActivity.this)));
             StaffAttendanceDetails.put("action","show_staff_attendance_list");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(StaffAttendanceActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ ServiceUrls.LOGIN_URL, StaffAttendanceDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
 
@@ -307,26 +289,21 @@ public class StaffAttendanceActivity extends AppCompatActivity implements SwipeR
     private void StaffAttendanceDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
 
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
-//                    nodata.setVisibility(View.GONE);
-//                    swipeRefresh.setVisibility(View.VISIBLE);
+                    nodata.setVisibility(View.GONE);
+                    swipeRefresh.setVisibility(View.VISIBLE);
                     String ttl_enq = object.getString("total_attendance_count");
                     total_present.setText(ttl_enq);
                     progressBar.setVisibility(View.GONE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
 
                         ArrayList<StaffAttendanceList> item = new ArrayList<StaffAttendanceList>();
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
@@ -335,9 +312,8 @@ public class StaffAttendanceActivity extends AppCompatActivity implements SwipeR
 
 
                                 subList = new StaffAttendanceList();
-                                //  Log.d(TAG, "i: " + i);
 
-                                Log.v(TAG, "JsonResponseOpeartion ::");
+
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -353,7 +329,6 @@ public class StaffAttendanceActivity extends AppCompatActivity implements SwipeR
                                     subList.setStaffID(Staff_ID);
                                     subList.setContact(Contact);
                                     String cont= Utility.lastFour(Contact);
-                                    //subList.setContactEncrypt(cont);
                                     subList.setName(Name);
                                     String[] timearr=InDateTime.split(" ");
                                     String outtimearr[] = new String[0];
@@ -408,7 +383,6 @@ public class StaffAttendanceActivity extends AppCompatActivity implements SwipeR
                     swipeRefresh.setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
                 android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(StaffAttendanceActivity.this);
                 builder.setMessage(R.string.server_exception);
@@ -437,7 +411,6 @@ public class StaffAttendanceActivity extends AppCompatActivity implements SwipeR
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            // showProgressDialog();
             viewDialog.showDialog();
         }
 
@@ -445,24 +418,19 @@ public class StaffAttendanceActivity extends AppCompatActivity implements SwipeR
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            // dismissProgressDialog();
             viewDialog.hideDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             StaffAttendanceSearchDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> StaffAttendanceSearchDetails = new HashMap<String, String>();
             StaffAttendanceSearchDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(StaffAttendanceActivity.this));
             StaffAttendanceSearchDetails.put("text", inputsearch.getText().toString());
-            Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(StaffAttendanceActivity.this)));
             StaffAttendanceSearchDetails.put("action","show_search_staff_attendance");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(StaffAttendanceActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, StaffAttendanceSearchDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
     }
@@ -470,12 +438,10 @@ public class StaffAttendanceActivity extends AppCompatActivity implements SwipeR
     private void StaffAttendanceSearchDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
@@ -483,9 +449,6 @@ public class StaffAttendanceActivity extends AppCompatActivity implements SwipeR
                     swipeRefresh.setVisibility(View.VISIBLE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
                         String ttl_enq = String.valueOf(jsonArrayResult.length());
                         total_present.setText(ttl_enq);
                         final   ArrayList<StaffAttendanceList> subListArrayList = new ArrayList<StaffAttendanceList>();
@@ -494,9 +457,7 @@ public class StaffAttendanceActivity extends AppCompatActivity implements SwipeR
 
 
                                 subList = new StaffAttendanceList();
-                                Log.d(TAG, "i: " + i);
-                                // Log.d(TAG, "run: " + itemCount);
-                                Log.v(TAG, "JsonResponseOpeartion ::");
+
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -512,7 +473,6 @@ public class StaffAttendanceActivity extends AppCompatActivity implements SwipeR
                                     subList.setStaffID(Staff_ID);
                                     subList.setContact(Contact);
                                     String cont= Utility.lastFour(Contact);
-                                    //subList.setContactEncrypt(cont);
                                     subList.setName(Name);
                                     String[] timearr=InDateTime.split(" ");
                                     String outtimearr[] = new String[0];
@@ -549,7 +509,7 @@ public class StaffAttendanceActivity extends AppCompatActivity implements SwipeR
                                     subList.setAttendanceDate(adate);
                                     subList.setAttendanceMode(AttendanceMode);
                                     subList.setImage(Image);
-                                    //  for (int j = 0; j < 5; j++) {
+
 
                                     subListArrayList.add(subList);
 
@@ -565,15 +525,12 @@ public class StaffAttendanceActivity extends AppCompatActivity implements SwipeR
                         }
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
-                    // nodata.setVisibility(View.VISIBLE);
                      nodata.setVisibility(View.VISIBLE);
                     swipeRefresh.setVisibility(View.GONE);
                     progressBar.setVisibility(View.GONE);
                     Toast.makeText(StaffAttendanceActivity.this, "NO Record Found", Toast.LENGTH_SHORT).show();
-                    //frame.setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
                 recyclerView.setVisibility(View.GONE);
                 frame.setVisibility(View.VISIBLE);

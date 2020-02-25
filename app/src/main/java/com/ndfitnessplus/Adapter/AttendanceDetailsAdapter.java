@@ -29,7 +29,6 @@ public class AttendanceDetailsAdapter extends RecyclerView.Adapter<AttendanceDet
     @Override
     public void onBindViewHolder(AttendanceDetailsAdapter.ViewHolder holder, int position) {
         holder.attendancedateTv.setText(arrayList.get(position).getAttendanceDate());
-//        holder.contactTV.setText(arrayList.get(position).getContact());
         holder.timeTV.setText(arrayList.get(position).getTime());
         holder.ModeTv.setText(arrayList.get(position).getAttendanceMode());
 

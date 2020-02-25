@@ -40,7 +40,6 @@ public class POSSellAdapter  extends RecyclerView.Adapter<POSSellAdapter.BaseVie
     private boolean isLoaderVisible = false;
 
     public POSSellAdapter(ArrayList<POSSellList> enquiryList, Context context) {
-        //this.arrayList = enquiryList;
         this.subList = enquiryList;
         this.arrayList = new ArrayList<POSSellList>();
         this.context = context;
@@ -49,7 +48,6 @@ public class POSSellAdapter  extends RecyclerView.Adapter<POSSellAdapter.BaseVie
 
     @Override
     public POSSellAdapter.BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Log.d(TAG, "view type: "+viewType );
         switch (viewType) {
             case VIEW_TYPE_NORMAL:
                 return new POSSellAdapter.ViewHolder(
@@ -65,8 +63,6 @@ public class POSSellAdapter  extends RecyclerView.Adapter<POSSellAdapter.BaseVie
     @Override
     public void onBindViewHolder(POSSellAdapter.BaseViewHolder holder, int position) {
         holder.onBind(position);
-
-        Log.d(TAG, "call onbind method of viewholder: " );
     }
     @Override
     public int getItemViewType(int position) {
@@ -83,8 +79,6 @@ public class POSSellAdapter  extends RecyclerView.Adapter<POSSellAdapter.BaseVie
     }
     public void add(POSSellList response) {
         arrayList.add(response);
-        //subList.add(response);
-        Log.d(TAG, "sublist size after add : "+String.valueOf(subList.size()) );
         notifyItemInserted(arrayList.size() - 1);
     }
 
@@ -93,9 +87,6 @@ public class POSSellAdapter  extends RecyclerView.Adapter<POSSellAdapter.BaseVie
             add(response);
             subList.add(response);
         }
-
-        Log.d(TAG, "arraylist size after adding new data: "+String.valueOf(arrayList.size()) );
-
     }
 
 
@@ -120,7 +111,6 @@ public class POSSellAdapter  extends RecyclerView.Adapter<POSSellAdapter.BaseVie
         if (item != null) {
             arrayList.remove(position);
             notifyItemRemoved(position);
-            // notifyDataSetChanged();
         }
     }
     public void removeblank(){
@@ -130,7 +120,6 @@ public class POSSellAdapter  extends RecyclerView.Adapter<POSSellAdapter.BaseVie
         if (item != null) {
             arrayList.remove(position);
             notifyItemRemoved(position);
-            //notifyDataSetChanged();
         }
     }
     public void clear() {
@@ -143,10 +132,8 @@ public class POSSellAdapter  extends RecyclerView.Adapter<POSSellAdapter.BaseVie
     }
     //filter for search
     public int filter(String charText) {
-        // subList=arrayList;
 
         charText = charText.toLowerCase(Locale.getDefault());
-        Log.d(TAG, "sublist size whentext  filter: "+String.valueOf(subList.size()) );
         arrayList.clear();
         if (charText.length() == 0) {
 
@@ -162,15 +149,12 @@ public class POSSellAdapter  extends RecyclerView.Adapter<POSSellAdapter.BaseVie
         }
         notifyDataSetChanged();
         return arrayList.size();
-        //Log.d(TAG, "sublist size filter: "+String.valueOf(subList.size()) );
 
     }
     //filter for search
     public int search( String charTex,final ArrayList<POSSellList> subList) {
-        // subList=arrayList;
 
         final String charText = charTex.toLowerCase(Locale.getDefault());
-        Log.d(TAG, "sublist size whentext  filter: "+String.valueOf(subList.size()) );
         arrayList.clear();
         if (charText.length() == 0) {
 
@@ -191,17 +175,13 @@ public class POSSellAdapter  extends RecyclerView.Adapter<POSSellAdapter.BaseVie
                 }
             });
 
-
-
         }
-        Log.d(TAG, "sublist size search: "+String.valueOf(subList.size()) );
         notifyDataSetChanged();
         return arrayList.size();
     }
-    //View for showing enquiry
+
     public class ViewHolder extends POSSellAdapter.BaseViewHolder  {
         TextView invoiceTotalTV,executveNameTv,Invoicedatetv,nameTv,contactTv,invoice_idTV;
-        //  ImageView contactIV;
         View layoutparent;
         public ViewHolder(View itemView) {
             super(itemView);
@@ -225,8 +205,6 @@ public class POSSellAdapter  extends RecyclerView.Adapter<POSSellAdapter.BaseVie
         public void onBind(final int position) {
             super.onBind(position);
             final POSSellList enq = arrayList.get(position);
-            //Log.d(TAG, "enquiry name: " + enq.getName());
-            // idTV.setText(enq.getID());
 
             executveNameTv.setText(enq.getSaleExecutive());
             Invoicedatetv.setText(enq.getInvoiceDate());

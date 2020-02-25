@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity
 
         setupAutoPager();
         viewDialog = new ViewDialog(this);
-//intitlization
+        //intitlization
         notification=findViewById(R.id.notification);
         enquiry=findViewById(R.id.enquiry);
         add_member=findViewById(R.id.addmember);
@@ -131,9 +131,7 @@ public class MainActivity extends AppCompatActivity
         deviceId();
         AdvertiseClass();
         String device_id = NetworkUtils.getIMEINo(this);
-        Log.v(TAG, "IMEI No: "+device_id);
         token = SharedPrefManager.getInstance(this).getDeviceToken();
-        //Toast.makeText(MainActivity.this, token, Toast.LENGTH_LONG).show();
         registerDeviceClass();
         if(UName!= null) {
             String upperString = UName.substring(0, 1).toUpperCase() + UName.substring(1);
@@ -240,7 +238,6 @@ public class MainActivity extends AppCompatActivity
 
         TextView compname=(TextView)headerView.findViewById(R.id.company_name);
          compLogo=(ImageView)headerView.findViewById(R.id.imageView);
-        //String name=UName;
         String name = UName.substring(0,1).toUpperCase() + UName.substring(1);
         String  authority=SharedPrefereneceUtil.getAuthority(MainActivity.this);
         companyname=SharedPrefereneceUtil.getCompanyName(MainActivity.this);
@@ -252,11 +249,6 @@ public class MainActivity extends AppCompatActivity
         // get menu from navigationView
         Menu menu = navigationView.getMenu();
 
-        // find MenuItem you want to change
-//        MenuItem selcteorg = menu.findItem(R.id.selected_org);
-//
-//        // set new title to the MenuItem
-//        selcteorg.setTitle(SharedPrefereneceUtil.getSelectedBranch(MainActivity.this));
         if(SharedPrefereneceUtil.getAuthority(MainActivity.this).equals("User")){
             MenuItem item = menu.findItem(R.id.nav_create_plans);
             item.setVisible(false);
@@ -281,7 +273,6 @@ public class MainActivity extends AppCompatActivity
                     // new push notification is received
 
                     String message = intent.getStringExtra("message");
-
                     Toast.makeText(getApplicationContext(), "Push notification: " + message, Toast.LENGTH_LONG).show();
 
                     //txtMessage.setText(message);
@@ -312,10 +303,8 @@ public class MainActivity extends AppCompatActivity
                     Toast.makeText(MainActivity.this,"Without permission we check",Toast.LENGTH_LONG).show();
                 }
                 if (mCropImageUri != null && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // required permissions granted, start crop image activity
+
                     startCropImageActivity(mCropImageUri);
-                } else {
-                    //  Toast.makeText(this, "Cancelling, required permissions are not granted", Toast.LENGTH_LONG).show();
                 }
                 break;
             default:
@@ -381,8 +370,6 @@ public class MainActivity extends AppCompatActivity
 
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
-
-            //  super.onBackPressed();
         }
     }
 
@@ -396,12 +383,9 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             Intent intent = new Intent();
             intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
@@ -458,14 +442,11 @@ public class MainActivity extends AppCompatActivity
             startActivity(intent);
             finish();
         }
-//        else if(id==R.id.nav_upload_logo){
-//            CropImage.startPickImageActivity(MainActivity.this);
-//        }
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-    //Upload Logo
 
     @Override
     @SuppressLint("NewApi")
@@ -490,22 +471,17 @@ public class MainActivity extends AppCompatActivity
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
-//                CapturedImage.setVisibility(View.VISIBLE);
-//                // ((ImageButton) findViewById(R.id.quick_start_cropped_image)).setImageURI(result.getUri());
-//                CapturedImage.setImageURI(result.getUri());
                 try {
                     bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), result.getUri());
                     uploadimageClass();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                //  Toast.makeText(this, "Cropping successful, Sample: " + result.getSampleSize(), Toast.LENGTH_LONG).show();
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Toast.makeText(this, "Cropping failed: " + result.getError(), Toast.LENGTH_LONG).show();
             }
         }
     }
-
 
     /**
      * Start crop image activity for the given image.
@@ -529,20 +505,15 @@ public class MainActivity extends AppCompatActivity
         byte[] byteArrayVar = byteArrayOutputStreamObject.toByteArray();
 
         final String  ConvertImage = Base64.encodeToString(byteArrayVar, Base64.DEFAULT);
-        Log.v(TAG, String.format(" ConvertImage= %s", ConvertImage));
-
-
 
         class UploadImageTrackClass extends AsyncTask<String, Void, String> {
 
             ServerClass ruc = new ServerClass();
 
-
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
                 Log.v(TAG, "onPreExecute");
-                // showProgressDialog();
                 viewDialog.showDialog();
             }
 
@@ -580,7 +551,6 @@ public class MainActivity extends AppCompatActivity
             }
             @Override
             protected String doInBackground(String... params) {
-                // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
                 HashMap<String, String> ProfileDetails = new HashMap<String, String>();
                 // ProfileDetails.put("image_name", GetImageNameEditText);
                 ProfileDetails.put("image_data", ConvertImage);
@@ -636,7 +606,6 @@ public class MainActivity extends AppCompatActivity
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-           // showProgressDialog();
             //viewDialog.showDialog();
         }
 
@@ -654,7 +623,6 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         protected String doInBackground(String... params) {
-           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> CheckCompanyDetails = new HashMap<String, String>();
             CheckCompanyDetails.put("comp_id",SharedPrefereneceUtil.getSelectedBranchId(MainActivity.this) );
             CheckCompanyDetails.put("action", "check_company_is_inactive_or_not");
@@ -713,7 +681,6 @@ public class MainActivity extends AppCompatActivity
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-           // showProgressDialog();
         }
 
         @Override
@@ -729,7 +696,6 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         protected String doInBackground(String... params) {
-           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> SmsLoginDetails = new HashMap<String, String>();
             SmsLoginDetails.put("comp_id",SharedPrefereneceUtil.getSelectedBranchId(MainActivity.this) );
             SmsLoginDetails.put("action", "sms_login_creadetials");
@@ -817,7 +783,6 @@ public class MainActivity extends AppCompatActivity
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            // showProgressDialog();
         }
 
         @Override
@@ -885,16 +850,12 @@ public class MainActivity extends AppCompatActivity
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            // showProgressDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
-            //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
-            // Toast.makeText(Drawer.this, response, Toast.LENGTH_LONG).show();
             checkDeviceDetails(response);
 
         }
@@ -902,19 +863,14 @@ public class MainActivity extends AppCompatActivity
         @Override
         protected String doInBackground(String... params) {
             String device_id = NetworkUtils.getIMEINo(MainActivity.this);
-           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> checkDeviceDetails = new HashMap<String, String>();
             checkDeviceDetails.put("username",SharedPrefereneceUtil.getUserNm(MainActivity.this));
             checkDeviceDetails.put("imei_no",device_id);
             checkDeviceDetails.put("mode","AdminApp");
-            Log.v(TAG, String.format("doInBackground :: ImeiNo= %s", device_id));
             checkDeviceDetails.put("comp_id",SharedPrefereneceUtil.getSelectedBranchId(MainActivity.this));
-            Log.v(TAG, String.format("doInBackground :: user_id= %s", SharedPrefereneceUtil.getUserNm(MainActivity.this)));
             checkDeviceDetails.put("action", "check_device_login");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(MainActivity.this);
             String loginResult2 = ruc.sendPostRequest(domainurl+ ServiceUrls.LOGIN_URL, checkDeviceDetails);
-            Log.v(TAG, String.format("doInBackground :: domainurl= %s", domainurl+ ServiceUrls.LOGIN_URL));
-            Log.v(TAG, String.format("doInBackground :: check_device_login= %s", loginResult2));
             return loginResult2;
         }
 
@@ -923,17 +879,12 @@ public class MainActivity extends AppCompatActivity
     private void checkDeviceDetails(String jsonResponse) {
 
         Log.v(TAG, String.format(" :: check_device_login = %s", jsonResponse));
-
         JSONObject jsonObjLoginResponse = null;
         try {
             jsonObjLoginResponse = new JSONObject(jsonResponse);
             String success = jsonObjLoginResponse.getString(getResources().getString(R.string.success));
 
             if (success.equalsIgnoreCase(getResources().getString(R.string.one))) {
-
-                // showCustomDialog();
-
-                //inputEmail, inputPhone,inputAdd,inputReq,inputFollowupdate;
             }
             else if (success.equalsIgnoreCase(getResources().getString(R.string.two)))
             {
@@ -957,29 +908,24 @@ public class MainActivity extends AppCompatActivity
 
         ServerClass ruc = new ServerClass();
 
-
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            // showProgressDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-
             AdvertisenDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> AdvertisenDetails = new HashMap<String, String>();
             AdvertisenDetails.put("action", "show_advertise_banner");
-            //EnquiryForloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(EnquiryForloyee.this));
             String domainurl=SharedPrefereneceUtil.getDomainUrl(MainActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, AdvertisenDetails);
             Log.v(TAG, String.format("doInBackground :: show_advertise_banner= %s", loginResult));
@@ -996,10 +942,6 @@ public class MainActivity extends AppCompatActivity
             String success = jsonObjLoginResponse.getString(getResources().getString(R.string.success));
 
             if (success.equalsIgnoreCase(getResources().getString(R.string.zero))) {
-
-                // showCustomDialog();
-
-                //inputEmail, inputPhone,inputAdd,inputReq,inputFollowupdate;
             }
             else if (success.equalsIgnoreCase(getResources().getString(R.string.two)))
             {

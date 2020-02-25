@@ -32,7 +32,6 @@ public class SearchContactAdapter extends ArrayAdapter implements Filterable {
         this.itemList = itemList;
         this.context = context;
         this.arraylist = itemList;
-        //this.arraylist.addAll(itemList);
         tempsearch = new ArrayList<Search_list>(itemList);
         suggestions=new ArrayList<Search_list>(itemList);
 
@@ -84,9 +83,8 @@ public class SearchContactAdapter extends ArrayAdapter implements Filterable {
                             if (search_list.getCustContact().toLowerCase().contains(constraint.toString().toLowerCase())) {
                                 suggestions.add(search_list);
                             }
-                            //get data from the web
                             String term = constraint.toString();
-                            // arraylist = new DownloadCountry().execute(term).get();
+
                         }
                     } catch (Exception e) {
                         Log.d("HUS", "EXCEPTION " + e);

@@ -31,7 +31,6 @@ import static com.ndfitnessplus.Activity.EnquiryActivity.TAG;
 
 public class ShowWorkoutAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    //private List<WorkOutDayList> items = new ArrayList<>();
     ArrayList<WorkOutDayList> arrayList;
     private ArrayList<WorkOutDayList> subList;
 
@@ -96,7 +95,6 @@ public class ShowWorkoutAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             String domainurl= SharedPrefereneceUtil.getDomainUrl((Activity)ctx);
             String url= domainurl+ ServiceUrls.IMAGES_URL + p.getMemberImage();
 
-            // Glide.with(context).load(url).placeholder(R.drawable.nouser).into(imageView);
             RequestOptions requestOptions = new RequestOptions();
             requestOptions.placeholder(R.drawable.nouser);
             requestOptions.error(R.drawable.nouser);
@@ -104,17 +102,6 @@ public class ShowWorkoutAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             Glide.with(ctx)
                     .setDefaultRequestOptions(requestOptions)
                     .load(url).into(view.image);
-
-//            view.lyt_parent.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    Intent intent=new Intent(ctx, WorkoutDetailsDescriptionActivity.class);
-//                    Bundle bundle = new Bundle();
-//                    bundle.putSerializable("filter_array_list", p);
-//                    intent.putExtra("BUNDLE",bundle);
-//                    ctx.startActivity(intent);
-//                }
-//            });
 
         }
     }
@@ -134,10 +121,8 @@ public class ShowWorkoutAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         return arrayList.size();
     }
     public ArrayList<WorkOutDayList> filter(String charText) {
-        // subList=arrayList;
 
         charText = charText.toLowerCase(Locale.getDefault());
-        Log.d(TAG, "sublist size whentext  filter: "+String.valueOf(subList.size()) );
         arrayList.clear();
         if (charText.length() == 0) {
             arrayList.addAll(subList);
@@ -148,13 +133,11 @@ public class ShowWorkoutAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                         wp.getInstructorName().toLowerCase(Locale.getDefault()).contains(charText)
                        ) {
                     arrayList.add(wp);
-                    // return arrayList.size();
                 }
             }
         }
         notifyDataSetChanged();
         return arrayList;
-        //Log.d(TAG, "sublist size filter: "+String.valueOf(subList.size()) );
 
     }
 }

@@ -171,9 +171,6 @@ public class CreatePlanActivity extends AppCompatActivity {
                     }
 
                 }
-                // ((TextView) spinPackageType.getSelectedView()).setTextColor(getResources().getColor(R.color.black));
-                // Showing selected spinner item
-                //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -217,7 +214,6 @@ public class CreatePlanActivity extends AppCompatActivity {
                         // Set the hint text color gray
                         tv.setTextColor(Color.GRAY);
                         tv.setText(getResources().getString(R.string.hint_package_status));
-                        // tv.setTextColor(Color.GRAY);
                     } else {
                         tv.setTextColor(Color.BLACK);
                     }
@@ -251,9 +247,6 @@ public class CreatePlanActivity extends AppCompatActivity {
                     }
 
                 }
-                // ((TextView) spinPackageType.getSelectedView()).setTextColor(getResources().getColor(R.color.black));
-                // Showing selected spinner item
-                //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -386,32 +379,7 @@ public class CreatePlanActivity extends AppCompatActivity {
         });
         Days.setLength(0);
 
-//        All.setOnCheckedChangeListener(new
-//                         CompoundButton.OnCheckedChangeListener() {
-//                             @Override
-//                             public void onCheckedChanged(CompoundButton buttonView, boolean
-//                                     isChecked) {
-//                                 if (isChecked) {
-//                                     allchecked=true;
-//                                     Sunday.setChecked(true);
-//                                     Monday.setChecked(true);
-//                                     Tuesday.setChecked(true);
-//                                     Wednesday.setChecked(true);
-//                                     Thursday.setChecked(true);
-//                                     Friday.setChecked(true);
-//                                     Saturday.setChecked(true);
-//                                 }else {
-//                                     Days.setLength(0);
-////                                     Sunday.setChecked(false);
-////                                     Monday.setChecked(false);
-////                                     Tuesday.setChecked(false);
-////                                     Wednesday.setChecked(false);
-////                                     Thursday.setChecked(false);
-////                                     Friday.setChecked(false);
-////                                     Saturday.setChecked(false);
-//                                 }
-//                             }
-//                         });
+
         All.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -438,7 +406,6 @@ public class CreatePlanActivity extends AppCompatActivity {
                      Thursday.setChecked(false);
                      Friday.setChecked(false);
                      Saturday.setChecked(false);
-                    //Perform action when you touch on checkbox and it change to unselected state
                 }
             }
         });
@@ -542,7 +509,6 @@ public class CreatePlanActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_save_enquiry) {
-            // sendEmail();
             submitForm();
             return true;
         }else if(id ==  R.id.action_home){
@@ -580,27 +546,22 @@ public class CreatePlanActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             PackageTypeDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+
             HashMap<String, String> PackageTypeDetails = new HashMap<String, String>();
-           // PackageTypeDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(CreatePlanActivity.this));
             PackageTypeDetails.put("action", "show_master_package_type");
             String domainurl= SharedPrefereneceUtil.getDomainUrl(CreatePlanActivity.this);
-            //PackageTypeloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(PackageTypeloyee.this));
             String loginResult = ruc.sendPostRequest(domainurl+ ServiceUrls.LOGIN_URL, PackageTypeDetails);
             Log.v(TAG, String.format("doInBackground :: show_master_package_type= %s", loginResult));
             return loginResult;
@@ -614,7 +575,6 @@ public class CreatePlanActivity extends AppCompatActivity {
 
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
@@ -632,7 +592,6 @@ public class CreatePlanActivity extends AppCompatActivity {
                         if (jsonArrayCountry != null && jsonArrayCountry.length() > 0){
                             for (int i = 0; i < jsonArrayCountry.length(); i++) {
                                 packagetypelist = new Spinner_List();
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayCountry.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -665,7 +624,6 @@ public class CreatePlanActivity extends AppCompatActivity {
                                                 // Set the hint text color gray
                                                 tv.setTextColor(Color.GRAY);
                                                 tv.setText(getResources().getString(R.string.prompt_packagetype));
-                                                // tv.setTextColor(Color.GRAY);
                                             }
                                             else {
                                                 tv.setTextColor(Color.BLACK);
@@ -695,8 +653,6 @@ public class CreatePlanActivity extends AppCompatActivity {
                     dialog.setCancelable(false);
                     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     dialog.show();
-                    //forumCount.setVisibility(View.INVISBLE);
-                    // queCount.setVisibility(View.INVISIBLE);
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");
@@ -717,7 +673,6 @@ public class CreatePlanActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
             viewDialog.showDialog();
         }
 
@@ -725,10 +680,7 @@ public class CreatePlanActivity extends AppCompatActivity {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
             viewDialog.hideDialog();
-            //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
-            //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
             AddPackageDetails(response);
 
         }
@@ -738,34 +690,21 @@ public class CreatePlanActivity extends AppCompatActivity {
 
             HashMap<String, String> AddPackageDetails = new HashMap<String, String>();
             AddPackageDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(CreatePlanActivity.this));
-            Log.v(TAG, String.format("doInBackground :: comp_id = %s", SharedPrefereneceUtil.getSelectedBranchId(CreatePlanActivity.this)));
             AddPackageDetails.put("package_type",packageType);
-            Log.v(TAG, String.format("doInBackground :: packageType = %s", packageType));
             AddPackageDetails.put("package_name",inputPackageName.getText().toString());
-            Log.v(TAG, String.format("doInBackground :: name = %s", inputPackageName.getText().toString()));
             AddPackageDetails.put("duration",inputDuration.getText().toString());
-            Log.v(TAG, String.format("doInBackground :: duration = %s", inputDuration.getText().toString()));
             AddPackageDetails.put("session",inputSession.getText().toString());
-            Log.v(TAG, String.format("doInBackground :: session = %s", inputSession.getText().toString()));
             AddPackageDetails.put("description",inputDescription.getText().toString() );
-            Log.v(TAG, String.format("doInBackground :: description = %s", inputDescription.getText().toString()));
             AddPackageDetails.put("tax",inputTax.getText().toString());
-            Log.v(TAG, String.format("doInBackground :: tax = %s", inputTax.getText().toString()));
             AddPackageDetails.put("rack_amt",inputRackAmount.getText().toString());
-            Log.v(TAG, String.format("doInBackground :: rack_amt = %s", inputRackAmount.getText().toString()));
             AddPackageDetails.put("max_disc", inputMaxDiscount.getText().toString());
-            Log.v(TAG, String.format("doInBackground :: max_disc = %s", inputMaxDiscount.getText().toString()));
             AddPackageDetails.put("days",days.toString().replace("[", "").replace("]", ""));
-            Log.v(TAG, String.format("doInBackground :: days = %s", days.toString()));
             AddPackageDetails.put("package_status",packageStatus);
-            Log.v(TAG, String.format("doInBackground :: package_type = %s", packageType));
             AddPackageDetails.put("mode","AdminApp");
-            Log.v(TAG, String.format("doInBackground :: executive name= %s", SharedPrefereneceUtil.getName(CreatePlanActivity.this)));
             AddPackageDetails.put("action", "create_plans");
             String domainurl= SharedPrefereneceUtil.getDomainUrl(CreatePlanActivity.this);
             String loginResult2 = ruc.sendPostRequest(domainurl+ ServiceUrls.LOGIN_URL, AddPackageDetails);
 
-            Log.v(TAG, String.format("doInBackground :: create_plans= %s", loginResult2));
             return loginResult2;
         }
     }
@@ -809,7 +748,6 @@ public class CreatePlanActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            // showProgressDialog();
             viewDialog.showDialog();
         }
 
@@ -817,26 +755,20 @@ public class CreatePlanActivity extends AppCompatActivity {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
             viewDialog.hideDialog();
-            //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
-            //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
             CheckPackageDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //  Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> CheckPackageDetails = new HashMap<String, String>();
 
             CheckPackageDetails.put("package_name",inputPackageName.getText().toString() );
             CheckPackageDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(CreatePlanActivity.this) );
             CheckPackageDetails.put("action", "check_package_name_already_name");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(CreatePlanActivity.this);
-            //CheckPackageloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(CheckPackageloyee.this));
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, CheckPackageDetails);
-            Log.v(TAG, String.format("doInBackground :: check_package_name_already_name= %s", loginResult));
             return loginResult;
         }
     }

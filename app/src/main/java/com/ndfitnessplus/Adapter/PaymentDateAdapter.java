@@ -17,7 +17,6 @@ public class PaymentDateAdapter extends RecyclerView.Adapter<PaymentDateAdapter.
     public PaymentDateAdapter(ArrayList<PaymentDateList> arrayList) {
         this.arrayList = arrayList;
     }
-
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.payment_date_list_item, parent, false);

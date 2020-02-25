@@ -71,7 +71,6 @@ public class POSProductDetailsActivity extends AppCompatActivity {
         if (args != null) {
             filterArrayList = (POSItemList) args.getSerializable("filter_array_list");
 
-           // String image=filterArrayList.getProductImage();
 
             prodName.setText(filterArrayList.getProductName());
             prodCode.setText(filterArrayList.getProductCode());
@@ -95,7 +94,6 @@ public class POSProductDetailsActivity extends AppCompatActivity {
             }else{
                 addToCart.setText("Add to Cart");
             }
-          //  Glide.with(this).load(url).placeholder(R.drawable.nouser).into(prodImage);
         }
       final  String compid=SharedPrefereneceUtil.getSelectedBranchId(POSProductDetailsActivity.this);
               db=new SQLiteDataBaseHelper(POSProductDetailsActivity.this);
@@ -112,13 +110,6 @@ public class POSProductDetailsActivity extends AppCompatActivity {
                     if (id > -1) {
                         String userId = String.valueOf(id);
                         addToCart.setText("Added");
-                        Log.v(TAG, String.format("loginServerResponse :: product id = %s", userId));
-                        //Toast.makeText(POSProductDetailsActivity.this,"Product Added Into Cart Successfully",Toast.LENGTH_LONG).show();
-//                        Intent intent = new Intent(POSProductDetailsActivity.this, POSProductDetailsActivity.class);
-//                        Bundle bundle = new Bundle();
-//                        bundle.putSerializable("filter_array_list", filterArrayList);
-//                        intent.putExtra("BUNDLE", bundle);
-//                        startActivity(intent);
                         Snackbar.make(v, "Product Added Into Cart Successfully", Snackbar.LENGTH_SHORT).show();
                     }
                 }

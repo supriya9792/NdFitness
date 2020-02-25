@@ -99,9 +99,8 @@ public class FollowupsActivity extends AppCompatActivity implements SwipeRefresh
 
         nodata=findViewById(R.id.nodata);
 
-
             if (isOnline(FollowupsActivity.this)) {
-                followupclass();// check login details are valid or not from server
+                followupclass();
             }
             else {
                 Toast.makeText(FollowupsActivity.this, R.string.internet_unavailable, Toast.LENGTH_LONG).show();
@@ -127,7 +126,6 @@ public class FollowupsActivity extends AppCompatActivity implements SwipeRefresh
             public void afterTextChanged(Editable arg0) {
                 // TODO Auto-generated method stub
                 if (FollowupsActivity.this.adapter == null){
-                    // some print statement saying it is null
                     Toast toast = Toast.makeText(FollowupsActivity.this,"no record found", Toast.LENGTH_SHORT);
                     toast.setGravity(Gravity.CENTER, 0, 0);
                     toast.show();
@@ -161,12 +159,9 @@ public class FollowupsActivity extends AppCompatActivity implements SwipeRefresh
             protected void loadMoreItems() {
                 isLoading = true;
                 currentPage++;
-                Log.d(TAG, "prepare called current item: " + currentPage+"Total page"+totalPage);
                 if(currentPage<=totalPage){
                     preparedListItem();
                 }
-
-
             }
 
             @Override
@@ -200,52 +195,6 @@ public class FollowupsActivity extends AppCompatActivity implements SwipeRefresh
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.show();
         }
-//        final ArrayList<EnquiryList> items = new ArrayList<>();
-//        new Handler().postDelayed(new Runnable() {
-//
-//            @Override
-//            public void run() {
-//
-//                for (int i = 0; i < 5; i++) {
-//                    itemCount++;
-//                    Log.d(TAG, "prepare called : " + itemCount);
-//
-//                    EnquiryList postItem = subListArrayList.get(i);
-//                    subList.setExecutiveName(postItem.getExecutiveName());
-//                    subList.setName(postItem.getName());
-//                    subList.setGender(postItem.getGender());
-//                    subList.setContact(postItem.getContact());
-//                    subList.setAddress(postItem.getAddress());
-//                    subList.setComment(postItem.getComment());
-//                    subList.setNextFollowUpDate(postItem.getNextFollowUpDate());
-//                    items.add(subList);
-//                }
-//                if (currentPage != PAGE_START) adapter.removeLoading();
-//                adapter.addAll(items);
-//                swipeRefresh.setRefreshing(false);
-//                if (currentPage < totalPage) adapter.addLoading();
-//                else isLastPage = true;
-//                isLoading = false;
-//
-//            }
-//        }, 2000);
-    }
-    //Showing progress dialog
-    private void showProgressDialog() {
-        Log.v(TAG, String.format("showProgressDialog"));
-        pd = new ProgressDialog(FollowupsActivity.this);
-        pd.setMessage("loading");
-        pd.setCancelable(false);
-        pd.show();
-    }
-
-    /**
-     * Dismiss Progress Dialog.
-     */
-    private void dismissProgressDialog() {
-        Log.v(TAG, String.format("dismissProgressDialog"));
-
-        pd.cancel();
     }
     // Asycc class for loading data for database
     private void followupclass() {
@@ -266,13 +215,10 @@ public class FollowupsActivity extends AppCompatActivity implements SwipeRefresh
     class FollowupTrackclass extends AsyncTask<String, Void, String> {
 
         ServerClass ruc = new ServerClass();
-
-
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-//            showProgressDialog();
             viewDialog.showDialog();
         }
 
@@ -280,63 +226,42 @@ public class FollowupsActivity extends AppCompatActivity implements SwipeRefresh
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-//            dismissProgressDialog();
             viewDialog.hideDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             FollowupDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> FollowupDetails = new HashMap<String, String>();
             FollowupDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(FollowupsActivity.this));
             FollowupDetails.put("offset", String.valueOf(offset));
-            Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getCompanyAutoId(FollowupsActivity.this)));
             FollowupDetails.put("action","show_followup_list");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(FollowupsActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, FollowupDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
-
-
     }
 
     private void FollowupDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
-
-
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
                     progressBar.setVisibility(View.GONE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
-                        int count=0;
+
                         ArrayList<FollowupList> item = new ArrayList<FollowupList>();
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
-                            if(jsonArrayResult.length()<10){
-                                count=jsonArrayResult.length();
-                            }else{
-                                count=10;
-                            }
-                            for (int i = 0; i < count; i++) {
 
+                            for (int i = 0; i < jsonArrayResult.length(); i++) {
 
                                 subList = new FollowupList();
-                                Log.d(TAG, "i: " + i);
 
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -349,13 +274,7 @@ public class FollowupsActivity extends AppCompatActivity implements SwipeRefresh
                                     String NextFollowup_Date = jsonObj.getString("NextFollowup_Date");
                                     String Enquiry_ID = jsonObj.getString("Enquiry_ID");
                                     String Followup_Date = jsonObj.getString("NextFollowup_Date");
-                                    //  for (int j = 0; j < 5; j++) {
-                                    itemCount++;
-                                    Log.d(TAG, "run: " + itemCount);
 
-                                    //  for (int j = 0; j < 5; j++) {
-                                    itemCount++;
-                                    Log.d(TAG, "run offset: " + itemCount);
                                     subList.setName(name);
                                     subList.setRating(gender);
                                     String cont=Utility.lastFour(Contact);
@@ -385,7 +304,6 @@ public class FollowupsActivity extends AppCompatActivity implements SwipeRefresh
                     recyclerView.setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
                 android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(FollowupsActivity.this);
                 builder.setMessage(R.string.server_exception);
@@ -409,50 +327,34 @@ public class FollowupsActivity extends AppCompatActivity implements SwipeRefresh
 
         ServerClass ruc = new ServerClass();
 
-
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
         }
-
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            // dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             FollowupOffsetDetails(response);
-
         }
-
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> FollowupOffsetDetails = new HashMap<String, String>();
             FollowupOffsetDetails.put("comp_id", SharedPrefereneceUtil.getCompanyAutoId(FollowupsActivity.this));
             FollowupOffsetDetails.put("offset", String.valueOf(offset));
-            Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getCompanyAutoId(FollowupsActivity.this)));
             FollowupOffsetDetails.put("action","show_enquiry");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(FollowupsActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, FollowupOffsetDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
-
-
     }
 
     private void FollowupOffsetDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
-
-
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
@@ -460,17 +362,11 @@ public class FollowupsActivity extends AppCompatActivity implements SwipeRefresh
                     progressBar.setVisibility(View.GONE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
+
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
                             for (int i = 0; i < jsonArrayResult.length(); i++) {
 
-
                                 subList = new FollowupList();
-                                Log.d(TAG, "i: " + i);
-                                // Log.d(TAG, "run: " + itemCount);
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -483,9 +379,7 @@ public class FollowupsActivity extends AppCompatActivity implements SwipeRefresh
                                     String NextFollowup_Date = jsonObj.getString("NextFollowup_Date");
                                     String Followup_Date = jsonObj.getString("NextFollowup_Date");
                                     String Enquiry_ID = jsonObj.getString("Enquiry_ID");
-                                    //  for (int j = 0; j < 5; j++) {
-                                    itemCount++;
-                                    Log.d(TAG, "run offset: " + itemCount);
+
                                     subList.setName(name);
                                     subList.setRating(gender);
                                     String cont=Utility.lastFour(Contact);
@@ -501,7 +395,6 @@ public class FollowupsActivity extends AppCompatActivity implements SwipeRefresh
                                     subList.setFollowupDate(foll_date);
                                     subList.setID(Enquiry_ID);
 
-                                    //Toast.makeText(FollowupsActivity.this, "followup date: "+next_foll_date, Toast.LENGTH_SHORT).show();
                                     subListArrayList.add(subList);
 
                                 }
@@ -519,17 +412,13 @@ public class FollowupsActivity extends AppCompatActivity implements SwipeRefresh
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
                     nodata.setVisibility(View.VISIBLE);
-
                     progressBar.setVisibility(View.GONE);
-                    //if (currentPage != PAGE_START)
                     adapter.removeblank();
-                    //adapter.addAll(subListArrayList);
                     swipeRefresh.setRefreshing(false);
                     isLoading = false;
-                    //recyclerView.setVisibility(View.GONE);
+
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
                 recyclerView.setVisibility(View.GONE);
                 nodata.setVisibility(View.VISIBLE);
@@ -556,8 +445,6 @@ public class FollowupsActivity extends AppCompatActivity implements SwipeRefresh
         }
         return super.onOptionsItemSelected(item);
     }
-
-
     @Override
     public boolean onSupportNavigateUp(){
         Intent intent=new Intent(FollowupsActivity.this, MainActivity.class);

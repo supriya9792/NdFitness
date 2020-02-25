@@ -45,46 +45,42 @@ import butterknife.ButterKnife;
 
 import static com.ndfitnessplus.Activity.EnquiryActivity.TAG;
 
-public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.BaseViewHolder> {
-        ArrayList<CourseList> arrayList;
-private ArrayList<CourseList> subList;
+    public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.BaseViewHolder> {
+            ArrayList<CourseList> arrayList;
+    private ArrayList<CourseList> subList;
         Context context;
 
-private static final int VIEW_TYPE_LOADING = 0;
-private static final int VIEW_TYPE_NORMAL = 1;
-private boolean isLoaderVisible = false;
+    private static final int VIEW_TYPE_LOADING = 0;
+    private static final int VIEW_TYPE_NORMAL = 1;
+    private boolean isLoaderVisible = false;
 
-public CourseAdapter(ArrayList<CourseList> enquiryList, Context context) {
-        //this.arrayList = enquiryList;
+    public CourseAdapter(ArrayList<CourseList> enquiryList, Context context) {
         this.subList = enquiryList;
         this.arrayList = new ArrayList<CourseList>();
         this.context = context;
         this.arrayList.addAll(enquiryList);
         }
 
-@Override
-public CourseAdapter.BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Log.d(TAG, "view type: "+viewType );
+    @Override
+    public CourseAdapter.BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch (viewType) {
         case VIEW_TYPE_NORMAL:
-        return new CourseAdapter.ViewHolder(
-        LayoutInflater.from(parent.getContext()).inflate(R.layout.course_detail_item, parent, false));
-        case VIEW_TYPE_LOADING:
-        return new CourseAdapter.FooterHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_loading, parent, false));
-default:
-        return null;
+            return new CourseAdapter.ViewHolder(
+            LayoutInflater.from(parent.getContext()).inflate(R.layout.course_detail_item, parent, false));
+         case VIEW_TYPE_LOADING:
+            return new CourseAdapter.FooterHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_loading, parent, false));
+        default:
+             return null;
         }
 
         }
 
-@Override
-public void onBindViewHolder(CourseAdapter.BaseViewHolder holder, int position) {
+    @Override
+    public void onBindViewHolder(CourseAdapter.BaseViewHolder holder, int position) {
         holder.onBind(position);
-
-        Log.d(TAG, "call onbind method of viewholder: " );
         }
-@Override
-public int getItemViewType(int position) {
+    @Override
+    public int getItemViewType(int position) {
         if (isLoaderVisible) {
         return position == arrayList.size() - 1 ? VIEW_TYPE_LOADING : VIEW_TYPE_NORMAL;
         } else {
@@ -92,29 +88,25 @@ public int getItemViewType(int position) {
         }
         }
 
-@Override
-public int getItemCount() {
+    @Override
+    public int getItemCount() {
         return arrayList == null ? 0 : arrayList.size();
         }
-public void add(CourseList response) {
+    public void add(CourseList response) {
         arrayList.add(response);
-        //subList.add(response);
-        Log.d(TAG, "sublist size after add : "+String.valueOf(subList.size()) );
         notifyItemInserted(arrayList.size() - 1);
         }
 
-public void addAll(ArrayList<CourseList> postItems) {
+    public void addAll(ArrayList<CourseList> postItems) {
         for (CourseList response : postItems) {
         add(response);
         subList.add(response);
         }
 
-        Log.d(TAG, "arraylist size after adding new data: "+String.valueOf(arrayList.size()) );
-
         }
 
 
-private void remove(CourseList postItems) {
+    private void remove(CourseList postItems) {
         int position = arrayList.indexOf(postItems);
         if (position > -1) {
         arrayList.remove(position);
@@ -122,33 +114,31 @@ private void remove(CourseList postItems) {
         }
         }
 
-public void addLoading() {
+    public void addLoading() {
         isLoaderVisible = false;
         add(new CourseList());
 
         }
 
-public void removeLoading() {
+    public void removeLoading() {
         isLoaderVisible = false;
         int position = arrayList.size() - 1;
         CourseList item = getItem(position);
         if (item != null) {
         arrayList.remove(position);
         notifyItemRemoved(position);
-        // notifyDataSetChanged();
         }
         }
-public void removeblank(){
+    public void removeblank(){
         isLoaderVisible = false;
         int position = arrayList.size() - 1;
         CourseList item = getItem(position);
         if (item != null) {
         arrayList.remove(position);
         notifyItemRemoved(position);
-        //notifyDataSetChanged();
         }
         }
-public void clear() {
+    public void clear() {
         while (getItemCount() > 0) {
         remove(getItem(0));
         }
@@ -156,12 +146,10 @@ public void clear() {
         CourseList getItem(int position) {
         return arrayList.get(position);
         }
-//filter for search
-public int filter(String charText) {
-        // subList=arrayList;
+    //filter for search
+    public int filter(String charText) {
 
         charText = charText.toLowerCase(Locale.getDefault());
-        Log.d(TAG, "sublist size whentext  filter: "+String.valueOf(subList.size()) );
         arrayList.clear();
         if (charText.length() == 0) {
 
@@ -174,19 +162,17 @@ public int filter(String charText) {
         ||wp.getPaid().toLowerCase(Locale.getDefault()).contains(charText)
         ||wp.getContact().toLowerCase(Locale.getDefault()).contains(charText)) {
         arrayList.add(wp);
-        //return  arrayList.size();
         }
         }
         }
-        Log.d(TAG, "sublist size filter: "+String.valueOf(subList.size()) );
         notifyDataSetChanged();
         return  arrayList.size();
         }
-//filter for search
-public int search( String charTex,final ArrayList<CourseList> subList) {
-// subList=arrayList;
+    //filter for search
+    public int search( String charTex,final ArrayList<CourseList> subList) {
 
-final String charText = charTex.toLowerCase(Locale.getDefault());
+
+    final String charText = charTex.toLowerCase(Locale.getDefault());
         Log.d(TAG, "sublist size whentext  filter: "+String.valueOf(subList.size()) );
         arrayList.clear();
         if (charText.length() == 0) {
@@ -194,10 +180,6 @@ final String charText = charTex.toLowerCase(Locale.getDefault());
         arrayList.addAll(subList);
         return 0;
         } else {
-//            Handler handler = new Handler(Looper.getMainLooper());
-//            handler.post(new Runnable() {
-//                public void run() {
-        // UI code goes here
         for (final CourseList wp : subList) {
         if (wp.getName().toLowerCase(Locale.getDefault())
         .contains(charText) || wp.getPackageName().toLowerCase(Locale.getDefault()).contains(charText)||
@@ -208,22 +190,15 @@ final String charText = charTex.toLowerCase(Locale.getDefault());
 
         }
         }
-//                }
-//            });
-
-
-
-        }
-        Log.d(TAG, "sublist size search: "+String.valueOf(subList.size()) );
+      }
         notifyDataSetChanged();
         return arrayList.size();
         }
-//View for showing enquiry
-public class ViewHolder extends CourseAdapter.BaseViewHolder implements View.OnClickListener {
-    TextView nameTV,regdateTV,packagenameTV,start_to_end_dateTV,rateTV,paidTV,balanceTV,contactTV,executiveNameTV,invoiceidTv,durationSessionTV;
-    ImageView statusIv;
-    CircularImageView imageView;
-    View layoutparent;
+    public class ViewHolder extends CourseAdapter.BaseViewHolder implements View.OnClickListener {
+        TextView nameTV,regdateTV,packagenameTV,start_to_end_dateTV,rateTV,paidTV,balanceTV,contactTV,executiveNameTV,invoiceidTv,durationSessionTV;
+        ImageView statusIv;
+        CircularImageView imageView;
+        View layoutparent;
     public ViewHolder(View itemView) {
         super(itemView);
 
@@ -233,7 +208,6 @@ public class ViewHolder extends CourseAdapter.BaseViewHolder implements View.OnC
         invoiceidTv = (TextView) itemView.findViewById(R.id.invoice_idTV);
         statusIv = (ImageView) itemView.findViewById(R.id.status);
         imageView=(CircularImageView) itemView.findViewById(R.id.input_image);
-        // contactIV.setOnClickListener(this);
         regdateTV = (TextView) itemView.findViewById(R.id.reg_dateTV);
         packagenameTV = (TextView) itemView.findViewById(R.id.package_nameTV);
         start_to_end_dateTV = (TextView) itemView.findViewById(R.id.start_to_end_date_TV);
@@ -261,10 +235,7 @@ public class ViewHolder extends CourseAdapter.BaseViewHolder implements View.OnC
     public void onBind(final int position) {
         super.onBind(position);
         final CourseList enq = arrayList.get(position);
-        //Log.d(TAG, "enquiry name: " + enq.getName());
-        // idTV.setText(enq.getID());
         nameTV.setText(enq.getName());
-        //Log.d(TAG, "textview name: " + nameTV.getText().toString());
         contactTV.setText(enq.getContactEncrypt());
         regdateTV.setText(enq.getRegistrationDate());
         packagenameTV.setText(enq.getPackageName());
@@ -281,7 +252,6 @@ public class ViewHolder extends CourseAdapter.BaseViewHolder implements View.OnC
         String domainurl= SharedPrefereneceUtil.getDomainUrl((Activity)context);
         String url= domainurl+ServiceUrls.IMAGES_URL + enq.getImage();
 
-        // Glide.with(context).load(url).placeholder(R.drawable.nouser).into(imageView);
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.placeholder(R.drawable.nouser);
         requestOptions.error(R.drawable.nouser);
@@ -323,19 +293,14 @@ public class ViewHolder extends CourseAdapter.BaseViewHolder implements View.OnC
         dialog.setContentView(R.layout.item_grid_image_two_line_light);
         dialog.setCancelable(true);
         final CourseList enq = arrayList.get(position);
-//        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-//        lp.copyFrom(dialog.getWindow().getAttributes());
-//        lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
-//        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+
         ImageView imageView = (ImageView) dialog. findViewById(R.id.image);
         TextView name = (TextView) dialog. findViewById(R.id.name);
         ImageButton phone=(ImageButton)dialog.findViewById(R.id.phone_call);
         ImageView whatsapp=(ImageView)dialog.findViewById(R.id.whatsapp);
         String domainurl= SharedPrefereneceUtil.getDomainUrl((Activity) context);
         String url= domainurl+ServiceUrls.IMAGES_URL + enq.getImage();
-        Log.d(TAG, "image: "+enq.getImage());
-        Log.d(TAG, "name: "+enq.getName());
-        //  Glide.with(context).load(url).placeholder(R.drawable.nouser).into(imageView);
+
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.placeholder(R.drawable.nouser);
         requestOptions.error(R.drawable.nouser);
@@ -360,18 +325,13 @@ public class ViewHolder extends CourseAdapter.BaseViewHolder implements View.OnC
 
                 PackageManager pm=context.getPackageManager();
                 try {
-                    // Uri uri = Uri.parse("smsto:" + Contact);
+
                     Uri uri = Uri.parse("whatsapp://send?phone=+91" + enq.getContact());
                     Intent waIntent = new Intent(Intent.ACTION_VIEW,uri);
-                    //waIntent.setType("text/plain");
-                    String text = "YOUR TEXT HERE";
 
                     PackageInfo info=pm.getPackageInfo("com.whatsapp", PackageManager.GET_META_DATA);
-                    //Check if package exists or not. If not then code
-                    //in catch block will be called
                     waIntent.setPackage("com.whatsapp");
 
-                    // waIntent.putExtra(Intent.EXTRA_TEXT, text);
                     context.startActivity(waIntent);
 
                 } catch (PackageManager.NameNotFoundException e) {
@@ -392,10 +352,9 @@ public class ViewHolder extends CourseAdapter.BaseViewHolder implements View.OnC
             }
         });
         dialog.show();
-        //dialog.getWindow().setAttributes(lp);
     }
-//view for loading on swipe of recyclerview
-public class FooterHolder extends CourseAdapter.BaseViewHolder {
+  //view for loading on swipe of recyclerview
+  public class FooterHolder extends CourseAdapter.BaseViewHolder {
 
     @BindView(R.id.progressBar)
     ProgressBar mProgressBar;
@@ -412,8 +371,8 @@ public class FooterHolder extends CourseAdapter.BaseViewHolder {
     }
 
 }
-//base class for both the views
-public abstract class BaseViewHolder extends RecyclerView.ViewHolder {
+  //base class for both the views
+   public abstract class BaseViewHolder extends RecyclerView.ViewHolder {
 
     private int mCurrentPosition;
 
@@ -432,5 +391,5 @@ public abstract class BaseViewHolder extends RecyclerView.ViewHolder {
         return mCurrentPosition;
     }
 
-}
+  }
 }

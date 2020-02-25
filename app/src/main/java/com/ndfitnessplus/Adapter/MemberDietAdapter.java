@@ -20,8 +20,6 @@ import java.util.List;
 public class MemberDietAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<MemberDietList> items = new ArrayList<>();
-
-
     private Context ctx;
     private OnItemClickListener mOnItemClickListener;
 
@@ -64,8 +62,6 @@ public class MemberDietAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         vh = new OriginalViewHolder(v);
         return vh;
     }
-
-    // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof OriginalViewHolder) {
@@ -94,8 +90,6 @@ public class MemberDietAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 }
             });
 
-
-            // void recycling view
             if(p.expanded){
                 view.lyt_expand.setVisibility(View.VISIBLE);
             } else {

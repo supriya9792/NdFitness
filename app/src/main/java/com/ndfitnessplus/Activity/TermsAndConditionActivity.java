@@ -62,23 +62,6 @@ public class TermsAndConditionActivity extends AppCompatActivity {
         branchname.setText(SharedPrefereneceUtil.getSelectedBranch(TermsAndConditionActivity.this));
 
     }
-    private void showProgressDialog() {
-        Log.v(TAG, String.format("showProgressDialog"));
-        pd = new ProgressDialog(TermsAndConditionActivity.this);
-        pd.setMessage("loading");
-        pd.setCancelable(false);
-        pd.show();
-    }
-
-    /**
-     * Dismiss Progress Dialog.
-     */
-    private void dismissProgressDialog() {
-        Log.v(TAG, String.format("dismissProgressDialog"));
-        pd.cancel();
-
-
-    }
     // ************** Check Company is active or not **************
     public void  CheckCompanyClass() {
         TermsAndConditionActivity.CheckCompanyTrackClass ru = new TermsAndConditionActivity.CheckCompanyTrackClass();
@@ -94,7 +77,6 @@ public class TermsAndConditionActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-         //   showProgressDialog();
             viewDialog.showDialog();
         }
 
@@ -103,29 +85,22 @@ public class TermsAndConditionActivity extends AppCompatActivity {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-           // dismissProgressDialog();
             viewDialog.hideDialog();
-            //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
-            //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
             CheckCompanyDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-          //  Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> CheckCompanyDetails = new HashMap<String, String>();
             CheckCompanyDetails.put("comp_id",SharedPrefereneceUtil.getSelectedBranchId(TermsAndConditionActivity.this) );
             CheckCompanyDetails.put("action", "show_terms_and_coditions_by_company_id");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(TermsAndConditionActivity.this);
-            //EnquiryForloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(EnquiryForloyee.this));
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, CheckCompanyDetails);
-            Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
     }
     private void CheckCompanyDetails(String jsonResponse) {
-
         Log.v(TAG, String.format("loginServerResponse :: response = %s", jsonResponse));
 
         try {
@@ -141,7 +116,6 @@ public class TermsAndConditionActivity extends AppCompatActivity {
                     if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
                         for (int i = 0; i < jsonArrayResult.length(); i++) {
 
-                            Log.v(TAG, "JsonResponseOpeartion ::");
                             JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                             if (jsonObj != null) {
 
@@ -149,8 +123,7 @@ public class TermsAndConditionActivity extends AppCompatActivity {
                                 String TermsAndConditions = jsonObj.getString("TermsAndConditions");
                                 String domainurl= SharedPrefereneceUtil.getDomainUrl(TermsAndConditionActivity.this);
                                 String url=domainurl+ ServiceUrls.IMAGES_URL + Logo;
-                                Log.d(TAG, "url: " +url);
-                               // Glide.with(TermsAndConditionActivity.this).load(url).placeholder(R.drawable.nouser).into(logo);
+
                                 RequestOptions requestOptions = new RequestOptions();
                                 requestOptions.placeholder(R.drawable.nouser);
                                 requestOptions.error(R.drawable.nouser);

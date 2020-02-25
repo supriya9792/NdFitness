@@ -117,9 +117,6 @@ public class MemberActivity extends AppCompatActivity implements SwipeRefreshLay
         swipeRefresh.setOnRefreshListener(this);
         progress_bar.setVisibility(View.GONE);
         lyt_no_connection.setVisibility(View.VISIBLE);
-//        adapter = new EnquiryAdapter( new ArrayList<MemberDataList>(),EnquiryActivity.this);
-//        recyclerView.setAdapter(adapter);
-
 
         Intent intent = getIntent();
         Bundle args = intent.getBundleExtra("BUNDLE");
@@ -132,7 +129,7 @@ public class MemberActivity extends AppCompatActivity implements SwipeRefreshLay
             recyclerView.setAdapter(adapter);
         }else{
             if (isOnline(MemberActivity.this)) {
-                memberclass();// check login details are valid or not from server
+                memberclass();
             }
             else {
                 frame.setVisibility(View.GONE);
@@ -191,11 +188,7 @@ public class MemberActivity extends AppCompatActivity implements SwipeRefreshLay
             @Override
             public void afterTextChanged(final Editable arg0) {
                 // TODO Auto-generated method stub
-                if (MemberActivity.this.adapter == null){
-                    // some print statement saying it is null
-//                   // Toast toast = Toast.makeText(MemberActivity.this,"no record found", Toast.LENGTH_SHORT);
-//                    toast.setGravity(Gravity.CENTER, 0, 0);
-//                    toast.show();
+                if (MemberActivity.this.adapter == null){ ;
                 }
                 else
                 {
@@ -217,8 +210,6 @@ public class MemberActivity extends AppCompatActivity implements SwipeRefreshLay
             public void onTextChanged(CharSequence arg0, int arg1, int arg2,
                                       int arg3) {
                 if(inputsearch.getText().length()==0) {
-                    //do your work here
-                    // Toast.makeText(AddEnquiryActivity.this ,"Text vhanged count  is 10 then: " , Toast.LENGTH_LONG).show();
                     memberclass();
                 }
 
@@ -232,16 +223,10 @@ public class MemberActivity extends AppCompatActivity implements SwipeRefreshLay
             @Override
             protected void loadMoreItems() {
                 isLoading = true;
-
-                Log.d(TAG, "prepare called current item: " + currentPage+"Total page"+totalPage);
                 if(currentPage<=totalPage && length>100){
-                   // currentPage = PAGE_START;
-                    Log.d(TAG, "currentPage: " + currentPage);
                     isLastPage = false;
                     preparedListItem();
                 }
-
-
             }
 
             @Override
@@ -261,10 +246,9 @@ public class MemberActivity extends AppCompatActivity implements SwipeRefreshLay
         offset=offset+100;
 
         if (isOnline(MemberActivity.this)) {
-            memberoffsetclass();// check login details are valid or not from server
+            memberoffsetclass();
         }
         else {
-            //Toast.makeText(MemberActivity.this, R.string.internet_unavailable, Toast.LENGTH_LONG).show();
             android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(MemberActivity.this);
             builder.setMessage(R.string.internet_unavailable);
             builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
@@ -277,24 +261,6 @@ public class MemberActivity extends AppCompatActivity implements SwipeRefreshLay
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.show();
         }
-//
-    }
-    //Showing progress dialog
-    private void showProgressDialog() {
-        Log.v(TAG, String.format("showProgressDialog"));
-        pd = new ProgressDialog(MemberActivity.this);
-        pd.setMessage("loading");
-        pd.setCancelable(false);
-        pd.show();
-    }
-
-    /**
-     * Dismiss Progress Dialog.
-     */
-    private void dismissProgressDialog() {
-        Log.v(TAG, String.format("dismissProgressDialog"));
-
-        pd.cancel();
     }
     // Asycc class for loading data for database
     private void memberclass() {
@@ -306,49 +272,36 @@ public class MemberActivity extends AppCompatActivity implements SwipeRefreshLay
     public void onRefresh() {
         itemCount = 0;
         currentPage = PAGE_START;
-        Log.d(TAG, "currentPage: " + currentPage);
         isLastPage = false;
-        // adapter.clear();
         onRestart();
-        //preparedListItem();
-
-
     }
 
     class EnquiryTrackclass extends AsyncTask<String, Void, String> {
 
         ServerClass ruc = new ServerClass();
 
-
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             EnquiryDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EnquiryDetails = new HashMap<String, String>();
             EnquiryDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(MemberActivity.this));
             EnquiryDetails.put("offset", String.valueOf(offset));
-            Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(MemberActivity.this)));
-            Log.v(TAG, String.format("doInBackground :: offset = %s",offset));
             EnquiryDetails.put("action","show_member_list");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(MemberActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EnquiryDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
 
@@ -357,7 +310,6 @@ public class MemberActivity extends AppCompatActivity implements SwipeRefreshLay
     private void EnquiryDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
@@ -443,7 +395,6 @@ public class MemberActivity extends AppCompatActivity implements SwipeRefreshLay
                     swipeRefresh.setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
                 android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(MemberActivity.this);
                 builder.setMessage(R.string.server_exception);
@@ -472,22 +423,18 @@ public class MemberActivity extends AppCompatActivity implements SwipeRefreshLay
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            // dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             EnquiryOffsetDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EnquiryOffsetDetails = new HashMap<String, String>();
             EnquiryOffsetDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(MemberActivity.this));
             EnquiryOffsetDetails.put("offset", String.valueOf(offset));
@@ -495,7 +442,6 @@ public class MemberActivity extends AppCompatActivity implements SwipeRefreshLay
             EnquiryOffsetDetails.put("action","show_member_list");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(MemberActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EnquiryOffsetDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
 
@@ -505,7 +451,6 @@ public class MemberActivity extends AppCompatActivity implements SwipeRefreshLay
     private void EnquiryOffsetDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
@@ -587,22 +532,16 @@ public class MemberActivity extends AppCompatActivity implements SwipeRefreshLay
                         }
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
-                    // nodata.setVisibility(View.VISIBLE);
                     nodata.setVisibility(View.VISIBLE);
                     swipeRefresh.setVisibility(View.GONE);
                     progressBar.setVisibility(View.GONE);
-                    Log.d(TAG, "when record 0 currentPage: " + currentPage);
-                    Log.d(TAG, "PAGE_START: " + PAGE_START);
                     if (currentPage != PAGE_START)
                         adapter.removeblank();
                     currentPage = PAGE_START;
-                    //adapter.addAll(subListArrayList);
                     swipeRefresh.setRefreshing(false);
                     isLoading = false;
-                    //recyclerView.setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
                 recyclerView.setVisibility(View.GONE);
                 frame.setVisibility(View.VISIBLE);
@@ -622,7 +561,6 @@ public class MemberActivity extends AppCompatActivity implements SwipeRefreshLay
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-//            showProgressDialog();
             viewDialog.showDialog();
         }
 
@@ -630,16 +568,13 @@ public class MemberActivity extends AppCompatActivity implements SwipeRefreshLay
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-//            dismissProgressDialog();
             viewDialog.hideDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             EnquirySearchDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EnquirySearchDetails = new HashMap<String, String>();
             EnquirySearchDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(MemberActivity.this));
             EnquirySearchDetails.put("text", inputsearch.getText().toString());
@@ -647,7 +582,6 @@ public class MemberActivity extends AppCompatActivity implements SwipeRefreshLay
             EnquirySearchDetails.put("action","show_search_member");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(MemberActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EnquirySearchDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
 
@@ -657,9 +591,7 @@ public class MemberActivity extends AppCompatActivity implements SwipeRefreshLay
     private void EnquirySearchDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
-
 
             try {
                 Log.v(TAG, "JsonResponseOpeartion :: test");
@@ -698,7 +630,6 @@ public class MemberActivity extends AppCompatActivity implements SwipeRefreshLay
                                     String End_Date=jsonObj.getString("End_Date");
                                     String FinalBalance=jsonObj.getString("FinalBalance");
 
-                                   // String Name=MemberID+"-"+name;
                                     subList.setName(name);
                                     subList.setGender(gender);
                                     String cont=Utility.lastFour(Contact);
@@ -731,16 +662,13 @@ public class MemberActivity extends AppCompatActivity implements SwipeRefreshLay
                         }
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
-                    // nodata.setVisibility(View.VISIBLE);
                     nodata.setVisibility(View.VISIBLE);
                     swipeRefresh.setVisibility(View.GONE);
                     Toast.makeText(MemberActivity.this, "NO Record Found", Toast.LENGTH_SHORT).show();
                     progressBar.setVisibility(View.GONE);
 
-                    //recyclerView.setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
                 recyclerView.setVisibility(View.GONE);
                 frame.setVisibility(View.VISIBLE);
@@ -777,7 +705,6 @@ public class MemberActivity extends AppCompatActivity implements SwipeRefreshLay
         super.onResume();
 
     }
-
     @Override
     protected void onRestart() {
         super.onRestart();

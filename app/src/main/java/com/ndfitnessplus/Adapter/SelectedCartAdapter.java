@@ -47,7 +47,6 @@ public class SelectedCartAdapter extends RecyclerView.Adapter<SelectedCartAdapte
     private boolean isLoaderVisible = false;
     ArrayList<POSItemList> cartArraylist = new ArrayList<POSItemList>();
     public SelectedCartAdapter(ArrayList<POSItemList> enquiryList, Context context) {
-        //this.arrayList = enquiryList;
         this.subList = enquiryList;
         this.arrayList = new ArrayList<POSItemList>();
         this.context = context;
@@ -57,7 +56,6 @@ public class SelectedCartAdapter extends RecyclerView.Adapter<SelectedCartAdapte
 
     @Override
     public SelectedCartAdapter.BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Log.d(TAG, "view type: "+viewType );
         switch (viewType) {
             case VIEW_TYPE_NORMAL:
                 return new SelectedCartAdapter.ViewHolder(
@@ -73,8 +71,6 @@ public class SelectedCartAdapter extends RecyclerView.Adapter<SelectedCartAdapte
     @Override
     public void onBindViewHolder(SelectedCartAdapter.BaseViewHolder holder, int position) {
         holder.onBind(position);
-
-        Log.d(TAG, "call onbind method of viewholder: " );
     }
     @Override
     public int getItemViewType(int position) {
@@ -91,8 +87,6 @@ public class SelectedCartAdapter extends RecyclerView.Adapter<SelectedCartAdapte
     }
     public void add(POSItemList response) {
         arrayList.add(response);
-        //subList.add(response);
-        Log.d(TAG, "sublist size after add : "+String.valueOf(subList.size()) );
         notifyItemInserted(arrayList.size() - 1);
     }
 
@@ -101,9 +95,6 @@ public class SelectedCartAdapter extends RecyclerView.Adapter<SelectedCartAdapte
             add(response);
             subList.add(response);
         }
-
-        Log.d(TAG, "arraylist size after adding new data: "+String.valueOf(arrayList.size()) );
-
     }
 
 
@@ -128,7 +119,6 @@ public class SelectedCartAdapter extends RecyclerView.Adapter<SelectedCartAdapte
         if (item != null) {
             arrayList.remove(position);
             notifyItemRemoved(position);
-            // notifyDataSetChanged();
         }
     }
     public void removeblank(){
@@ -138,7 +128,6 @@ public class SelectedCartAdapter extends RecyclerView.Adapter<SelectedCartAdapte
         if (item != null) {
             arrayList.remove(position);
             notifyItemRemoved(position);
-            //notifyDataSetChanged();
         }
     }
     public void clear() {
@@ -151,10 +140,8 @@ public class SelectedCartAdapter extends RecyclerView.Adapter<SelectedCartAdapte
     }
     //filter for search
     public int filter(String charText) {
-        // subList=arrayList;
 
         charText = charText.toLowerCase(Locale.getDefault());
-        Log.d(TAG, "sublist size whentext  filter: "+String.valueOf(subList.size()) );
         arrayList.clear();
         if (charText.length() == 0) {
 
@@ -164,21 +151,17 @@ public class SelectedCartAdapter extends RecyclerView.Adapter<SelectedCartAdapte
                 if (wp.getProductCode().toLowerCase(Locale.getDefault())
                         .contains(charText) || wp.getProductName().toLowerCase(Locale.getDefault()).contains(charText)) {
                     arrayList.add(wp);
-                    // return arrayList.size();
                 }
             }
         }
         notifyDataSetChanged();
         return arrayList.size();
-        //Log.d(TAG, "sublist size filter: "+String.valueOf(subList.size()) );
 
     }
     //filter for search
     public int search( String charTex,final ArrayList<POSItemList> subList) {
-        // subList=arrayList;
 
         final String charText = charTex.toLowerCase(Locale.getDefault());
-        Log.d(TAG, "sublist size whentext  filter: "+String.valueOf(subList.size()) );
         arrayList.clear();
         if (charText.length() == 0) {
 
@@ -199,17 +182,14 @@ public class SelectedCartAdapter extends RecyclerView.Adapter<SelectedCartAdapte
                 }
             });
 
-
-
         }
-        Log.d(TAG, "sublist size search: "+String.valueOf(subList.size()) );
+
         notifyDataSetChanged();
         return arrayList.size();
     }
     //View for showing enquiry
     public class ViewHolder extends SelectedCartAdapter.BaseViewHolder  {
         TextView prodCodeTV, prodnameTV,quantityTV,priceTV;
-        //  ImageView contactIV;
         ImageView imageView;
         View layoutparent;
         public ViewHolder(View itemView) {
@@ -218,9 +198,7 @@ public class SelectedCartAdapter extends RecyclerView.Adapter<SelectedCartAdapte
             prodCodeTV = (TextView) itemView.findViewById(R.id.prod_code);
             prodnameTV = (TextView) itemView.findViewById(R.id.prod_name);
 
-            // contactIV = (ImageView) itemView.findViewById(R.id.contactIV);
             imageView=(ImageView) itemView.findViewById(R.id.prodImage);
-            // contactIV.setOnClickListener(this);
             quantityTV = (TextView) itemView.findViewById(R.id.quantityTV);
             priceTV = (TextView) itemView.findViewById(R.id.price);
             layoutparent=(View)itemView.findViewById(R.id.lyt_parent);
@@ -234,20 +212,15 @@ public class SelectedCartAdapter extends RecyclerView.Adapter<SelectedCartAdapte
         public void onBind(final int position) {
             super.onBind(position);
             final POSItemList enq = arrayList.get(position);
-            //Log.d(TAG, "enquiry name: " + enq.getName());
-            // idTV.setText(enq.getID());
             prodCodeTV.setText(enq.getProductCode());
-            //Log.d(TAG, "textview name: " + nameTV.getText().toString());
             prodnameTV.setText(enq.getProductName());
-            //String ttl="₹ "+enq.getRate();
 
             priceTV.setText(enq.getProductFinalRate());
             String qtyyy="Qty: "+enq.getQuantity();
             quantityTV.setText(qtyyy);
             String domainurl= SharedPrefereneceUtil.getDomainUrl((Activity)context);
             String url= domainurl+ ServiceUrls.IMAGES_URL + enq.getProductImage();
-            Log.d(TAG, "product image: "+enq.getProductImage() );
-            //Glide.with(context).load(url).placeholder(R.drawable.noproduct).into(imageView);
+
             RequestOptions requestOptions = new RequestOptions();
             requestOptions.placeholder(R.drawable.nouser);
             requestOptions.error(R.drawable.nouser);
@@ -262,24 +235,11 @@ public class SelectedCartAdapter extends RecyclerView.Adapter<SelectedCartAdapte
 
                 int quanty=Integer.parseInt(enq.getQuantity());
             }
-            Log.d(TAG, "product Quantity: "+enq.getQuantity() );
 
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
-                }
-            });
-
-            layoutparent.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-//                    String   enquiryId=enq.getID();
-//                    Intent intent=new Intent(context, EnquiryFollowupDetailsActivity.class);
-//                    intent.putExtra("enquiry_id",enquiryId);
-//                    intent.putExtra("rating",enq.getRating());
-//                    intent.putExtra("call_response",enq.getCallResponse());
-//                    context.startActivity(intent);
                 }
             });
 

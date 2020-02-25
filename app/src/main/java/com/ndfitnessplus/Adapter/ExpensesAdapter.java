@@ -41,7 +41,6 @@ public class ExpensesAdapter extends RecyclerView.Adapter<ExpensesAdapter.ViewHo
     @Override
     public void onBindViewHolder(ExpensesAdapter.ViewHolder holder, int position) {
         holder.ttlofexpenses.setText(arrayList.get(position).getTtl_of_expenses());
-//        holder.contactTV.setText(arrayList.get(position).getContact());
         holder.expenseDate.setText(arrayList.get(position).getExpenses_date());
         holder.expenseGroup.setText(arrayList.get(position).getExpenses_group());
         String amt="₹ "+arrayList.get(position).getAmount();
@@ -61,7 +60,6 @@ public class ExpensesAdapter extends RecyclerView.Adapter<ExpensesAdapter.ViewHo
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView ttlofexpenses,expenseDate,expenseGroup,paymentDtl,amount,excecutive_nameTV,paymentType,disc;
-        //ImageView contactIV;
         public ViewHolder(View itemView) {
             super(itemView);
 
@@ -82,10 +80,8 @@ public class ExpensesAdapter extends RecyclerView.Adapter<ExpensesAdapter.ViewHo
     }
     //filter for search
     public ArrayList<ExpensesList> filter(String charText) {
-        // subList=arrayList;
 
         charText = charText.toLowerCase(Locale.getDefault());
-        Log.d(TAG, "sublist size whentext  filter: "+String.valueOf(subList.size()) );
         arrayList.clear();
         if (charText.length() == 0) {
 
@@ -100,7 +96,6 @@ public class ExpensesAdapter extends RecyclerView.Adapter<ExpensesAdapter.ViewHo
                 }
             }
         }
-        Log.d(TAG, "sublist size filter: "+String.valueOf(subList.size()) );
         notifyDataSetChanged();
         return arrayList;
     }

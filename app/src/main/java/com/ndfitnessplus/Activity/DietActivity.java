@@ -136,8 +136,6 @@ public class DietActivity extends AppCompatActivity implements SwipeRefreshLayou
         swipeRefresh.setOnRefreshListener(this);
         progress_bar.setVisibility(View.GONE);
         lyt_no_connection.setVisibility(View.VISIBLE);
-//        adapter = new EnquiryAdapter( new ArrayList<EnquiryList>(),EnquiryActivity.this);
-//        recyclerView.setAdapter(adapter);
 
 
         Intent intent = getIntent();
@@ -170,18 +168,7 @@ public class DietActivity extends AppCompatActivity implements SwipeRefreshLayou
                         }, 1000);
                     }
                 });
-                //Toast.makeText(DietActivity.this, R.string.internet_unavailable, Toast.LENGTH_LONG).show();
-//                android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(DietActivity.this);
-////                builder.setMessage(R.string.internet_unavailable);
-////                builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-////                    public void onClick(DialogInterface dialog, int id) {
-////                        dialog.dismiss();
-////                    }
-////                });
-////                android.app.AlertDialog dialog = builder.create();
-////                dialog.setCancelable(false);
-////                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-////                dialog.show();
+
 
             }
 
@@ -205,10 +192,7 @@ public class DietActivity extends AppCompatActivity implements SwipeRefreshLayou
             public void afterTextChanged(final Editable arg0) {
                 // TODO Auto-generated method stub
                 if (DietActivity.this.adapter == null){
-                    // some print statement saying it is null
-//                   // Toast toast = Toast.makeText(DietActivity.this,"no record found", Toast.LENGTH_SHORT);
-//                    toast.setGravity(Gravity.CENTER, 0, 0);
-//                    toast.show();
+                   ;
                 }
                 else
                 {
@@ -232,8 +216,7 @@ public class DietActivity extends AppCompatActivity implements SwipeRefreshLayou
                 // TODO Auto-generated method stub
 
                 if(inputsearch.getText().length()==0) {
-                   // do your work here
-                     //Toast.makeText(DietActivity.this ,"Please enter text to search" , Toast.LENGTH_LONG).show();
+
                     dietclass();
                 }
             }
@@ -268,24 +251,6 @@ public class DietActivity extends AppCompatActivity implements SwipeRefreshLayou
         return super.onOptionsItemSelected(item);
     }
 
-
-    //Showing progress dialog
-    private void showProgressDialog() {
-        Log.v(TAG, String.format("showProgressDialog"));
-        pd = new ProgressDialog(DietActivity.this);
-        pd.setMessage("loading");
-        pd.setCancelable(false);
-        pd.show();
-    }
-
-    /**
-     * Dismiss Progress Dialog.
-     */
-    private void dismissProgressDialog() {
-        Log.v(TAG, String.format("dismissProgressDialog"));
-
-        pd.cancel();
-    }
     // Asycc class for loading data for database
     private void dietclass() {
         DietActivity.DietTrackclass ru = new DietActivity.DietTrackclass();
@@ -348,22 +313,17 @@ public class DietActivity extends AppCompatActivity implements SwipeRefreshLayou
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
 
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
-//                    nodata.setVisibility(View.GONE);
-//                    swipeRefresh.setVisibility(View.VISIBLE);
+
                     String ttl_enq = object.getString("total_diet_count");
                     total_enquiry.setText(ttl_enq);
                     progressBar.setVisibility(View.GONE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
-                        int count=0;
+
                         ArrayList<DietList> item = new ArrayList<DietList>();
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
 
@@ -371,9 +331,7 @@ public class DietActivity extends AppCompatActivity implements SwipeRefreshLayou
 
 
                                 subList = new DietList();
-                                Log.d(TAG, "i: " + i);
 
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -389,10 +347,6 @@ public class DietActivity extends AppCompatActivity implements SwipeRefreshLayou
                                     String Charges = jsonObj.getString("Charges");
 
 
-
-                                    //  for (int j = 0; j < 5; j++) {
-                                    itemCount++;
-                                    Log.d(TAG, "run: " + itemCount);
                                     subList.setDietId(Diet_Id);
                                     String ddate=Utility.formatDate(Diet_Date);
                                     subList.setDietStartDate(ddate);
@@ -422,7 +376,6 @@ public class DietActivity extends AppCompatActivity implements SwipeRefreshLayou
                     swipeRefresh.setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
                 android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(DietActivity.this);
                 builder.setMessage(R.string.server_exception);
@@ -452,7 +405,7 @@ public class DietActivity extends AppCompatActivity implements SwipeRefreshLayou
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            // showProgressDialog();
+
             viewDialog.showDialog();
         }
 
@@ -460,9 +413,9 @@ public class DietActivity extends AppCompatActivity implements SwipeRefreshLayou
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
+
             viewDialog.hideDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
+
             DietSearchDetails(response);
 
         }
@@ -472,7 +425,6 @@ public class DietActivity extends AppCompatActivity implements SwipeRefreshLayou
             HashMap<String, String> DietSearchDetails = new HashMap<String, String>();
             DietSearchDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(DietActivity.this));
             DietSearchDetails.put("text",inputsearch.getText().toString());
-            Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(DietActivity.this)));
             DietSearchDetails.put("action","show_search_diet");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(DietActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, DietSearchDetails);
@@ -489,7 +441,6 @@ public class DietActivity extends AppCompatActivity implements SwipeRefreshLayou
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
@@ -543,8 +494,6 @@ public class DietActivity extends AppCompatActivity implements SwipeRefreshLayou
                                 }
                             }
 
-                        } else if (jsonArrayResult.length() == 0) {
-                            System.out.println("No records found");
                         }
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
@@ -554,7 +503,6 @@ public class DietActivity extends AppCompatActivity implements SwipeRefreshLayou
                     swipeRefresh.setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
                 recyclerView.setVisibility(View.GONE);
                 frame.setVisibility(View.VISIBLE);

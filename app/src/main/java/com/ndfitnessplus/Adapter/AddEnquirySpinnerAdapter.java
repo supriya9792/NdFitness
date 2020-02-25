@@ -56,8 +56,6 @@ public class AddEnquirySpinnerAdapter extends BaseAdapter {
         final Spinner_List model = itemList.get(position);
 
         TextView employeeName = (TextView) convertView.findViewById(R.id.tv_Name);
-        View parentview = (View) convertView.findViewById(R.id.layout);
-
         employeeName.setText(model.getName());
 
         return convertView;

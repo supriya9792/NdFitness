@@ -51,7 +51,6 @@ public class MemberBirthdayAdapter extends RecyclerView.Adapter<MemberBirthdayAd
         holder.layoutp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String   member_id=enq.getID();
                 Intent intent=new Intent(context, MemberDetailsActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("filter_array_list", enq);

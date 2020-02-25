@@ -61,7 +61,6 @@ public class DietAdapter extends RecyclerView.Adapter<DietAdapter.BaseViewHolder
     private boolean isLoaderVisible = false;
 
     public DietAdapter( Context context,ArrayList<DietList> enquiryList) {
-        //this.arrayList = enquiryList;
         this.subList = enquiryList;
         this.arrayList = new ArrayList<DietList>();
         this.context = context;
@@ -70,7 +69,6 @@ public class DietAdapter extends RecyclerView.Adapter<DietAdapter.BaseViewHolder
 
     @Override
     public DietAdapter.BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Log.d(EnquiryActivity.TAG, "view type: "+viewType );
         switch (viewType) {
             case VIEW_TYPE_NORMAL:
                 return new DietAdapter.ViewHolder(
@@ -86,8 +84,6 @@ public class DietAdapter extends RecyclerView.Adapter<DietAdapter.BaseViewHolder
     @Override
     public void onBindViewHolder(DietAdapter.BaseViewHolder holder, int position) {
         holder.onBind(position);
-
-        Log.d(EnquiryActivity.TAG, "call onbind method of viewholder: " );
     }
     @Override
     public int getItemViewType(int position) {
@@ -104,8 +100,6 @@ public class DietAdapter extends RecyclerView.Adapter<DietAdapter.BaseViewHolder
     }
     public void add(DietList response) {
         arrayList.add(response);
-        //subList.add(response);
-        Log.d(EnquiryActivity.TAG, "sublist size after add : "+String.valueOf(subList.size()) );
         notifyItemInserted(arrayList.size() - 1);
     }
 
@@ -114,9 +108,6 @@ public class DietAdapter extends RecyclerView.Adapter<DietAdapter.BaseViewHolder
             add(response);
             subList.add(response);
         }
-
-        Log.d(EnquiryActivity.TAG, "arraylist size after adding new data: "+String.valueOf(arrayList.size()) );
-
     }
 
 
@@ -141,7 +132,6 @@ public class DietAdapter extends RecyclerView.Adapter<DietAdapter.BaseViewHolder
         if (item != null) {
             arrayList.remove(position);
             notifyItemRemoved(position);
-            // notifyDataSetChanged();
         }
     }
     public void removeblank(){
@@ -151,7 +141,6 @@ public class DietAdapter extends RecyclerView.Adapter<DietAdapter.BaseViewHolder
         if (item != null) {
             arrayList.remove(position);
             notifyItemRemoved(position);
-            //notifyDataSetChanged();
         }
     }
     public void clear() {
@@ -164,10 +153,7 @@ public class DietAdapter extends RecyclerView.Adapter<DietAdapter.BaseViewHolder
     }
     //filter for search
     public int filter(String charText) {
-        // subList=arrayList;
-
         charText = charText.toLowerCase(Locale.getDefault());
-        Log.d(EnquiryActivity.TAG, "sublist size whentext  filter: "+String.valueOf(subList.size()) );
         arrayList.clear();
         if (charText.length() == 0) {
 
@@ -178,21 +164,17 @@ public class DietAdapter extends RecyclerView.Adapter<DietAdapter.BaseViewHolder
                         .contains(charText) || wp.getDietitionName().toLowerCase(Locale.getDefault()).contains(charText)
                         ||wp.getContact().toLowerCase(Locale.getDefault()).contains(charText)) {
                     arrayList.add(wp);
-                    // return arrayList.size();
                 }
             }
         }
         notifyDataSetChanged();
         return arrayList.size();
-        //Log.d(TAG, "sublist size filter: "+String.valueOf(subList.size()) );
 
     }
     //filter for search
     public int search( String charTex,final ArrayList<DietList> subList) {
-        // subList=arrayList;
 
         final String charText = charTex.toLowerCase(Locale.getDefault());
-        Log.d(EnquiryActivity.TAG, "sublist size whentext  filter: "+String.valueOf(subList.size()) );
         arrayList.clear();
         if (charText.length() == 0) {
 
@@ -208,23 +190,18 @@ public class DietAdapter extends RecyclerView.Adapter<DietAdapter.BaseViewHolder
                                 .contains(charText) || wp.getDietitionName().toLowerCase(Locale.getDefault()).contains(charText)
                                 ||wp.getContact().toLowerCase(Locale.getDefault()).contains(charText)) {
                             arrayList.add(wp);
-                            // return arrayList.size();
                         }
                     }
                 }
             });
 
-
-
         }
-        Log.d(EnquiryActivity.TAG, "sublist size search: "+String.valueOf(subList.size()) );
         notifyDataSetChanged();
         return arrayList.size();
     }
     //View for showing enquiry
     public class ViewHolder extends DietAdapter.BaseViewHolder implements View.OnClickListener {
         TextView nameTV,dietition_TV,diet_dateTV,diet_idTV,purposeTv,advoiceTV,start_to_end_date_TV,contactTV,chargesTV;
-        //  ImageView contactIV;
         CircularImageView imageView;
         View layoutparent;
         public ViewHolder(View itemView) {
@@ -233,9 +210,8 @@ public class DietAdapter extends RecyclerView.Adapter<DietAdapter.BaseViewHolder
             contactTV = (TextView) itemView.findViewById(R.id.contactTV);
             purposeTv = (TextView) itemView.findViewById(R.id.purposeTv);
             nameTV = (TextView) itemView.findViewById(R.id.nameTV);
-            // contactIV = (ImageView) itemView.findViewById(R.id.contactIV);
             imageView=(CircularImageView) itemView.findViewById(R.id.input_image);
-            // contactIV.setOnClickListener(this);
+
             dietition_TV = (TextView) itemView.findViewById(R.id.dietition_TV);
             diet_dateTV = (TextView) itemView.findViewById(R.id.diet_dateTV);
             diet_idTV = (TextView) itemView.findViewById(R.id.diet_idTV);
@@ -261,10 +237,8 @@ public class DietAdapter extends RecyclerView.Adapter<DietAdapter.BaseViewHolder
         public void onBind(final int position) {
             super.onBind(position);
             final DietList enq = arrayList.get(position);
-            //Log.d(TAG, "enquiry name: " + enq.getName());
-            // idTV.setText(enq.getID());
+
             nameTV.setText(enq.getName());
-            //Log.d(TAG, "textview name: " + nameTV.getText().toString());
             contactTV.setText(enq.getContactEncrypt());
             dietition_TV.setText(enq.getDietitionName());
             diet_dateTV.setText(enq.getDietStartDate());
@@ -273,12 +247,6 @@ public class DietAdapter extends RecyclerView.Adapter<DietAdapter.BaseViewHolder
             purposeTv.setText(enq.getPurpose());
             start_to_end_date_TV.setText(enq.getDietStartToEndDate());
             chargesTV.setText(enq.getCharges());
-
-            // Glide.with(context).load(url).placeholder(R.drawable.nouser).into(imageView);
-
-
-
-
         }
     }
 

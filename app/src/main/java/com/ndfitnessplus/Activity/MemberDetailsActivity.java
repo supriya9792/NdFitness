@@ -151,8 +151,6 @@ public class MemberDetailsActivity extends AppCompatActivity {
             filterArrayList = (MemberDataList) args.getSerializable("filter_array_list");
 
             Contact=filterArrayList.getContact();
-//                Log.v(TAG, String.format("Selected  ::contact= %s", cont));
-//                Log.v(TAG, String.format("Selected  ::name= %s", filterArrayList.getName()));
             name=filterArrayList.getName();
             member_id=filterArrayList.getID();
             Email=filterArrayList.getEmail();
@@ -161,14 +159,13 @@ public class MemberDetailsActivity extends AppCompatActivity {
                 FollowupType="";
             }
             Image=filterArrayList.getImage();
-            Log.d(TAG, "Image: " + Image);
             if(Image !=null) {
                String img= Image.replace("\"", "");
                 String domainurl= SharedPrefereneceUtil.getDomainUrl(MemberDetailsActivity.this);
                 String url= domainurl+ServiceUrls.IMAGES_URL + img;
                 username.setText(name);
                 mobilenumber.setText(Contact);
-                // Glide.with(this).load(url).placeholder(R.drawable.nouser).into(imageView);
+
                 RequestOptions requestOptions = new RequestOptions();
                 requestOptions.placeholder(R.drawable.nouser);
                 requestOptions.error(R.drawable.nouser);
@@ -194,13 +191,10 @@ public class MemberDetailsActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        //Toast.makeText(EnquiryFollowupDetailsActivity.this, enquiry_id+" rating :"+Rating+" call response" +callResponce, Toast.LENGTH_LONG).show();
-
         if (isOnline(MemberDetailsActivity.this)) {
             followupclass();// check login details are valid or not from server
         }
         else {
-            //  Toast.makeText(EnquiryFollowupDetailsActivity.this, R.string.internet_unavailable, Toast.LENGTH_LONG).show();
             android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(MemberDetailsActivity.this);
             builder.setMessage(R.string.internet_unavailable);
             builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
@@ -255,17 +249,11 @@ public class MemberDetailsActivity extends AppCompatActivity {
 
                 PackageManager pm=getPackageManager();
                 try {
-                    // Uri uri = Uri.parse("smsto:" + Contact);
+
                     Uri uri = Uri.parse("whatsapp://send?phone=+91" + Contact);
                     Intent waIntent = new Intent(Intent.ACTION_VIEW,uri);
-                    //waIntent.setType("text/plain");
-                    String text = "YOUR TEXT HERE";
-
                     PackageInfo info=pm.getPackageInfo("com.whatsapp", PackageManager.GET_META_DATA);
-
                     waIntent.setPackage("com.whatsapp");
-
-                    // waIntent.putExtra(Intent.EXTRA_TEXT, text);
                     startActivity(waIntent);
 
                 } catch (PackageManager.NameNotFoundException e) {
@@ -312,7 +300,6 @@ public class MemberDetailsActivity extends AppCompatActivity {
             Intent intent = new Intent(MemberDetailsActivity.this, MemberDietActivity.class);
             intent.putExtra("member_id",member_id);
             startActivity(intent);
-//            finish();
         }else if(id== R.id.action_workout){
                 Intent intent = new Intent(MemberDetailsActivity.this, MemberWorkoutActivity.class);
                 intent.putExtra("member_id",member_id);
@@ -327,10 +314,6 @@ public class MemberDetailsActivity extends AppCompatActivity {
         dialog.setContentView(R.layout.take_all_followup_popup);
         dialog.setCancelable(true);
 
-//        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-//        lp.copyFrom(dialog.getWindow().getAttributes());
-//        lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
-//        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
         spinCallResponce = (Spinner)dialog. findViewById(R.id.spinner_call_res);
         spinRating = (Spinner)dialog. findViewById(R.id.spinner_rating);
         spinFollType= (Spinner)dialog. findViewById(R.id.spinner_folltype);
@@ -339,7 +322,6 @@ public class MemberDetailsActivity extends AppCompatActivity {
         txtFollType=(TextView)dialog.findViewById(R.id.txt_folltype);
 
         inputfollComment = (EditText)dialog. findViewById(R.id.input_enquiry_comment);
-        //final EditText veri_otp=(EditText)dialog.findViewById(R.id.et_otp);
         inputNextFollowupdate=(EditText)dialog.findViewById(R.id.input_next_foll_date);
 
         ((ImageButton) dialog.findViewById(R.id.bt_close)).setOnClickListener(new View.OnClickListener() {
@@ -348,13 +330,10 @@ public class MemberDetailsActivity extends AppCompatActivity {
                 dialog.dismiss();
             }
         });
-        //  if(i==0){
         SetFollowupSpinner();
-        //i++;
-        //}
+
         callResponseClass();
         follTypeClass();
-     //   inputNextFollowupdate.setText(NextFollowupDate);
         String curr_date = Utility.getCurrentDate();
         inputNextFollowupdate.setText(curr_date);
 
@@ -376,7 +355,6 @@ public class MemberDetailsActivity extends AppCompatActivity {
                                                   int monthOfYear, int dayOfMonth) {
 
                                 inputNextFollowupdate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
-                                //tiemPicker();
                             }
                         }, mYear, mMonth, mDay);
                 datePickerDialog.getDatePicker().setMinDate(c.getTimeInMillis());
@@ -408,7 +386,6 @@ public class MemberDetailsActivity extends AppCompatActivity {
                             }
                         }
                     }else{
-                        ///takefollowupclass();
                         if(inputfollComment.getText().length()>0) {
                             if(FollowupType.equals("Payment")&&(FinalBalance.equals("0.0"))){
                                 dialog.dismiss();
@@ -423,16 +400,10 @@ public class MemberDetailsActivity extends AppCompatActivity {
                         }
                     }
                 }
-
-                //  Toast.makeText(MemberDetailsActivity.this, "Mobile number verified successully", Toast.LENGTH_SHORT).show();
-
-
-                //Toast.makeText(getApplicationContext(), "Subcribe Clicked", Toast.LENGTH_SHORT).show();
             }
         });
 
         dialog.show();
-        //dialog.getWindow().setAttributes(lp);
     }
     public  void SetFollowupSpinner(){
 
@@ -456,9 +427,6 @@ public class MemberDetailsActivity extends AppCompatActivity {
                         txtcallres.setVisibility(View.VISIBLE);
                         tv.setText(callResponce);
                     }
-                    // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.black));
-                    // Showing selected spinner item
-                    //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -489,7 +457,6 @@ public class MemberDetailsActivity extends AppCompatActivity {
                     }
                     if (!(FollowupType == null)) {
                         if(FollowupType.equals("Member BirthDay")) {
-                            //Toast.makeText(parent.getContext(), "no interetsed: ", Toast.LENGTH_LONG).show();
                             inputNextFollowupdate.setText("");
                             inputNextFollowupdate.setEnabled(false);
                             inputNextFollowupdate.setKeyListener(null);
@@ -498,15 +465,8 @@ public class MemberDetailsActivity extends AppCompatActivity {
                         }
 
                     }
-//                    if(FollowupType.equals("Payment")&&(Rating.equals("Not Interested"))){
-//                        inputNextFollowupdate.setEnabled(true);
-//                        String curr_date = Utility.getCurrentDate();
-//                        inputNextFollowupdate.setText(curr_date);
-//                    }
 
-                    // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.black));
-                    // Showing selected spinner item
-                    //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+
                 }
             }
 
@@ -538,13 +498,10 @@ public class MemberDetailsActivity extends AppCompatActivity {
                 View view = super.getDropDownView(position, convertView, parent);
                 if(view !=null){
                     TextView tv = (TextView) view.findViewById(R.id.tv_Name);
-//                    View layView = super.getView(position, convertView, parent);
-//                    layView.setPadding(0, 0, layView.getPaddingRight(), 0);
                     if(position == 0){
                         // Set the hint text color gray
                         tv.setTextColor(Color.GRAY);
                         tv.setText(getResources().getString(R.string.rating));
-                        // tv.setTextColor(Color.GRAY);
                     }
                     else {
                         tv.setTextColor(Color.BLACK);
@@ -557,10 +514,8 @@ public class MemberDetailsActivity extends AppCompatActivity {
         spinnerArrayAdapter1.setDropDownViewResource(R.layout.spinner_item);
         spinRating.setAdapter(spinnerArrayAdapter1);
         int spinnerPositionrating = spinnerArrayAdapter1.getPosition(Rating);
-        //Toast.makeText(this, "position: " + spinnerPositionrating, Toast.LENGTH_LONG).show();
         spinRating.setSelection(spinnerPositionrating);
         ArrayList<Spinner_List> ratingArrayList = new ArrayList<Spinner_List>();
-//
         spinRating.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -568,7 +523,6 @@ public class MemberDetailsActivity extends AppCompatActivity {
                 int index = parent.getSelectedItemPosition();
                 if (view != null) {
                     TextView tv = (TextView) view.findViewById(R.id.tv_Name);
-                    //View layView = super.getView(position, convertView, parent);
                     view.setPadding(0, 0, 0, 0);
                     tv.setTextColor(getResources().getColor(R.color.black));
                     if (!(Rating == null)) {
@@ -582,7 +536,6 @@ public class MemberDetailsActivity extends AppCompatActivity {
                         if(!FollowupType.equals("Member BirthDay")){
 
                             if (Rating.equals("Not Interested") || Rating.equals("Converted")) {
-                                //Toast.makeText(parent.getContext(), "no interetsed: ", Toast.LENGTH_LONG).show();
                                 inputNextFollowupdate.setText("");
                                 inputNextFollowupdate.setEnabled(false);
                                 inputNextFollowupdate.setKeyListener(null);
@@ -592,54 +545,19 @@ public class MemberDetailsActivity extends AppCompatActivity {
                                 inputNextFollowupdate.setText(curr_date);
                             }
                         }
-//                        if(FollowupType.equals("Payment")&&(Rating.equals("Not Interested"))){
-//                            inputNextFollowupdate.setEnabled(true);
-//                            String curr_date = Utility.getCurrentDate();
-//                            inputNextFollowupdate.setText(curr_date);
-//                        }else{
-//                            if (Rating.equals("Not Interested") || Rating.equals("Converted")) {
-//                                //Toast.makeText(parent.getContext(), "no interetsed: ", Toast.LENGTH_LONG).show();
-//                                inputNextFollowupdate.setText("");
-//                                inputNextFollowupdate.setEnabled(false);
-//                                inputNextFollowupdate.setKeyListener(null);
-//                            }
-//                        }
-
-
                     }
                     if(index==0){
                         txtrating.setVisibility(View.VISIBLE);
                         tv.setText(Rating);
                     }
                 }
-
-                // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.black));
-                // Showing selected spinner item
-                //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
 
-    }
-    private void showProgressDialog() {
-        Log.v(TAG, String.format("showProgressDialog"));
-        pd = new ProgressDialog(MemberDetailsActivity.this);
-        pd.setMessage("loading");
-        pd.setCancelable(false);
-        pd.show();
-    }
-
-    /**
-     * Dismiss Progress Dialog.
-     */
-    private void dismissProgressDialog() {
-        Log.v(TAG, String.format("dismissProgressDialog"));
-
-        pd.cancel();
     }
     //*********** Asycc class for loading data for database **************
     private void followupclass() {
@@ -656,7 +574,6 @@ public class MemberDetailsActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //  showProgressDialog();
             viewDialog.showDialog();
         }
 
@@ -664,25 +581,20 @@ public class MemberDetailsActivity extends AppCompatActivity {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //  dismissProgressDialog();
             viewDialog.hideDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             FollowupDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> FollowupDetails = new HashMap<String, String>();
             FollowupDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(MemberDetailsActivity.this));
             FollowupDetails.put("member_id",member_id );
-            Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(MemberDetailsActivity.this)));
-            Log.v(TAG, String.format("doInBackground :: member_id id = %s", member_id));
             FollowupDetails.put("action","show_member_details");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(MemberDetailsActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, FollowupDetails);
-            Log.v(TAG, String.format("doInBackground :: show_member_details= %s", loginResult));
+
             return loginResult;
         }
 
@@ -692,12 +604,10 @@ public class MemberDetailsActivity extends AppCompatActivity {
     private void FollowupDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
@@ -709,7 +619,6 @@ public class MemberDetailsActivity extends AppCompatActivity {
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
 
                             for (int i = 0; i < jsonArrayResult.length(); i++) {
-
 
                                 subList = new CourseList();
 
@@ -735,7 +644,6 @@ public class MemberDetailsActivity extends AppCompatActivity {
                                     String Financial_Year = jsonObj.getString("Financial_Year");
                                     String Image = jsonObj.getString("Image");
 
-
                                     subList.setName(name);
                                     username.setText(name);
                                     String sdate=Utility.formatDate(Start_Date);
@@ -754,8 +662,7 @@ public class MemberDetailsActivity extends AppCompatActivity {
                                         endDate = dateFormat.parse(endc);
                                         startdate = dateFormat.parse(sdatec);
                                         currentdate = dateFormat.parse(Utility.getCurrentDate());
-                                        Log.v(TAG, String.format(" ::endDate = %s", endDate));
-                                        Log.v(TAG, String.format(" :: currentdate = %s",currentdate));
+
                                         if (currentdate.before(endDate)|| currentdate.equals(endDate) ) {
                                             subList.setStatus("Active");
                                         } else {
@@ -809,11 +716,8 @@ public class MemberDetailsActivity extends AppCompatActivity {
                         }
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
-                    //nodata.setVisibility(View.VISIBLE);
-                    // recyclerView.setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
                 android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(MemberDetailsActivity.this);
                 builder.setMessage(R.string.server_exception);
@@ -843,26 +747,21 @@ public class MemberDetailsActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            // showProgressDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            // dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             CallResponseDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> CallResponseDetails = new HashMap<String, String>();
             CallResponseDetails.put("action", "show_call_response_list");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(MemberDetailsActivity.this);
-            //CallResponseloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(CallResponseloyee.this));
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, CallResponseDetails);
             Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
@@ -874,12 +773,8 @@ public class MemberDetailsActivity extends AppCompatActivity {
 
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
-
-
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
@@ -890,7 +785,7 @@ public class MemberDetailsActivity extends AppCompatActivity {
                             callresponce[0]=getResources().getString(R.string.call_res);
                             for (int i = 0; i < jsonArrayCountry.length(); i++) {
                                 spinCallReslist = new Spinner_List();
-                                Log.v(TAG, "JsonResponseOpeartion ::");
+
                                 JSONObject jsonObj = jsonArrayCountry.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -901,10 +796,7 @@ public class MemberDetailsActivity extends AppCompatActivity {
                                     spinCallReslist.setName(CallResponse);
                                     spinCallReslist.setId(id);
 
-
                                     callresponce[i+1]=CallResponse;
-
-
 
                                 }
                             }
@@ -927,14 +819,11 @@ public class MemberDetailsActivity extends AppCompatActivity {
                                 public View getDropDownView(int position, View convertView,
                                                             ViewGroup parent) {
                                     View view = super.getDropDownView(position, convertView, parent);
-//                                    View layView = super.getView(position, convertView, parent);
-//                                    layView.setPadding(0, 0, layView.getPaddingRight(), 0);
                                     TextView tv = (TextView) view.findViewById(R.id.tv_Name);
                                     if(position == 0){
                                         // Set the hint text color gray
                                         tv.setTextColor(Color.GRAY);
                                         tv.setText(getResources().getString(R.string.call_res));
-                                        // tv.setTextColor(Color.GRAY);
                                     }
                                     else {
                                         tv.setTextColor(Color.BLACK);
@@ -946,19 +835,13 @@ public class MemberDetailsActivity extends AppCompatActivity {
                             spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_item);
                             spinCallResponce.setAdapter(spinnerArrayAdapter);
                             int spinnerPosition = spinnerArrayAdapter.getPosition(callResponce);
-                            // Toast.makeText(this, "position: " + spinnerPosition, Toast.LENGTH_LONG).show();
                             spinCallResponce.setSelection(spinnerPosition);
                         }else if(jsonArrayCountry.length()==0){
                             System.out.println("No records found");
                         }
                     }
-                }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
-
-                    //forumCount.setVisibility(View.INVISBLE);
-                    // queCount.setVisibility(View.INVISIBLE);
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
             }
         }
@@ -977,43 +860,30 @@ public class MemberDetailsActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            // showProgressDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            // dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             FollTypeDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> FollTypeDetails = new HashMap<String, String>();
             FollTypeDetails.put("action", "show_master_followup_type_list");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(MemberDetailsActivity.this);
-            //FollTypeloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(FollTypeloyee.this));
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, FollTypeDetails);
-            Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
-
-
     }
     private void FollTypeDetails(String jsonResponse) {
 
-
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
-
-
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
@@ -1024,20 +894,15 @@ public class MemberDetailsActivity extends AppCompatActivity {
                             folltype[0]=getResources().getString(R.string.hint_foll_type);
                             for (int i = 0; i < jsonArrayCountry.length(); i++) {
                                 spinFollTypeList = new Spinner_List();
-                                Log.v(TAG, "JsonResponseOpeartion ::");
+
                                 JSONObject jsonObj = jsonArrayCountry.getJSONObject(i);
                                 if (jsonObj != null) {
 
                                     String Followup     = jsonObj.getString("Followup");
 
                                     String id=jsonObj.getString("Auto_Id");
-//                               if(i==0){
-//                                   spinFollTypeList.setName(getResources().getString(R.string.promt_country));
-//                                   enqF.add(0,spinFollTypeList);
-//                               }
                                     spinFollTypeList.setName(Followup);
                                     spinFollTypeList.setId(id);
-
 
                                     folltype[i+1]=Followup;
 
@@ -1065,13 +930,10 @@ public class MemberDetailsActivity extends AppCompatActivity {
                                                             ViewGroup parent) {
                                     View view = super.getDropDownView(position, convertView, parent);
                                     TextView tv = (TextView) view.findViewById(R.id.tv_Name);
-//                                    View layView = super.getView(position, convertView, parent);
-//                                    layView.setPadding(0, 0, layView.getPaddingRight(), 0);
                                     if(position == 0){
                                         // Set the hint text color gray
                                         tv.setTextColor(Color.GRAY);
                                         tv.setText(getResources().getString(R.string.hint_foll_type));
-                                        // tv.setTextColor(Color.GRAY);
                                     }
                                     else {
                                         tv.setTextColor(Color.BLACK);
@@ -1083,19 +945,13 @@ public class MemberDetailsActivity extends AppCompatActivity {
                             spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_item);
                             spinFollType.setAdapter(spinnerArrayAdapter);
                             int spinnerPosition = spinnerArrayAdapter.getPosition(FollowupType);
-                            // Toast.makeText(this, "position: " + spinnerPosition, Toast.LENGTH_LONG).show();
                             spinFollType.setSelection(spinnerPosition);
                         }else if(jsonArrayCountry.length()==0){
                             System.out.println("No records found");
                         }
                     }
-                }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
-
-                    //forumCount.setVisibility(View.INVISBLE);
-                    // queCount.setVisibility(View.INVISIBLE);
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
             }
         }
@@ -1114,7 +970,6 @@ public class MemberDetailsActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
             viewDialog.showDialog();
         }
 
@@ -1122,47 +977,30 @@ public class MemberDetailsActivity extends AppCompatActivity {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-           // dismissProgressDialog();
             viewDialog.hideDialog();
-            //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
-            //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
             TakeFollowupDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> TakeFollowupDetails = new HashMap<String, String>();
             TakeFollowupDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(MemberDetailsActivity.this));
-            Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(MemberDetailsActivity.this)));
             TakeFollowupDetails.put("id",member_id);
-            Log.v(TAG, String.format("doInBackground :: enquiry_id = %s", member_id));
             TakeFollowupDetails.put("comment",inputfollComment.getText().toString());
-            Log.v(TAG, String.format("doInBackground :: comment = %s", inputfollComment.getText().toString()));
             TakeFollowupDetails.put("rating",Rating);
-            Log.v(TAG, String.format("doInBackground :: Rating = %s", Rating));
             TakeFollowupDetails.put("call_res",callResponce);
-            Log.v(TAG, String.format("doInBackground :: callResponce = %s", callResponce));
             TakeFollowupDetails.put("next_foll_date",inputNextFollowupdate.getText().toString());
-            Log.v(TAG, String.format("doInBackground :: next_foll_date = %s", inputNextFollowupdate.getText().toString()));
             TakeFollowupDetails.put("exe_name",SharedPrefereneceUtil.getName(MemberDetailsActivity.this));
             TakeFollowupDetails.put("name",name);
-            Log.v(TAG, String.format("doInBackground :: Name = %s", name));
             TakeFollowupDetails.put("contact",Contact);
-            Log.v(TAG, String.format("doInBackground :: Contact = %s", Contact));
             TakeFollowupDetails.put("foll_type",FollowupType);
-            Log.v(TAG, String.format("doInBackground :: Folltype = %s", FollowupType));
             TakeFollowupDetails.put("invoice_id",invoice_id);
-            Log.v(TAG, String.format("doInBackground :: invoice_id = %s", invoice_id));
             TakeFollowupDetails.put("financial_yr",FinancialYear);
-            Log.v(TAG, String.format("doInBackground :: FinancialYear = %s", FinancialYear));
-            Log.v(TAG, String.format("doInBackground :: exe_name = %s", SharedPrefereneceUtil.getName(MemberDetailsActivity.this)));
             TakeFollowupDetails.put("action", "add_other_followup");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(MemberDetailsActivity.this);
             String loginResult2 = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, TakeFollowupDetails);
 
-            Log.v(TAG, String.format("doInBackground :: add_other_followup= %s", loginResult2));
             return loginResult2;
         }
     }
@@ -1186,16 +1024,11 @@ public class MemberDetailsActivity extends AppCompatActivity {
                 startActivity(intent);
                 overridePendingTransition(0, 0);
                 moveTaskToBack(false);
-                // showCustomDialog();
-
-                //inputEmail, inputPhone,inputAdd,inputReq,inputFollowupdate;
             }
 
             else if (success.equalsIgnoreCase(getResources().getString(R.string.zero)))
             {
                 Toast.makeText(MemberDetailsActivity.this,"Something went wrong",Toast.LENGTH_SHORT).show();
-                // inputContact.getText().clear();
-                //Toast.makeText(MemberDetailsActivity.this,"Please Enter New Mobile Number",Toast.LENGTH_SHORT).show();
             }
 
         } catch (JSONException e) {
@@ -1211,7 +1044,6 @@ public class MemberDetailsActivity extends AppCompatActivity {
 
     class  FollowupDetailsTrackclass extends AsyncTask<String, Void, String> {
 
-
         ServerClass ruc = new ServerClass();
 
 
@@ -1219,33 +1051,25 @@ public class MemberDetailsActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             FollowupDetailsDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String>  FollowupDetailsDetails = new HashMap<String, String>();
             FollowupDetailsDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(MemberDetailsActivity.this));
             FollowupDetailsDetails.put("member_id",member_id );
             FollowupDetailsDetails.put("foll_type",FollowupType );
-            Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(MemberDetailsActivity.this)));
-            Log.v(TAG, String.format("doInBackground :: member_id = %s", member_id));
-            Log.v(TAG, String.format("doInBackground ::FollowupType = %s", FollowupType));
             String domainurl=SharedPrefereneceUtil.getDomainUrl(MemberDetailsActivity.this);
             FollowupDetailsDetails.put("action","show_other_followup_details");
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, FollowupDetailsDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
 
@@ -1255,12 +1079,8 @@ public class MemberDetailsActivity extends AppCompatActivity {
     private void FollowupDetailsDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: show_other_followup_details = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
-
-
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
@@ -1283,16 +1103,10 @@ public class MemberDetailsActivity extends AppCompatActivity {
 
                                 }
                             }
-                        } else if (jsonArrayResult.length() == 0) {
-                            System.out.println("No records found");
                         }
                     }
-                }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
-                    //nodata.setVisibility(View.VISIBLE);
-                    // recyclerView.setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
                 android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(MemberDetailsActivity.this);
                 builder.setMessage(R.string.server_exception);
@@ -1315,39 +1129,29 @@ public class MemberDetailsActivity extends AppCompatActivity {
 
     class  MemberDetailsTrackclass extends AsyncTask<String, Void, String> {
 
-
         ServerClass ruc = new ServerClass();
-
-
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             MemberDetailsDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> MemberDetailsDetails = new HashMap<String, String>();
             MemberDetailsDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(MemberDetailsActivity.this));
             MemberDetailsDetails.put("member_id",member_id );
-            Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(MemberDetailsActivity.this)));
-            Log.v(TAG, String.format("doInBackground :: member_id = %s", member_id));
             String domainurl=SharedPrefereneceUtil.getDomainUrl(MemberDetailsActivity.this);
             MemberDetailsDetails.put("action","show_before_after_photo_by_member_id");
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, MemberDetailsDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
 
@@ -1357,12 +1161,10 @@ public class MemberDetailsActivity extends AppCompatActivity {
     private void MemberDetailsDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: show_before_after_photo_by_member_id = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
@@ -1374,8 +1176,6 @@ public class MemberDetailsActivity extends AppCompatActivity {
 
                             for (int i = 0; i < jsonArrayResult.length(); i++) {
 
-
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -1392,12 +1192,8 @@ public class MemberDetailsActivity extends AppCompatActivity {
                             System.out.println("No records found");
                         }
                     }
-                }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
-                    //nodata.setVisibility(View.VISIBLE);
-                    // recyclerView.setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
                 android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(MemberDetailsActivity.this);
                 builder.setMessage(R.string.server_exception);

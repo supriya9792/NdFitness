@@ -75,31 +75,14 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         });
 
     }
-    private void showProgressDialog() {
-        Log.v(TAG, String.format("showProgressDialog"));
-        Utility.showProgressDialog(this);
-
-    }
-
-    /**
-     * Dismiss the Progress dialog.
-     */
-
-    private void dismissProgressDialog() {
-        Log.v(TAG, String.format("dismissProgressDialog"));
-        Utility.hideProgressBar();
-
-    }
     private void userForgotPassword() {
 
         if(InternetConnection.checkConnection(ForgotPasswordActivity.this)) {
             ForgotPasswordActivity.UserForgotPasswordClass ulc = new ForgotPasswordActivity.UserForgotPasswordClass();
-            Log.v(TAG, String.format("userForgotPassword :: username,password = %s", username.getText().toString()));
             ulc.execute();
         }
         else
         {
-
             Toast.makeText(ForgotPasswordActivity.this,"Please Connect to Internet",Toast.LENGTH_SHORT).show();
         }
     }
@@ -113,7 +96,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         protected void onPreExecute() {
             Log.v(TAG,"onPreExecute");
             super.onPreExecute();
-//            showProgressDialog();
+
             viewDialog.showDialog();
         }
 
@@ -121,10 +104,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-//            dismissProgressDialog();
             viewDialog.hideDialog();
-//            showToastMessage(response);
-            //Toast.makeText(ForgotPasswordActivity.this, response, Toast.LENGTH_LONG).show();
             forgotPasswordResponse(response);
         }
 
@@ -135,8 +115,6 @@ public class ForgotPasswordActivity extends AppCompatActivity {
          */
         @Override
         protected String doInBackground(String... params) {
-//            Log.v(TAG, String.format("doInBackground ::  params= %s", params));
-
             HashMap<String, String> loginData = new HashMap<>();
             loginData.put("username",username.getText().toString());
             loginData.put("contact",contact.getText().toString());
@@ -145,13 +123,10 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             ServerClass ruc = new ServerClass();
             String domainurl=SharedPrefereneceUtil.getDomainUrl(ForgotPasswordActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, loginData);
-
-            Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
 
         }
     }
-
 
 
     /**
@@ -161,9 +136,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     private void forgotPasswordResponse(String response) {
         Log.v(TAG, String.format("loginServerResponse :: response = %s", response));
 
-        // jsonObjLoginResponse = null;
         try {
-            // jsonObjLoginResponse = new JSONObject(response);
             JSONObject object = new JSONObject(response);
             String success = object.getString(getResources().getString(R.string.success));
 
@@ -175,7 +148,6 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                     if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
                         for (int i = 0; i < jsonArrayResult.length(); i++) {
 
-                            Log.v(TAG, "JsonResponseOpeartion ::");
                             JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                             if (jsonObj != null) {
 
@@ -244,7 +216,6 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 AlertDialog dialog = builder.create();
                 dialog.setCancelable(false);
                 dialog.show();
-                // Toast.makeText(ForgotPasswordActivity.this,getResources().getString(R.string.inavlidlogin),Toast.LENGTH_LONG).show();
             }else if (success.equalsIgnoreCase(getResources().getString(R.string.one)))
             {
                 Toast.makeText(ForgotPasswordActivity.this,getResources().getString(R.string.inavlidlogin),Toast.LENGTH_LONG).show();

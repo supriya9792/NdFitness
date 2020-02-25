@@ -116,7 +116,6 @@ public class POSAddBillingActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(getResources().getString(R.string.pos_billing));
-        // getSupportActionBar().setTitle(null);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         initComponent();
     }
@@ -147,14 +146,11 @@ public class POSAddBillingActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
 
 
-//        productList=findViewById(R.id.sell_product_list);
-//        productList.setVisibility(View.GONE);
         awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
 
         awesomeValidation.addValidation(this, R.id.input_name, RegexTemplate.NOT_EMPTY, R.string.err_msg_name);
         awesomeValidation.addValidation(this, R.id.input_cont, RegexTemplate.NOT_EMPTY, R.string.err_msg_cont);
 
-        // awesomeValidation.addValidation(this, R.id.input_budget,RegexTemplate.NOT_EMPTY, R.string.err_msg_budget);
 
         Intent intent = getIntent();
         Bundle args = intent.getBundleExtra("BUNDLE");
@@ -189,7 +185,6 @@ public class POSAddBillingActivity extends AppCompatActivity {
                         subList.setTax(TaxAmount);
                         total +=chetotal;
                         totalMaxDisc+=chediscout;
-                        Log.v(TAG, String.format(" ::Total  max discount ******* %s",totalMaxDisc));
                     }
                 }
                 cartarrayList.add(subList);
@@ -204,8 +199,7 @@ public class POSAddBillingActivity extends AppCompatActivity {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                    // String selection = (String)parent.getItemAtPosition(position);
-                    // Toast.makeText(MainNavigationActivity.this,"this is autocomplete suggestions"+selection,Toast.LENGTH_SHORT).show();
+
                     String countryName = searchcontactadapter.getItem(position).getCustName();
                     String contact = searchcontactadapter.getItem(position).getCustContact();
 
@@ -220,8 +214,6 @@ public class POSAddBillingActivity extends AppCompatActivity {
                 public void onTextChanged(CharSequence s, int start, int before,
                                           int count) {
                 }
-
-
 
                 public void beforeTextChanged(CharSequence s, int start, int count,
                                               int after) {
@@ -240,8 +232,6 @@ public class POSAddBillingActivity extends AppCompatActivity {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
 
-                    // String selection = (String)parent.getItemAtPosition(position);
-                    // Toast.makeText(MainNavigationActivity.this,"this is autocomplete suggestions"+selection,Toast.LENGTH_SHORT).show();
                     String countryName = searchnameadapter.getItem(position).getCustName();
                     String contact = searchnameadapter.getItem(position).getCustContact();
 
@@ -255,9 +245,6 @@ public class POSAddBillingActivity extends AppCompatActivity {
                 public void onTextChanged(CharSequence s, int start, int before,
                                           int count) {
                 }
-
-
-
                 public void beforeTextChanged(CharSequence s, int start, int count,
                                               int after) {
 
@@ -294,11 +281,7 @@ public class POSAddBillingActivity extends AppCompatActivity {
                         txtpaymentType.setVisibility(View.VISIBLE);
                     }
 
-
                 }
-                // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.black));
-                // Showing selected spinner item
-                //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -314,18 +297,14 @@ public class POSAddBillingActivity extends AppCompatActivity {
         Checkout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // for ( k =0;k< cartarrayList.size(); k++) {
                submitForm();
-                //}
+
             }
         });
 
 
     }
     private void submitForm() {
-        //first validate the form then move ahead
-        //if this becomes true that means validation is successfull
-        //if(inputPassword.getText().toString().equals(inputCfmPassword.getText().toString())){
             if (awesomeValidation.validate()) {
 
                 if( paymentType.equals(getResources().getString(R.string.hint_pyment_mode)) ){
@@ -352,26 +331,21 @@ public class POSAddBillingActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             PaymentTypeDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> PaymentTypeDetails = new HashMap<String, String>();
             PaymentTypeDetails.put("action", "show_payment_type_list");
             String domainurl= SharedPrefereneceUtil.getDomainUrl(POSAddBillingActivity.this);
-            //PaymentTypeloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(PaymentTypeloyee.this));
             String loginResult = ruc.sendPostRequest(domainurl+ ServiceUrls.LOGIN_URL, PaymentTypeDetails);
             Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
@@ -385,12 +359,10 @@ public class POSAddBillingActivity extends AppCompatActivity {
 
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
@@ -403,17 +375,13 @@ public class POSAddBillingActivity extends AppCompatActivity {
                         if (jsonArrayCountry != null && jsonArrayCountry.length() > 0){
                             for (int i = 0; i < jsonArrayCountry.length(); i++) {
                                 paymentTypelist = new Spinner_List();
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayCountry.getJSONObject(i);
                                 if (jsonObj != null) {
 
                                     String PaymentType     = jsonObj.getString("PaymentType");
 
                                     String id=jsonObj.getString("Auto_Id");
-//                               if(i==0){
-//                                   paymentTypelist.setName(getResources().getString(R.string.promt_country));
-//                                   enqF.add(0,paymentTypelist);
-//                               }
+
                                     paymentTypelist.setName(PaymentType);
                                     paymentTypelist.setId(id);
 
@@ -442,7 +410,6 @@ public class POSAddBillingActivity extends AppCompatActivity {
                                                 // Set the hint text color gray
                                                 tv.setTextColor(Color.GRAY);
                                                 tv.setText(getResources().getString(R.string.prompt_payment_type));
-                                                // tv.setTextColor(Color.GRAY);
                                             }
                                             else {
                                                 tv.setTextColor(Color.BLACK);
@@ -462,8 +429,6 @@ public class POSAddBillingActivity extends AppCompatActivity {
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
 
-                    //forumCount.setVisibility(View.INVISBLE);
-                    // queCount.setVisibility(View.INVISIBLE);
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");
@@ -487,18 +452,12 @@ public class POSAddBillingActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
-            // viewDialog.showDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            // dismissProgressDialog();
-            //viewDialog.hideDialog();
-            //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
-            //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
             AddPosBillingDetails(response);
 
         }
@@ -542,7 +501,6 @@ public class POSAddBillingActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-          //  Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> AddPosBillingDetails = new HashMap<String, String>();
             AddPosBillingDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(POSAddBillingActivity.this));
             AddPosBillingDetails.put("cust_name", inputName.getText().toString());
@@ -551,14 +509,10 @@ public class POSAddBillingActivity extends AppCompatActivity {
             AddPosBillingDetails.put("payment_dtl", inputPaymentDtl.getText().toString());
             AddPosBillingDetails.put("sales_executive",SharedPrefereneceUtil.getName(POSAddBillingActivity.this));
             AddPosBillingDetails.put("tbl_count",String.valueOf(cartarrayList.size()));
-            Log.v(TAG, String.format("doInBackground :: tbl_count= %s",String.valueOf(cartarrayList.size())));
             AddPosBillingDetails.put("tbl_arr",finalobject.toString());
-            Log.v(TAG, String.format("doInBackground :: tbl_arr= %s",finalobject.toString()));
             AddPosBillingDetails.put("action", "add_pos_billing");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(POSAddBillingActivity.this);
             String loginResult2 = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, AddPosBillingDetails);
-
-            Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult2));
             return loginResult2;
         }
     }
@@ -580,15 +534,11 @@ public class POSAddBillingActivity extends AppCompatActivity {
                 Log.v(TAG, String.format("response :: result= %s",result));
                 Intent intent=new Intent(POSAddBillingActivity.this,POSActivity.class);
                 startActivity(intent);
-                // showCustomDialog();
 
-                //inputEmail, inputPhone,inputAdd,inputReq,inputFollowupdate;
             }
             else if (success.equalsIgnoreCase(getResources().getString(R.string.zero)))
             {
                 Toast.makeText(POSAddBillingActivity.this,"Something went wrong",Toast.LENGTH_SHORT).show();
-                //inputContact.getText().clear();
-                // Toast.makeText(POSAddBillingActivity.this,"Please Enter New Mobile Number",Toast.LENGTH_SHORT).show();
             }
 
         } catch (JSONException e) {
@@ -619,26 +569,20 @@ public class POSAddBillingActivity extends AppCompatActivity {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            // dismissProgressDialog();
             viewDialog.hideDialog();
-            //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
-            //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
+
             CheckContactDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-          //  Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EnquiryForDetails = new HashMap<String, String>();
-
             EnquiryForDetails.put("contact",inputContact.getText().toString() );
             EnquiryForDetails.put("comp_id",SharedPrefereneceUtil.getSelectedBranchId(POSAddBillingActivity.this) );
             EnquiryForDetails.put("action", "check_contact_already_exist_in_pos");
-            //EnquiryForloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(EnquiryForloyee.this));
             String domainurl=SharedPrefereneceUtil.getDomainUrl(POSAddBillingActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EnquiryForDetails);
-            Log.v(TAG, String.format("doInBackground :: check_mobile_already_exist_or_not= %s", loginResult));
             return loginResult;
         }
     }
@@ -653,16 +597,12 @@ public class POSAddBillingActivity extends AppCompatActivity {
 
 
             if (success.equalsIgnoreCase(getResources().getString(R.string.zero))) {
-                // showCustomDialog();
 
-                //inputEmail, inputPhone,inputAdd,inputReq,inputFollowupdate;
             }
             else if (success.equalsIgnoreCase(getResources().getString(R.string.two)))
             {
                 String Coustomer_Name = jsonObjLoginResponse.getString("Coustomer_Name");
-                //Toast.makeText(POSAddBillingActivity.this,"Contact Already Exits",Toast.LENGTH_SHORT).show();
                 inputName.setText(Coustomer_Name);
-                // Toast.makeText(POSAddBillingActivity.this,"Please Enter New Mobile Number",Toast.LENGTH_SHORT).show();
             }
 
         } catch (JSONException e) {
@@ -682,47 +622,37 @@ public class POSAddBillingActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            // showProgressDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             SearchDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> SearchDetails = new HashMap<String, String>();
 
             SearchDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(POSAddBillingActivity.this) );
             SearchDetails.put("action", "show_contact_list_in_pos");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(POSAddBillingActivity.this);
-            //EmployeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(Employee.this));
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, SearchDetails);
-            Log.v(TAG, String.format("doInBackground :: show_contact_list_in_pos= %s", loginResult));
             return loginResult;
         }
 
 
     }
-
-
     private void SearchDetails(String jsonResponse) {
 
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 if (object != null) {
                     JSONArray jsonArrayResult = object.getJSONArray("result");
@@ -730,15 +660,11 @@ public class POSAddBillingActivity extends AppCompatActivity {
                     if (jsonArrayResult != null && jsonArrayResult.length() > 0){
                         for (int i = 0; i < jsonArrayResult.length(); i++) {
                             searchModel = new Search_list();
-                            Log.v(TAG, "JsonResponseOpeartion ::");
                             JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                             if (jsonObj != null) {
 
                                 String Coustomer_Name     = jsonObj.getString("Coustomer_Name");
                                 String Coustomer_Contact     = jsonObj.getString("Coustomer_Contact");
-
-                                //  String email = jsonObj.getString("email");
-                                // String phn_no = jsonObj.getString("mobile");
 
                                 String namec=Coustomer_Name+"-"+Coustomer_Contact;
                                 searchModel.setCustName(Coustomer_Name);
@@ -749,28 +675,21 @@ public class POSAddBillingActivity extends AppCompatActivity {
                                 searchnameadapter = new SearchNameAdapter(POSAddBillingActivity.this, searchArrayList);
 
                                 inputName.setAdapter(searchnameadapter);
-                                // inputName.setDropDownBackgroundResource(R.drawable.search_background);
+
                                 inputName.setThreshold(1);
 
                                 searchcontactadapter = new SearchContactAdapter(POSAddBillingActivity.this, searchArrayList);
 
                                 inputContact.setAdapter(searchcontactadapter);
-                                // textContact.setDropDownBackgroundResource(R.drawable.search_background);
                                 inputContact.setThreshold(1);
 
-                                //searchnameadapter = new SearchAdapter(MainNavigationActivity.this, searchArrayList);
-                                //text.setAdapter(searchnameadapter);
-                                // text.setDropDownBackgroundResource(R.drawable.layoutborder);
-                                // text.setThreshold(1);
 
 
                             }
-                        }}else if(jsonArrayResult.length()==0){
-                        System.out.println("No records found");
+                        }
                     }
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
             }
         }

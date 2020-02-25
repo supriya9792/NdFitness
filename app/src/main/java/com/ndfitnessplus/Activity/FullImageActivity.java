@@ -99,24 +99,18 @@ public class FullImageActivity extends AppCompatActivity {
         bottom_sheet = findViewById(R.id.bottom_sheet);
         mBehavior = BottomSheetBehavior.from(bottom_sheet);
 
-        // Receiving the data from previous activity
         EnableRuntimePermissionToAccessCamera();
 
         Intent intent = getIntent();
-        // Bundle args = intent.getBundleExtra("BUNDLE");
         if (intent != null) {
             imageurl=intent.getStringExtra("image");
             contact=intent.getStringExtra("contact");
             id=intent.getStringExtra("id");
             user=intent.getStringExtra("user");
-            Log.d(TAG, "image: "+imageurl);
-            Log.d(TAG, "contact: "+contact);
-            Log.d(TAG, "id: "+id);
-            Log.d(TAG, "user: "+user);
+
             String domainurl= SharedPrefereneceUtil.getDomainUrl(FullImageActivity.this);
             String url= domainurl+ServiceUrls.IMAGES_URL + imageurl;
             if(imageurl!=null) {
-                //Glide.with(FullImageActivity.this).load(url).placeholder(R.drawable.nouser).into(imageView);
                 RequestOptions requestOptions = new RequestOptions();
                 requestOptions.placeholder(R.drawable.nouser);
                 requestOptions.error(R.drawable.nouser);
@@ -188,7 +182,6 @@ public class FullImageActivity extends AppCompatActivity {
         });
 
 
-
         mBottomSheetDialog = new BottomSheetDialog(this);
         mBottomSheetDialog.setContentView(view);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -203,84 +196,6 @@ public class FullImageActivity extends AppCompatActivity {
             }
         });
     }
-//    @Override
-//    protected void onActivityResult(int RC, int RQC, Intent I) {
-//
-//        super.onActivityResult(RC, RQC, I);
-//
-//        if (RC == 7 && RQC == RESULT_OK && I != null && I.getData() != null) {
-//
-//            uri = I.getData();
-//            Log.v(TAG, String.format("doInBackground :: uri= %s", uri));
-//                try {
-//
-//
-//                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-//                    Intent intent = getIntent();
-//                    // Bundle args = intent.getBundleExtra("BUNDLE");
-//                    if (intent != null) {
-//                        imageurl=intent.getStringExtra("image");
-//                        contact=intent.getStringExtra("contact");
-//                        id=intent.getStringExtra("id");
-//                        user=intent.getStringExtra("user");
-//                        Log.d(TAG, "result image: "+imageurl);
-//                        Log.d(TAG, "result contact: "+contact);
-//                        Log.d(TAG, "result id: "+id);
-//                        Log.d(TAG, "result user: "+user);
-//
-//                    }
-//                imageView.setImageBitmap(bitmap);
-//                toolbar.setVisibility(View.GONE);
-//                bottomView.setVisibility(View.VISIBLE);
-//
-//            } catch (IOException e) {
-//
-//                e.printStackTrace();
-//            }
-//        }else  if (RC == REQUEST_IMAGE_CAPTURE ) {
-//
-//
-//           if(I !=null){
-//            Bundle extras = I.getExtras();
-//            if (extras != null) {
-//                Bitmap bitmap1 = (Bitmap) extras.get("data");
-//
-//                Intent intent = getIntent();
-//                // Bundle args = intent.getBundleExtra("BUNDLE");
-//                if (intent != null) {
-//                    imageurl=intent.getStringExtra("image");
-//                    contact=intent.getStringExtra("contact");
-//                    id=intent.getStringExtra("id");
-//                    user=intent.getStringExtra("user");
-//                    Log.d(TAG, "result image: "+imageurl);
-//                    Log.d(TAG, "result contact: "+contact);
-//                    Log.d(TAG, "result id: "+id);
-//                    Log.d(TAG, "result user: "+user);
-//
-//                }
-//                Log.v(TAG, String.format("doInBackground :: bitmap= %s", bitmap1));
-//
-//                bitmap = Bitmap.createScaledBitmap(bitmap1, 200,
-//                        200, true);
-//                //return newBitmap;
-//                imageView.setImageBitmap(bitmap);
-//                toolbar.setVisibility(View.GONE);
-//                bottomView.setVisibility(View.VISIBLE);
-//
-////                String timeStamp =
-////                        new SimpleDateFormat("yyyyMMdd_HHmmss",
-////                                Locale.getDefault()).format(new Date());
-////                String imageFileName = "IMG_" + timeStamp;
-//
-//               // bitmap=Utility.resizeAndCompressImageBeforeSend(AddEnquiryActivity.this,bitmap1,imageFileName);
-//                Log.v(TAG, String.format(" Bitmap= %s", bitmap));
-//               // uploadimageClass();
-//            }
-//             }
-//
-//        }
-//    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.edit_photo_menu, menu);
@@ -294,11 +209,8 @@ public class FullImageActivity extends AppCompatActivity {
             Intent intent = new Intent(FullImageActivity.this, MainActivity.class);
             startActivity(intent);
         }else if(id ==R.id.action_edit){
-           //showBottomSheetDialog();
             CropImage.startPickImageActivity(FullImageActivity.this);
         }else if(id== android.R.id.home){
-            //Toast.makeText(this,"Navigation back pressed",Toast.LENGTH_SHORT).show();
-            // NavUtils.navigateUpFromSameTask(this);
             finish();
         }
 
@@ -309,8 +221,6 @@ public class FullImageActivity extends AppCompatActivity {
         if (ActivityCompat.shouldShowRequestPermissionRationale(FullImageActivity.this,
                 Manifest.permission.CAMERA))
         {
-
-            // Printing toast message after enabling runtime permission.
             Toast.makeText(FullImageActivity.this,"CAMERA permission allows us to Access CAMERA app", Toast.LENGTH_LONG).show();
 
         } else {
@@ -323,7 +233,6 @@ public class FullImageActivity extends AppCompatActivity {
     @SuppressLint("NewApi")
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        // handle result of pick image chooser
         if (requestCode == CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             Uri imageUri = CropImage.getPickImageResultUri(this, data);
 
@@ -343,32 +252,22 @@ public class FullImageActivity extends AppCompatActivity {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
                 Intent intent = getIntent();
-                // Bundle args = intent.getBundleExtra("BUNDLE");
                 if (intent != null) {
                     imageurl=intent.getStringExtra("image");
                     contact=intent.getStringExtra("contact");
                     id=intent.getStringExtra("id");
                     user=intent.getStringExtra("user");
-                    Log.d(TAG, "result image: "+imageurl);
-                    Log.d(TAG, "result contact: "+contact);
-                    Log.d(TAG, "result id: "+id);
-                    Log.d(TAG, "result user: "+user);
 
                 }
-              //  imageView.setVisibility(View.VISIBLE);
-                // ((ImageButton) findViewById(R.id.quick_start_cropped_image)).setImageURI(result.getUri());
                 imageView.setImageURI(result.getUri());
                 try {
                     bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), result.getUri());
                     imageView.setImageURI(result.getUri());
-                  //  imageView.setImageBitmap(bitmap);
                     toolbar.setVisibility(View.GONE);
                     bottomView.setVisibility(View.VISIBLE);
-                   // uploadimageClass();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-               // Toast.makeText(this, "Cropping successful, Sample: " + result.getSampleSize(), Toast.LENGTH_LONG).show();
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Toast.makeText(this, "Cropping failed: " + result.getError(), Toast.LENGTH_LONG).show();
             }
@@ -378,10 +277,8 @@ public class FullImageActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         if (mCropImageUri != null && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            // required permissions granted, start crop image activity
             startCropImageActivity(mCropImageUri);
         } else {
-            //  Toast.makeText(this, "Cancelling, required permissions are not granted", Toast.LENGTH_LONG).show();
         }
     }
     private void startCropImageActivity(Uri imageUri) {
@@ -392,36 +289,13 @@ public class FullImageActivity extends AppCompatActivity {
                 .setFixAspectRatio(true)
                 .start(this);
     }
-    private void showProgressDialog() {
-        Log.v(TAG, String.format("showProgressDialog"));
-        pd = new ProgressDialog(FullImageActivity.this);
-        pd.setMessage("loading");
-        pd.setCancelable(false);
-        pd.show();
-    }
-
-    /**
-     * Dismiss Progress Dialog.
-     */
-    private void dismissProgressDialog() {
-        Log.v(TAG, String.format("dismissProgressDialog"));
-
-        pd.cancel();
-    }
 
     private void uploadimageClass() {
-
         ByteArrayOutputStream byteArrayOutputStreamObject ;
-
         byteArrayOutputStreamObject = new ByteArrayOutputStream();
-
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStreamObject);
-
         byte[] byteArrayVar = byteArrayOutputStreamObject.toByteArray();
-
         final String  ConvertImage = Base64.encodeToString(byteArrayVar, Base64.DEFAULT);
-        Log.v(TAG, String.format(" ConvertImage= %s", ConvertImage));
-
 
 
         class UploadImageTrackClass extends AsyncTask<String, Void, String> {
@@ -433,7 +307,6 @@ public class FullImageActivity extends AppCompatActivity {
             protected void onPreExecute() {
                 super.onPreExecute();
                 Log.v(TAG, "onPreExecute");
-               // showProgressDialog();
                 viewDialog.showDialog();
             }
 
@@ -441,9 +314,7 @@ public class FullImageActivity extends AppCompatActivity {
             protected void onPostExecute(String response) {
                 super.onPostExecute(response);
                 Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-               // dismissProgressDialog();
                 viewDialog.hideDialog();
-                //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
                 ProfileDetails(response);
 
             }
@@ -458,10 +329,6 @@ public class FullImageActivity extends AppCompatActivity {
                     if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
                         Toast.makeText(getApplicationContext(), "Uploaded Successfully", Toast.LENGTH_LONG).show();
                         finish();
-                        // SharedPrefereneceUtil.setCode(ChatRoomActivity.this,code);
-
-                    }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero)))
-                    {
 
                     }
 
@@ -471,24 +338,15 @@ public class FullImageActivity extends AppCompatActivity {
             }
             @Override
             protected String doInBackground(String... params) {
-               // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
                 HashMap<String, String> ProfileDetails = new HashMap<String, String>();
-                // ProfileDetails.put("image_name", GetImageNameEditText);
                 ProfileDetails.put("image_data", ConvertImage);
-                Log.d(TAG, "do in background image_data: "+ConvertImage);
                 ProfileDetails.put("contact", contact);
-                Log.d(TAG, "contact: "+contact);
                 ProfileDetails.put("id", id);
-                Log.d(TAG, "id: "+id);
                 ProfileDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(FullImageActivity.this));
-                Log.d(TAG, "comp_id: "+SharedPrefereneceUtil.getSelectedBranchId(FullImageActivity.this));
                 ProfileDetails.put("user", user);
-                Log.d(TAG, "user: "+user);
                 ProfileDetails.put("action", "upload_image");
                 String domainurl=SharedPrefereneceUtil.getDomainUrl(FullImageActivity.this);
-                //EmployeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(Employee.this));
                 String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, ProfileDetails);
-                Log.v(TAG, String.format("doInBackground :: upload result= %s", loginResult));
                 return loginResult;
             }
         }

@@ -91,7 +91,6 @@ public class MemberDietActivity extends AppCompatActivity {
         viewDialog = new ViewDialog(this);
         progressBar=findViewById(R.id.progressBar);
         nodata=findViewById(R.id.nodata);
-//        alarmONOFF=findViewById(R.id.alarm_on_off);
         noInternet=findViewById(R.id.no_internet);
         progress_bar = (ProgressBar) findViewById(R.id.progress_bar);
         lyt_no_connection = (LinearLayout) findViewById(R.id.lyt_no_connection);
@@ -100,7 +99,7 @@ public class MemberDietActivity extends AppCompatActivity {
             member_id=intent.getStringExtra("member_id");
         }
         if (isOnline(MemberDietActivity.this)) {
-            dietclass();// check login details are valid or not from server
+            dietclass();
         }
         else {
             recyclerView.setVisibility(View.GONE);
@@ -127,20 +126,6 @@ public class MemberDietActivity extends AppCompatActivity {
                 }
             });
         }
-//        alarmONOFF.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-//                Log.v("Switch State=", ""+b);
-//                if (!compoundButton.isSelected()) {
-//                    Log.i("Yeah" , "Is Not Selected");
-//                    // stopAlarmManager();
-//
-//                }
-//
-//            }
-//        });
-
-
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -155,8 +140,6 @@ public class MemberDietActivity extends AppCompatActivity {
             Intent intent = new Intent(MemberDietActivity.this, MainActivity.class);
             startActivity(intent);
         }else if(id== android.R.id.home){
-            //Toast.makeText(this,"Navigation back pressed",Toast.LENGTH_SHORT).show();
-            // NavUtils.navigateUpFromSameTask(this);
             finish();
         }
 
@@ -178,7 +161,6 @@ public class MemberDietActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
             viewDialog.showDialog();
         }
 
@@ -186,25 +168,20 @@ public class MemberDietActivity extends AppCompatActivity {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
             viewDialog.hideDialog();
             progressBar.setVisibility(View.GONE);
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             DietDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> DietDetails = new HashMap<String, String>();
             DietDetails.put("member_id", member_id);
             DietDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(MemberDietActivity.this));
-            Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getCompanyAutoId(MemberDietActivity.this)));
             DietDetails.put("action","show_diet_to_member");
-             String domainurl=SharedPrefereneceUtil.getDomainUrl(MemberDietActivity.this);
+            String domainurl=SharedPrefereneceUtil.getDomainUrl(MemberDietActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, DietDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
 
@@ -214,12 +191,9 @@ public class MemberDietActivity extends AppCompatActivity {
     private void DietDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
-
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
@@ -229,7 +203,6 @@ public class MemberDietActivity extends AppCompatActivity {
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
                             for (int i = 0; i < jsonArrayResult.length(); i++) {
                                 subList = new MemberDietList();
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -245,7 +218,6 @@ public class MemberDietActivity extends AppCompatActivity {
 
                                         for (int j = 0; j < jsonArrayDietInfo.length(); j++) {
                                             subList = new MemberDietList();
-                                            Log.v(TAG, "JsonResponseOpeartion ::");
                                             JSONObject jsonObjdiet = jsonArrayDietInfo.getJSONObject(j);
                                             if (jsonObj != null) {
 
@@ -253,56 +225,23 @@ public class MemberDietActivity extends AppCompatActivity {
                                                 String MealDisc = jsonObjdiet.getString("MealDisc");
                                                 String Time = jsonObjdiet.getString("Time");
 
-//                                              if(Time.contains(" ")){
-//
-//
-//                                                String sp[] = Time.split(" ");
-//                                                String sptime[] = sp[0].split(" ");
-//
-//                                                if(!(sp[1].equals("") || sp[1].equals("null") )){
-//                                                    Calendar calendar = Calendar.getInstance();
-//                                                    SimpleDateFormat fmt = new SimpleDateFormat("hh:mm");
-//                                                    Date time = fmt.parse(sp[0]);
-//                                                    calendar.setTime(time);
-//                                                    setAlarm(calendar.getTimeInMillis());
-//                                                }
-//                                              }else{
                                                 if(!(Time.equals("null")|| Time.equals(""))) {
                                                     Calendar calendar = Calendar.getInstance();
                                                     String curentdate = Utility.getCurrentDate();
                                                     SimpleDateFormat fmt = new SimpleDateFormat("dd-MM-yyyy HH:mm");
                                                     Date time = fmt.parse(curentdate + " " + Time);
                                                     calendar.setTime(time);
-//                                                    long seconds = TimeUnit.MILLISECONDS.toSeconds(calendar.getTimeInMillis());
-//                                                     calendar.add(Calendar.SECOND, (int) seconds);
 
-//                                              }
                                                     String hourminsplit[]=Time.split(":");
                                                     hour=Integer.parseInt(hourminsplit[0]);
                                                     min=Integer.parseInt(hourminsplit[1]);
                                                 }
-
-                                                //  NotificationScheduler.setReminder(this, AlarmReceiver.class, hour,min);
-
-//                                                AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
-//
-//                                                    Intent intent = new Intent(this, AlarmReceiver.class);
-//                                                    // Loop counter `i` is used as a `requestCode`
-//                                                     pi = PendingIntent.getBroadcast(this, i, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-//                                                    // Single alarms in 1, 2, ..., 10 minutes (in `i` minutes)
-//                                                  am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pi);
-//
-//                                                    intentArray.add(pi);
 
                                                 subList.setMealName(MealType);
                                                 subList.setMealTime(Time);
                                                 subList.setMealDisc(MealDisc);
                                                 String curentdate = Utility.getCurrentDate();
 
-                                                // setAlarm(calendar.getTimeInMillis());
-                                                //AlarmReceiver.alarmNotification(MealType,getApplicationContext());
-                                                // AlarmNotificationService.sendNotification(MealType);
-                                                //Toast.makeText(MainActivity.this, "j "+j, Toast.LENGTH_SHORT).show();
                                                 subListArrayList.add(subList);
                                                 adapter = new MemberDietAdapter(MemberDietActivity.this, subListArrayList);
                                                 recyclerView.setAdapter(adapter);
@@ -310,15 +249,6 @@ public class MemberDietActivity extends AppCompatActivity {
                                             }
                                         }
                                     }
-//                                    subList.setMealName(MealType);
-//                                    subList.setMealTime(MealTime);
-//                                    subList.setMealDisc(MealDisc);
-//
-//
-//                                    //Toast.makeText(MainActivity.this, "j "+j, Toast.LENGTH_SHORT).show();
-//                                    subListArrayList.add(subList);
-//                                    adapter = new MemberDietAdapter(MemberDietActivity.this, subListArrayList);
-//                                    recyclerView.setAdapter(adapter);
 
                                 }
                             }
@@ -331,7 +261,6 @@ public class MemberDietActivity extends AppCompatActivity {
                     recyclerView.setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
             } catch (ParseException e) {
                 e.printStackTrace();

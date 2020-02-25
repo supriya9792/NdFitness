@@ -81,8 +81,6 @@ public class FollowupAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     @Override
     public void onBindViewHolder(BaseViewHolder holder, int position) {
         holder.onBind(position);
-
-        Log.d(TAG, "call onbind method of viewholder: " );
     }
 
     @Override
@@ -99,8 +97,6 @@ public class FollowupAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     }
     public void add(FollowupList response) {
         arrayList.add(response);
-        //subList.add(response);
-        Log.d(TAG, "sublist size after add : "+String.valueOf(subList.size()) );
         notifyItemInserted(arrayList.size() - 1);
     }
 
@@ -109,8 +105,6 @@ public class FollowupAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             add(response);
             subList.add(response);
         }
-
-        Log.d(TAG, "arraylist size after adding new data: "+String.valueOf(arrayList.size()) );
 
     }
 
@@ -145,7 +139,6 @@ public class FollowupAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         if (item != null) {
             arrayList.remove(position);
             notifyItemRemoved(position);
-            //notifyDataSetChanged();
         }
     }
     public void clear() {
@@ -155,10 +148,9 @@ public class FollowupAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     }
     //filter for search
     public int search( String charTex,final ArrayList<FollowupList> subList) {
-        // subList=arrayList;
+
 
         final String charText = charTex.toLowerCase(Locale.getDefault());
-        Log.d(TAG, "sublist size whentext  filter: "+String.valueOf(subList.size()) );
         arrayList.clear();
         if (charText.length() == 0) {
 
@@ -180,10 +172,8 @@ public class FollowupAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                 }
             });
 
-
-
         }
-        Log.d(TAG, "sublist size search: "+String.valueOf(subList.size()) );
+
         notifyDataSetChanged();
         return arrayList.size();
     }
@@ -239,7 +229,7 @@ public class FollowupAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             final MemberDataList subList = new MemberDataList();
             subList.setName(enq.getName());
             subList.setGender("NA");
-            Log.d(TAG, "Contact: " + enq.getContact());
+
             try {
                 if (!(enq.getContact().equals("null") || enq.getContact().equals(""))) {
                     String cont = Utility.lastFour(enq.getContact());
@@ -249,7 +239,7 @@ public class FollowupAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             }catch (Exception e){
                 e.printStackTrace();
             }
-          //  String dob= Utility.formatDate(enq.getContact());
+
             subList.setBirthDate("");
             subList.setExecutiveName(enq.getExecutiveName());
             subList.setBlodGroup("NA");
@@ -257,13 +247,6 @@ public class FollowupAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             subList.setID(enq.getID());
             String image=enq.getImage();
             subList.setImage(enq.getImage());
-//            try {
-//            if((image.equals("null")||image.equals(""))) {
-//                String replace = image.replace("\"", "");
-//                subList.setImage(replace);
-//            }}catch (Exception e){
-//                e.printStackTrace();
-//            }
             subList.setStatus("");
             subList.setEmail("");
 
@@ -315,10 +298,9 @@ public class FollowupAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     //filter for search
     public int filter(String charText) {
-        // subList=arrayList;
 
         charText = charText.toLowerCase(Locale.getDefault());
-        Log.d(TAG, "sublist size whentext  filter: "+String.valueOf(subList.size()) );
+
         arrayList.clear();
         if (charText.length() == 0) {
 
@@ -333,7 +315,6 @@ public class FollowupAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                 }
             }
         }
-        Log.d(TAG, "sublist size filter: "+String.valueOf(subList.size()) );
         notifyDataSetChanged();
         return  arrayList.size();
     }

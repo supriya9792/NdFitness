@@ -14,7 +14,6 @@ import java.util.ArrayList;
 
 public class ProductTrasanctionAdapter extends RecyclerView.Adapter<ProductTrasanctionAdapter.ViewHolder> {
     ArrayList<ProductTrasanctionList> arrayList;
-
     Context context;
 
     public ProductTrasanctionAdapter(ArrayList<ProductTrasanctionList> paramArrayList, Context paramContext) {

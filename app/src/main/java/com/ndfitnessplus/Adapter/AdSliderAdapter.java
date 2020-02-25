@@ -41,7 +41,6 @@ public class AdSliderAdapter extends PagerAdapter implements LoopingPagerAdapter
   @Override
   public Object instantiateItem(ViewGroup container, int position) {
 
-    // layoutInflater = (LayoutInflater)container (Context.LAYOUT_INFLATER_SERVICE);
     layoutInflater=LayoutInflater.from(container.getContext());
 
     View view = layoutInflater.inflate(R.layout.ad_slider_list, container, false);
@@ -57,7 +56,6 @@ public class AdSliderAdapter extends PagerAdapter implements LoopingPagerAdapter
                 Glide.with((Activity)mContext)
                         .setDefaultRequestOptions(requestOptions)
                         .load(url).into(placeholder);
-   // placeholder.setImageResource(arraylist.get(position).getImage());
     container.addView(view);
     return view;
   }

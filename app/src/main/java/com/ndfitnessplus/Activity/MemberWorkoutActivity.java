@@ -86,7 +86,7 @@ public class MemberWorkoutActivity extends AppCompatActivity {
         }
 
         if (isOnline(MemberWorkoutActivity.this)) {
-            workout_daysclass();// check login details are valid or not from server
+            workout_daysclass();
         }
         else {
             recyclerView.setVisibility(View.GONE);
@@ -130,8 +130,6 @@ public class MemberWorkoutActivity extends AppCompatActivity {
             Intent intent = new Intent(MemberWorkoutActivity.this, MainActivity.class);
             startActivity(intent);
         }else if(id== android.R.id.home){
-            //Toast.makeText(this,"Navigation back pressed",Toast.LENGTH_SHORT).show();
-            // NavUtils.navigateUpFromSameTask(this);
             finish();
         }
 
@@ -150,7 +148,6 @@ public class MemberWorkoutActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
             viewDialog.showDialog();
         }
 
@@ -158,17 +155,14 @@ public class MemberWorkoutActivity extends AppCompatActivity {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
             viewDialog.hideDialog();
             progressBar.setVisibility(View.GONE);
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             WorkoutDaysDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> WorkoutDaysDetails = new HashMap<String, String>();
             WorkoutDaysDetails.put("member_id", member_id);
             WorkoutDaysDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(MemberWorkoutActivity.this));
@@ -176,7 +170,6 @@ public class MemberWorkoutActivity extends AppCompatActivity {
             WorkoutDaysDetails.put("action","show_workout_level_days");
              String domainurl=SharedPrefereneceUtil.getDomainUrl(MemberWorkoutActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, WorkoutDaysDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
 
@@ -186,7 +179,6 @@ public class MemberWorkoutActivity extends AppCompatActivity {
     private void WorkoutDaysDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
@@ -201,7 +193,7 @@ public class MemberWorkoutActivity extends AppCompatActivity {
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
                             for (int i = 0; i < jsonArrayResult.length(); i++) {
                                 subList1 = new WorkOutDayList();
-                                Log.v(TAG, "JsonResponseOpeartion ::");
+
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -215,7 +207,7 @@ public class MemberWorkoutActivity extends AppCompatActivity {
 
                                         for (int j = 0; j < jsonArrayday_info.length(); j++) {
                                             subList = new WorkOutDayList();
-                                            Log.v(TAG, "JsonResponseOpeartion ::");
+
                                             JSONObject jsonObjdiet = jsonArrayday_info.getJSONObject(j);
                                             if (jsonObj != null) {
 
@@ -225,7 +217,6 @@ public class MemberWorkoutActivity extends AppCompatActivity {
                                                 subList.setMemberId(member_id);
                                                 subList.setSection(false);
 
-                                                //Toast.makeText(MainActivity.this, "j "+j, Toast.LENGTH_SHORT).show();
                                                 subListArrayList.add(subList);
 
 

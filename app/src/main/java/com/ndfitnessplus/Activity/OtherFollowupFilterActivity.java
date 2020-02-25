@@ -153,9 +153,6 @@ public class OtherFollowupFilterActivity extends AppCompatActivity {
        follTypeClass();
 
 
-
-        //setting data to the spinners
-
         spinFollType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -168,16 +165,13 @@ public class OtherFollowupFilterActivity extends AppCompatActivity {
                         tv.setText(getResources().getString(R.string.hint_foll_type));
                     }
 
-//                tv.setTextColor(getResources().getColor(R.color.black));
                     followupType = tv.getText().toString();
 
                     if((followupType.equals(getResources().getString(R.string.hint_foll_type)))||
                             (followupType.equals(getResources().getString(R.string.all)))){
                         followupType="";
                     }
-                    // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.white));
-                    // Showing selected spinner item
-                    //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+
                 }}
 
             @Override
@@ -197,8 +191,6 @@ public class OtherFollowupFilterActivity extends AppCompatActivity {
     }
     public void CampareTwoDates(){
         //******************campare two dates****************
-//        String date = "03/26/2012 11:00:00";
-//        String dateafter = "03/26/2012 11:59:00";
         SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "dd-MM-yyyy");
         Date convertedDate = new Date();
@@ -207,7 +199,7 @@ public class OtherFollowupFilterActivity extends AppCompatActivity {
             convertedDate = dateFormat.parse(todate.getText().toString());
             convertedDate2 = dateFormat.parse(fromdate.getText().toString());
             if (convertedDate2.after(convertedDate) || convertedDate2.equals(convertedDate)) {
-                //.setText("true");
+
             } else {
                 String firstday= Utility.getFirstDayofMonth();
                 todate.setText(firstday);
@@ -220,8 +212,6 @@ public class OtherFollowupFilterActivity extends AppCompatActivity {
     }
     public void CampareFronTwoDates(){
         //******************campare two dates****************
-//        String date = "03/26/2012 11:00:00";
-//        String dateafter = "03/26/2012 11:59:00";
         SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "dd-MM-yyyy");
         Date convertedDate = new Date();
@@ -230,7 +220,7 @@ public class OtherFollowupFilterActivity extends AppCompatActivity {
             convertedDate = dateFormat.parse(fromdate.getText().toString());
             convertedDate2 = dateFormat.parse(todate.getText().toString());
             if (convertedDate2.before(convertedDate) || convertedDate2.equals(convertedDate)) {
-                //.setText("true");
+
             } else {
                 String firstday= Utility.getCurrentDate();
                 fromdate.setText(firstday);
@@ -256,23 +246,7 @@ public class OtherFollowupFilterActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-    private void showProgressDialog() {
-        Log.v(TAG, String.format("showProgressDialog"));
-        pd = new ProgressDialog(OtherFollowupFilterActivity.this);
-        pd.setMessage("loading");
-        pd.setCancelable(false);
-        pd.show();
-    }
 
-    /**
-     * Dismiss Progress Dialog.
-     */
-    private void dismissProgressDialog() {
-        Log.v(TAG, String.format("dismissProgressDialog"));
-        pd.cancel();
-
-
-    }
     // ************* Follwup Type Spinner ***************
     public void follTypeClass() {
         OtherFollowupFilterActivity.FollTypeTrackClass ru = new OtherFollowupFilterActivity.FollTypeTrackClass();
@@ -287,26 +261,23 @@ public class OtherFollowupFilterActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            // showProgressDialog();
+
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            // dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             FollTypeDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
+
             HashMap<String, String> FollTypeDetails = new HashMap<String, String>();
             FollTypeDetails.put("action", "show_master_followup_type_list");
             String domainurl= SharedPrefereneceUtil.getDomainUrl(OtherFollowupFilterActivity.this);
-            //FollTypeloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(FollTypeloyee.this));
             String loginResult = ruc.sendPostRequest(domainurl+ ServiceUrls.LOGIN_URL, FollTypeDetails);
             Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
@@ -318,12 +289,11 @@ public class OtherFollowupFilterActivity extends AppCompatActivity {
 
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
+
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
@@ -334,17 +304,13 @@ public class OtherFollowupFilterActivity extends AppCompatActivity {
                             folltype[0]=getResources().getString(R.string.hint_foll_type);
                             for (int i = 0; i < jsonArrayCountry.length(); i++) {
                                 followuptypelist = new Spinner_List();
-                                Log.v(TAG, "JsonResponseOpeartion ::");
+
                                 JSONObject jsonObj = jsonArrayCountry.getJSONObject(i);
                                 if (jsonObj != null) {
 
                                     String Followup     = jsonObj.getString("Followup");
 
                                     String id=jsonObj.getString("Auto_Id");
-//                               if(i==0){
-//                                   spinFollTypeList.setName(getResources().getString(R.string.promt_country));
-//                                   enqF.add(0,spinFollTypeList);
-//                               }
                                     if(!Followup.equals("Member BirthDay")){
                                         followuptypelist.setName(Followup);
                                         followuptypelist.setId(id);
@@ -375,7 +341,6 @@ public class OtherFollowupFilterActivity extends AppCompatActivity {
                                         // Set the hint text color gray
                                         tv.setTextColor(Color.GRAY);
                                         tv.setText(getResources().getString(R.string.hint_foll_type));
-                                        // tv.setTextColor(Color.GRAY);
                                     }
                                     else {
                                         tv.setTextColor(Color.BLACK);
@@ -390,13 +355,8 @@ public class OtherFollowupFilterActivity extends AppCompatActivity {
                             System.out.println("No records found");
                         }
                     }
-                }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
-
-                    //forumCount.setVisibility(View.INVISBLE);
-                    // queCount.setVisibility(View.INVISIBLE);
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
             }
         }
@@ -407,17 +367,15 @@ public class OtherFollowupFilterActivity extends AppCompatActivity {
         ru.execute("5");
     }
 
-
     class SearchOtherFollowupTrackClass extends AsyncTask<String, Void, String> {
 
         ServerClass ruc = new ServerClass();
-
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-           // showProgressDialog();
+
             viewDialog.showDialog();
         }
 
@@ -425,32 +383,21 @@ public class OtherFollowupFilterActivity extends AppCompatActivity {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-           // dismissProgressDialog();
             viewDialog.hideDialog();
-            //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
-            //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
             SearchOtherFollowupDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-          //  Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> SearchOtherFollowupDetails = new HashMap<String, String>();
             SearchOtherFollowupDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(OtherFollowupFilterActivity.this));
-            Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(OtherFollowupFilterActivity.this)));
             SearchOtherFollowupDetails.put("to_date",todate.getText().toString());
-            Log.v(TAG, String.format("doInBackground :: to_date = %s",todate.getText().toString() ));
             SearchOtherFollowupDetails.put("from_date",fromdate.getText().toString());
-            Log.v(TAG, String.format("doInBackground :: from_date = %s", fromdate.getText().toString()));
             SearchOtherFollowupDetails.put("foll_type", followupType);
-            Log.v(TAG, String.format("doInBackground :: folltype = %s", followupType));
-
             SearchOtherFollowupDetails.put("action", "search_other_followup_filter");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(OtherFollowupFilterActivity.this);
             String loginResult2 = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, SearchOtherFollowupDetails);
-
-            Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult2));
             return loginResult2;
         }
     }
@@ -466,21 +413,15 @@ public class OtherFollowupFilterActivity extends AppCompatActivity {
             String success = object.getString(getResources().getString(R.string.success));
 
             if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
-                //Toast.makeText(OtherFollowupFilterActivity.this,"OtherFollowup added succesfully",Toast.LENGTH_SHORT).show();
 
                 if (object != null) {
                     JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
                     if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
                         for (int i = 0; i < jsonArrayResult.length(); i++) {
 
 
                             subList = new FollowupList();
-                            Log.d(TAG, "i: " + i);
-                            // Log.d(TAG, "run: " + itemCount);
-                            Log.v(TAG, "JsonResponseOpeartion ::");
+
                             JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                             if (jsonObj != null) {
 
@@ -494,11 +435,7 @@ public class OtherFollowupFilterActivity extends AppCompatActivity {
                                 String NextFollowup_Date = jsonObj.getString("NextFollowupDate");
                                 String Member_ID = jsonObj.getString("Member_ID");
                                 String Followup_Date = jsonObj.getString("FollowupDate");
-                                //  for (int j = 0; j < 5; j++) {
-                                Log.d(TAG, "next followup date: " + NextFollowup_Date);
-                                Log.d(TAG, "Followup date: " + Followup_Date);
 
-                                //  for (int j = 0; j < 5; j++) {
 
                                 subList.setName(name);
                                 subList.setRating(Rating);
@@ -508,16 +445,14 @@ public class OtherFollowupFilterActivity extends AppCompatActivity {
                                 subList.setComment(Comment);
                                 subList.setFollowupType(FollowupType);
                                 String next_foll_date= Utility.formatDate(NextFollowup_Date);
-                                Log.d(TAG, "converted next followup date: " + next_foll_date);
                                 subList.setNextFollowupDate(next_foll_date);
                                 String foll_date= Utility.formatDate(Followup_Date);
 
-                                Log.d(TAG, "converted Followup date: " + foll_date);
+
                                 subList.setFollowupDate(foll_date);
                                 subList.setID(Member_ID);
                                 subList.setImage("");
 
-                                //Toast.makeText(EnquiryActivity.this, "followup date: "+next_foll_date, Toast.LENGTH_SHORT).show();
                                 subListArrayList.add(subList);
 
 
@@ -533,17 +468,12 @@ public class OtherFollowupFilterActivity extends AppCompatActivity {
                         System.out.println("No records found");
                     }
                 }
-
-                // showCustomDialog();
-
-                //inputEmail, inputPhone,inputAdd,inputReq,inputFollowupdate;
             }
 
 
             else if (success.equalsIgnoreCase(getResources().getString(R.string.zero)))
             {
-                //Toast.makeText(OtherFollowupFilterActivity.this,"Mobile Number Already Exits",Toast.LENGTH_SHORT).show();
-                //inputContact.getText().clear();
+
                 Toast.makeText(OtherFollowupFilterActivity.this,"No Records Found",Toast.LENGTH_SHORT).show();
             }
 

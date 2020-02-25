@@ -137,8 +137,6 @@ public class POSDetailsTrasactionActivity extends AppCompatActivity {
             filterArrayList = (POSSellList) args.getSerializable("filter_array_list");
 
             String cont=filterArrayList.getCustContact();
-//                Log.v(TAG, String.format("Selected  ::contact= %s", cont));
-//                Log.v(TAG, String.format("Selected  ::name= %s", filterArrayList.getName()));
             contactTV.setText(cont);
             nameTV.setText(filterArrayList.getCustName());
             String fpaid=filterArrayList.getTotalAmount();
@@ -167,17 +165,11 @@ public class POSDetailsTrasactionActivity extends AppCompatActivity {
 
                 PackageManager pm=getPackageManager();
                 try {
-                    // Uri uri = Uri.parse("smsto:" + Contact);
                     Uri uri = Uri.parse("whatsapp://send?phone=+91" + contactTV.getText().toString());
                     Intent waIntent = new Intent(Intent.ACTION_VIEW,uri);
-                    //waIntent.setType("text/plain");
-                    String text = "YOUR TEXT HERE";
-
                     PackageInfo info=pm.getPackageInfo("com.whatsapp", PackageManager.GET_META_DATA);
-                    //Check if package exists or not. If not then code
-                    //in catch block will be called
+
                     waIntent.setPackage("com.whatsapp");
-                    // waIntent.putExtra(Intent.EXTRA_TEXT, text);
                     startActivity(waIntent);
 
                 } catch (PackageManager.NameNotFoundException e) {
@@ -203,7 +195,6 @@ public class POSDetailsTrasactionActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            // showProgressDialog();
             viewDialog.showDialog();
         }
 
@@ -211,16 +202,13 @@ public class POSDetailsTrasactionActivity extends AppCompatActivity {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: show_balance_trasaction_details = %s", response));
-            //  dismissProgressDialog();
             viewDialog.hideDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             BalanceTrasactionDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> BalanceTrasactionDetails = new HashMap<String, String>();
             BalanceTrasactionDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(POSDetailsTrasactionActivity.this));
             BalanceTrasactionDetails.put("invoice_id",invoice_id );
@@ -229,7 +217,6 @@ public class POSDetailsTrasactionActivity extends AppCompatActivity {
             BalanceTrasactionDetails.put("action","show_sale_product_details_by_invoice_id");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(POSDetailsTrasactionActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, BalanceTrasactionDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
     }
@@ -237,7 +224,6 @@ public class POSDetailsTrasactionActivity extends AppCompatActivity {
     private void BalanceTrasactionDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
@@ -249,9 +235,7 @@ public class POSDetailsTrasactionActivity extends AppCompatActivity {
                     progressBar.setVisibility(View.GONE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
+
                         ArrayList<ProductTrasanctionList> item = new ArrayList<ProductTrasanctionList>();
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
 
@@ -259,9 +243,7 @@ public class POSDetailsTrasactionActivity extends AppCompatActivity {
 
 
                                 subList = new ProductTrasanctionList();
-                                Log.d(TAG, "i: " + i);
 
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -271,8 +253,6 @@ public class POSDetailsTrasactionActivity extends AppCompatActivity {
                                     String Product_Rate = jsonObj.getString("Product_Rate");
                                     String Product_Total = jsonObj.getString("Product_Total");
 
-
-                                    //  for (int j = 0; j < 5; j++) {
 
                                     subList.setProdCode(Product_Code);
                                     subList.setProdName(Product_Name);
@@ -291,12 +271,8 @@ public class POSDetailsTrasactionActivity extends AppCompatActivity {
                             System.out.println("No records found");
                         }
                     }
-                }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
-                    //nodata.setVisibility(View.VISIBLE);
-                    // recyclerView.setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
                 android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(POSDetailsTrasactionActivity.this);
                 builder.setMessage(R.string.server_exception);

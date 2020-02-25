@@ -73,12 +73,8 @@ public class POSProductListActivity extends AppCompatActivity {
 
     //paginnation parameters
     public static final int PAGE_START = 1;
-    private int currentPage = PAGE_START;
-    private boolean isLastPage = false;
-    private int totalPage = 2;
     private boolean isLoading = false;
-    int itemCount = 0;
-    int offset = 0;
+
      int cartcount=0;
     //search
     private EditText inputsearch;
@@ -122,7 +118,7 @@ public class POSProductListActivity extends AppCompatActivity {
         viewDialog = new ViewDialog(POSProductListActivity.this);
         db=new SQLiteDataBaseHelper(POSProductListActivity.this);
         if (isOnline(POSProductListActivity.this)) {
-            POSItemclass();// check login details are valid or not from server
+            POSItemclass();
         }
         else {
             frame.setVisibility(View.GONE);
@@ -161,17 +157,12 @@ public class POSProductListActivity extends AppCompatActivity {
             public void afterTextChanged(final Editable arg0) {
                 // TODO Auto-generated method stub
                 if (adapter == null){
-                    // some print statement saying it is null
-//                   // Toast toast = Toast.makeText(AttendenceActivity.this,"no record found", Toast.LENGTH_SHORT);
-//                    toast.setGravity(Gravity.CENTER, 0, 0);
-//                    toast.show();
+
                 }
                 else
                 {
                     isLoading = false;
                     int count=adapter.filter(String.valueOf(arg0));
-
-                    //  total_present.setText(String.valueOf(count));-
 
                 }
             }
@@ -187,8 +178,6 @@ public class POSProductListActivity extends AppCompatActivity {
                                       int arg3) {
                 // TODO Auto-generated method stub
                 if(inputsearch.getText().length()==0) {
-                    //do your work here
-                    // Toast.makeText(AddEnquiryActivity.this ,"Text vhanged count  is 10 then: " , Toast.LENGTH_LONG).show();
                     POSItemclass();
                 }
 
@@ -242,29 +231,24 @@ public class POSProductListActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
+
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             POSItemDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> POSItemDetails = new HashMap<String, String>();
             POSItemDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(POSProductListActivity.this));
-            Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(POSProductListActivity.this)));
             POSItemDetails.put("action","show_pos_items");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(POSProductListActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ ServiceUrls.LOGIN_URL, POSItemDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
 
@@ -273,7 +257,6 @@ public class POSProductListActivity extends AppCompatActivity {
     private void POSItemDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
@@ -283,16 +266,11 @@ public class POSProductListActivity extends AppCompatActivity {
                 String success = object.getString(getResources().getString(R.string.success));
 
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
-//                    nodata.setVisibility(View.GONE);
-//                    swipeRefresh.setVisibility(View.VISIBLE);
+
                     String ttl_enq = object.getString("total_product_count");
-                    //total_present.setText(ttl_enq);
                     progressBar.setVisibility(View.GONE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
 
                         ArrayList<POSItemList> item = new ArrayList<POSItemList>();
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
@@ -301,9 +279,7 @@ public class POSProductListActivity extends AppCompatActivity {
 
 
                                 subList = new POSItemList();
-                                Log.d(TAG, "i: " + i);
 
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -335,9 +311,7 @@ public class POSProductListActivity extends AppCompatActivity {
                                         }
                                     }
                                     item.add(subList);
-                                    //Toast.makeText(AttendenceActivity.this, "followup date: "+next_foll_date, Toast.LENGTH_SHORT).show();
 
-                                    //Toast.makeText(MainActivity.this, "j "+j, Toast.LENGTH_SHORT).show();
 
                                     adapter = new POSSellProductGridAdapter( item,POSProductListActivity.this);
                                     recyclerView.setAdapter(adapter);
@@ -392,17 +366,10 @@ public class POSProductListActivity extends AppCompatActivity {
 
     }
 
-//    @Override
-//    protected void onRestart() {
-//        super.onRestart();
-//        Intent intent=new Intent(POSProductListActivity.this,POSProductListActivity.class);
-//        startActivity(intent);
-//    }
     @Override
     protected void onRestart() {
         if (subArrayList.size() != 0) {
             cartcount =subArrayList.size();
-           // invalidateOptionsMenu();
             super.onRestart();
         }
     }

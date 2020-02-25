@@ -37,8 +37,6 @@ public class SelectDomainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
-//                WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_select_domain);
         initToolbar();
         initComponent();
@@ -54,14 +52,8 @@ public class SelectDomainActivity extends AppCompatActivity {
        btn_save=findViewById(R.id.save);
        domain=(EditText) findViewById(R.id.domainurl);
 
-//        domain.setSelection(7);
        String domain_url= SharedPrefereneceUtil.getDomainUrl(SelectDomainActivity.this);
-        //Log.d("Domain url", domain_url);
-        Log.v(TAG, String.format("domain url ::  = %s", domain_url));
-//        if(!(domain_url.equals(" "))){
-//            startActivity(new Intent(SelectDomainActivity.this,LoginActivity.class));
-//            finish();
-//        }
+
         if(domain_url == null || domain_url.equals("")){
             Log.v(TAG, String.format("domain url ::  = %s", domain_url));
         }else{
@@ -109,8 +101,6 @@ public class SelectDomainActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         Log.v(TAG, String.format("doInBackground :: show_domain_url_list= %s", response));
-                        // dismissProgressDialog();
-                        //Toast.makeText(NewUserActivity.this,response,Toast.LENGTH_LONG).show();
                         parseData(response);
 
                     }
@@ -118,8 +108,6 @@ public class SelectDomainActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        //dismissProgressDialog();
-                        //  Toast.makeText(EnquiryActivity.this,error.toString(),Toast.LENGTH_LONG).show();
                     }
                 }){
             @Override
@@ -149,19 +137,13 @@ public class SelectDomainActivity extends AppCompatActivity {
 
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
 
-                    //progressBar.setVisibility(View.GONE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
                         int count=0;
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
 
                             for (int i = 0; i < jsonArrayResult.length(); i++) {
-                                Log.d(TAG, "i: " + i);
 
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 

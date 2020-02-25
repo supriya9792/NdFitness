@@ -57,8 +57,6 @@ public class MeasurementAdapter extends RecyclerView.Adapter<MeasurementAdapter.
         holder.thigh_lTv.setText(enq.getThigh_L());
         holder.calf_rTv.setText(enq.getCalf_R());
         holder.calf_lTv.setText(enq.getCalf_L());
-//        String on="On "+enq.getMeasurement_Date();
-//        holder.nextfolldateTv.setText(on);
         holder.nextfolldateTv.setVisibility(View.GONE);
         holder.excecutive_nameTV.setText(enq.getExecutive_Name());
         holder.mdateTV.setText(enq.getNextFollowupDate());
@@ -109,10 +107,8 @@ public class MeasurementAdapter extends RecyclerView.Adapter<MeasurementAdapter.
     }
     //filter for search
     public int filter(String charText) {
-        // subList=arrayList;
 
         charText = charText.toLowerCase(Locale.getDefault());
-       // Log.d(TAG, "sublist size whentext  filter: "+String.valueOf(subList.size()) );
         arrayList.clear();
         if (charText.length() == 0) {
 
@@ -122,13 +118,10 @@ public class MeasurementAdapter extends RecyclerView.Adapter<MeasurementAdapter.
                 if (wp.getName().toLowerCase(Locale.getDefault())
                         .contains(charText) || wp.getContact().toLowerCase(Locale.getDefault()).contains(charText)) {
                     arrayList.add(wp);
-                    // return arrayList.size();
                 }
             }
         }
         notifyDataSetChanged();
         return arrayList.size();
-        //Log.d(TAG, "sublist size filter: "+String.valueOf(subList.size()) );
-
     }
 }

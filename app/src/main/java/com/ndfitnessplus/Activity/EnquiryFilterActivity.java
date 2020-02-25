@@ -147,7 +147,6 @@ public class EnquiryFilterActivity extends AppCompatActivity {
                                         + (monthOfYear + 1) + "-" + dayOfMonth).toString();
                                 String cdate=Utility.formatDateDB(date);
                                 todate.setText(cdate);
-                                //todate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
                                 CampareTwoDates();
 
                             }
@@ -176,7 +175,6 @@ public class EnquiryFilterActivity extends AppCompatActivity {
 
                                 fromdate.setText(cdate);
                                 CampareFronTwoDates();
-                               // fromdate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
 
                             }
                         }, mYear, mMonth, mDay);
@@ -207,16 +205,12 @@ public class EnquiryFilterActivity extends AppCompatActivity {
                     tv.setText(getResources().getString(R.string.prompt_enquiry_type));
                 }
 
-//                tv.setTextColor(getResources().getColor(R.color.black));
                 enquiryType = tv.getText().toString();
 
                 if((enquiryType.equals(getResources().getString(R.string.prompt_enquiry_type)))||
                         (enquiryType.equals(getResources().getString(R.string.all)))){
                    enquiryType="";
                 }
-                // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.white));
-                // Showing selected spinner item
-                //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
             }}
 
             @Override
@@ -244,9 +238,7 @@ public class EnquiryFilterActivity extends AppCompatActivity {
                             (enquirySource.equals(getResources().getString(R.string.all)))) {
                         enquirySource = "";
                     }
-                    // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.white));
-                    // Showing selected spinner item
-                    //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+
                 }
             }
             @Override
@@ -266,15 +258,11 @@ public class EnquiryFilterActivity extends AppCompatActivity {
                 if(index==0){
                     tv.setText(getResources().getString(R.string.prompt_call_res));
                 }
-//                tv.setTextColor(getResources().getColor(R.color.black));
                 callResponce = tv.getText().toString();
                 if((callResponce.equals(getResources().getString(R.string.prompt_call_res)))||
                         (callResponce.equals(getResources().getString(R.string.all)))){
                     callResponce="";
                 }
-                // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.white));
-                // Showing selected spinner item
-                //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
             }}
 
             @Override
@@ -314,7 +302,6 @@ public class EnquiryFilterActivity extends AppCompatActivity {
                         // Set the hint text color gray
                         tv.setTextColor(Color.GRAY);
                         tv.setText(getResources().getString(R.string.prompt_rating));
-                        // tv.setTextColor(Color.GRAY);
                     } else {
                         tv.setTextColor(Color.BLACK);
                     }
@@ -324,7 +311,6 @@ public class EnquiryFilterActivity extends AppCompatActivity {
             };
             spinRating.setAdapter(ratingadapter);
         }
-        //Toast.makeText(MainActivity.this,genderradioButton.getText(), Toast.LENGTH_SHORT).show();
         spinRating.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -336,15 +322,12 @@ public class EnquiryFilterActivity extends AppCompatActivity {
                     if (index == 0) {
                         tv.setText(getResources().getString(R.string.prompt_rating));
                     }
-//                tv.setTextColor(getResources().getColor(R.color.black));
                     Rating = tv.getText().toString();
                     if ((Rating.equals(getResources().getString(R.string.prompt_rating))) ||
                             (Rating.equals(getResources().getString(R.string.all)))) {
                         Rating = "";
                     }
-                    // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.white));
-                    // Showing selected spinner item
-                    //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+
                 }
             }
             @Override
@@ -363,15 +346,11 @@ public class EnquiryFilterActivity extends AppCompatActivity {
                 if(index==0){
                     tv.setText(getResources().getString(R.string.prompt_enq_for));
                 }
-//                tv.setTextColor(getResources().getColor(R.color.black));
                 enquiryFor = tv.getText().toString();
                 if((enquiryFor.equals(getResources().getString(R.string.prompt_enq_for)))||
                         (enquiryFor.equals(getResources().getString(R.string.all)))){
                     enquiryFor="";
                 }
-                // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.white));
-                // Showing selected spinner item
-                //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
             }}
 
             @Override
@@ -411,7 +390,6 @@ public class EnquiryFilterActivity extends AppCompatActivity {
                         // Set the hint text color gray
                         tv.setTextColor(Color.GRAY);
                         tv.setText(getResources().getString(R.string.prompt_gender));
-                        // tv.setTextColor(Color.GRAY);
                     } else {
                         tv.setTextColor(Color.BLACK);
                     }
@@ -421,7 +399,6 @@ public class EnquiryFilterActivity extends AppCompatActivity {
             };
             spinGender.setAdapter(genderadapter);
         }
-        //Toast.makeText(MainActivity.this,genderradioButton.getText(), Toast.LENGTH_SHORT).show();
         spinGender.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -433,15 +410,11 @@ public class EnquiryFilterActivity extends AppCompatActivity {
                 if(index==0){
                     tv.setText(getResources().getString(R.string.prompt_gender));
                 }
-//                tv.setTextColor(getResources().getColor(R.color.black));
                 gender = tv.getText().toString();
                 if((gender.equals(getResources().getString(R.string.prompt_gender)))||
                         (gender.equals(getResources().getString(R.string.all)))){
                     gender="";
                 }
-                // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.white));
-                // Showing selected spinner item
-                //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
             }}
 
             @Override
@@ -478,7 +451,6 @@ public class EnquiryFilterActivity extends AppCompatActivity {
                         // Set the hint text color gray
                         tv.setTextColor(Color.GRAY);
                         tv.setText(getResources().getString(R.string.prompt_enq_date));
-                        // tv.setTextColor(Color.GRAY);
                     } else {
                         tv.setTextColor(Color.BLACK);
                     }
@@ -489,7 +461,6 @@ public class EnquiryFilterActivity extends AppCompatActivity {
             spinEnqDate.setAdapter(enqdateadapter);
         }
         spinEnqDate.setSelection(2);
-        //Toast.makeText(MainActivity.this,genderradioButton.getText(), Toast.LENGTH_SHORT).show();
         spinEnqDate.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -502,15 +473,11 @@ public class EnquiryFilterActivity extends AppCompatActivity {
                     tv.setText(getResources().getString(R.string.prompt_enq_date));
                 }
 
-//                tv.setTextColor(getResources().getColor(R.color.black));
                 enquiryDate = tv.getText().toString();
                 if((enquiryDate.equals(getResources().getString(R.string.prompt_enq_date)))||
                         (enquiryDate.equals(getResources().getString(R.string.all)))){
                     enquiryDate="";
                 }
-                // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.white));
-                // Showing selected spinner item
-                //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
             }}
 
             @Override
@@ -529,15 +496,12 @@ public class EnquiryFilterActivity extends AppCompatActivity {
                     if (index == 0) {
                         tv.setText(getResources().getString(R.string.prompt_occupation));
                     }
-//                tv.setTextColor(getResources().getColor(R.color.black));
                     occupation = tv.getText().toString();
                     if ((occupation.equals(getResources().getString(R.string.prompt_occupation))) ||
                             (occupation.equals(getResources().getString(R.string.all)))) {
                         occupation = "";
                     }
-                    // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.white));
-                    // Showing selected spinner item
-                    //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+
                 }
             }
             @Override
@@ -557,15 +521,12 @@ public class EnquiryFilterActivity extends AppCompatActivity {
                     if (index == 0) {
                         tv.setText(getResources().getString(R.string.prompt_location));
                     }
-//                tv.setTextColor(getResources().getColor(R.color.black));
                     location = tv.getText().toString();
                     if ((location.equals(getResources().getString(R.string.prompt_location))) ||
                             (location.equals(getResources().getString(R.string.all)))) {
                         location = "";
                     }
-                    // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.white));
-                    // Showing selected spinner item
-                    //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+
                 }
             }
 
@@ -585,15 +546,11 @@ public class EnquiryFilterActivity extends AppCompatActivity {
                 if(index==0){
                     tv.setText(getResources().getString(R.string.prompt_executive));
                 }
-//                tv.setTextColor(getResources().getColor(R.color.black));
                 executiveName = tv.getText().toString();
                 if((executiveName.equals(getResources().getString(R.string.prompt_executive)))||
                         (executiveName.equals(getResources().getString(R.string.all)))){
                     executiveName="";
                 }
-                // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.white));
-                // Showing selected spinner item
-                //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
             }}
 
             @Override
@@ -611,10 +568,9 @@ public class EnquiryFilterActivity extends AppCompatActivity {
         });
 
 }
+    //******************campare two dates****************
     public void CampareTwoDates(){
-        //******************campare two dates****************
-//        String date = "03/26/2012 11:00:00";
-//        String dateafter = "03/26/2012 11:59:00";
+
         SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "dd-MM-yyyy");
         Date convertedDate = new Date();
@@ -623,7 +579,6 @@ public class EnquiryFilterActivity extends AppCompatActivity {
             convertedDate = dateFormat.parse(todate.getText().toString());
             convertedDate2 = dateFormat.parse(fromdate.getText().toString());
             if (convertedDate2.after(convertedDate) || convertedDate2.equals(convertedDate)) {
-                //.setText("true");
             } else {
                 String firstday= Utility.getFirstDayofMonth();
                 todate.setText(firstday);
@@ -636,8 +591,6 @@ public class EnquiryFilterActivity extends AppCompatActivity {
     }
     public void CampareFronTwoDates(){
         //******************campare two dates****************
-//        String date = "03/26/2012 11:00:00";
-//        String dateafter = "03/26/2012 11:59:00";
         SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "dd-MM-yyyy");
         Date convertedDate = new Date();
@@ -646,7 +599,6 @@ public class EnquiryFilterActivity extends AppCompatActivity {
             convertedDate = dateFormat.parse(fromdate.getText().toString());
             convertedDate2 = dateFormat.parse(todate.getText().toString());
             if (convertedDate2.before(convertedDate) || convertedDate2.equals(convertedDate)) {
-                //.setText("true");
             } else {
                 String firstday= Utility.getCurrentDate();
                 fromdate.setText(firstday);
@@ -672,23 +624,6 @@ public class EnquiryFilterActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-    private void showProgressDialog() {
-        Log.v(TAG, String.format("showProgressDialog"));
-        pd = new ProgressDialog(EnquiryFilterActivity.this);
-        pd.setMessage("loading");
-        pd.setCancelable(false);
-        pd.show();
-    }
-
-    /**
-     * Dismiss Progress Dialog.
-     */
-    private void dismissProgressDialog() {
-        Log.v(TAG, String.format("dismissProgressDialog"));
-        pd.cancel();
-
-
-    }
     public void  enqforClass() {
         EnquiryFilterActivity.EnquiryForTrackClass ru = new EnquiryFilterActivity.EnquiryForTrackClass();
         ru.execute("5");
@@ -702,26 +637,21 @@ public class EnquiryFilterActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             EnquiryForDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EnquiryForDetails = new HashMap<String, String>();
             EnquiryForDetails.put("action", "show_enq_for_list");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(EnquiryFilterActivity.this);
-            //EnquiryForloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(EnquiryForloyee.this));
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EnquiryForDetails);
             Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
@@ -734,12 +664,10 @@ public class EnquiryFilterActivity extends AppCompatActivity {
 
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
@@ -754,7 +682,6 @@ public class EnquiryFilterActivity extends AppCompatActivity {
                             enqForArrayList.add(1,enqForList);
                             for (int i = 0; i < jsonArrayCountry.length(); i++) {
                                 enqForList = new Spinner_List();
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayCountry.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -790,7 +717,6 @@ public class EnquiryFilterActivity extends AppCompatActivity {
                                                 // Set the hint text color gray
                                                 tv.setTextColor(Color.GRAY);
                                                 tv.setText(getResources().getString(R.string.prompt_enq_for));
-                                                // tv.setTextColor(Color.GRAY);
                                             }
                                             else {
                                                 tv.setTextColor(Color.BLACK);
@@ -838,7 +764,6 @@ public class EnquiryFilterActivity extends AppCompatActivity {
                                 // Set the hint text color gray
                                 tv.setTextColor(Color.GRAY);
                                 tv.setText(getResources().getString(R.string.prompt_enq_for));
-                                // tv.setTextColor(Color.GRAY);
                             }
                             else {
                                 tv.setTextColor(Color.BLACK);
@@ -850,7 +775,6 @@ public class EnquiryFilterActivity extends AppCompatActivity {
                     spinEnqFor.setAdapter(enqforadapter);
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
             }
         }
@@ -868,7 +792,6 @@ public class EnquiryFilterActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-          //  showProgressDialog();
             viewDialog.showDialog();
         }
 
@@ -876,20 +799,16 @@ public class EnquiryFilterActivity extends AppCompatActivity {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
             viewDialog.hideDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             EnquiryTypeDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-          //  Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EnquiryTypeDetails = new HashMap<String, String>();
             EnquiryTypeDetails.put("action", "show_enq_type_list");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(EnquiryFilterActivity.this);
-            //EnquiryTypeloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(EnquiryTypeloyee.this));
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EnquiryTypeDetails);
             Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
@@ -903,12 +822,10 @@ public class EnquiryFilterActivity extends AppCompatActivity {
 
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
@@ -923,17 +840,13 @@ public class EnquiryFilterActivity extends AppCompatActivity {
                             enquiryTypeArrayList.add(1,enquirytypelist);
                             for (int i = 0; i < jsonArrayCountry.length(); i++) {
                                 enquirytypelist = new Spinner_List();
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayCountry.getJSONObject(i);
                                 if (jsonObj != null) {
 
                                     String Enquiry_Type     = jsonObj.getString("Enquiry_type");
 
                                     String id=jsonObj.getString("Auto_Id");
-//                               if(i==0){
-//                                   enquirytypelist.setName(getResources().getString(R.string.promt_country));
-//                                   enqF.add(0,enquirytypelist);
-//                               }
+
                                     enquirytypelist.setName(Enquiry_Type);
                                     enquirytypelist.setId(id);
 
@@ -962,7 +875,6 @@ public class EnquiryFilterActivity extends AppCompatActivity {
                                                 // Set the hint text color gray
                                                 tv.setTextColor(Color.GRAY);
                                                 tv.setText(getResources().getString(R.string.prompt_enquiry_type));
-                                                // tv.setTextColor(Color.GRAY);
                                             }
                                             else {
                                                 tv.setTextColor(Color.BLACK);
@@ -1010,7 +922,6 @@ public class EnquiryFilterActivity extends AppCompatActivity {
                                 // Set the hint text color gray
                                 tv.setTextColor(Color.GRAY);
                                 tv.setText(getResources().getString(R.string.prompt_enquiry_type));
-                                // tv.setTextColor(Color.GRAY);
                             }
                             else {
                                 tv.setTextColor(Color.BLACK);
@@ -1022,7 +933,6 @@ public class EnquiryFilterActivity extends AppCompatActivity {
                     spinEnquiryType.setAdapter(enquirytypeadapter);
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
             }
         }
@@ -1040,26 +950,21 @@ public class EnquiryFilterActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            // showProgressDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            // dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             EnquirySourceDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> EnquirySourceDetails = new HashMap<String, String>();
             EnquirySourceDetails.put("action", "show_enq_source_list");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(EnquiryFilterActivity.this);
-            //EnquirySourceloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(EnquirySourceloyee.this));
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EnquirySourceDetails);
             Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
@@ -1072,12 +977,10 @@ public class EnquiryFilterActivity extends AppCompatActivity {
 
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
@@ -1092,17 +995,13 @@ public class EnquiryFilterActivity extends AppCompatActivity {
                             enquirySourceArrayList.add(1,enquirySourcelist);
                             for (int i = 0; i < jsonArrayCountry.length(); i++) {
                                 enquirySourcelist = new Spinner_List();
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayCountry.getJSONObject(i);
                                 if (jsonObj != null) {
 
                                     String SourceOf_Enquiry     = jsonObj.getString("SourceOf_Enquiry");
 
                                     String id=jsonObj.getString("Auto_Id");
-//                               if(i==0){
-//                                   enquirySourcelist.setName(getResources().getString(R.string.promt_country));
-//                                   enqF.add(0,enquirySourcelist);
-//                               }
+
                                     enquirySourcelist.setName(SourceOf_Enquiry);
                                     enquirySourcelist.setId(id);
 
@@ -1131,7 +1030,6 @@ public class EnquiryFilterActivity extends AppCompatActivity {
                                                 // Set the hint text color gray
                                                 tv.setTextColor(Color.GRAY);
                                                 tv.setText(getResources().getString(R.string.prompt_enquiry_source));
-                                                // tv.setTextColor(Color.GRAY);
                                             }
                                             else {
                                                 tv.setTextColor(Color.BLACK);
@@ -1179,7 +1077,6 @@ public class EnquiryFilterActivity extends AppCompatActivity {
                                 // Set the hint text color gray
                                 tv.setTextColor(Color.GRAY);
                                 tv.setText(getResources().getString(R.string.prompt_enquiry_source));
-                                // tv.setTextColor(Color.GRAY);
                             }
                             else {
                                 tv.setTextColor(Color.BLACK);
@@ -1191,7 +1088,6 @@ public class EnquiryFilterActivity extends AppCompatActivity {
                     spinEnquirySource.setAdapter(enquirySourceadapter);
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
             }
         }
@@ -1209,28 +1105,22 @@ public class EnquiryFilterActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            // showProgressDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            // dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             OccupationDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> OccupationDetails = new HashMap<String, String>();
             OccupationDetails.put("action", "show_occupation_list");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(EnquiryFilterActivity.this);
-            //OccupationloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(Occupationloyee.this));
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, OccupationDetails);
-            Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
 
@@ -1242,48 +1132,34 @@ public class EnquiryFilterActivity extends AppCompatActivity {
 
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
                     if (object != null) {
                         JSONArray jsonArrayCountry = object.getJSONArray("result");
                         OccupationArrayList.clear();
-                       //for(int j=0;j<2;j++){
                         Occupationlist = new Spinner_List();
-
                         Occupationlist.setName(getResources().getString(R.string.prompt_occupation));
-
                         OccupationArrayList.add(0,Occupationlist);
 
-                       // }
                         if (jsonArrayCountry != null && jsonArrayCountry.length() > 0){
                             Occupationlist.setName(getResources().getString(R.string.all));
 
                             OccupationArrayList.add(1,Occupationlist);
                             for (int i = 0; i < jsonArrayCountry.length(); i++) {
                                 Occupationlist = new Spinner_List();
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayCountry.getJSONObject(i);
                                 if (jsonObj != null) {
 
                                     String Occupation     = jsonObj.getString("Occupation");
 
                                     String id=jsonObj.getString("Auto_Id");
-//                               if(i==0){
-//                                   Occupationlist.setName(getResources().getString(R.string.promt_country));
-//                                   enqF.add(0,Occupationlist);
-//                               }
-
-
                                     Occupationlist.setName(Occupation);
                                     Occupationlist.setId(id);
-
                                     OccupationArrayList.add(Occupationlist);
 
                                     occupationadpater = new SpinnerAdapter(EnquiryFilterActivity.this, OccupationArrayList){
@@ -1309,7 +1185,6 @@ public class EnquiryFilterActivity extends AppCompatActivity {
                                                 // Set the hint text color gray
                                                 tv.setTextColor(Color.GRAY);
                                                 tv.setText(getResources().getString(R.string.prompt_occupation));
-                                                // tv.setTextColor(Color.GRAY);
                                             }
                                             else {
                                                 tv.setTextColor(Color.BLACK);
@@ -1330,7 +1205,6 @@ public class EnquiryFilterActivity extends AppCompatActivity {
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
 
                     OccupationArrayList.clear();
-                    //for(int j=0;j<2;j++){
                     Occupationlist = new Spinner_List();
 
                     Occupationlist.setName(getResources().getString(R.string.prompt_occupation));
@@ -1362,7 +1236,6 @@ public class EnquiryFilterActivity extends AppCompatActivity {
                                 // Set the hint text color gray
                                 tv.setTextColor(Color.GRAY);
                                 tv.setText(getResources().getString(R.string.prompt_occupation));
-                                // tv.setTextColor(Color.GRAY);
                             }
                             else {
                                 tv.setTextColor(Color.BLACK);
@@ -1374,7 +1247,6 @@ public class EnquiryFilterActivity extends AppCompatActivity {
                     spinOccupation.setAdapter(occupationadpater);
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
             }
         }
@@ -1392,29 +1264,23 @@ public class EnquiryFilterActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            // showProgressDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            // dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             LocationDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> LocationDetails = new HashMap<String, String>();
             LocationDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(EnquiryFilterActivity.this));
             LocationDetails.put("action", "show_location_list");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(EnquiryFilterActivity.this);
-            //LocationloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(Locationloyee.this));
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, LocationDetails);
-            Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
 
@@ -1426,46 +1292,33 @@ public class EnquiryFilterActivity extends AppCompatActivity {
 
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
                     if (object != null) {
                         JSONArray jsonArrayCountry = object.getJSONArray("result");
                         LocationArrayList.clear();
-                        //for(int j=0;j<2;j++){
                         LocationList = new Spinner_List();
 
                         LocationList.setName(getResources().getString(R.string.prompt_location));
-
                         LocationArrayList.add(0,LocationList);
 
-                        // }
                         if (jsonArrayCountry != null && jsonArrayCountry.length() > 0){
                             LocationList.setName(getResources().getString(R.string.all));
 
                             LocationArrayList.add(1,LocationList);
                             for (int i = 0; i < jsonArrayCountry.length(); i++) {
                                 LocationList = new Spinner_List();
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayCountry.getJSONObject(i);
                                 if (jsonObj != null) {
 
                                     String Location     = jsonObj.getString("Location");
 
-//                               if(i==0){
-//                                   LocationList.setName(getResources().getString(R.string.promt_country));
-//                                   enqF.add(0,LocationList);
-//                               }
-
-
                                     LocationList.setName(Location);
-
                                     LocationArrayList.add(LocationList);
 
                                     locationadapter = new SpinnerAdapter(EnquiryFilterActivity.this, LocationArrayList){
@@ -1491,7 +1344,6 @@ public class EnquiryFilterActivity extends AppCompatActivity {
                                                 // Set the hint text color gray
                                                 tv.setTextColor(Color.GRAY);
                                                 tv.setText(getResources().getString(R.string.prompt_location));
-                                                // tv.setTextColor(Color.GRAY);
                                             }
                                             else {
                                                 tv.setTextColor(Color.BLACK);
@@ -1511,7 +1363,6 @@ public class EnquiryFilterActivity extends AppCompatActivity {
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
                     LocationArrayList.clear();
-                    //for(int j=0;j<2;j++){
                     LocationList = new Spinner_List();
 
                     LocationList.setName(getResources().getString(R.string.prompt_location));
@@ -1543,7 +1394,6 @@ public class EnquiryFilterActivity extends AppCompatActivity {
                                 // Set the hint text color gray
                                 tv.setTextColor(Color.GRAY);
                                 tv.setText(getResources().getString(R.string.prompt_location));
-                                // tv.setTextColor(Color.GRAY);
                             }
                             else {
                                 tv.setTextColor(Color.BLACK);
@@ -1555,7 +1405,6 @@ public class EnquiryFilterActivity extends AppCompatActivity {
                     spinLocation.setAdapter(locationadapter);
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
             }
         }
@@ -1573,22 +1422,18 @@ public class EnquiryFilterActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            // showProgressDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            // dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             ExecutiveNameDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-          //  Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> ExecutiveNameDetails = new HashMap<String, String>();
             String comp_name=SharedPrefereneceUtil.getCompanyName(EnquiryFilterActivity.this);
             String location=SharedPrefereneceUtil.getSelectedBranch(EnquiryFilterActivity.this);
@@ -1596,9 +1441,7 @@ public class EnquiryFilterActivity extends AppCompatActivity {
             ExecutiveNameDetails.put("comp_id", compid);
             ExecutiveNameDetails.put("action", "show_executive_list");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(EnquiryFilterActivity.this);
-            //ExecutiveNameloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(ExecutiveNameloyee.this));
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, ExecutiveNameDetails);
-            Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
 
@@ -1609,46 +1452,31 @@ public class EnquiryFilterActivity extends AppCompatActivity {
 
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
                     if (object != null) {
                         JSONArray jsonArrayCountry = object.getJSONArray("result");
                         ExecutiveNameArrayList.clear();
-                        //for(int j=0;j<2;j++){
                         ExecutiveNameList = new Spinner_List();
-
                         ExecutiveNameList.setName(getResources().getString(R.string.prompt_executive));
-
                         ExecutiveNameArrayList.add(0,ExecutiveNameList);
 
-                        // }
                         if (jsonArrayCountry != null && jsonArrayCountry.length() > 0){
                             ExecutiveNameList.setName(getResources().getString(R.string.all));
-
                             ExecutiveNameArrayList.add(1,ExecutiveNameList);
                             for (int i = 0; i < jsonArrayCountry.length(); i++) {
                                 ExecutiveNameList = new Spinner_List();
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayCountry.getJSONObject(i);
                                 if (jsonObj != null) {
 
                                     String EnquiryOwnerExecutive     = jsonObj.getString("EnquiryOwnerExecutive");
 
-//                               if(i==0){
-//                                   ExecutiveNameList.setName(getResources().getString(R.string.promt_country));
-//                                   enqF.add(0,ExecutiveNameList);
-//                               }
-
-
                                     ExecutiveNameList.setName(EnquiryOwnerExecutive);
-
                                     ExecutiveNameArrayList.add(ExecutiveNameList);
 
                                     executivenameadapter = new SpinnerAdapter(EnquiryFilterActivity.this, ExecutiveNameArrayList){
@@ -1674,7 +1502,6 @@ public class EnquiryFilterActivity extends AppCompatActivity {
                                                 // Set the hint text color gray
                                                 tv.setTextColor(Color.GRAY);
                                                 tv.setText(getResources().getString(R.string.prompt_executive));
-                                                // tv.setTextColor(Color.GRAY);
                                             }
                                             else {
                                                 tv.setTextColor(Color.BLACK);
@@ -1688,17 +1515,12 @@ public class EnquiryFilterActivity extends AppCompatActivity {
 
                                 }
                             }
-                        }else if(jsonArrayCountry.length()==0){
-                            System.out.println("No records found");
                         }
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
                     ExecutiveNameArrayList.clear();
-                    //for(int j=0;j<2;j++){
                     ExecutiveNameList = new Spinner_List();
-
                     ExecutiveNameList.setName(getResources().getString(R.string.prompt_executive));
-
                     ExecutiveNameArrayList.add(0,ExecutiveNameList);
                     ExecutiveNameList.setName(getResources().getString(R.string.all));
 
@@ -1726,7 +1548,6 @@ public class EnquiryFilterActivity extends AppCompatActivity {
                                 // Set the hint text color gray
                                 tv.setTextColor(Color.GRAY);
                                 tv.setText(getResources().getString(R.string.prompt_executive));
-                                // tv.setTextColor(Color.GRAY);
                             }
                             else {
                                 tv.setTextColor(Color.BLACK);
@@ -1738,7 +1559,6 @@ public class EnquiryFilterActivity extends AppCompatActivity {
                     spinExecutive.setAdapter(executivenameadapter);
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
             }
         }
@@ -1757,28 +1577,22 @@ public class EnquiryFilterActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            // showProgressDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            // dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             CallResponseDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> CallResponseDetails = new HashMap<String, String>();
             CallResponseDetails.put("action", "show_call_response_list");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(EnquiryFilterActivity.this);
-            //CallResponseloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(CallResponseloyee.this));
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, CallResponseDetails);
-            Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
 
@@ -1788,12 +1602,10 @@ public class EnquiryFilterActivity extends AppCompatActivity {
 
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
@@ -1808,22 +1620,17 @@ public class EnquiryFilterActivity extends AppCompatActivity {
                             CallResArrayList.add(1,spinCallReslist);
                             for (int i = 0; i < jsonArrayCountry.length(); i++) {
                                 spinCallReslist = new Spinner_List();
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayCountry.getJSONObject(i);
                                 if (jsonObj != null) {
 
                                     String CallResponse     = jsonObj.getString("CallResponse");
 
                                     String id=jsonObj.getString("Auto_Id");
-//                               if(i==0){
-//                                   spinCallReslist.setName(getResources().getString(R.string.promt_country));
-//                                   enqF.add(0,spinCallReslist);
-//                               }
+
                                     spinCallReslist.setName(CallResponse);
                                     spinCallReslist.setId(id);
 
                                     CallResArrayList.add(spinCallReslist);
-
                                     callresadapter = new SpinnerAdapter(EnquiryFilterActivity.this, CallResArrayList){
                                         @Override
                                         public boolean isEnabled(int position){
@@ -1847,7 +1654,6 @@ public class EnquiryFilterActivity extends AppCompatActivity {
                                                 // Set the hint text color gray
                                                 tv.setTextColor(Color.GRAY);
                                                 tv.setText(getResources().getString(R.string.prompt_call_res));
-                                                // tv.setTextColor(Color.GRAY);
                                             }
                                             else {
                                                 tv.setTextColor(Color.BLACK);
@@ -1895,7 +1701,6 @@ public class EnquiryFilterActivity extends AppCompatActivity {
                                 // Set the hint text color gray
                                 tv.setTextColor(Color.GRAY);
                                 tv.setText(getResources().getString(R.string.prompt_call_res));
-                                // tv.setTextColor(Color.GRAY);
                             }
                             else {
                                 tv.setTextColor(Color.BLACK);
@@ -1907,7 +1712,6 @@ public class EnquiryFilterActivity extends AppCompatActivity {
                     spinCallResponce.setAdapter(callresadapter);
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
             }
         }
@@ -1923,12 +1727,10 @@ public class EnquiryFilterActivity extends AppCompatActivity {
 
         ServerClass ruc = new ServerClass();
 
-
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
             viewDialog.showDialog();
         }
 
@@ -1936,49 +1738,30 @@ public class EnquiryFilterActivity extends AppCompatActivity {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-          //  dismissProgressDialog();
             viewDialog.hideDialog();
-            //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
-            //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
             SearchEnquiryDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-          //  Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> SearchEnquiryDetails = new HashMap<String, String>();
             SearchEnquiryDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(EnquiryFilterActivity.this));
-            Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(EnquiryFilterActivity.this)));
             SearchEnquiryDetails.put("to_date",todate.getText().toString());
-            Log.v(TAG, String.format("doInBackground :: to_date = %s",todate.getText().toString() ));
             SearchEnquiryDetails.put("from_date",fromdate.getText().toString());
-            Log.v(TAG, String.format("doInBackground :: from_date = %s", fromdate.getText().toString()));
             SearchEnquiryDetails.put("gender", gender);
-            Log.v(TAG, String.format("doInBackground :: gender = %s", gender));
             SearchEnquiryDetails.put("occupation",occupation);
-            Log.v(TAG, String.format("doInBackground :: occupation = %s", occupation));
             SearchEnquiryDetails.put("enq_type",enquiryType);
-            Log.v(TAG, String.format("doInBackground :: enquiryType = %s",enquiryType));
             SearchEnquiryDetails.put("enq_src",enquirySource);
-            Log.v(TAG, String.format("doInBackground :: enquirySource = %s",enquirySource));
             SearchEnquiryDetails.put("enq_for",enquiryFor);
-            Log.v(TAG, String.format("doInBackground :: enquiryFor = %s",enquiryFor));
             SearchEnquiryDetails.put("rating",Rating);
-            Log.v(TAG, String.format("doInBackground :: Rating = %s",Rating));
             SearchEnquiryDetails.put("call_res",callResponce);
-            Log.v(TAG, String.format("doInBackground :: callResponce = %s",callResponce));
             SearchEnquiryDetails.put("exe_name",executiveName);
-            Log.v(TAG, String.format("doInBackground :: executiveName = %s",executiveName));
             SearchEnquiryDetails.put("location",location);
-            Log.v(TAG, String.format("doInBackground :: location = %s",location));
             SearchEnquiryDetails.put("enq_date_type",enquiryDate);
-            Log.v(TAG, String.format("doInBackground :: enq_date_type = %s",enquiryDate));
             SearchEnquiryDetails.put("action", "search_enquiry_filter");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(EnquiryFilterActivity.this);
             String loginResult2 = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, SearchEnquiryDetails);
-
-            Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult2));
             return loginResult2;
         }
     }
@@ -2041,7 +1824,6 @@ public class EnquiryFilterActivity extends AppCompatActivity {
                                     Budget="0.00";
                                 }
                                 subList.setBudget(Budget);
-                                //Toast.makeText(EnquiryActivity.this, "followup date: "+next_foll_date, Toast.LENGTH_SHORT).show();
                                 subListArrayList.add(subList);
 
 
@@ -2054,15 +1836,11 @@ public class EnquiryFilterActivity extends AppCompatActivity {
                         intent.putExtra("ttl_budget",tt_budget);
                         startActivity(intent);
 
-                    } else if (jsonArrayResult.length() == 0) {
-                        System.out.println("No records found");
                     }
                 }
             }
             else if (success.equalsIgnoreCase(getResources().getString(R.string.zero)))
             {
-                //Toast.makeText(EnquiryFilterActivity.this,"Mobile Number Already Exits",Toast.LENGTH_SHORT).show();
-                //inputContact.getText().clear();
                 Toast.makeText(EnquiryFilterActivity.this,"No Records Found",Toast.LENGTH_SHORT).show();
             }
 

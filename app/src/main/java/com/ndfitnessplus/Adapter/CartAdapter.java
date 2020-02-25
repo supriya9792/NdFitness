@@ -75,7 +75,6 @@ public class CartAdapter  extends RecyclerView.Adapter<CartAdapter.BaseViewHolde
     private boolean isLoaderVisible = false;
     ArrayList<POSItemList> cartArraylist = new ArrayList<POSItemList>();
     public CartAdapter(ArrayList<POSItemList> enquiryList, Context context,CustomItemClickListener listener) {
-        //this.arrayList = enquiryList;
         subList = enquiryList;
         arrayList = new ArrayList<POSItemList>();
         this.context = context;
@@ -86,7 +85,6 @@ public class CartAdapter  extends RecyclerView.Adapter<CartAdapter.BaseViewHolde
 
     @Override
     public CartAdapter.BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Log.d(TAG, "view type: "+viewType );
         switch (viewType) {
             case VIEW_TYPE_NORMAL:
                 return new CartAdapter.ViewHolder(
@@ -102,8 +100,6 @@ public class CartAdapter  extends RecyclerView.Adapter<CartAdapter.BaseViewHolde
     @Override
     public void onBindViewHolder(CartAdapter.BaseViewHolder holder, int position) {
         holder.onBind(position);
-
-        Log.d(TAG, "call onbind method of viewholder: " );
     }
     @Override
     public int getItemViewType(int position) {
@@ -120,8 +116,6 @@ public class CartAdapter  extends RecyclerView.Adapter<CartAdapter.BaseViewHolde
     }
     public void add(POSItemList response) {
         arrayList.add(response);
-        //subList.add(response);
-        Log.d(TAG, "sublist size after add : "+String.valueOf(subList.size()) );
         notifyItemInserted(arrayList.size() - 1);
     }
 
@@ -130,8 +124,6 @@ public class CartAdapter  extends RecyclerView.Adapter<CartAdapter.BaseViewHolde
             add(response);
             subList.add(response);
         }
-
-        Log.d(TAG, "arraylist size after adding new data: "+String.valueOf(arrayList.size()) );
 
     }
 
@@ -157,7 +149,6 @@ public class CartAdapter  extends RecyclerView.Adapter<CartAdapter.BaseViewHolde
         if (item != null) {
             arrayList.remove(position);
             notifyItemRemoved(position);
-            // notifyDataSetChanged();
         }
     }
     public void removeblank(){
@@ -167,7 +158,6 @@ public class CartAdapter  extends RecyclerView.Adapter<CartAdapter.BaseViewHolde
         if (item != null) {
             arrayList.remove(position);
             notifyItemRemoved(position);
-            //notifyDataSetChanged();
         }
     }
     public void clear() {
@@ -180,10 +170,8 @@ public class CartAdapter  extends RecyclerView.Adapter<CartAdapter.BaseViewHolde
     }
     //filter for search
     public int filter(String charText) {
-        // subList=arrayList;
 
         charText = charText.toLowerCase(Locale.getDefault());
-        Log.d(TAG, "sublist size whentext  filter: "+String.valueOf(subList.size()) );
         arrayList.clear();
         if (charText.length() == 0) {
 
@@ -193,21 +181,17 @@ public class CartAdapter  extends RecyclerView.Adapter<CartAdapter.BaseViewHolde
                 if (wp.getProductCode().toLowerCase(Locale.getDefault())
                         .contains(charText) || wp.getProductName().toLowerCase(Locale.getDefault()).contains(charText)) {
                     arrayList.add(wp);
-                    // return arrayList.size();
                 }
             }
         }
         notifyDataSetChanged();
         return arrayList.size();
-        //Log.d(TAG, "sublist size filter: "+String.valueOf(subList.size()) );
 
     }
     //filter for search
     public int search( String charTex,final ArrayList<POSItemList> subList) {
-        // subList=arrayList;
 
         final String charText = charTex.toLowerCase(Locale.getDefault());
-        Log.d(TAG, "sublist size whentext  filter: "+String.valueOf(subList.size()) );
         arrayList.clear();
         if (charText.length() == 0) {
 
@@ -228,10 +212,7 @@ public class CartAdapter  extends RecyclerView.Adapter<CartAdapter.BaseViewHolde
                 }
             });
 
-
-
         }
-        Log.d(TAG, "sublist size search: "+String.valueOf(subList.size()) );
         notifyDataSetChanged();
         return arrayList.size();
     }
@@ -239,7 +220,6 @@ public class CartAdapter  extends RecyclerView.Adapter<CartAdapter.BaseViewHolde
     public class ViewHolder extends CartAdapter.BaseViewHolder  {
         TextView prodCodeTV, prodnameTV,quantityTV,priceTV;
         Spinner spinQty;
-        //  ImageView contactIV;
         ImageView imageView;
         View layoutparent;
         public RelativeLayout viewBackground, viewForeground;
@@ -250,10 +230,8 @@ public class CartAdapter  extends RecyclerView.Adapter<CartAdapter.BaseViewHolde
             prodCodeTV = (TextView) itemView.findViewById(R.id.prod_code);
             prodnameTV = (TextView) itemView.findViewById(R.id.prod_name);
             spinQty=(Spinner)itemView.findViewById(R.id.spinner_quantity);
-            // contactIV = (ImageView) itemView.findViewById(R.id.contactIV);
             imageView=(ImageView) itemView.findViewById(R.id.prodImage);
-            // contactIV.setOnClickListener(this);
-            //quantityTV = (TextView) itemView.findViewById(R.id.quantityTV);
+
             priceTV = (TextView) itemView.findViewById(R.id.price);
             layoutparent=(View)itemView.findViewById(R.id.lyt_parent);
             viewBackground = itemView.findViewById(R.id.view_background);
@@ -268,19 +246,17 @@ public class CartAdapter  extends RecyclerView.Adapter<CartAdapter.BaseViewHolde
         public void onBind(final int position) {
             super.onBind(position);
             final POSItemList enq = arrayList.get(position);
-            //Log.d(TAG, "enquiry name: " + enq.getName());
-            // idTV.setText(enq.getID());
+
             db=new SQLiteDataBaseHelper(context);
-            Log.d(TAG, "product id: "+enq.getAutoId() );
             prodCodeTV.setText(enq.getProductCode());
-            //Log.d(TAG, "textview name: " + nameTV.getText().toString());
+
             prodnameTV.setText(enq.getProductName());
-            //String ttl="₹ "+enq.getRate();
+
             priceTV.setText(enq.getRate());
-//            quantityTV.setText(enq.getQuantity());
+
             String domainurl= SharedPrefereneceUtil.getDomainUrl((Activity)context);
             String url= domainurl+ ServiceUrls.IMAGES_URL + enq.getProductImage();
-            Log.d(TAG, "product image: "+enq.getProductImage() );
+
 
             if(!(enq.getProductImage().equals("null")||enq.getProductImage().equals(""))) {
                 RequestOptions requestOptions = new RequestOptions();
@@ -292,14 +268,9 @@ public class CartAdapter  extends RecyclerView.Adapter<CartAdapter.BaseViewHolde
                         .into(imageView);
             }
             final   POSItemList cartitem = new POSItemList();
-//            Handler handler = new Handler(Looper.getMainLooper());
-//            handler.post(new Runnable() {
-//                public void run() {
-                    // UI code goes here
-
                     ArrayList<Spinner_List> quantiytArrayList = new ArrayList<Spinner_List>();
                     int quanty=Integer.parseInt(enq.getQuantity());
-                    Log.d(TAG, "product Quantity: "+enq.getQuantity() );
+
                     for(int i=1;i <= quanty;i++) {
                         quantyilist = new Spinner_List();
                         quantyilist.setName(String.valueOf(i));
@@ -308,13 +279,7 @@ public class CartAdapter  extends RecyclerView.Adapter<CartAdapter.BaseViewHolde
                         quantityadapter = new QuantityAdapter(context, quantiytArrayList) {
                             @Override
                             public boolean isEnabled(int position) {
-//                        if (position == 0) {
-//                            // Disable the first item from Spinner
-//                            // First item will be use for hint
-//                            return false;
-//                        } else {
                                 return true;
-//                        }
                             }
 
                             @Override
@@ -330,9 +295,6 @@ public class CartAdapter  extends RecyclerView.Adapter<CartAdapter.BaseViewHolde
                         };
                         spinQty.setAdapter(quantityadapter);
 
-
-//                }
-//            });
             spinQty.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
@@ -344,22 +306,11 @@ public class CartAdapter  extends RecyclerView.Adapter<CartAdapter.BaseViewHolde
                         layout.setPadding(0, 0, 0, 0);
 
                         if (index == 0) {
-                            // tv.setTextColor((Color.GRAY));
                             qty=enq.getSelectedQuantity();
                         } else {
-                            //
-
                             qty = tv.getText().toString();
                         }
                         tv.setTextColor((Color.BLACK));
-                        Log.d(TAG, "qty****: "+qty);
-                        Log.d(TAG, "product selected quantity: "+enq.getSelectedQuantity() );
-//                        if (enq.getSelectedQuantity().equals("1")) {
-//                            qty = tv.getText().toString();
-//                        }else{
-//                            qty=enq.getSelectedQuantity();
-//                        }
-                        //tv.setText(enq.getSelectedQuantity());
 
                         cartitem.setQuantity(qty);
                         String qtyyy="Qty: "+qty;
@@ -378,19 +329,12 @@ public class CartAdapter  extends RecyclerView.Adapter<CartAdapter.BaseViewHolde
                             db.updateQuantity(qty,enq.getProductCode());
                             cartitem.setSelectedQuantity(qty);
 
-//                            if (listener != null) {
                             listener.onSpinnerQty(spinQty,position);
-                            //notifyDataSetChanged();
-//                            }
-                            //  Log.d(TAG, "product total rate: "+ttl );
 
                         }
 
 
                     }
-                    // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.black));
-                    // Showing selected spinner item
-                    //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
                 }
 
                 @Override
@@ -457,23 +401,19 @@ public class CartAdapter  extends RecyclerView.Adapter<CartAdapter.BaseViewHolde
     }
 
     public ArrayList<POSItemList> selctedProduct(){
-        //Log.v(TAG, String.format(" :: Select product array= %s", String.valueOf(cartArraylist)));
+
 
         return cartArraylist;
     }
     public void removeItem(int position) {
         arrayList.remove(position);
         cartArraylist.remove(position);
-        // notify the item removed by position
-        // to perform recycler view delete animations
-        // NOTE: don't call notifyDataSetChanged()
+
         notifyItemRemoved(position);
     }
 
     public void restoreItem(POSItemList item, int position) {
         arrayList.add(position,item);
-        //cartArraylist.add(position, item);
-        // notify item added by position
         notifyItemInserted(position);
     }
 

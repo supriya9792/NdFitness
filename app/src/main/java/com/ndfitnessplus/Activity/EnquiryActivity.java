@@ -95,15 +95,15 @@ public class EnquiryActivity extends AppCompatActivity implements SwipeRefreshLa
                 WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_enquiry);
           initToolbar();
-}
-private void initToolbar() {
+    }
+    private void initToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(getResources().getString(R.string.exi_enquiry));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         initComponent();
-        }
-private void initComponent(){
+    }
+    private void initComponent(){
         FloatingActionButton addenquiry=findViewById(R.id.fab);
         progressBar=findViewById(R.id.progressBar);
         swipeRefresh=findViewById(R.id.swipeRefresh);
@@ -123,8 +123,6 @@ private void initComponent(){
         progress_bar.setVisibility(View.GONE);
         lyt_no_connection.setVisibility(View.VISIBLE);
 
-//        adapter = new EnquiryAdapter( new ArrayList<EnquiryList>(),EnquiryActivity.this);
-//        recyclerView.setAdapter(adapter);
 
 
         Intent intent = getIntent();
@@ -141,7 +139,7 @@ private void initComponent(){
         recyclerView.setAdapter(adapter);
         }else{
         if (isOnline(EnquiryActivity.this)) {
-        enquiryclass();// check login details are valid or not from server
+        enquiryclass();
         }
         else {
         frame.setVisibility(View.GONE);
@@ -167,18 +165,7 @@ public void run() {
         }, 1000);
         }
         });
-        //Toast.makeText(EnquiryActivity.this, R.string.internet_unavailable, Toast.LENGTH_LONG).show();
-//                android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(EnquiryActivity.this);
-////                builder.setMessage(R.string.internet_unavailable);
-////                builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-////                    public void onClick(DialogInterface dialog, int id) {
-////                        dialog.dismiss();
-////                    }
-////                });
-////                android.app.AlertDialog dialog = builder.create();
-////                dialog.setCancelable(false);
-////                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-////                dialog.show();
+
 
         }
         }
@@ -210,21 +197,16 @@ public void onClick(View v) {
 
         inputsearch.addTextChangedListener(new TextWatcher() {
 
-@Override
-public void afterTextChanged(final Editable arg0) {
+    @Override
+    public void afterTextChanged(final Editable arg0) {
         // TODO Auto-generated method stub
         if (EnquiryActivity.this.adapter == null){
-        // some print statement saying it is null
-//                   // Toast toast = Toast.makeText(EnquiryActivity.this,"no record found", Toast.LENGTH_SHORT);
-//                    toast.setGravity(Gravity.CENTER, 0, 0);
-//                    toast.show();
+
         }
         else
         {
         isLoading = false;
-//                    int count=EnquiryActivity.this.adapter.filter(String.valueOf(arg0));
-//                    total_enquiry.setText(String.valueOf(count));
-//                    ttl_budget.setText(String.valueOf(count));
+
         ArrayList<EnquiryList> filterlist=EnquiryActivity.this.adapter.filter(String.valueOf(arg0));
         double totalBudget=0;
         for (final EnquiryList wp : filterlist) {
@@ -232,8 +214,7 @@ public void afterTextChanged(final Editable arg0) {
         if(!(bugdet.equals("")||bugdet.equals("null"))){
         double budge=Double.parseDouble(bugdet);
         totalBudget+=budge;
-        Log.d(TAG, "budget: " + bugdet);
-        Log.d(TAG, "totalBudget: " + totalBudget);
+
         ttl_budget.setText("₹ "+String.valueOf(totalBudget));
         }
 
@@ -242,21 +223,20 @@ public void afterTextChanged(final Editable arg0) {
 
         }
         }
-@Override
-public void beforeTextChanged(CharSequence arg0, int arg1,
+    @Override
+    public void beforeTextChanged(CharSequence arg0, int arg1,
         int arg2, int arg3) {
         // TODO Auto-generated method stub
 
         }
 
-@Override
-public void onTextChanged(CharSequence arg0, int arg1, int arg2,
+    @Override
+    public void onTextChanged(CharSequence arg0, int arg1, int arg2,
         int arg3) {
         // TODO Auto-generated method stub
 
         if(inputsearch.getText().length()==0) {
-        //do your work here
-        // Toast.makeText(AddEnquiryActivity.this ,"Text vhanged count  is 10 then: " , Toast.LENGTH_LONG).show();
+
         enquiryclass();
         }
         }
@@ -265,14 +245,13 @@ public void onTextChanged(CharSequence arg0, int arg1, int arg2,
          * add scroll listener while user reach in bottom load more will call
          */
         recyclerView.addOnScrollListener(new PaginationScrollListener(layoutManager) {
-@Override
-protected void loadMoreItems() {
+    @Override
+    protected void loadMoreItems() {
         isLoading = true;
 
-        Log.d(TAG, "prepare called current item: " + currentPage+"Total page"+totalPage);
         if(currentPage<=totalPage && count >100){
-        // currentPage = PAGE_START;
-        Log.d(TAG, "currentPage: " + currentPage);
+
+
         isLastPage = false;
         preparedListItem();
         }
@@ -280,27 +259,27 @@ protected void loadMoreItems() {
 
         }
 
-@Override
-public boolean isLastPage() {
+    @Override
+    public boolean isLastPage() {
         return isLastPage;
         }
 
-@Override
-public boolean isLoading() {
+    @Override
+    public boolean isLoading() {
         return isLoading;
         }
         });
         }
 
 
-private void preparedListItem() {
+    private void preparedListItem() {
         offset=offset+1000;
 
         if (isOnline(EnquiryActivity.this)) {
         enquiryoffsetclass();// check login details are valid or not from server
         }
         else {
-        //Toast.makeText(EnquiryActivity.this, R.string.internet_unavailable, Toast.LENGTH_LONG).show();
+
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(EnquiryActivity.this);
         builder.setMessage(R.string.internet_unavailable);
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
@@ -315,43 +294,24 @@ public void onClick(DialogInterface dialog, int id) {
         }
 
         }
-//Showing progress dialog
-private void showProgressDialog() {
-        Log.v(TAG, String.format("showProgressDialog"));
-        pd = new ProgressDialog(EnquiryActivity.this);
-        pd.setMessage("loading");
-        pd.setCancelable(false);
-        pd.show();
-        }
 
-/**
- * Dismiss Progress Dialog.
- */
-private void dismissProgressDialog() {
-        Log.v(TAG, String.format("dismissProgressDialog"));
-
-        pd.cancel();
-        }
-// Asycc class for loading data for database
-private void enquiryclass() {
+    // Asycc class for loading data for database
+    private void enquiryclass() {
         EnquiryActivity.EnquiryTrackclass ru = new EnquiryActivity.EnquiryTrackclass();
         ru.execute("5");
         }
 
-@Override
-public void onRefresh() {
+    @Override
+    public void onRefresh() {
         itemCount = 0;
         currentPage = PAGE_START;
-        Log.d(TAG, "currentPage: " + currentPage);
+
         isLastPage = false;
-        // adapter.clear();
+
         onRestart();
-        //preparedListItem();
-
-
         }
 
-class EnquiryTrackclass extends AsyncTask<String, Void, String> {
+    class EnquiryTrackclass extends AsyncTask<String, Void, String> {
 
     ServerClass ruc = new ServerClass();
 
@@ -360,32 +320,24 @@ class EnquiryTrackclass extends AsyncTask<String, Void, String> {
     protected void onPreExecute() {
         super.onPreExecute();
         Log.v(TAG, "onPreExecute");
-        //showProgressDialog();
     }
 
     @Override
     protected void onPostExecute(String response) {
         super.onPostExecute(response);
         Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-        //dismissProgressDialog();
-        //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
         EnquiryDetails(response);
 
     }
 
     @Override
     protected String doInBackground(String... params) {
-        //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
         HashMap<String, String> EnquiryDetails = new HashMap<String, String>();
         EnquiryDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(EnquiryActivity.this));
         EnquiryDetails.put("offset", String.valueOf(offset));
-//            EnquiryDetails.put("authority", SharedPrefereneceUtil.getAuthority(EnquiryActivity.this));
-//            EnquiryDetails.put("exe_name", SharedPrefereneceUtil.getName(EnquiryActivity.this));
-        Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(EnquiryActivity.this)));
         EnquiryDetails.put("action","show_enquiry_list");
         String domainurl=SharedPrefereneceUtil.getDomainUrl(EnquiryActivity.this);
         String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EnquiryDetails);
-        //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
         return loginResult;
     }
 
@@ -394,18 +346,16 @@ class EnquiryTrackclass extends AsyncTask<String, Void, String> {
     private void EnquiryDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
 
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
-//                    nodata.setVisibility(View.GONE);
-//                    swipeRefresh.setVisibility(View.VISIBLE);
+                    nodata.setVisibility(View.GONE);
+                    swipeRefresh.setVisibility(View.VISIBLE);
                     String ttl_enq = object.getString("total_enquiry_count");
                     String tt_budget = object.getString("ttl_budget");
                     String totalbug="₹ "+tt_budget;
@@ -423,7 +373,6 @@ class EnquiryTrackclass extends AsyncTask<String, Void, String> {
 
                                 subList = new EnquiryList();
 
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -458,7 +407,6 @@ class EnquiryTrackclass extends AsyncTask<String, Void, String> {
                                     subList.setRating(Rating);
                                     subList.setCallResponse(CallResponse);
                                     String foll_date= Utility.formatDate(Followup_Date);
-                                    Log.d(TAG, "converted Followup date: " + foll_date);
                                     subList.setFollowupdate(foll_date);
                                     if(Budget.equals(".00")){
                                         Budget="0.00";
@@ -500,7 +448,7 @@ class EnquiryTrackclass extends AsyncTask<String, Void, String> {
         EnquiryActivity.EnquiryOffsetTrackclass ru = new EnquiryActivity.EnquiryOffsetTrackclass();
         ru.execute("5");
     }
-class EnquiryOffsetTrackclass extends AsyncTask<String, Void, String> {
+    class EnquiryOffsetTrackclass extends AsyncTask<String, Void, String> {
 
     ServerClass ruc = new ServerClass();
 
@@ -509,47 +457,37 @@ class EnquiryOffsetTrackclass extends AsyncTask<String, Void, String> {
     protected void onPreExecute() {
         super.onPreExecute();
         Log.v(TAG, "onPreExecute");
-        //showProgressDialog();
     }
 
     @Override
     protected void onPostExecute(String response) {
         super.onPostExecute(response);
         Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-        // dismissProgressDialog();
-        //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
         EnquiryOffsetDetails(response);
 
     }
 
     @Override
     protected String doInBackground(String... params) {
-        //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
         HashMap<String, String> EnquiryOffsetDetails = new HashMap<String, String>();
         EnquiryOffsetDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(EnquiryActivity.this));
         EnquiryOffsetDetails.put("offset", String.valueOf(offset));
-//            EnquiryOffsetDetails.put("authority", SharedPrefereneceUtil.getAuthority(EnquiryActivity.this));
-//            EnquiryOffsetDetails.put("exe_name", SharedPrefereneceUtil.getName(EnquiryActivity.this));
-        Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(EnquiryActivity.this)));
         EnquiryOffsetDetails.put("action","show_enquiry_list");
         String domainurl=SharedPrefereneceUtil.getDomainUrl(EnquiryActivity.this);
         String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EnquiryOffsetDetails);
-        //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
         return loginResult;
+       }
+
+
     }
-
-
-}
 
     private void EnquiryOffsetDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 ArrayList<EnquiryList> subListArrayList = new ArrayList<EnquiryList>();
                 String success = object.getString(getResources().getString(R.string.success));
@@ -558,22 +496,15 @@ class EnquiryOffsetTrackclass extends AsyncTask<String, Void, String> {
                     String tt_budget = object.getString("ttl_budget");
                     totalPage++;
                     currentPage++;
-                    //currentPage = PAGE_START;
                     progressBar.setVisibility(View.GONE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
 
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
                             for (int i = 0; i < jsonArrayResult.length(); i++) {
 
 
                                 subList = new EnquiryList();
-                                Log.d(TAG, "i: " + i);
-                                // Log.d(TAG, "run: " + itemCount);
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -590,9 +521,7 @@ class EnquiryOffsetTrackclass extends AsyncTask<String, Void, String> {
                                     String Rating = jsonObj.getString("Rating");
                                     String Followup_Date = jsonObj.getString("FollowupDate");
                                     String Budget = jsonObj.getString("Budget");
-                                    //  for (int j = 0; j < 5; j++) {
-                                    itemCount++;
-                                    Log.d(TAG, "run offset: " + itemCount);
+
                                     subList.setName(name);
                                     subList.setGender(gender);
                                     String cont=Utility.lastFour(Contact);
@@ -614,14 +543,10 @@ class EnquiryOffsetTrackclass extends AsyncTask<String, Void, String> {
                                         Budget="0.00";
                                     }
                                     subList.setBudget(Budget);
-                                    //Toast.makeText(EnquiryActivity.this, "followup date: "+next_foll_date, Toast.LENGTH_SHORT).show();
                                     subListArrayList.add(subList);
 
                                 }
                             }
-                            Log.d(TAG, "when record not 0 currentPage: " + currentPage);
-                            Log.d(TAG, "PAGE_START: " + PAGE_START);
-                            //if (currentPage != PAGE_START) adapter.removeLoading();
                             adapter.addAll(subListArrayList);
                             swipeRefresh.setRefreshing(false);
                             if (currentPage < totalPage) adapter.addLoading();
@@ -633,18 +558,13 @@ class EnquiryOffsetTrackclass extends AsyncTask<String, Void, String> {
                         }
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
-                    // nodata.setVisibility(View.VISIBLE);
 
                     progressBar.setVisibility(View.GONE);
-                    Log.d(TAG, "when record 0 currentPage: " + currentPage);
-                    Log.d(TAG, "PAGE_START: " + PAGE_START);
                     if (currentPage != PAGE_START)
                         adapter.removeblank();
                     currentPage = PAGE_START;
-                    //adapter.addAll(subListArrayList);
                     swipeRefresh.setRefreshing(false);
                     isLoading = false;
-                    //recyclerView.setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");
@@ -658,16 +578,14 @@ class EnquiryOffsetTrackclass extends AsyncTask<String, Void, String> {
         EnquiryActivity.EnquirySearchTrackclass ru = new EnquiryActivity.EnquirySearchTrackclass();
         ru.execute("5");
     }
-class EnquirySearchTrackclass extends AsyncTask<String, Void, String> {
+    class EnquirySearchTrackclass extends AsyncTask<String, Void, String> {
 
     ServerClass ruc = new ServerClass();
-
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
         Log.v(TAG, "onPreExecute");
-        // showProgressDialog();
         viewDialog.showDialog();
     }
 
@@ -675,38 +593,30 @@ class EnquirySearchTrackclass extends AsyncTask<String, Void, String> {
     protected void onPostExecute(String response) {
         super.onPostExecute(response);
         Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-        // dismissProgressDialog();
+
         viewDialog.hideDialog();
-        //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
         EnquirySearchDetails(response);
     }
 
     @Override
     protected String doInBackground(String... params) {
-        //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
         HashMap<String, String> EnquirySearchDetails = new HashMap<String, String>();
         EnquirySearchDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(EnquiryActivity.this));
         EnquirySearchDetails.put("text", inputsearch.getText().toString());
-        Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(EnquiryActivity.this)));
         EnquirySearchDetails.put("action","show_search_enquiry");
         String domainurl=SharedPrefereneceUtil.getDomainUrl(EnquiryActivity.this);
         String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, EnquirySearchDetails);
-        //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
         return loginResult;
     }
-
-
 }
 
     private void EnquirySearchDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
@@ -714,9 +624,6 @@ class EnquirySearchTrackclass extends AsyncTask<String, Void, String> {
                     swipeRefresh.setVisibility(View.VISIBLE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
                         count=jsonArrayResult.length();
                         String ttl_enq = String.valueOf(jsonArrayResult.length());
                         total_enquiry.setText(ttl_enq);
@@ -726,9 +633,6 @@ class EnquirySearchTrackclass extends AsyncTask<String, Void, String> {
 
 
                                 subList = new EnquiryList();
-                                Log.d(TAG, "i: " + i);
-                                // Log.d(TAG, "run: " + itemCount);
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -745,9 +649,7 @@ class EnquirySearchTrackclass extends AsyncTask<String, Void, String> {
                                     String Rating = jsonObj.getString("Rating");
                                     String Followup_Date = jsonObj.getString("FollowupDate");
                                     String Budget = jsonObj.getString("Budget");
-                                    //  for (int j = 0; j < 5; j++) {
-                                    itemCount++;
-                                    Log.d(TAG, "run offset: " + itemCount);
+
                                     subList.setName(name);
                                     subList.setGender(gender);
                                     String cont=Utility.lastFour(Contact);
@@ -783,12 +685,10 @@ class EnquirySearchTrackclass extends AsyncTask<String, Void, String> {
                         }
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
-                    // nodata.setVisibility(View.VISIBLE);
-//                    nodata.setVisibility(View.VISIBLE);
-//                    swipeRefresh.setVisibility(View.GONE);
+
                     progressBar.setVisibility(View.GONE);
                     Toast.makeText(EnquiryActivity.this, "NO Record Found", Toast.LENGTH_SHORT).show();
-                    //frame.setVisibility(View.GONE);
+
                 }
             } catch (JSONException e) {
                 Log.v(TAG, "JsonResponseOpeartion :: catch");

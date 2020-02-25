@@ -183,7 +183,6 @@ public class MeasurementFilterActivity extends AppCompatActivity {
                         // Set the hint text color gray
                         tv.setTextColor(Color.GRAY);
                         tv.setText(getResources().getString(R.string.prompt_mem_date));
-                        // tv.setTextColor(Color.GRAY);
                     } else {
                         tv.setTextColor(Color.BLACK);
                     }
@@ -326,29 +325,24 @@ public class MeasurementFilterActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            // showProgressDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            // dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             ExecutiveNameDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-           // Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> ExecutiveNameDetails = new HashMap<String, String>();
             String comp_name=SharedPrefereneceUtil.getCompanyName(MeasurementFilterActivity.this);
             String location=SharedPrefereneceUtil.getSelectedBranch(MeasurementFilterActivity.this);
             String compid=comp_name+"-"+location+",";
             ExecutiveNameDetails.put("comp_id", compid);
             ExecutiveNameDetails.put("action", "show_executive_list");
-            //ExecutiveNameloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(ExecutiveNameloyee.this));
             String domainurl=SharedPrefereneceUtil.getDomainUrl(MeasurementFilterActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, ExecutiveNameDetails);
             Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
@@ -361,9 +355,7 @@ public class MeasurementFilterActivity extends AppCompatActivity {
 
     private void ExecutiveNameDetails(String jsonResponse) {
 
-
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
@@ -375,17 +367,12 @@ public class MeasurementFilterActivity extends AppCompatActivity {
                     if (object != null) {
                         JSONArray jsonArrayCountry = object.getJSONArray("result");
                         ExecutiveArrayList.clear();
-                        //for(int j=0;j<2;j++){
                         ExecutiveList = new Spinner_List();
-
                         ExecutiveList.setName(getResources().getString(R.string.prompt_executive));
-
                         ExecutiveArrayList.add(0,ExecutiveList);
 
-                        // }
                         if (jsonArrayCountry != null && jsonArrayCountry.length() > 0){
                             ExecutiveList.setName(getResources().getString(R.string.all));
-
                             ExecutiveArrayList.add(1,ExecutiveList);
                             for (int i = 0; i < jsonArrayCountry.length(); i++) {
                                 ExecutiveList = new Spinner_List();
@@ -395,16 +382,8 @@ public class MeasurementFilterActivity extends AppCompatActivity {
 
                                     String EnquiryOwnerExecutive     = jsonObj.getString("EnquiryOwnerExecutive");
 
-//                               if(i==0){
-//                                   saleExecutiveList.setName(getResources().getString(R.string.promt_country));
-//                                   enqF.add(0,saleExecutiveList);
-//                               }
-
-
                                     ExecutiveList.setName(EnquiryOwnerExecutive);
-
                                     ExecutiveArrayList.add(ExecutiveList);
-
                                     ExecutiveAdapter = new SpinnerAdapter(MeasurementFilterActivity.this, ExecutiveArrayList){
                                         @Override
                                         public boolean isEnabled(int position){
@@ -428,7 +407,6 @@ public class MeasurementFilterActivity extends AppCompatActivity {
                                                 // Set the hint text color gray
                                                 tv.setTextColor(Color.GRAY);
                                                 tv.setText(getResources().getString(R.string.prompt_executive));
-                                                // tv.setTextColor(Color.GRAY);
                                             }
                                             else {
                                                 tv.setTextColor(Color.BLACK);
@@ -448,11 +426,8 @@ public class MeasurementFilterActivity extends AppCompatActivity {
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
                     ExecutiveArrayList.clear();
-                    //for(int j=0;j<2;j++){
                     ExecutiveList = new Spinner_List();
-
                     ExecutiveList.setName(getResources().getString(R.string.prompt_executive));
-
                     ExecutiveArrayList.add(0,ExecutiveList);
                     ExecutiveList.setName(getResources().getString(R.string.all));
 
@@ -480,7 +455,6 @@ public class MeasurementFilterActivity extends AppCompatActivity {
                                 // Set the hint text color gray
                                 tv.setTextColor(Color.GRAY);
                                 tv.setText(getResources().getString(R.string.prompt_executive));
-                                // tv.setTextColor(Color.GRAY);
                             }
                             else {
                                 tv.setTextColor(Color.BLACK);
@@ -492,7 +466,6 @@ public class MeasurementFilterActivity extends AppCompatActivity {
                     spinExecutive.setAdapter(ExecutiveAdapter);
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
             }
         }
@@ -507,13 +480,10 @@ public class MeasurementFilterActivity extends AppCompatActivity {
     class SearchEnquiryTrackClass extends AsyncTask<String, Void, String> {
 
         ServerClass ruc = new ServerClass();
-
-
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //   showProgressDialog();
             viewDialog.showDialog();
         }
 
@@ -521,33 +491,22 @@ public class MeasurementFilterActivity extends AppCompatActivity {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            // dismissProgressDialog();
             viewDialog.hideDialog();
-            //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
-            //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
             SearchEnquiryDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-          //  Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> SearchEnquiryDetails = new HashMap<String, String>();
             SearchEnquiryDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(MeasurementFilterActivity.this));
-            Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(MeasurementFilterActivity.this)));
             SearchEnquiryDetails.put("to_date",todate.getText().toString());
-            Log.v(TAG, String.format("doInBackground :: to_date = %s",todate.getText().toString() ));
             SearchEnquiryDetails.put("from_date",fromdate.getText().toString());
-            Log.v(TAG, String.format("doInBackground :: from_date = %s", fromdate.getText().toString()));
             SearchEnquiryDetails.put("date_wise", Datewise);
-            Log.v(TAG, String.format("doInBackground :: Datewise = %s", Datewise));
             SearchEnquiryDetails.put("exe_name",ExecutiveName);
-            Log.v(TAG, String.format("doInBackground :: exe_name = %s",ExecutiveName));
             SearchEnquiryDetails.put("action", "search_measurement_filter");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(MeasurementFilterActivity.this);
             String loginResult2 = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, SearchEnquiryDetails);
-
-            Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult2));
             return loginResult2;
         }
     }
@@ -563,20 +522,13 @@ public class MeasurementFilterActivity extends AppCompatActivity {
             String success = object.getString(getResources().getString(R.string.success));
 
             if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
-                //Toast.makeText(MeasurementFilterActivity.this,"Enquiry added succesfully",Toast.LENGTH_SHORT).show();
-
                 if (object != null) {
                     JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
                     if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
                         for (int i = 0; i < jsonArrayResult.length(); i++) {
 
                             subList = new MeasurementList();
-                            Log.d(TAG, "i: " + i);
 
-                            Log.v(TAG, "JsonResponseOpeartion ::");
                             JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                             if (jsonObj != null) {
 
@@ -605,8 +557,6 @@ public class MeasurementFilterActivity extends AppCompatActivity {
                                 String Executive_Name = jsonObj.getString("Executive_Name");
 
 
-                                //  for (int j = 0; j < 5; j++) {
-
                                 String mdate=Utility.formatDate(Measurement_Date);
                                 subList.setMeasurement_Date(mdate);
                                 subList.setMemberId(Member_ID);
@@ -631,20 +581,13 @@ public class MeasurementFilterActivity extends AppCompatActivity {
                                 subList.setThigh_L(Thigh_L);
                                 subList.setCalf_R(Calf_R);
                                 subList.setCalf_L(Calf_L);
-//                                    subList.setNextFollowupDate(NextFollowupDate);
-//                                    subList.setExecutive_Name(Executive_Name);
                                 String nextdate= Utility.formatDate(NextFollowupDate);
                                 String on="Your Next Measurement Date is "+nextdate;
                                 subList.setNextFollowupDate(on);
                                 String takenby="Taken By:"+Executive_Name;
                                 subList.setExecutive_Name(takenby);
-                                //Toast.makeText(MeasurementActivity.this, "followup date: "+next_foll_date, Toast.LENGTH_SHORT).show();
 
-                                //Toast.makeText(MainActivity.this, "j "+j, Toast.LENGTH_SHORT).show();
                                 subListArrayList.add(subList);
-
-
-
 
                             }
                         }
@@ -658,17 +601,9 @@ public class MeasurementFilterActivity extends AppCompatActivity {
                         System.out.println("No records found");
                     }
                 }
-
-                // showCustomDialog();
-
-                //inputEmail, inputPhone,inputAdd,inputReq,inputFollowupdate;
             }
-
-
             else if (success.equalsIgnoreCase(getResources().getString(R.string.zero)))
             {
-                //Toast.makeText(MeasurementFilterActivity.this,"Mobile Number Already Exits",Toast.LENGTH_SHORT).show();
-                //inputContact.getText().clear();
                 Toast.makeText(MeasurementFilterActivity.this,"No Records Found",Toast.LENGTH_SHORT).show();
             }
 

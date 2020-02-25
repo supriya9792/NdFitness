@@ -79,7 +79,6 @@ public class GenerateQRActivity extends AppCompatActivity {
             int height = 300;
             int smallestDimension = width < height ? width : height;
             String encodedid= Utility.randomEncodededCompId(16, SharedPrefereneceUtil.getSelectedBranchId(GenerateQRActivity.this));
-            //setting parameters for qr code
             String charset = "UTF-8";
             Map<EncodeHintType, ErrorCorrectionLevel> hintMap =new HashMap<EncodeHintType, ErrorCorrectionLevel>();
             hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
@@ -92,8 +91,6 @@ public class GenerateQRActivity extends AppCompatActivity {
         final Bitmap bitmap = getBitmapFromView(qrimage,500,500);
         final String subject=" QR code of "+SharedPrefereneceUtil.getCompanyName(GenerateQRActivity.this)+ " "+SharedPrefereneceUtil.getSelectedBranch(GenerateQRActivity.this);
         final String message=" Please find the attachment of Qr code";
-
-
 
 
         send_mail.setOnClickListener(new View.OnClickListener() {
@@ -203,7 +200,6 @@ public class GenerateQRActivity extends AppCompatActivity {
             for (int y = 0; y < height; y++) {
                 int offset = y * width;
                 for (int x = 0; x < width; x++) {
-                    //pixels[offset + x] = matrix.get(x, y) ? BLACK : WHITE;
                     pixels[offset + x] = matrix.get(x, y) ?
                             ResourcesCompat.getColor(getResources(),R.color.QRCodeBlackColor,null) :WHITE;
                 }
@@ -211,8 +207,6 @@ public class GenerateQRActivity extends AppCompatActivity {
 
             Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
             bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
-            //setting bitmap to image view
-
             Bitmap overlay = BitmapFactory.decodeResource(getResources(), R.drawable.nd40);
             Bitmap bmOverlay1 =   Bitmap.createScaledBitmap(overlay, 40,
                     32, true);

@@ -32,7 +32,6 @@ public class BalanceTrasactionAdapter extends RecyclerView.Adapter<BalanceTrasac
     @Override
     public void onBindViewHolder(BalanceTrasactionAdapter.ViewHolder holder, int position) {
         holder.paymentdateTv.setText(arrayList.get(position).getPaymentDate());
-//        holder.contactTV.setText(arrayList.get(position).getContact());
         holder.paidTv.setText(arrayList.get(position).getPaid());
         holder.paymenttypeTv.setText(arrayList.get(position).getPaymentType());
         holder.excecutive_nameTV.setText(arrayList.get(position).getExecutiveName());

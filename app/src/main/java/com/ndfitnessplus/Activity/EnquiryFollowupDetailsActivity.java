@@ -128,7 +128,6 @@ public class EnquiryFollowupDetailsActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
-       // FloatingActionButton take_followup=findViewById(R.id.fab);
         viewDialog = new ViewDialog(this);
 
         nodata=findViewById(R.id.nodata);
@@ -138,23 +137,18 @@ public class EnquiryFollowupDetailsActivity extends AppCompatActivity {
         phone=findViewById(R.id.phone_call);
         message=findViewById(R.id.message);
         whatsapp=findViewById(R.id.whatsapp);
-//        adapter = new EnquiryAdapter( new ArrayList<EnquiryList>(),EnquiryFollowupDetailsActivity.this);
-//        recyclerView.setAdapter(adapter);
+
         Intent intent = getIntent();
-       // Bundle args = intent.getBundleExtra("BUNDLE");
         if (intent != null) {
             enquiry_id=intent.getStringExtra("enquiry_id");
             Rating=intent.getStringExtra("rating");
             callResponce=intent.getStringExtra("call_response");
 
         }
-        //Toast.makeText(EnquiryFollowupDetailsActivity.this, enquiry_id+" rating :"+Rating+" call response" +callResponce, Toast.LENGTH_LONG).show();
-
         if (isOnline(EnquiryFollowupDetailsActivity.this)) {
-            followupclass();// check login details are valid or not from server
+            followupclass();
         }
         else {
-          //  Toast.makeText(EnquiryFollowupDetailsActivity.this, R.string.internet_unavailable, Toast.LENGTH_LONG).show();
             android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(EnquiryFollowupDetailsActivity.this);
             builder.setMessage(R.string.internet_unavailable);
             builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
@@ -187,52 +181,7 @@ public class EnquiryFollowupDetailsActivity extends AppCompatActivity {
                 startActivity(dialIntent);
             }
         });
-//        message.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-////                Uri smsUri = Uri.parse("tel:"+Contact);
-////                Intent intent = new Intent(Intent.ACTION_VIEW, smsUri);
-////                intent.putExtra("sms_body", "Hi welcome to ndfitness");
-////                intent.setType("vnd.android-dir/mms-sms");
-////                startActivity(intent);
-//
-//                String defaultSmsPackage = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT
-//                        ? Telephony.Sms.getDefaultSmsPackage(EnquiryFollowupDetailsActivity.this)
-//                        : Settings.Secure.getString(getContentResolver(), "sms_default_application");
-//
-//                Intent smsIntent = getPackageManager().getLaunchIntentForPackage(defaultSmsPackage);
-//
-//                if (smsIntent == null) {
-//                    Uri smsUri = Uri.parse("smsto:"+Contact);
-//                     smsIntent = new Intent(Intent.ACTION_SENDTO,smsUri);
-//// Invokes only SMS/MMS clients
-//                    smsIntent.setType("vnd.android-dir/mms-sms");
-//// Specify the Phone Number
-//                    smsIntent.putExtra("address", Contact);
-//// Specify the Message
-//                    smsIntent.putExtra("sms_body", "Hi welcome to Ndfitness");
-//
-//// Shoot!
-//                    //startActivity(smsIntent);
-//                    //smsIntent = new Intent(Intent.ACTION_SENDTO,smsUri);
-//                    //smsIntent.addCategory(Intent.CATEGORY_DEFAULT);
-//                   // smsIntent.putExtra("sms_body", "Hi welcome to ndfitness");
-//                   // smsIntent.setType("vnd.android-dir/mms-sms");
-//                }
-//
-//                try {
-//                    startActivity(smsIntent);
-//                } catch (Exception e) {
-//                    Log.w(TAG, "Could not open SMS app", e);
-//
-//                    // Inform user
-//                    Toast.makeText(EnquiryFollowupDetailsActivity.this,
-//                            "Your SMS app could not be opened. Please open it manually.",
-//                            Toast.LENGTH_LONG
-//                    ).show();
-//                }
-//            }
-//        });
+
         message.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -246,57 +195,33 @@ public class EnquiryFollowupDetailsActivity extends AppCompatActivity {
 
                 PackageManager pm=getPackageManager();
                 try {
-                   // Uri uri = Uri.parse("smsto:" + Contact);
                     Uri uri = Uri.parse("whatsapp://send?phone=+91" + Contact);
                     Intent waIntent = new Intent(Intent.ACTION_VIEW,uri);
-                    //waIntent.setType("text/plain");
-                    String text = "YOUR TEXT HERE";
-
                     PackageInfo info=pm.getPackageInfo("com.whatsapp", PackageManager.GET_META_DATA);
-                  //  PackageInfo info1=pm.getPackageInfo("com.whatsapp.w4b", PackageManager.GET_META_DATA);
-                    //Check if package exists or not. If not then code
-                    //in catch block will be called
-                    //Log.e(TAG, String.format("package Name  :: = %s", info1));
                     waIntent.setPackage("com.whatsapp");
-                   // waIntent.setPackage("com.whatsapp.w4b");
-
-                   // waIntent.putExtra(Intent.EXTRA_TEXT, text);
                     startActivity(waIntent);
 
                 } catch (PackageManager.NameNotFoundException e) {
-                    Log.e(TAG, String.format("Name Not found execeptiaon  :: = %s", ""));
                     e.printStackTrace();
                     Toast.makeText(EnquiryFollowupDetailsActivity.this, "WhatsApp not Installed", Toast.LENGTH_SHORT)
                             .show();
                 }
             }
         });
-//        take_followup.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                showCustomDialog();
-//            }
-//        });
     }
-    //Popup dialog
-    //int i=0;
+    //****************************** Popup dialog  ************************************************************
     private void showCustomDialog() {
         final Dialog dialog = new Dialog(EnquiryFollowupDetailsActivity.this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE); // before
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.take_followup_popup);
         dialog.setCancelable(true);
 
-//        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-//        lp.copyFrom(dialog.getWindow().getAttributes());
-//        lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
-//        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
         spinCallResponce = (Spinner)dialog. findViewById(R.id.spinner_call_res);
         spinRating = (Spinner)dialog. findViewById(R.id.spinner_rating);
         txtcallres=(TextView)dialog.findViewById(R.id.txt_callres);
         txtrating=(TextView)dialog.findViewById(R.id.txt_rating);
 
         inputComment = (EditText)dialog. findViewById(R.id.input_enquiry_comment);
-        //final EditText veri_otp=(EditText)dialog.findViewById(R.id.et_otp);
         inputNextFollowupdate=(EditText)dialog.findViewById(R.id.input_next_foll_date);
 
         ((ImageButton) dialog.findViewById(R.id.bt_close)).setOnClickListener(new View.OnClickListener() {
@@ -305,10 +230,9 @@ public class EnquiryFollowupDetailsActivity extends AppCompatActivity {
                 dialog.dismiss();
             }
         });
-      //  if(i==0){
+
             SetSpinner();
-            //i++;
-        //}
+
         callResponseClass();
         String curr_date = Utility.getCurrentDate();
         inputNextFollowupdate.setText(curr_date);
@@ -331,7 +255,6 @@ public class EnquiryFollowupDetailsActivity extends AppCompatActivity {
                                                   int monthOfYear, int dayOfMonth) {
 
                                 inputNextFollowupdate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
-                               // tiemPicker();
                             }
                         }, mYear, mMonth, mDay);
                 datePickerDialog.getDatePicker().setMinDate(c.getTimeInMillis());
@@ -361,38 +284,10 @@ public class EnquiryFollowupDetailsActivity extends AppCompatActivity {
                       }
                   }
               }
-
-              //  Toast.makeText(EnquiryFollowupDetailsActivity.this, "Mobile number verified successully", Toast.LENGTH_SHORT).show();
-
-
-                //Toast.makeText(getApplicationContext(), "Subcribe Clicked", Toast.LENGTH_SHORT).show();
             }
         });
 
         dialog.show();
-        //dialog.getWindow().setAttributes(lp);
-    }
-    private void tiemPicker(){
-        // Get Current Time
-        final Calendar c = Calendar.getInstance();
-        mHour = c.get(Calendar.HOUR_OF_DAY);
-        mMinute = c.get(Calendar.MINUTE);
-
-        // Launch Time Picker Dialog
-        TimePickerDialog timePickerDialog = new TimePickerDialog(this,
-                new TimePickerDialog.OnTimeSetListener() {
-
-                    @Override
-                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-
-                        mHour = hourOfDay;
-                        mMinute = minute;
-                        //nextfolltime=hourOfDay + ":" + minute;
-                        inputNextFollowupdate.setText(inputNextFollowupdate.getText().toString()+" "+hourOfDay + ":" + minute);
-                    }
-                }, mHour, mMinute, false);
-        timePickerDialog.show();
-
     }
     public  void SetSpinner(){
 
@@ -416,9 +311,6 @@ public class EnquiryFollowupDetailsActivity extends AppCompatActivity {
                     txtcallres.setVisibility(View.VISIBLE);
                     tv.setText(callResponce);
                 }
-                // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.black));
-                // Showing selected spinner item
-                //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
             }
             }
 
@@ -427,7 +319,6 @@ public class EnquiryFollowupDetailsActivity extends AppCompatActivity {
 
             }
         });
-        //Call Responce spinner adapter setting
         final  String[] ratingarray = getResources().getStringArray(R.array.rating_array);
         ArrayAdapter<String> spinnerArrayAdapter1 = new ArrayAdapter<String>(
                 this,R.layout.spinner_item,ratingarray ){
@@ -454,7 +345,6 @@ public class EnquiryFollowupDetailsActivity extends AppCompatActivity {
                         // Set the hint text color gray
                         tv.setTextColor(Color.GRAY);
                         tv.setText(getResources().getString(R.string.rating));
-                        // tv.setTextColor(Color.GRAY);
                     }
                     else {
                         tv.setTextColor(Color.BLACK);
@@ -467,10 +357,8 @@ public class EnquiryFollowupDetailsActivity extends AppCompatActivity {
         spinnerArrayAdapter1.setDropDownViewResource(R.layout.spinner_item);
         spinRating.setAdapter(spinnerArrayAdapter1);
         int spinnerPositionrating = spinnerArrayAdapter1.getPosition(Rating);
-        //Toast.makeText(this, "position: " + spinnerPositionrating, Toast.LENGTH_LONG).show();
         spinRating.setSelection(spinnerPositionrating);
         ArrayList<Spinner_List> ratingArrayList = new ArrayList<Spinner_List>();
-//
         spinRating.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -489,7 +377,6 @@ public class EnquiryFollowupDetailsActivity extends AppCompatActivity {
                     }
                     if (!(Rating == null)) {
                         if (Rating.equals("Not Interested") || Rating.equals("Converted")) {
-                            //Toast.makeText(parent.getContext(), "no interetsed: ", Toast.LENGTH_LONG).show();
                             inputNextFollowupdate.setText("");
                             inputNextFollowupdate.setEnabled(false);
                             inputNextFollowupdate.setKeyListener(null);
@@ -502,10 +389,6 @@ public class EnquiryFollowupDetailsActivity extends AppCompatActivity {
                         tv.setText(Rating);
                     }
                 }
-
-                // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.black));
-                // Showing selected spinner item
-                //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -532,29 +415,13 @@ public class EnquiryFollowupDetailsActivity extends AppCompatActivity {
             intent.putExtra("enquiry_id",enquiry_id);
             startActivity(intent);
         }else if(id== android.R.id.home){
-        //Toast.makeText(this,"Navigation back pressed",Toast.LENGTH_SHORT).show();
-        // NavUtils.navigateUpFromSameTask(this);
+
            finish();
     }
 
         return true;
     }
-    private void showProgressDialog() {
-        Log.v(TAG, String.format("showProgressDialog"));
-        pd = new ProgressDialog(EnquiryFollowupDetailsActivity.this);
-        pd.setMessage("loading");
-        pd.setCancelable(false);
-        pd.show();
-    }
 
-    /**
-     * Dismiss Progress Dialog.
-     */
-    private void dismissProgressDialog() {
-        Log.v(TAG, String.format("dismissProgressDialog"));
-
-        pd.cancel();
-    }
     //*********** Asycc class for loading data for database **************
     private void followupclass() {
         EnquiryFollowupDetailsActivity.FollowupTrackclass ru = new EnquiryFollowupDetailsActivity.FollowupTrackclass();
@@ -570,7 +437,6 @@ public class EnquiryFollowupDetailsActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
             viewDialog.showDialog();
         }
 
@@ -578,25 +444,19 @@ public class EnquiryFollowupDetailsActivity extends AppCompatActivity {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            //dismissProgressDialog();
             viewDialog.hideDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             FollowupDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> FollowupDetails = new HashMap<String, String>();
             FollowupDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(EnquiryFollowupDetailsActivity.this));
             FollowupDetails.put("enquiry_id",enquiry_id );
-            Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(EnquiryFollowupDetailsActivity.this)));
-            Log.v(TAG, String.format("doInBackground :: enquiry_id = %s", enquiry_id));
             FollowupDetails.put("action","show_enquiry_followup_details");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(EnquiryFollowupDetailsActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, FollowupDetails);
-            //Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
 
@@ -606,36 +466,22 @@ public class EnquiryFollowupDetailsActivity extends AppCompatActivity {
     private void FollowupDetails(String jsonResponse) {
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
                     progressBar.setVisibility(View.GONE);
                     if (object != null) {
                         JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
-                        int count=0;
+
                         ArrayList<FollowupList> item = new ArrayList<FollowupList>();
                         if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
-                            if(jsonArrayResult.length()<10){
-                                count=jsonArrayResult.length();
-                            }else{
-                                count=10;
-                            }
-                            for (int i = 0; i < count; i++) {
-
+                            for (int i = 0; i < jsonArrayResult.length(); i++) {
 
                                 subList = new FollowupList();
-                                Log.d(TAG, "i: " + i);
-
-                                Log.v(TAG, "JsonResponseOpeartion ::");
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 
@@ -650,22 +496,15 @@ public class EnquiryFollowupDetailsActivity extends AppCompatActivity {
                                     String Auto_Id = jsonObj.getString("Enquiry_ID");
                                     String Followup_Date = jsonObj.getString("FollowupDate");
                                      Image = jsonObj.getString("Image");
-                                    //  for (int j = 0; j < 5; j++) {
-                                    Log.d(TAG, "next followup date: " + NextFollowup_Date);
-                                    Log.d(TAG, "Followup date: " + Followup_Date);
-
-                                    //  for (int j = 0; j < 5; j++) {
 
                                     subList.setName(name);
                                     subList.setRating(Rating);
                                     subList.setContact(Contact);
                                     subList.setCallRespond(CallResponse);
                                     subList.setExecutiveName(ExecutiveName);
-                                   // String cmt="Comment: "+Comment;
                                     subList.setComment(Comment);
                                     subList.setFollowupType(FollowupType);
                                     String next_foll_date= Utility.formatDate(NextFollowup_Date);
-                                    Log.d(TAG, "converted next followup date: " + next_foll_date);
                                     subList.setNextFollowupDate(next_foll_date);
                                     String foll_date= Utility.formatDate(Followup_Date);
 
@@ -674,17 +513,13 @@ public class EnquiryFollowupDetailsActivity extends AppCompatActivity {
                                     Image.replace("\"", "");
                                     String domainurl= SharedPrefereneceUtil.getDomainUrl(EnquiryFollowupDetailsActivity.this);
                                     String url= domainurl+ServiceUrls.IMAGES_URL + Image;
-                                    Log.d(TAG, "image url: "+url );
-                                   // Glide.with(this).load(url).placeholder(R.drawable.nouser).into(imageView);
                                     RequestOptions requestOptions = new RequestOptions();
                                     requestOptions.placeholder(R.drawable.nouser);
                                     requestOptions.error(R.drawable.nouser);
 
-
                                     Glide.with(this)
                                             .setDefaultRequestOptions(requestOptions)
                                             .load(url).into(imageView);
-                                    Log.d(TAG, "converted Followup date: " + foll_date);
                                     subList.setFollowupDate(foll_date);
                                     subList.setID(Auto_Id);
                                     item.add(subList);
@@ -702,7 +537,6 @@ public class EnquiryFollowupDetailsActivity extends AppCompatActivity {
                     recyclerView.setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
                 android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(EnquiryFollowupDetailsActivity.this);
                 builder.setMessage(R.string.server_exception);
@@ -733,7 +567,6 @@ public class EnquiryFollowupDetailsActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //showProgressDialog();
             viewDialog.showDialog();
         }
 
@@ -741,37 +574,26 @@ public class EnquiryFollowupDetailsActivity extends AppCompatActivity {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-           // dismissProgressDialog();
             viewDialog.hideDialog();
-            //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
-            //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
+
             TakeFollowupDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> TakeFollowupDetails = new HashMap<String, String>();
             TakeFollowupDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(EnquiryFollowupDetailsActivity.this));
-            Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(EnquiryFollowupDetailsActivity.this)));
             TakeFollowupDetails.put("enquiry_id",enquiry_id);
-            Log.v(TAG, String.format("doInBackground :: enquiry_id = %s", enquiry_id));
             TakeFollowupDetails.put("comment",inputComment.getText().toString());
-            Log.v(TAG, String.format("doInBackground :: comment = %s", inputComment.getText().toString()));
             TakeFollowupDetails.put("rating",Rating);
-            Log.v(TAG, String.format("doInBackground :: Rating = %s", Rating));
             TakeFollowupDetails.put("call_res",callResponce);
-            Log.v(TAG, String.format("doInBackground :: callResponce = %s", callResponce));
             TakeFollowupDetails.put("next_foll_date",inputNextFollowupdate.getText().toString());
-            Log.v(TAG, String.format("doInBackground :: next_foll_date = %s", inputNextFollowupdate.getText().toString()));
             TakeFollowupDetails.put("exe_name",SharedPrefereneceUtil.getName(EnquiryFollowupDetailsActivity.this));
-            Log.v(TAG, String.format("doInBackground :: exe_name = %s", SharedPrefereneceUtil.getName(EnquiryFollowupDetailsActivity.this)));
             TakeFollowupDetails.put("action", "update_enquiry_followup");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(EnquiryFollowupDetailsActivity.this);
             String loginResult2 = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, TakeFollowupDetails);
 
-            Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult2));
             return loginResult2;
         }
     }
@@ -795,16 +617,13 @@ public class EnquiryFollowupDetailsActivity extends AppCompatActivity {
                 startActivity(intent);
                 overridePendingTransition(0, 0);
                 moveTaskToBack(false);
-                // showCustomDialog();
 
-                //inputEmail, inputPhone,inputAdd,inputReq,inputFollowupdate;
             }
 
             else if (success.equalsIgnoreCase(getResources().getString(R.string.zero)))
             {
                 Toast.makeText(EnquiryFollowupDetailsActivity.this,"Something went wrong",Toast.LENGTH_SHORT).show();
-               // inputContact.getText().clear();
-                //Toast.makeText(EnquiryFollowupDetailsActivity.this,"Please Enter New Mobile Number",Toast.LENGTH_SHORT).show();
+
             }
 
         } catch (JSONException e) {
@@ -820,33 +639,26 @@ public class EnquiryFollowupDetailsActivity extends AppCompatActivity {
 
         ServerClass ruc = new ServerClass();
 
-
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            // showProgressDialog();
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            // dismissProgressDialog();
-            //Toast.makeText(Employee.this, response, Toast.LENGTH_LONG).show();
             CallResponseDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> CallResponseDetails = new HashMap<String, String>();
             CallResponseDetails.put("action", "show_call_response_list");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(EnquiryFollowupDetailsActivity.this);
-            //CallResponseloyeeDetails.put("admin_id", SharedPrefereneceUtil.getadminId(CallResponseloyee.this));
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, CallResponseDetails);
-            Log.v(TAG, String.format("doInBackground :: loginResult= %s", loginResult));
             return loginResult;
         }
 
@@ -856,12 +668,8 @@ public class EnquiryFollowupDetailsActivity extends AppCompatActivity {
 
 
         Log.v(TAG, String.format("JsonResponseOperation :: jsonResponse = %s", jsonResponse));
-//        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayoutPrabhagDetails);
         if (jsonResponse != null) {
-
-
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
@@ -872,20 +680,15 @@ public class EnquiryFollowupDetailsActivity extends AppCompatActivity {
                             callresponce[0]=getResources().getString(R.string.na);
                             for (int i = 0; i < jsonArrayCountry.length(); i++) {
                                 spinCallReslist = new Spinner_List();
-                                Log.v(TAG, "JsonResponseOpeartion ::");
+
                                 JSONObject jsonObj = jsonArrayCountry.getJSONObject(i);
                                 if (jsonObj != null) {
 
                                     String CallResponse     = jsonObj.getString("CallResponse");
 
                                     String id=jsonObj.getString("Auto_Id");
-//                               if(i==0){
-//                                   spinCallReslist.setName(getResources().getString(R.string.promt_country));
-//                                   enqF.add(0,spinCallReslist);
-//                               }
                                     spinCallReslist.setName(CallResponse);
                                     spinCallReslist.setId(id);
-
 
                                     callresponce[i+1]=CallResponse;
 
@@ -917,7 +720,6 @@ public class EnquiryFollowupDetailsActivity extends AppCompatActivity {
                                         // Set the hint text color gray
                                         tv.setTextColor(Color.GRAY);
                                         tv.setText(getResources().getString(R.string.call_res));
-                                        // tv.setTextColor(Color.GRAY);
                                     }
                                     else {
                                         tv.setTextColor(Color.BLACK);
@@ -929,19 +731,13 @@ public class EnquiryFollowupDetailsActivity extends AppCompatActivity {
                             spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_item);
                             spinCallResponce.setAdapter(spinnerArrayAdapter);
                             int spinnerPosition = spinnerArrayAdapter.getPosition(callResponce);
-                           // Toast.makeText(this, "position: " + spinnerPosition, Toast.LENGTH_LONG).show();
                             spinCallResponce.setSelection(spinnerPosition);
-                        }else if(jsonArrayCountry.length()==0){
-                            System.out.println("No records found");
                         }
                     }
                 }else if (success.equalsIgnoreCase(getResources().getString(R.string.zero))){
 
-                    //forumCount.setVisibility(View.INVISBLE);
-                    // queCount.setVisibility(View.INVISIBLE);
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
             }
         }
@@ -955,12 +751,6 @@ public class EnquiryFollowupDetailsActivity extends AppCompatActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
-       // swipeRefresh.setRefreshing(false);
-//        Intent intent=new Intent(EnquiryFollowupDetailsActivity.this,EnquiryFollowupDetailsActivity.class);
-//        intent.putExtra("enquiry_id",enquiry_id);
-//        intent.putExtra("rating",Rating);
-//        intent.putExtra("call_response",callResponce);
-//        startActivity(intent);
     }
     @Override
     public boolean onSupportNavigateUp(){

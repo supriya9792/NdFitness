@@ -86,6 +86,7 @@ import com.itextpdf.text.PageSize;
 import com.itextpdf.text.html.simpleparser.HTMLWorker;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.draw.LineSeparator;
 import com.itextpdf.tool.xml.XMLWorker;
@@ -843,7 +844,13 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                          callback.onLayoutCancelled();
                                          return;
                                      }
-
+                                     PdfReader reader = null;
+                                        try {
+                                            reader = new PdfReader(FilePath);
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+                                         pages = reader.getNumberOfPages();
                                      if (pages > 0) {
                                          PrintDocumentInfo pdi = new PrintDocumentInfo.Builder("invoice.pdf")
                                                  .setContentType(PrintDocumentInfo.CONTENT_TYPE_DOCUMENT) .setPageCount(pages).build();
@@ -947,7 +954,6 @@ public class CourseDetailsActivity extends AppCompatActivity {
 
                         String domainurl= SharedPrefereneceUtil.getDomainUrl(CourseDetailsActivity.this);
                         final  String strurl= domainurl+ServiceUrls.IMAGES_URL + Logo;
-                        Log.e("Imageurl", strurl);
 
                         shareview.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
                         shareview.layout(0,0,0,0);
@@ -967,7 +973,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
 
                         Bitmap bitmap1 = loadBitmapFromView(shareview, width,height);
                         saveBitmap(bitmap1);
-                        String str_screenshot = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+"/testing" + ".png";
+                        String str_screenshot = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+"/reminder" + ".png";
                         fn_share(str_screenshot);
 
             }else{
@@ -980,7 +986,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
     }
 
     public void saveBitmap(Bitmap bitmap) {
-        File imagePath = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+"/testing" + ".png");
+        File imagePath = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+"/reminder" + ".png");
         FileOutputStream fos;
         try {
             fos = new FileOutputStream(imagePath);
@@ -988,7 +994,6 @@ public class CourseDetailsActivity extends AppCompatActivity {
             fos.flush();
             fos.close();
 
-            Log.e("ImageSave", "Saveimage");
         } catch (FileNotFoundException e) {
             Log.e("GREC", e.getMessage(), e);
         } catch (IOException e) {
@@ -1050,42 +1055,6 @@ public class CourseDetailsActivity extends AppCompatActivity {
         }
 
 
-    }
-    private String contactIdByPhoneNumber(String phoneNumber) {
-        String contactId = null;
-        if (phoneNumber != null && phoneNumber.length() > 0) {
-            ContentResolver contentResolver = getContentResolver();
-            Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNumber));
-            String[] projection = new String[]{ContactsContract.PhoneLookup._ID};
-
-            Cursor cursor = contentResolver.query(uri, projection, null, null, null);
-
-            if (cursor != null) {
-                while (cursor.moveToNext()) {
-                    contactId = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.PhoneLookup._ID));
-                }
-                cursor.close();
-            }
-        }
-        return contactId;
-    }
-    public String hasWhatsApp(String contactID) {
-        String rowContactId = null;
-        boolean hasWhatsApp;
-
-        String[] projection;
-        projection = new String[]{ContactsContract.RawContacts._ID};
-        String selection = ContactsContract.RawContacts.CONTACT_ID + " = ? AND " + ContactsContract.RawContacts.ACCOUNT_TYPE + " = ?";
-        String[] selectionArgs = new String[]{contactID, "com.whatsapp"};
-        Cursor cursor = getContentResolver().query(ContactsContract.RawContacts.CONTENT_URI, projection, selection, selectionArgs, null);
-        if (cursor != null) {
-            hasWhatsApp = cursor.moveToNext();
-            if (hasWhatsApp) {
-                rowContactId = cursor.getString(0);
-            }
-            cursor.close();
-        }
-        return rowContactId;
     }
     public  void SetFollowupSpinner(){
 

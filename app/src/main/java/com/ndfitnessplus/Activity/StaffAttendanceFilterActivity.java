@@ -152,7 +152,6 @@ public class StaffAttendanceFilterActivity extends AppCompatActivity {
         });
 
         //api of spinners
-        //executiveClass();
 
 
         //Date Wise date type spinners
@@ -206,15 +205,12 @@ public class StaffAttendanceFilterActivity extends AppCompatActivity {
                     if(index==0){
                         tv.setText(getResources().getString(R.string.prompt_att_mode));
                     }
-//                tv.setTextColor(getResources().getColor(R.color.black));
+
                     AttendaceModeName = tv.getText().toString();
                     if((AttendaceModeName.equals(getResources().getString(R.string.prompt_att_mode)))||
                             (AttendaceModeName.equals(getResources().getString(R.string.all)))){
                         AttendaceModeName="";
                     }
-                    // ((TextView) spinEnquiryType.getSelectedView()).setTextColor(getResources().getColor(R.color.white));
-                    // Showing selected spinner item
-                    //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
                 }}
 
             @Override
@@ -234,8 +230,6 @@ public class StaffAttendanceFilterActivity extends AppCompatActivity {
     }
     public void CampareTwoDates(){
         //******************campare two dates****************
-//        String date = "03/26/2012 11:00:00";
-//        String dateafter = "03/26/2012 11:59:00";
         SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "dd-MM-yyyy");
         Date convertedDate = new Date();
@@ -244,7 +238,6 @@ public class StaffAttendanceFilterActivity extends AppCompatActivity {
             convertedDate = dateFormat.parse(todate.getText().toString());
             convertedDate2 = dateFormat.parse(fromdate.getText().toString());
             if (convertedDate2.after(convertedDate) || convertedDate2.equals(convertedDate)) {
-                //.setText("true");
             } else {
                 String firstday= Utility.getFirstDayofMonth();
                 todate.setText(firstday);
@@ -257,8 +250,6 @@ public class StaffAttendanceFilterActivity extends AppCompatActivity {
     }
     public void CampareFronTwoDates(){
         //******************campare two dates****************
-//        String date = "03/26/2012 11:00:00";
-//        String dateafter = "03/26/2012 11:59:00";
         SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "dd-MM-yyyy");
         Date convertedDate = new Date();
@@ -267,7 +258,6 @@ public class StaffAttendanceFilterActivity extends AppCompatActivity {
             convertedDate = dateFormat.parse(fromdate.getText().toString());
             convertedDate2 = dateFormat.parse(todate.getText().toString());
             if (convertedDate2.before(convertedDate) || convertedDate2.equals(convertedDate)) {
-                //.setText("true");
             } else {
                 String firstday= Utility.getCurrentDate();
                 fromdate.setText(firstday);
@@ -293,7 +283,6 @@ public class StaffAttendanceFilterActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.v(TAG, "onPreExecute");
-            //   showProgressDialog();
             viewDialog.showDialog();
         }
 
@@ -301,26 +290,18 @@ public class StaffAttendanceFilterActivity extends AppCompatActivity {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             Log.v(TAG, String.format("onPostExecute :: response = %s", response));
-            // dismissProgressDialog();
             viewDialog.hideDialog();
-            //Toast.makeText(CandiateListView.this, response, Toast.LENGTH_LONG).show();
-            //  Toast.makeText(NewCustomerActivity.this, response, Toast.LENGTH_LONG).show();
             SearchAttendanceDetails(response);
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            //  Log.v(TAG, String.format("doInBackground ::  params= %s", params));
             HashMap<String, String> SearchAttendanceDetails = new HashMap<String, String>();
             SearchAttendanceDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(StaffAttendanceFilterActivity.this));
-            Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(StaffAttendanceFilterActivity.this)));
             SearchAttendanceDetails.put("to_date",todate.getText().toString());
-            Log.v(TAG, String.format("doInBackground :: to_date = %s",todate.getText().toString() ));
             SearchAttendanceDetails.put("from_date",fromdate.getText().toString());
-            Log.v(TAG, String.format("doInBackground :: from_date = %s", fromdate.getText().toString()));
             SearchAttendanceDetails.put("attendance_mode",AttendaceModeName);
-            Log.v(TAG, String.format("doInBackground :: attendance_mode = %s",AttendaceModeName));
             SearchAttendanceDetails.put("action", "search_staff_attendance_filter");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(StaffAttendanceFilterActivity.this);
             String loginResult2 = ruc.sendPostRequest(domainurl+ ServiceUrls.LOGIN_URL, SearchAttendanceDetails);
@@ -341,20 +322,14 @@ public class StaffAttendanceFilterActivity extends AppCompatActivity {
             String success = object.getString(getResources().getString(R.string.success));
 
             if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
-                //Toast.makeText(StaffAttendanceFilterActivity.this,"Attendance added succesfully",Toast.LENGTH_SHORT).show();
 
                 if (object != null) {
                     JSONArray jsonArrayResult = object.getJSONArray("result");
-//                        if(jsonArrayResult.length() >10){
-//                            totalPage=jsonArrayResult.length()/10;
-//                        }
                     if (jsonArrayResult != null && jsonArrayResult.length() > 0) {
                         for (int i = 0; i < jsonArrayResult.length(); i++) {
 
                             subList = new StaffAttendanceList();
-                            Log.d(TAG, "i: " + i);
 
-                            Log.v(TAG, "JsonResponseOpeartion ::");
                             JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                             if (jsonObj != null) {
 
@@ -370,7 +345,6 @@ public class StaffAttendanceFilterActivity extends AppCompatActivity {
                                 subList.setStaffID(Staff_ID);
                                 subList.setContact(Contact);
                                 String cont= Utility.lastFour(Contact);
-                                //subList.setContactEncrypt(cont);
                                 subList.setName(Name);
                                 String[] timearr=InDateTime.split(" ");
                                 String outtimearr[] = new String[0];
@@ -407,7 +381,6 @@ public class StaffAttendanceFilterActivity extends AppCompatActivity {
                                 subList.setAttendanceDate(adate);
                                 subList.setAttendanceMode(AttendanceMode);
                                 subList.setImage(Image);
-                                //  for (int j = 0; j < 5; j++) {
 
                                 subListArrayList.add(subList);
 
@@ -429,8 +402,6 @@ public class StaffAttendanceFilterActivity extends AppCompatActivity {
 
             else if (success.equalsIgnoreCase(getResources().getString(R.string.zero)))
             {
-                //Toast.makeText(StaffAttendanceFilterActivity.this,"Mobile Number Already Exits",Toast.LENGTH_SHORT).show();
-                //inputContact.getText().clear();
                 Toast.makeText(StaffAttendanceFilterActivity.this,"No Records Found",Toast.LENGTH_SHORT).show();
             }
 

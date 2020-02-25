@@ -206,13 +206,9 @@ public class CourseWiseAttendanceActivity extends AppCompatActivity {
             AttendanceDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(CourseWiseAttendanceActivity.this));
             AttendanceDetails.put("member_id",member_id );
             AttendanceDetails.put("invoice_id",invoice_id );
-            Log.v(TAG, String.format("doInBackground :: company id = %s", SharedPrefereneceUtil.getSelectedBranchId(CourseWiseAttendanceActivity.this)));
-            Log.v(TAG, String.format("doInBackground :: member_id = %s", member_id));
-            Log.v(TAG, String.format("doInBackground :: invoice_id = %s", invoice_id));
             AttendanceDetails.put("action","show_attendance");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(CourseWiseAttendanceActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, AttendanceDetails);
-            Log.v(TAG, String.format("doInBackground :: show_attendance= %s", loginResult));
             return loginResult;
         }
 
@@ -263,8 +259,7 @@ public class CourseWiseAttendanceActivity extends AppCompatActivity {
                                     try {
                                         endDate = dateFormat.parse(endc);
                                         currentdate = dateFormat.parse(Utility.getCurrentDate());
-                                        Log.v(TAG, String.format(" ::endDate = %s", endDate));
-                                        Log.v(TAG, String.format(" :: currentdate = %s",currentdate));
+
                                         if (currentdate.before(endDate)|| currentdate.equals(endDate) ) {
                                             if(today.equals(adate)){
                                                 yest=AttendanceDate;
@@ -308,8 +303,7 @@ public class CourseWiseAttendanceActivity extends AppCompatActivity {
                     try {
                         endDate = dateFormat.parse(endc);
                         currentdate = dateFormat.parse(Utility.getCurrentDate());
-                        Log.v(TAG, String.format(" ::endDate = %s", endDate));
-                        Log.v(TAG, String.format(" :: currentdate = %s",currentdate));
+
                         if (currentdate.before(endDate)|| currentdate.equals(endDate) ) {
 
                                 yest= Utility.getyesterdayDate();
@@ -364,8 +358,6 @@ public class CourseWiseAttendanceActivity extends AppCompatActivity {
                     int day= Integer.parseInt(ad[0]);
                     int month= Integer.parseInt(ad[1]);
                     int year= Integer.parseInt(ad[2]);
-                    Log.e("date   ============", parsedDate + "");
-                    //Log.e("date   ============", dateFormat.format(parsedDate));
                     if(parsedDate.equals(date)){
                         expCalendarView.setMarkedStyle(MarkStyle.RIGHTSIDEBAR)
                                 .markDate(new DateData(year, month, day).setMarkStyle(new MarkStyle(MarkStyle.BACKGROUND,getResources().getColor(R.color.green))))

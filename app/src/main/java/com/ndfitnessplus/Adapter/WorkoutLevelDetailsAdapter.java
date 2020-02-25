@@ -49,13 +49,11 @@ public class WorkoutLevelDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
     }
 
     public class OriginalViewHolder extends RecyclerView.ViewHolder {
-//        public ImageView image;
         public TextView mulsclegrpTv,workoutnameTv,setTv,repitationsTv,timeTv;
         public View lyt_parent;
 
         public OriginalViewHolder(View v) {
             super(v);
-//            image = (ImageView) v.findViewById(R.id.image);
             mulsclegrpTv = (TextView) v.findViewById(R.id.musclegrpTV);
             workoutnameTv = (TextView) v.findViewById(R.id.workout_nameTV);
             setTv = (TextView) v.findViewById(R.id.setsTV);
@@ -94,7 +92,6 @@ public class WorkoutLevelDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
         if (holder instanceof WorkoutLevelDetailsAdapter.OriginalViewHolder) {
             WorkoutLevelDetailsAdapter.OriginalViewHolder view = (WorkoutLevelDetailsAdapter.OriginalViewHolder) holder;
 
-            //final WorkOutDetailsList p = items.get(position);
 
             view.mulsclegrpTv.setText(p.getBodyPart());
             view.workoutnameTv.setText(p.getWorkoutName());
@@ -102,17 +99,6 @@ public class WorkoutLevelDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
             view.repitationsTv.setText(p.getRepitation());
             view.timeTv.setText(p.getTime());
 
-
-
-//            view.lyt_parent.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    Intent intent=new Intent(ctx, WorkoutDetailsActivity.class);
-//                    intent.putExtra("days",p.getDay());
-//                    intent.putExtra("member_id",p.getMemberId());
-//                    ctx.startActivity(intent);
-//                }
-//            });
 
         } else {
             WorkoutLevelDetailsAdapter.SectionViewHolder view = (WorkoutLevelDetailsAdapter.SectionViewHolder) holder;
