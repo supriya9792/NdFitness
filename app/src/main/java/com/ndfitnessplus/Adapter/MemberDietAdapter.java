@@ -19,7 +19,7 @@ import java.util.List;
 
 public class MemberDietAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private List<MemberDietList> items = new ArrayList<>();
+    private List<MemberDietList> items ;
     private Context ctx;
     private OnItemClickListener mOnItemClickListener;
 
@@ -38,20 +38,20 @@ public class MemberDietAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     public class OriginalViewHolder extends RecyclerView.ViewHolder {
         public ImageView image;
-        public TextView meal_type,meal_time,meal_disc;
-        public ImageButton bt_expand;
-        public View lyt_expand;
+        private TextView meal_type,meal_time,meal_disc;
+        private ImageButton bt_expand;
+        private View lyt_expand;
         public View lyt_parent;
 
-        public OriginalViewHolder(View v) {
+        private OriginalViewHolder(View v) {
             super(v);
-            image = (ImageView) v.findViewById(R.id.image);
-            meal_type = (TextView) v.findViewById(R.id.meal_type);
-            meal_time = (TextView) v.findViewById(R.id.meal_time);
-            meal_disc = (TextView) v.findViewById(R.id.meal_disc);
-            bt_expand = (ImageButton) v.findViewById(R.id.bt_expand);
-            lyt_expand = (View) v.findViewById(R.id.lyt_expand);
-            lyt_parent = (View) v.findViewById(R.id.lyt_parent);
+            image =  v.findViewById(R.id.image);
+            meal_type =  v.findViewById(R.id.meal_type);
+            meal_time =  v.findViewById(R.id.meal_time);
+            meal_disc =  v.findViewById(R.id.meal_disc);
+            bt_expand =  v.findViewById(R.id.bt_expand);
+            lyt_expand =  v.findViewById(R.id.lyt_expand);
+            lyt_parent =  v.findViewById(R.id.lyt_parent);
         }
     }
 

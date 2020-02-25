@@ -37,12 +37,12 @@ import static com.ndfitnessplus.Activity.POSProductListActivity.TAG;
     public class POSSellProductGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<POSItemList> items = new ArrayList<>();
-        ArrayList<POSItemList> arrayList;
+        public   ArrayList<POSItemList> arrayList;
         private ArrayList<POSItemList> subList;
         private Context ctx;
         private OnItemClickListener mOnItemClickListener;
         private OnMoreButtonClickListener onMoreButtonClickListener;
-        SQLiteDataBaseHelper db;
+       public SQLiteDataBaseHelper db;
     public void setOnItemClickListener(final OnItemClickListener mItemClickListener) {
         this.mOnItemClickListener = mItemClickListener;
         }
@@ -67,12 +67,12 @@ import static com.ndfitnessplus.Activity.POSProductListActivity.TAG;
 
         public OriginalViewHolder(View v) {
             super(v);
-            image = (ImageView) v.findViewById(R.id.image);
-            prod_name = (TextView) v.findViewById(R.id.prod_name);
-            prod_code = (TextView) v.findViewById(R.id.prodcodeTV);
-            price = (TextView) v.findViewById(R.id.price);
-            more = (Button) v.findViewById(R.id.more);
-            lyt_parent = (View) v.findViewById(R.id.lyt_parent);
+            image = v.findViewById(R.id.image);
+            prod_name = v.findViewById(R.id.prod_name);
+            prod_code = v.findViewById(R.id.prodcodeTV);
+            price = v.findViewById(R.id.price);
+            more = v.findViewById(R.id.more);
+            lyt_parent =  v.findViewById(R.id.lyt_parent);
         }
     }
 

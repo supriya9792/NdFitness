@@ -22,8 +22,8 @@ import java.util.ArrayList;
 
 public class StaffBirthdayAdapter extends RecyclerView.Adapter<StaffBirthdayAdapter.ViewHolder> {
 
-    ArrayList<StaffBirthdayList> arrayList;
-    Context context;
+    private ArrayList<StaffBirthdayList> arrayList;
+    private Context context;
     public StaffBirthdayAdapter(ArrayList<StaffBirthdayList> memberList, Context context) {
         arrayList = memberList;
         this.context = context;
@@ -71,14 +71,14 @@ public class StaffBirthdayAdapter extends RecyclerView.Adapter<StaffBirthdayAdap
         public ViewHolder(View itemView) {
             super(itemView);
 
-            nameTV = (TextView) itemView.findViewById(R.id.nameTV);
-            birth_dateTV = (TextView) itemView.findViewById(R.id.birth_dateTV);
-            contactTV = (TextView) itemView.findViewById(R.id.contactTV);
-            contactIV = (ImageView) itemView.findViewById(R.id.contactIV);
+            nameTV = itemView.findViewById(R.id.nameTV);
+            birth_dateTV = itemView.findViewById(R.id.birth_dateTV);
+            contactTV = itemView.findViewById(R.id.contactTV);
+            contactIV =  itemView.findViewById(R.id.contactIV);
             contactIV.setOnClickListener(this);
-            designationTV = (TextView) itemView.findViewById(R.id.designation);
-            joindateTV = (TextView) itemView.findViewById(R.id.join_dateTV);
-            layout=(View)itemView.findViewById(R.id.layout);
+            designationTV = itemView.findViewById(R.id.designation);
+            joindateTV = itemView.findViewById(R.id.join_dateTV);
+            layout=itemView.findViewById(R.id.layout);
         }
 
         @Override

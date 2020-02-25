@@ -35,9 +35,9 @@ import butterknife.ButterKnife;
 import static com.ndfitnessplus.Activity.CartActivity.TAG;
 
 public class SelectedCartAdapter extends RecyclerView.Adapter<SelectedCartAdapter.BaseViewHolder> {
-    ArrayList<POSItemList> arrayList;
+   public ArrayList<POSItemList> arrayList;
     private ArrayList<POSItemList> subList;
-    Context context;
+   public Context context;
     Spinner_List quantyilist;
     String qty="";
     public CustomItemClickListener listener;
@@ -195,13 +195,13 @@ public class SelectedCartAdapter extends RecyclerView.Adapter<SelectedCartAdapte
         public ViewHolder(View itemView) {
             super(itemView);
 
-            prodCodeTV = (TextView) itemView.findViewById(R.id.prod_code);
-            prodnameTV = (TextView) itemView.findViewById(R.id.prod_name);
+            prodCodeTV = itemView.findViewById(R.id.prod_code);
+            prodnameTV = itemView.findViewById(R.id.prod_name);
 
-            imageView=(ImageView) itemView.findViewById(R.id.prodImage);
-            quantityTV = (TextView) itemView.findViewById(R.id.quantityTV);
-            priceTV = (TextView) itemView.findViewById(R.id.price);
-            layoutparent=(View)itemView.findViewById(R.id.lyt_parent);
+            imageView= itemView.findViewById(R.id.prodImage);
+            quantityTV = itemView.findViewById(R.id.quantityTV);
+            priceTV = itemView.findViewById(R.id.price);
+            layoutparent=itemView.findViewById(R.id.lyt_parent);
         }
 
         @Override

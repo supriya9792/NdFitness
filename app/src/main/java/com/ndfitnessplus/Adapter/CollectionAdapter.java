@@ -42,10 +42,10 @@ import butterknife.ButterKnife;
 
 import static com.ndfitnessplus.Activity.EnquiryActivity.TAG;
 
-public class CollectionAdapter  extends RecyclerView.Adapter<CollectionAdapter.BaseViewHolder> {
-    ArrayList<CourseList> arrayList;
+public class   CollectionAdapter  extends RecyclerView.Adapter<CollectionAdapter.BaseViewHolder> {
+   private ArrayList<CourseList> arrayList;
     private ArrayList<CourseList> subList;
-    Context context;
+    private Context context;
 
     private static final int VIEW_TYPE_LOADING = 0;
     private static final int VIEW_TYPE_NORMAL = 1;
@@ -195,19 +195,19 @@ public class CollectionAdapter  extends RecyclerView.Adapter<CollectionAdapter.B
         public ViewHolder(View itemView) {
             super(itemView);
 
-            contactTV = (TextView) itemView.findViewById(R.id.contactTV);
-            nameTV = (TextView) itemView.findViewById(R.id.nameTV);
-            invoiceidTv = (TextView) itemView.findViewById(R.id.invoice_idTV);
-            paymentDetailsTv = (TextView) itemView.findViewById(R.id.paymentDtlTV);
-            receipttypeTV = (TextView) itemView.findViewById(R.id.receiptTypeTV);
-            nextPayDateTV = (TextView) itemView.findViewById(R.id.next_payment_dateTV);
-            imageView=(CircularImageView) itemView.findViewById(R.id.input_image);
-            regdateTV = (TextView) itemView.findViewById(R.id.reg_dateTV);
-            paymenttypeTv = (TextView) itemView.findViewById(R.id.paymentTypeTV);
-            paidTV = (TextView) itemView.findViewById(R.id.paidTV);
-            executiveNameTV=(TextView)itemView.findViewById(R.id.excecutive_nameTV);
-            balanceTV = (TextView) itemView.findViewById(R.id.balanceTV);
-            layoutparent=(View)itemView.findViewById(R.id.lyt_parent);
+            contactTV =  itemView.findViewById(R.id.contactTV);
+            nameTV =  itemView.findViewById(R.id.nameTV);
+            invoiceidTv =  itemView.findViewById(R.id.invoice_idTV);
+            paymentDetailsTv =  itemView.findViewById(R.id.paymentDtlTV);
+            receipttypeTV =  itemView.findViewById(R.id.receiptTypeTV);
+            nextPayDateTV =  itemView.findViewById(R.id.next_payment_dateTV);
+            imageView= itemView.findViewById(R.id.input_image);
+            regdateTV =  itemView.findViewById(R.id.reg_dateTV);
+            paymenttypeTv =  itemView.findViewById(R.id.paymentTypeTV);
+            paidTV =  itemView.findViewById(R.id.paidTV);
+            executiveNameTV=itemView.findViewById(R.id.excecutive_nameTV);
+            balanceTV =  itemView.findViewById(R.id.balanceTV);
+            layoutparent=itemView.findViewById(R.id.lyt_parent);
         }
 
         @Override
@@ -275,10 +275,10 @@ public class CollectionAdapter  extends RecyclerView.Adapter<CollectionAdapter.B
         dialog.setCancelable(true);
         final CourseList enq = arrayList.get(position);
 
-        ImageView imageView = (ImageView) dialog. findViewById(R.id.image);
-        TextView name = (TextView) dialog. findViewById(R.id.name);
-        ImageButton phone=(ImageButton)dialog.findViewById(R.id.phone_call);
-        ImageView whatsapp=(ImageView)dialog.findViewById(R.id.whatsapp);
+        ImageView imageView = dialog. findViewById(R.id.image);
+        TextView name =  dialog. findViewById(R.id.name);
+        ImageButton phone=dialog.findViewById(R.id.phone_call);
+        ImageView whatsapp=dialog.findViewById(R.id.whatsapp);
         String domainurl= SharedPrefereneceUtil.getDomainUrl((Activity) context);
         String url= domainurl+ServiceUrls.IMAGES_URL + enq.getImage();
 

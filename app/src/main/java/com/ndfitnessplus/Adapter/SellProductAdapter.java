@@ -13,8 +13,8 @@ import com.ndfitnessplus.R;
 import java.util.ArrayList;
 
 public class SellProductAdapter extends RecyclerView.Adapter<SellProductAdapter.ViewHolder> {
-    ArrayList<SellProductList> arrayList;
-    Context context;
+    public ArrayList<SellProductList> arrayList;
+    public Context context;
     public SellProductAdapter(ArrayList<SellProductList> admissionList, Context context) {
         arrayList = admissionList;
         this.context = context;
@@ -48,11 +48,11 @@ public class SellProductAdapter extends RecyclerView.Adapter<SellProductAdapter.
         public ViewHolder(View itemView) {
             super(itemView);
 
-            prodCodeTv = (TextView) itemView.findViewById(R.id.prodcodeTV);
-            prodNameTv = (TextView) itemView.findViewById(R.id.ProdnameTV);
-            quantityTv = (TextView) itemView.findViewById(R.id.quantityTV);
-            rateTV = (TextView) itemView.findViewById(R.id.rateTV);
-            prodFinalRateTv = (TextView) itemView.findViewById(R.id.pfinalrateTV);
+            prodCodeTv =  itemView.findViewById(R.id.prodcodeTV);
+            prodNameTv =  itemView.findViewById(R.id.ProdnameTV);
+            quantityTv =  itemView.findViewById(R.id.quantityTV);
+            rateTV =  itemView.findViewById(R.id.rateTV);
+            prodFinalRateTv =  itemView.findViewById(R.id.pfinalrateTV);
         }
 
     }

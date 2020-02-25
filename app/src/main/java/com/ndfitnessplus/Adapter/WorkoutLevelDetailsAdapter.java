@@ -49,17 +49,17 @@ public class WorkoutLevelDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
     }
 
     public class OriginalViewHolder extends RecyclerView.ViewHolder {
-        public TextView mulsclegrpTv,workoutnameTv,setTv,repitationsTv,timeTv;
+        private TextView mulsclegrpTv,workoutnameTv,setTv,repitationsTv,timeTv;
         public View lyt_parent;
 
-        public OriginalViewHolder(View v) {
+        private OriginalViewHolder(View v) {
             super(v);
-            mulsclegrpTv = (TextView) v.findViewById(R.id.musclegrpTV);
-            workoutnameTv = (TextView) v.findViewById(R.id.workout_nameTV);
-            setTv = (TextView) v.findViewById(R.id.setsTV);
-            repitationsTv = (TextView) v.findViewById(R.id.repitationsTV);
-            timeTv = (TextView) v.findViewById(R.id.timeTV);
-            lyt_parent = (View) v.findViewById(R.id.lyt_parent);
+            mulsclegrpTv =  v.findViewById(R.id.musclegrpTV);
+            workoutnameTv =  v.findViewById(R.id.workout_nameTV);
+            setTv =  v.findViewById(R.id.setsTV);
+            repitationsTv =  v.findViewById(R.id.repitationsTV);
+            timeTv =  v.findViewById(R.id.timeTV);
+            lyt_parent =  v.findViewById(R.id.lyt_parent);
         }
     }
 

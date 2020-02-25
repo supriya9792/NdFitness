@@ -91,21 +91,21 @@ public class ActiveMemberActivity extends AppCompatActivity {
         initToolbar();
     }
     private void initToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(getResources().getString(R.string.active_members));
+        getSupportActionBar().setTitle(R.string.active_members);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         initComponent();
     }
     private void initComponent(){
         progressBar=findViewById(R.id.progressBar);
 
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        recyclerView = findViewById(R.id.recycler_view);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
         mainframe=findViewById(R.id.main_frame);
-        inputsearch=(EditText)findViewById(R.id.inputsearchid);
+        inputsearch=findViewById(R.id.inputsearchid);
         search=findViewById(R.id.search);
         nodata=findViewById(R.id.nodata);
         todate=findViewById(R.id.to_date);
@@ -301,9 +301,7 @@ public class ActiveMemberActivity extends AppCompatActivity {
 
     class  ActiveMemberTrackclass extends AsyncTask<String, Void, String> {
 
-
         ServerClass ruc = new ServerClass();
-
 
         @Override
         protected void onPreExecute() {
@@ -407,7 +405,6 @@ public class ActiveMemberActivity extends AppCompatActivity {
                     recyclerView.setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
                 android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(ActiveMemberActivity.this);
                 builder.setMessage(R.string.server_exception);
@@ -568,7 +565,6 @@ public class ActiveMemberActivity extends AppCompatActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
-        //swipeRefresh.setRefreshing(false);
         Intent intent=new Intent(ActiveMemberActivity.this,ActiveMemberActivity.class);
         startActivity(intent);
     }

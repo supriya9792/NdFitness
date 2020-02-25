@@ -20,8 +20,8 @@ import java.util.ArrayList;
 
 public class MemberBirthdayAdapter extends RecyclerView.Adapter<MemberBirthdayAdapter.ViewHolder> {
 
-    ArrayList<MemberDataList> arrayList;
-    Context context;
+    public ArrayList<MemberDataList> arrayList;
+    public Context context;
 
     public MemberBirthdayAdapter(ArrayList<MemberDataList> memberList, Context context) {
         arrayList = memberList;
@@ -72,15 +72,15 @@ public class MemberBirthdayAdapter extends RecyclerView.Adapter<MemberBirthdayAd
         public ViewHolder(View itemView) {
             super(itemView);
 
-            nameTV = (TextView) itemView.findViewById(R.id.nameTV);
-            birth_dateTV = (TextView) itemView.findViewById(R.id.birth_dateTV);
-            contactTV = (TextView) itemView.findViewById(R.id.contactTV);
+            nameTV =  itemView.findViewById(R.id.nameTV);
+            birth_dateTV =  itemView.findViewById(R.id.birth_dateTV);
+            contactTV =  itemView.findViewById(R.id.contactTV);
 
-            statusTV = (ImageView) itemView.findViewById(R.id.status);
-            excecutive_nameTV = (TextView) itemView.findViewById(R.id.excecutive_nameTV);
-            regDateTV = (TextView) itemView.findViewById(R.id.reg_dateTV);
+            statusTV =  itemView.findViewById(R.id.status);
+            excecutive_nameTV =  itemView.findViewById(R.id.excecutive_nameTV);
+            regDateTV =  itemView.findViewById(R.id.reg_dateTV);
 
-            layoutp=(View)itemView.findViewById(R.id.layout);
+            layoutp=itemView.findViewById(R.id.layout);
         }
 
         @Override

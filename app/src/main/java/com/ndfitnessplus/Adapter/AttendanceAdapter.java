@@ -22,9 +22,9 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.ViewHolder> {
-    ArrayList<AttendanceList> arrayList;
+    public ArrayList<AttendanceList> arrayList;
     private ArrayList<AttendanceList> subList;
-    Context context;
+    public Context context;
     public AttendanceAdapter(Context context, ArrayList<AttendanceList> admissionList) {
         this.subList = admissionList;
         this.arrayList = new ArrayList<AttendanceList>();
@@ -77,20 +77,20 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.Vi
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
-        TextView excecutive_nameTV,attdateTV,nameTv,ContactTv,timeTv,packageNameTv,ExpiryDateTv,attendancemodeTv,member_idTV;
+        TextView attdateTV,nameTv,ContactTv,timeTv,packageNameTv,ExpiryDateTv,attendancemodeTv,member_idTV;
         ImageView imageView,statusIV;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
-            attdateTV = (TextView) itemView.findViewById(R.id.attendacnedateTV);
-            timeTv = (TextView) itemView.findViewById(R.id.timeTV);
-            nameTv = (TextView) itemView.findViewById(R.id.nameTV);
-            ContactTv = (TextView) itemView.findViewById(R.id.contactTV);
-            attendancemodeTv = (TextView) itemView.findViewById(R.id.attendancemodeTv);
-            member_idTV = (TextView) itemView.findViewById(R.id.member_idTV);
-            imageView=(ImageView)itemView.findViewById(R.id.input_image);
-            statusIV=(ImageView)itemView.findViewById(R.id.status);
+            attdateTV =itemView.findViewById(R.id.attendacnedateTV);
+            timeTv = itemView.findViewById(R.id.timeTV);
+            nameTv =  itemView.findViewById(R.id.nameTV);
+            ContactTv =  itemView.findViewById(R.id.contactTV);
+            attendancemodeTv =  itemView.findViewById(R.id.attendancemodeTv);
+            member_idTV =  itemView.findViewById(R.id.member_idTV);
+            imageView=itemView.findViewById(R.id.input_image);
+            statusIV=itemView.findViewById(R.id.status);
         }
 
     }

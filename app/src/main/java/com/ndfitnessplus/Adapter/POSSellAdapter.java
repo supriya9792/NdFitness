@@ -186,12 +186,12 @@ public class POSSellAdapter  extends RecyclerView.Adapter<POSSellAdapter.BaseVie
         public ViewHolder(View itemView) {
             super(itemView);
 
-            executveNameTv = (TextView) itemView.findViewById(R.id.excecutive_nameTV);
-            Invoicedatetv = (TextView) itemView.findViewById(R.id.invoicedateTV);
-            invoice_idTV = (TextView) itemView.findViewById(R.id.invoice_idTV);
-            nameTv = (TextView) itemView.findViewById(R.id.nameTV);
-            contactTv = (TextView) itemView.findViewById(R.id.contactTV);
-            invoiceTotalTV = (TextView) itemView.findViewById(R.id.invoic_ttlTV);
+            executveNameTv =  itemView.findViewById(R.id.excecutive_nameTV);
+            Invoicedatetv =  itemView.findViewById(R.id.invoicedateTV);
+            invoice_idTV =  itemView.findViewById(R.id.invoice_idTV);
+            nameTv =  itemView.findViewById(R.id.nameTV);
+            contactTv =  itemView.findViewById(R.id.contactTV);
+            invoiceTotalTV =  itemView.findViewById(R.id.invoic_ttlTV);
 
 
             layoutparent=(View)itemView.findViewById(R.id.lyt_parent);

@@ -31,7 +31,7 @@ import static com.ndfitnessplus.Activity.EnquiryActivity.TAG;
 
 public class ShowWorkoutAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    ArrayList<WorkOutDayList> arrayList;
+   public ArrayList<WorkOutDayList> arrayList;
     private ArrayList<WorkOutDayList> subList;
 
     private Context ctx;
@@ -59,14 +59,14 @@ public class ShowWorkoutAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         public OriginalViewHolder(View v) {
             super(v);
-            image = (ImageView) v.findViewById(R.id.input_image);
-            Name = (TextView) v.findViewById(R.id.nameTV);
-            Contact = (TextView) v.findViewById(R.id.contactTV);
-            Date = (TextView) v.findViewById(R.id.reg_dateTV);
-            ExerciseId = (TextView) v.findViewById(R.id.exercise_idTV);
-            LevelName = (TextView) v.findViewById(R.id.level_nameTV);
-            ExecutiveName = (TextView) v.findViewById(R.id.excecutive_nameTV);
-            lyt_parent = (View) v.findViewById(R.id.lyt_parent);
+            image =  v.findViewById(R.id.input_image);
+            Name =  v.findViewById(R.id.nameTV);
+            Contact =  v.findViewById(R.id.contactTV);
+            Date =  v.findViewById(R.id.reg_dateTV);
+            ExerciseId =  v.findViewById(R.id.exercise_idTV);
+            LevelName =  v.findViewById(R.id.level_nameTV);
+            ExecutiveName =  v.findViewById(R.id.excecutive_nameTV);
+            lyt_parent = v.findViewById(R.id.lyt_parent);
         }
     }
 

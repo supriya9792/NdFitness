@@ -23,7 +23,7 @@ import java.util.Locale;
 public class StaffAttendanceAdapter  extends RecyclerView.Adapter<StaffAttendanceAdapter.ViewHolder> {
     ArrayList<StaffAttendanceList> arrayList;
     private ArrayList<StaffAttendanceList> subList;
-    Context context;
+    public Context context;
     public StaffAttendanceAdapter(Context context, ArrayList<StaffAttendanceList> admissionList) {
         this.subList = admissionList;
         this.arrayList = new ArrayList<StaffAttendanceList>();
@@ -78,15 +78,15 @@ public class StaffAttendanceAdapter  extends RecyclerView.Adapter<StaffAttendanc
         public ViewHolder(View itemView) {
             super(itemView);
 
-            attdateTV = (TextView) itemView.findViewById(R.id.attendacnedateTV);
-            IntimeTv = (TextView) itemView.findViewById(R.id.intimeTV);
-            outTimeTv = (TextView) itemView.findViewById(R.id.outtimeTv);
-            nameTv = (TextView) itemView.findViewById(R.id.nameTV);
-            ContactTv = (TextView) itemView.findViewById(R.id.contactTV);
-            attendancemodeTv = (TextView) itemView.findViewById(R.id.attendancemodeTv);
-            staff_idTV = (TextView) itemView.findViewById(R.id.staff_idTV);
-            imageView=(ImageView)itemView.findViewById(R.id.input_image);
-            statusIV=(ImageView)itemView.findViewById(R.id.status);
+            attdateTV =  itemView.findViewById(R.id.attendacnedateTV);
+            IntimeTv =  itemView.findViewById(R.id.intimeTV);
+            outTimeTv =  itemView.findViewById(R.id.outtimeTv);
+            nameTv =  itemView.findViewById(R.id.nameTV);
+            ContactTv =  itemView.findViewById(R.id.contactTV);
+            attendancemodeTv =  itemView.findViewById(R.id.attendancemodeTv);
+            staff_idTV =  itemView.findViewById(R.id.staff_idTV);
+            imageView=itemView.findViewById(R.id.input_image);
+            statusIV=itemView.findViewById(R.id.status);
         }
 
     }

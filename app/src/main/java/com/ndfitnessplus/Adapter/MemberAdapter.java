@@ -54,16 +54,16 @@ import butterknife.ButterKnife;
 import static com.ndfitnessplus.Activity.EnquiryActivity.TAG;
 
 public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.BaseViewHolder> {
-    ArrayList<MemberDataList> arrayList;
-    private ArrayList<MemberDataList> subList;
-    Context context;
+     private   ArrayList<MemberDataList> arrayList;
+     private ArrayList<MemberDataList> subList;
+     private Context context;
 
     private static final int VIEW_TYPE_LOADING = 0;
     private static final int VIEW_TYPE_NORMAL = 1;
     private boolean isLoaderVisible = false;
-    String member_id,name,contact,status,End_Date,FinalBalance;
+    private String member_id,name,contact,status,End_Date,FinalBalance;
     //Loading gif
-    ViewDialog viewDialog;
+   private ViewDialog viewDialog;
     public MemberAdapter(ArrayList<MemberDataList> enquiryList, Context context) {
         this.subList = enquiryList;
         this.arrayList = new ArrayList<MemberDataList>();
@@ -213,18 +213,18 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.BaseViewHo
         public ViewHolder(View itemView) {
             super(itemView);
 
-            contactTV = (TextView) itemView.findViewById(R.id.contactTV);
-            occupationTV = (TextView) itemView.findViewById(R.id.occupationTV);
-            nameTV = (TextView) itemView.findViewById(R.id.nameTV);
+            contactTV = itemView.findViewById(R.id.contactTV);
+            occupationTV =  itemView.findViewById(R.id.occupationTV);
+            nameTV =  itemView.findViewById(R.id.nameTV);
 
-            imageView=(CircularImageView) itemView.findViewById(R.id.input_image);
-            excecutive_nameTV = (TextView) itemView.findViewById(R.id.excecutive_nameTV);
-            dobTV = (TextView) itemView.findViewById(R.id.dobTV);
-            genderTV = (TextView) itemView.findViewById(R.id.genderTV);
-            bloodgroupTV = (TextView) itemView.findViewById(R.id.bloodgrpTV);
-            memberidTv = (TextView) itemView.findViewById(R.id.member_idTV);
-            statusIv = (ImageView) itemView.findViewById(R.id.status);
-            attendanceIv = (ImageView) itemView.findViewById(R.id.attendanceIV);
+            imageView= itemView.findViewById(R.id.input_image);
+            excecutive_nameTV = itemView.findViewById(R.id.excecutive_nameTV);
+            dobTV = itemView.findViewById(R.id.dobTV);
+            genderTV = itemView.findViewById(R.id.genderTV);
+            bloodgroupTV = itemView.findViewById(R.id.bloodgrpTV);
+            memberidTv = itemView.findViewById(R.id.member_idTV);
+            statusIv =  itemView.findViewById(R.id.status);
+            attendanceIv =  itemView.findViewById(R.id.attendanceIV);
             layoutparent=(View)itemView.findViewById(R.id.lyt_parent);
             viewDialog = new ViewDialog((Activity) context);
         }
@@ -319,10 +319,10 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.BaseViewHo
         dialog.setCancelable(true);
         final MemberDataList enq = arrayList.get(position);
 
-        ImageView imageView = (ImageView) dialog. findViewById(R.id.image);
-        TextView name = (TextView) dialog. findViewById(R.id.name);
-        ImageButton phone=(ImageButton)dialog.findViewById(R.id.phone_call);
-        ImageView whatsapp=(ImageView)dialog.findViewById(R.id.whatsapp);
+        ImageView imageView =  dialog. findViewById(R.id.image);
+        TextView name = dialog. findViewById(R.id.name);
+        ImageButton phone=dialog.findViewById(R.id.phone_call);
+        ImageView whatsapp=dialog.findViewById(R.id.whatsapp);
         String domainurl= SharedPrefereneceUtil.getDomainUrl((Activity) context);
         String url= domainurl+ServiceUrls.IMAGES_URL + enq.getImage();
 

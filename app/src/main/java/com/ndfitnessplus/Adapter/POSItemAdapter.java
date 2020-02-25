@@ -41,9 +41,9 @@ import butterknife.ButterKnife;
 import static com.ndfitnessplus.Activity.EnquiryActivity.TAG;
 
 public class POSItemAdapter extends RecyclerView.Adapter<POSItemAdapter.BaseViewHolder> {
-    ArrayList<POSItemList> arrayList;
+    private ArrayList<POSItemList> arrayList;
     private ArrayList<POSItemList> subList;
-    Context context;
+    private Context context;
 
     private static final int VIEW_TYPE_LOADING = 0;
     private static final int VIEW_TYPE_NORMAL = 1;
@@ -198,16 +198,16 @@ public class POSItemAdapter extends RecyclerView.Adapter<POSItemAdapter.BaseView
         public ViewHolder(View itemView) {
             super(itemView);
 
-            prodCodeTV = (TextView) itemView.findViewById(R.id.prodcodeTV);
-            prodnameTV = (TextView) itemView.findViewById(R.id.ProdnameTV);
-            prodDiscTV = (TextView) itemView.findViewById(R.id.prodDiscTV);
-            imageView=(CircularImageView) itemView.findViewById(R.id.input_image);
-            quantityTV = (TextView) itemView.findViewById(R.id.quantityTV);
-            rateTV = (TextView) itemView.findViewById(R.id.rateTV);
-            purchaseAmountTV = (TextView) itemView.findViewById(R.id.purchaseAmountTV);
-            taxTV = (TextView) itemView.findViewById(R.id.taxTV);
-            MaxdiscountTV = (TextView) itemView.findViewById(R.id.maxDiscountTV);
-            layoutparent=(View)itemView.findViewById(R.id.lyt_parent);
+            prodCodeTV =  itemView.findViewById(R.id.prodcodeTV);
+            prodnameTV =  itemView.findViewById(R.id.ProdnameTV);
+            prodDiscTV =  itemView.findViewById(R.id.prodDiscTV);
+            imageView=itemView.findViewById(R.id.input_image);
+            quantityTV =  itemView.findViewById(R.id.quantityTV);
+            rateTV =  itemView.findViewById(R.id.rateTV);
+            purchaseAmountTV =  itemView.findViewById(R.id.purchaseAmountTV);
+            taxTV =  itemView.findViewById(R.id.taxTV);
+            MaxdiscountTV =  itemView.findViewById(R.id.maxDiscountTV);
+            layoutparent=itemView.findViewById(R.id.lyt_parent);
         }
 
         @Override

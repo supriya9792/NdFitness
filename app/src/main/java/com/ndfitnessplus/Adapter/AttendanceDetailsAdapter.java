@@ -13,8 +13,8 @@ import com.ndfitnessplus.R;
 import java.util.ArrayList;
 
 public class AttendanceDetailsAdapter extends RecyclerView.Adapter<AttendanceDetailsAdapter.ViewHolder> {
-    ArrayList<AttendanceDetailList> arrayList;
-    Context context;
+    public  ArrayList<AttendanceDetailList> arrayList;
+    public Context context;
     public AttendanceDetailsAdapter(ArrayList<AttendanceDetailList> admissionList, Context context) {
         arrayList = admissionList;
         this.context = context;
@@ -47,9 +47,9 @@ public class AttendanceDetailsAdapter extends RecyclerView.Adapter<AttendanceDet
         public ViewHolder(View itemView) {
             super(itemView);
 
-            attendancedateTv = (TextView) itemView.findViewById(R.id.attendance_date);
-            timeTV = (TextView) itemView.findViewById(R.id.time);
-            ModeTv = (TextView) itemView.findViewById(R.id.mode);
+            attendancedateTv = itemView.findViewById(R.id.attendance_date);
+            timeTV =itemView.findViewById(R.id.time);
+            ModeTv =itemView.findViewById(R.id.mode);
 
         }
 

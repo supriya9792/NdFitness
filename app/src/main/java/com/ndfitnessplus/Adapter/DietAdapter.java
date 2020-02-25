@@ -52,9 +52,9 @@ import butterknife.ButterKnife;
 import static com.ndfitnessplus.Activity.SelectDomainActivity.TAG;
 
 public class DietAdapter extends RecyclerView.Adapter<DietAdapter.BaseViewHolder> {
-    ArrayList<DietList> arrayList;
+    private ArrayList<DietList> arrayList;
     private ArrayList<DietList> subList;
-    Context context;
+    private Context context;
 
     private static final int VIEW_TYPE_LOADING = 0;
     private static final int VIEW_TYPE_NORMAL = 1;
@@ -207,18 +207,18 @@ public class DietAdapter extends RecyclerView.Adapter<DietAdapter.BaseViewHolder
         public ViewHolder(View itemView) {
             super(itemView);
 
-            contactTV = (TextView) itemView.findViewById(R.id.contactTV);
-            purposeTv = (TextView) itemView.findViewById(R.id.purposeTv);
-            nameTV = (TextView) itemView.findViewById(R.id.nameTV);
-            imageView=(CircularImageView) itemView.findViewById(R.id.input_image);
+            contactTV =  itemView.findViewById(R.id.contactTV);
+            purposeTv =  itemView.findViewById(R.id.purposeTv);
+            nameTV =  itemView.findViewById(R.id.nameTV);
+            imageView= itemView.findViewById(R.id.input_image);
 
-            dietition_TV = (TextView) itemView.findViewById(R.id.dietition_TV);
-            diet_dateTV = (TextView) itemView.findViewById(R.id.diet_dateTV);
-            diet_idTV = (TextView) itemView.findViewById(R.id.diet_idTV);
-            advoiceTV = (TextView) itemView.findViewById(R.id.advoiceTV);
-            start_to_end_date_TV = (TextView) itemView.findViewById(R.id.start_to_end_date_TV);
-            chargesTV = (TextView) itemView.findViewById(R.id.chargesTV);
-            layoutparent=(View)itemView.findViewById(R.id.lyt_parent);
+            dietition_TV =  itemView.findViewById(R.id.dietition_TV);
+            diet_dateTV =  itemView.findViewById(R.id.diet_dateTV);
+            diet_idTV =  itemView.findViewById(R.id.diet_idTV);
+            advoiceTV =  itemView.findViewById(R.id.advoiceTV);
+            start_to_end_date_TV =  itemView.findViewById(R.id.start_to_end_date_TV);
+            chargesTV =  itemView.findViewById(R.id.chargesTV);
+            layoutparent=itemView.findViewById(R.id.lyt_parent);
         }
 
         @Override

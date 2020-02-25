@@ -49,24 +49,24 @@ public class BranchSelectionAdapter extends  RecyclerView.Adapter<BranchSelectio
 
 private Context mContext;
 private List<BranchList> subList;
-private ArrayList<BranchList> arraylist;
-String ipadd;
+ private ArrayList<BranchList> arraylist;
+private String ipadd;
 
 public class MyView extends RecyclerView.ViewHolder   {
-    TextView branch_nameTV,dailyCollectionTV,monthlyCollectionTV,locationCityTv,statusTV;
+    private TextView branch_nameTV,dailyCollectionTV,monthlyCollectionTV,locationCityTv,statusTV;
     ImageView contactIV;
     CircularImageView imageView;
     View parent;
-    public MyView(View view) {
+    private MyView(View view) {
         super(view);
-        branch_nameTV = (TextView) itemView.findViewById(R.id.branch_nameTV);
-        locationCityTv = (TextView) itemView.findViewById(R.id.locationCityTv);
-        dailyCollectionTV = (TextView) itemView.findViewById(R.id.dailyCollectionTV);
-        monthlyCollectionTV = (TextView) itemView.findViewById(R.id.monthlyCollectionTV);
-        statusTV = (TextView) itemView.findViewById(R.id.statusTv);
-        parent=(View)itemView.findViewById(R.id.layout);
-        contactIV = (ImageView) itemView.findViewById(R.id.contactIV);
-        imageView = (CircularImageView) itemView.findViewById(R.id.branchImage);
+        branch_nameTV =  itemView.findViewById(R.id.branch_nameTV);
+        locationCityTv =  itemView.findViewById(R.id.locationCityTv);
+        dailyCollectionTV =  itemView.findViewById(R.id.dailyCollectionTV);
+        monthlyCollectionTV =  itemView.findViewById(R.id.monthlyCollectionTV);
+        statusTV =  itemView.findViewById(R.id.statusTv);
+        parent=itemView.findViewById(R.id.layout);
+        contactIV =  itemView.findViewById(R.id.contactIV);
+        imageView = itemView.findViewById(R.id.branchImage);
 
     }
 

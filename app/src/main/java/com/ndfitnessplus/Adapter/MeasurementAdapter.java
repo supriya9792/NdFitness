@@ -19,9 +19,9 @@ import java.util.Locale;
 import static com.ndfitnessplus.Activity.EnquiryActivity.TAG;
 
 public class MeasurementAdapter extends RecyclerView.Adapter<MeasurementAdapter.ViewHolder> {
-    ArrayList<MeasurementList> arrayList;
+   public ArrayList<MeasurementList> arrayList;
     private ArrayList<MeasurementList> subList;
-    Context context;
+   public Context context;
     public MeasurementAdapter(Context context, ArrayList<MeasurementList> admissionList) {
         this.subList = admissionList;
         this.arrayList = new ArrayList<MeasurementList>();
@@ -79,29 +79,29 @@ public class MeasurementAdapter extends RecyclerView.Adapter<MeasurementAdapter.
         public ViewHolder(View itemView) {
             super(itemView);
 
-            mDateTv = (TextView) itemView.findViewById(R.id.measurement_date);
-            weightTv = (TextView) itemView.findViewById(R.id.weight);
-            heightTv = (TextView) itemView.findViewById(R.id.height);
-            ageTV = (TextView) itemView.findViewById(R.id.age);
-            bmiTv = (TextView) itemView.findViewById(R.id.bmi);
-            fatTv = (TextView) itemView.findViewById(R.id.fat);
-            neckTv = (TextView) itemView.findViewById(R.id.neck);
-            shoulderTv = (TextView) itemView.findViewById(R.id.shoulder);
-            chestTv = (TextView) itemView.findViewById(R.id.chest);
-            arms_rTv = (TextView) itemView.findViewById(R.id.arms_r);
-            arms_lTv = (TextView) itemView.findViewById(R.id.arms_l);
-            forarmsTv = (TextView) itemView.findViewById(R.id.forarms);
-            waistTv = (TextView) itemView.findViewById(R.id.waist);
-            hipsTv = (TextView) itemView.findViewById(R.id.hips);
-            thigh_rTv = (TextView) itemView.findViewById(R.id.thigh_r);
-            thigh_lTv = (TextView) itemView.findViewById(R.id.thigh_l);
-            calf_rTv = (TextView) itemView.findViewById(R.id.calf_r);
-            calf_lTv = (TextView) itemView.findViewById(R.id.calf_l);
-            nextfolldateTv = (TextView) itemView.findViewById(R.id.nextFollDate);
-            excecutive_nameTV = (TextView) itemView.findViewById(R.id.exe_name);
-            mdateTV = (TextView) itemView.findViewById(R.id.mdate);
-            nameTv = (TextView) itemView.findViewById(R.id.nameTV);
-            ContactTv = (TextView) itemView.findViewById(R.id.contactTV);
+            mDateTv =  itemView.findViewById(R.id.measurement_date);
+            weightTv =  itemView.findViewById(R.id.weight);
+            heightTv =  itemView.findViewById(R.id.height);
+            ageTV =  itemView.findViewById(R.id.age);
+            bmiTv =  itemView.findViewById(R.id.bmi);
+            fatTv =  itemView.findViewById(R.id.fat);
+            neckTv =  itemView.findViewById(R.id.neck);
+            shoulderTv =  itemView.findViewById(R.id.shoulder);
+            chestTv =  itemView.findViewById(R.id.chest);
+            arms_rTv =  itemView.findViewById(R.id.arms_r);
+            arms_lTv =  itemView.findViewById(R.id.arms_l);
+            forarmsTv =  itemView.findViewById(R.id.forarms);
+            waistTv =  itemView.findViewById(R.id.waist);
+            hipsTv =  itemView.findViewById(R.id.hips);
+            thigh_rTv =  itemView.findViewById(R.id.thigh_r);
+            thigh_lTv =  itemView.findViewById(R.id.thigh_l);
+            calf_rTv =  itemView.findViewById(R.id.calf_r);
+            calf_lTv =  itemView.findViewById(R.id.calf_l);
+            nextfolldateTv =  itemView.findViewById(R.id.nextFollDate);
+            excecutive_nameTV =  itemView.findViewById(R.id.exe_name);
+            mdateTV =  itemView.findViewById(R.id.mdate);
+            nameTv =  itemView.findViewById(R.id.nameTV);
+            ContactTv =  itemView.findViewById(R.id.contactTV);
         }
 
     }

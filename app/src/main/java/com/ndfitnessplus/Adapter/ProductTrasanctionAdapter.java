@@ -13,8 +13,8 @@ import com.ndfitnessplus.R;
 import java.util.ArrayList;
 
 public class ProductTrasanctionAdapter extends RecyclerView.Adapter<ProductTrasanctionAdapter.ViewHolder> {
-    ArrayList<ProductTrasanctionList> arrayList;
-    Context context;
+   public ArrayList<ProductTrasanctionList> arrayList;
+   public Context context;
 
     public ProductTrasanctionAdapter(ArrayList<ProductTrasanctionList> paramArrayList, Context paramContext) {
         this.arrayList = paramArrayList;
@@ -24,11 +24,11 @@ public class ProductTrasanctionAdapter extends RecyclerView.Adapter<ProductTrasa
     public int getItemCount() { return this.arrayList.size(); }
 
     public void onBindViewHolder(ViewHolder paramViewHolder, int paramInt) {
-        paramViewHolder.prodCodeTV.setText(((ProductTrasanctionList)this.arrayList.get(paramInt)).getProdCode());
-        paramViewHolder.prodNameTV.setText(((ProductTrasanctionList)this.arrayList.get(paramInt)).getProdName());
-        paramViewHolder.rateTV.setText(((ProductTrasanctionList)this.arrayList.get(paramInt)).getRate());
-        paramViewHolder.quantityTV.setText(((ProductTrasanctionList)this.arrayList.get(paramInt)).getQuantity());
-        paramViewHolder.prodTotalTV.setText(((ProductTrasanctionList)this.arrayList.get(paramInt)).getProductFinalRate());
+        paramViewHolder.prodCodeTV.setText((this.arrayList.get(paramInt)).getProdCode());
+        paramViewHolder.prodNameTV.setText((this.arrayList.get(paramInt)).getProdName());
+        paramViewHolder.rateTV.setText((this.arrayList.get(paramInt)).getRate());
+        paramViewHolder.quantityTV.setText((this.arrayList.get(paramInt)).getQuantity());
+        paramViewHolder.prodTotalTV.setText((this.arrayList.get(paramInt)).getProductFinalRate());
     }
 
     public ViewHolder onCreateViewHolder(ViewGroup paramViewGroup, int paramInt) {
@@ -47,11 +47,11 @@ public class ProductTrasanctionAdapter extends RecyclerView.Adapter<ProductTrasa
 
         public ViewHolder(View param1View) {
             super(param1View);
-            this.prodCodeTV = (TextView)param1View.findViewById(R.id.prod_code);
-            this.prodNameTV = (TextView)param1View.findViewById(R.id.prod_name);
-            this.rateTV = (TextView)param1View.findViewById(R.id.rate);
-            this.quantityTV = (TextView)param1View.findViewById(R.id.quantityTV);
-            this.prodTotalTV = (TextView)param1View.findViewById(R.id.prod_total);
+            this.prodCodeTV = param1View.findViewById(R.id.prod_code);
+            this.prodNameTV = param1View.findViewById(R.id.prod_name);
+            this.rateTV = param1View.findViewById(R.id.rate);
+            this.quantityTV = param1View.findViewById(R.id.quantityTV);
+            this.prodTotalTV = param1View.findViewById(R.id.prod_total);
         }
     }
 }

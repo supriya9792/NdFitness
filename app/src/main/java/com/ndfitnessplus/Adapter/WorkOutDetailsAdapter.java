@@ -48,18 +48,18 @@ public class WorkOutDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
         public class OriginalViewHolder extends RecyclerView.ViewHolder {
             public ImageView image;
-            public TextView workout_name,set,repitation,time,musculargroup;
+            private TextView workout_name,set,repitation,time,musculargroup;
             public View lyt_parent;
 
-            public OriginalViewHolder(View v) {
+            private OriginalViewHolder(View v) {
                 super(v);
-                image = (ImageView) v.findViewById(R.id.workout_image);
-                workout_name = (TextView) v.findViewById(R.id.workout_nameTV);
-                set = (TextView) v.findViewById(R.id.sets);
-                repitation = (TextView) v.findViewById(R.id.repitationTV);
-                time = (TextView) v.findViewById(R.id.timeTV);
-                musculargroup = (TextView) v.findViewById(R.id.musculargroup);
-                lyt_parent = (View) v.findViewById(R.id.lyt_parent);
+                image =  v.findViewById(R.id.workout_image);
+                workout_name =  v.findViewById(R.id.workout_nameTV);
+                set =  v.findViewById(R.id.sets);
+                repitation =  v.findViewById(R.id.repitationTV);
+                time =  v.findViewById(R.id.timeTV);
+                musculargroup =  v.findViewById(R.id.musculargroup);
+                lyt_parent =  v.findViewById(R.id.lyt_parent);
             }
         }
 

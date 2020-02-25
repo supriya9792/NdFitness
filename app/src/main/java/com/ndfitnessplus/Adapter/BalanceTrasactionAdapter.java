@@ -16,8 +16,8 @@ import com.ndfitnessplus.R;
 import java.util.ArrayList;
 
 public class BalanceTrasactionAdapter extends RecyclerView.Adapter<BalanceTrasactionAdapter.ViewHolder> {
-    ArrayList<BalanceTrasactionList> arrayList;
-    Context context;
+   public ArrayList<BalanceTrasactionList> arrayList;
+    public Context context;
     public BalanceTrasactionAdapter(ArrayList<BalanceTrasactionList> admissionList, Context context) {
         arrayList = admissionList;
         this.context = context;
@@ -51,11 +51,11 @@ public class BalanceTrasactionAdapter extends RecyclerView.Adapter<BalanceTrasac
         public ViewHolder(View itemView) {
             super(itemView);
 
-            paymentdateTv = (TextView) itemView.findViewById(R.id.payment_date);
-            paidTv = (TextView) itemView.findViewById(R.id.paid);
-            paymenttypeTv = (TextView) itemView.findViewById(R.id.paymentTypeTV);
-            excecutive_nameTV = (TextView) itemView.findViewById(R.id.excecutive_nameTV);
-            balanceTv = (TextView) itemView.findViewById(R.id.balance);
+            paymentdateTv =  itemView.findViewById(R.id.payment_date);
+            paidTv =  itemView.findViewById(R.id.paid);
+            paymenttypeTv =  itemView.findViewById(R.id.paymentTypeTV);
+            excecutive_nameTV =  itemView.findViewById(R.id.excecutive_nameTV);
+            balanceTv =  itemView.findViewById(R.id.balance);
         }
 
     }

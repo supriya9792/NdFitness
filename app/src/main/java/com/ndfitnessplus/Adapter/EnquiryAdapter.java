@@ -51,9 +51,9 @@ import butterknife.ButterKnife;
 import static com.ndfitnessplus.Activity.EnquiryActivity.TAG;
 
 public class EnquiryAdapter extends RecyclerView.Adapter<EnquiryAdapter.BaseViewHolder> {
-    ArrayList<EnquiryList> arrayList;
+  public   ArrayList<EnquiryList> arrayList;
     private ArrayList<EnquiryList> subList;
-    Context context;
+    public Context context;
 
     private static final int VIEW_TYPE_LOADING = 0;
     private static final int VIEW_TYPE_NORMAL = 1;
@@ -214,16 +214,16 @@ public class EnquiryAdapter extends RecyclerView.Adapter<EnquiryAdapter.BaseView
         public ViewHolder(View itemView) {
             super(itemView);
 
-            contactTV = (TextView) itemView.findViewById(R.id.contactTV);
-            followup_dateTV = (TextView) itemView.findViewById(R.id.followup_dateTV);
-            nameTV = (TextView) itemView.findViewById(R.id.nameTV);
-            imageView=(CircularImageView) itemView.findViewById(R.id.input_image);
-            excecutive_nameTV = (TextView) itemView.findViewById(R.id.excecutive_nameTV);
-            commentTV = (TextView) itemView.findViewById(R.id.commentTV);
-            nextFollowupdateTV = (TextView) itemView.findViewById(R.id.nextFollowupdateTV);
-            ratingTV = (TextView) itemView.findViewById(R.id.ratingTV);
-            callRespondTV = (TextView) itemView.findViewById(R.id.callRespondTV);
-            layoutparent=(View)itemView.findViewById(R.id.lyt_parent);
+            contactTV =  itemView.findViewById(R.id.contactTV);
+            followup_dateTV =  itemView.findViewById(R.id.followup_dateTV);
+            nameTV =  itemView.findViewById(R.id.nameTV);
+            imageView= itemView.findViewById(R.id.input_image);
+            excecutive_nameTV =  itemView.findViewById(R.id.excecutive_nameTV);
+            commentTV =  itemView.findViewById(R.id.commentTV);
+            nextFollowupdateTV =  itemView.findViewById(R.id.nextFollowupdateTV);
+            ratingTV =  itemView.findViewById(R.id.ratingTV);
+            callRespondTV =  itemView.findViewById(R.id.callRespondTV);
+            layoutparent=itemView.findViewById(R.id.lyt_parent);
         }
 
         @Override
@@ -295,10 +295,10 @@ public class EnquiryAdapter extends RecyclerView.Adapter<EnquiryAdapter.BaseView
         dialog.setCancelable(true);
         final EnquiryList enq = arrayList.get(position);
 
-        ImageView imageView = (ImageView) dialog. findViewById(R.id.image);
-        TextView name = (TextView) dialog. findViewById(R.id.name);
-        ImageButton phone=(ImageButton)dialog.findViewById(R.id.phone_call);
-        ImageView whatsapp=(ImageView)dialog.findViewById(R.id.whatsapp);
+        ImageView imageView =  dialog. findViewById(R.id.image);
+        TextView name =  dialog. findViewById(R.id.name);
+        ImageButton phone=dialog.findViewById(R.id.phone_call);
+        ImageView whatsapp=dialog.findViewById(R.id.whatsapp);
         String domainurl= SharedPrefereneceUtil.getDomainUrl((Activity) context);
         String url= domainurl+ServiceUrls.IMAGES_URL + enq.getImage();
 

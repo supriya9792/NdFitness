@@ -55,7 +55,7 @@ public class SpinnerAdapter extends BaseAdapter {
 
         final Spinner_List model = itemList.get(position);
 
-        TextView employeeName = (TextView) convertView.findViewById(R.id.tv_Name);
+        TextView employeeName = convertView.findViewById(R.id.tv_Name);
 
             employeeName.setText(model.getName());
 

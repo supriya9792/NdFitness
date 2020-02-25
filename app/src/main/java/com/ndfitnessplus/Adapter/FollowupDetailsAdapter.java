@@ -26,9 +26,9 @@ import butterknife.ButterKnife;
 import static com.ndfitnessplus.Activity.EnquiryActivity.TAG;
 
     public class FollowupDetailsAdapter extends RecyclerView.Adapter<BaseViewHolder> {
-        ArrayList<FollowupList> arrayList;
+        public ArrayList<FollowupList> arrayList;
         private ArrayList<FollowupList> subList;
-        Context context;
+        public Context context;
         private static final int VIEW_TYPE_LOADING = 0;
         private static final int VIEW_TYPE_NORMAL = 1;
         private boolean isLoaderVisible = false;
@@ -133,14 +133,14 @@ import static com.ndfitnessplus.Activity.EnquiryActivity.TAG;
     public ViewHolder(View itemView) {
         super(itemView);
 
-        followup_dateTV = (TextView) itemView.findViewById(R.id.followup_dateTV);
-        nextfollowupdate = (TextView) itemView.findViewById(R.id.Nextfollowup_dateTV);
+        followup_dateTV =  itemView.findViewById(R.id.followup_dateTV);
+        nextfollowupdate =  itemView.findViewById(R.id.Nextfollowup_dateTV);
 
-        commentTV = (TextView) itemView.findViewById(R.id.commentTV);
-        excecutive_nameTV = (TextView) itemView.findViewById(R.id.excecutive_nameTV);
-        ratingTV = (TextView) itemView.findViewById(R.id.ratingTV);
-        callRespondTV = (TextView) itemView.findViewById(R.id.callRespondTV);
-        layoutparent=(View)itemView.findViewById(R.id.lyt_parent);
+        commentTV =  itemView.findViewById(R.id.commentTV);
+        excecutive_nameTV =  itemView.findViewById(R.id.excecutive_nameTV);
+        ratingTV =  itemView.findViewById(R.id.ratingTV);
+        callRespondTV =  itemView.findViewById(R.id.callRespondTV);
+        layoutparent=itemView.findViewById(R.id.lyt_parent);
     }
 
     @Override

@@ -45,9 +45,9 @@ public class WorkOutAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
         public OriginalViewHolder(View v) {
             super(v);
-            image = (ImageView) v.findViewById(R.id.image);
-            workout_day = (TextView) v.findViewById(R.id.workout_day);
-            lyt_parent = (View) v.findViewById(R.id.lyt_parent);
+            image =  v.findViewById(R.id.image);
+            workout_day =  v.findViewById(R.id.workout_day);
+            lyt_parent =  v.findViewById(R.id.lyt_parent);
         }
     }
 

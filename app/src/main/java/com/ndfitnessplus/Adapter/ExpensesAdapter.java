@@ -21,9 +21,9 @@ import java.util.Locale;
 import static com.ndfitnessplus.Activity.EnquiryActivity.TAG;
 
 public class ExpensesAdapter extends RecyclerView.Adapter<ExpensesAdapter.ViewHolder> {
-    ArrayList<ExpensesList> arrayList;
+    private ArrayList<ExpensesList> arrayList;
     private ArrayList<ExpensesList> subList;
-    Context context;
+    private Context context;
     public ExpensesAdapter(ArrayList<ExpensesList> expenselist, Context context) {
         arrayList = expenselist;
         this.context = context;
@@ -63,14 +63,14 @@ public class ExpensesAdapter extends RecyclerView.Adapter<ExpensesAdapter.ViewHo
         public ViewHolder(View itemView) {
             super(itemView);
 
-            ttlofexpenses = (TextView) itemView.findViewById(R.id.ttlOfExpenses);
-            expenseDate = (TextView) itemView.findViewById(R.id.expense_dateTV);
-            expenseGroup = (TextView) itemView.findViewById(R.id.expenseGroup);
-            paymentDtl = (TextView) itemView.findViewById(R.id.paymentDetailsTV);
-            amount = (TextView) itemView.findViewById(R.id.amountTV);
-            excecutive_nameTV = (TextView) itemView.findViewById(R.id.excecutive_nameTV);
-            paymentType = (TextView) itemView.findViewById(R.id.paymentTypeTV);
-            disc = (TextView) itemView.findViewById(R.id.pay_disc);
+            ttlofexpenses =  itemView.findViewById(R.id.ttlOfExpenses);
+            expenseDate =  itemView.findViewById(R.id.expense_dateTV);
+            expenseGroup =  itemView.findViewById(R.id.expenseGroup);
+            paymentDtl =  itemView.findViewById(R.id.paymentDetailsTV);
+            amount =  itemView.findViewById(R.id.amountTV);
+            excecutive_nameTV =  itemView.findViewById(R.id.excecutive_nameTV);
+            paymentType =  itemView.findViewById(R.id.paymentTypeTV);
+            disc =  itemView.findViewById(R.id.pay_disc);
             disc.setVisibility(View.GONE);
             expenseGroup.setVisibility(View.GONE);
 

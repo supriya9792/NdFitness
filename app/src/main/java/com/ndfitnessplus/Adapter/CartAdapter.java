@@ -69,7 +69,7 @@ public class CartAdapter  extends RecyclerView.Adapter<CartAdapter.BaseViewHolde
     String qty="";
     SQLiteDataBaseHelper db;
     public   CustomItemClickListener listener;
-    QuantityAdapter quantityadapter;
+     private QuantityAdapter quantityadapter;
     private static final int VIEW_TYPE_LOADING = 0;
     private static final int VIEW_TYPE_NORMAL = 1;
     private boolean isLoaderVisible = false;
@@ -227,13 +227,13 @@ public class CartAdapter  extends RecyclerView.Adapter<CartAdapter.BaseViewHolde
         public ViewHolder(View itemView) {
             super(itemView);
 
-            prodCodeTV = (TextView) itemView.findViewById(R.id.prod_code);
-            prodnameTV = (TextView) itemView.findViewById(R.id.prod_name);
-            spinQty=(Spinner)itemView.findViewById(R.id.spinner_quantity);
-            imageView=(ImageView) itemView.findViewById(R.id.prodImage);
+            prodCodeTV = itemView.findViewById(R.id.prod_code);
+            prodnameTV =itemView.findViewById(R.id.prod_name);
+            spinQty=itemView.findViewById(R.id.spinner_quantity);
+            imageView= itemView.findViewById(R.id.prodImage);
 
-            priceTV = (TextView) itemView.findViewById(R.id.price);
-            layoutparent=(View)itemView.findViewById(R.id.lyt_parent);
+            priceTV = itemView.findViewById(R.id.price);
+            layoutparent=itemView.findViewById(R.id.lyt_parent);
             viewBackground = itemView.findViewById(R.id.view_background);
             viewForeground = itemView.findViewById(R.id.view_foreground);
         }
@@ -301,8 +301,8 @@ public class CartAdapter  extends RecyclerView.Adapter<CartAdapter.BaseViewHolde
 
                     int index = parent.getSelectedItemPosition();
                     if(view != null) {
-                        TextView tv = (TextView) view.findViewById(R.id.tv_Name);
-                        View layout = (View) view.findViewById(R.id.layout);
+                        TextView tv =  view.findViewById(R.id.tv_Name);
+                        View layout =  view.findViewById(R.id.layout);
                         layout.setPadding(0, 0, 0, 0);
 
                         if (index == 0) {

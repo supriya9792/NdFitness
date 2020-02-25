@@ -62,7 +62,7 @@ public class SearchContactAdapter extends ArrayAdapter implements Filterable {
             convertView = inflater.inflate(R.layout.search_list, null);
 
         final Search_list model = itemList.get(position);
-        TextView contact = (TextView) convertView.findViewById(R.id.tv_Name);
+        TextView contact =  convertView.findViewById(R.id.tv_Name);
         contact.setText(model.getNameContact());
 
         return convertView;

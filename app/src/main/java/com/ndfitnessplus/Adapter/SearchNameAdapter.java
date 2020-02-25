@@ -66,7 +66,7 @@ public class SearchNameAdapter extends ArrayAdapter implements Filterable {
             convertView = inflater.inflate(R.layout.search_list, null);
 
         final Search_list model = itemList.get(position);
-        TextView employeeName = (TextView) convertView.findViewById(R.id.tv_Name);
+        TextView employeeName = convertView.findViewById(R.id.tv_Name);
 
 
 

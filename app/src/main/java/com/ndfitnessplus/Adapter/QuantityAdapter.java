@@ -22,7 +22,7 @@ public class QuantityAdapter extends BaseAdapter {
     private Context context;
     private ArrayList<Spinner_List> arraylist;
 
-    public QuantityAdapter(Context context, ArrayList<Spinner_List> itemList) {
+    QuantityAdapter(Context context, ArrayList<Spinner_List> itemList) {
         this.itemList = itemList;
         this.context = context;
         this.arraylist = new ArrayList<Spinner_List>();
@@ -55,7 +55,7 @@ public class QuantityAdapter extends BaseAdapter {
 
         final Spinner_List model = itemList.get(position);
 
-        TextView employeeName = (TextView) convertView.findViewById(R.id.tv_Name);
+        TextView employeeName =  convertView.findViewById(R.id.tv_Name);
               employeeName.setText(model.getName());
 
         return convertView;

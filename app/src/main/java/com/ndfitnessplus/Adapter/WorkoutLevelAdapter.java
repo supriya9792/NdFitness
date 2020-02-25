@@ -45,18 +45,18 @@ import java.util.List;
 
         public OriginalViewHolder(View v) {
             super(v);
-            image = (ImageView) v.findViewById(R.id.image);
-            workout_day = (TextView) v.findViewById(R.id.workout_day);
-            lyt_parent = (View) v.findViewById(R.id.lyt_parent);
+            image =  v.findViewById(R.id.image);
+            workout_day = v.findViewById(R.id.workout_day);
+            lyt_parent =  v.findViewById(R.id.lyt_parent);
         }
     }
 
     public static class SectionViewHolder extends RecyclerView.ViewHolder {
-        public TextView title_section;
+        private TextView title_section;
 
-        public SectionViewHolder(View v) {
+        private SectionViewHolder(View v) {
             super(v);
-            title_section = (TextView) v.findViewById(R.id.title_section);
+            title_section =  v.findViewById(R.id.title_section);
         }
     }
 

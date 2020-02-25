@@ -46,9 +46,9 @@ import butterknife.ButterKnife;
 import static com.ndfitnessplus.Activity.EnquiryActivity.TAG;
 
     public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.BaseViewHolder> {
-            ArrayList<CourseList> arrayList;
+         public    ArrayList<CourseList> arrayList;
     private ArrayList<CourseList> subList;
-        Context context;
+      public   Context context;
 
     private static final int VIEW_TYPE_LOADING = 0;
     private static final int VIEW_TYPE_NORMAL = 1;
@@ -173,7 +173,6 @@ import static com.ndfitnessplus.Activity.EnquiryActivity.TAG;
 
 
     final String charText = charTex.toLowerCase(Locale.getDefault());
-        Log.d(TAG, "sublist size whentext  filter: "+String.valueOf(subList.size()) );
         arrayList.clear();
         if (charText.length() == 0) {
 
@@ -294,10 +293,10 @@ import static com.ndfitnessplus.Activity.EnquiryActivity.TAG;
         dialog.setCancelable(true);
         final CourseList enq = arrayList.get(position);
 
-        ImageView imageView = (ImageView) dialog. findViewById(R.id.image);
-        TextView name = (TextView) dialog. findViewById(R.id.name);
-        ImageButton phone=(ImageButton)dialog.findViewById(R.id.phone_call);
-        ImageView whatsapp=(ImageView)dialog.findViewById(R.id.whatsapp);
+        ImageView imageView =  dialog. findViewById(R.id.image);
+        TextView name =  dialog. findViewById(R.id.name);
+        ImageButton phone=dialog.findViewById(R.id.phone_call);
+        ImageView whatsapp=dialog.findViewById(R.id.whatsapp);
         String domainurl= SharedPrefereneceUtil.getDomainUrl((Activity) context);
         String url= domainurl+ServiceUrls.IMAGES_URL + enq.getImage();
 
