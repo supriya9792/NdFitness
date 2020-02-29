@@ -2063,11 +2063,9 @@ public class RenewActivity extends AppCompatActivity {
             Log.v(TAG, String.format("doInBackground :: executive name= %s", SharedPrefereneceUtil.getName(RenewActivity.this)));
             AddCourseDetails.put("subtotal",subtotal);
             Log.v(TAG, String.format("doInBackground :: subtotal = %s", subtotal));
-
             AddCourseDetails.put("action", "add_course");
             String domainurl= SharedPrefereneceUtil.getDomainUrl(RenewActivity.this);
             String loginResult2 = ruc.sendPostRequest(domainurl+ ServiceUrls.LOGIN_URL, AddCourseDetails);
-
             Log.v(TAG, String.format("doInBackground :: add_course= %s", loginResult2));
             return loginResult2;
         }

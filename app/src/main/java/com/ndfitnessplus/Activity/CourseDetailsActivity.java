@@ -878,12 +878,8 @@ public class CourseDetailsActivity extends AppCompatActivity {
             try {
                 Uri uri = Uri.parse("whatsapp://send?phone=+91" + contactTV.getText().toString());
                 Intent waIntent = new Intent(Intent.ACTION_VIEW, uri);
-                String text = "YOUR TEXT HERE";
-
                 PackageInfo info = pm.getPackageInfo("com.whatsapp", PackageManager.GET_META_DATA);
-
                 waIntent.setPackage("com.whatsapp");
-
                 startActivity(waIntent);
 
             } catch (PackageManager.NameNotFoundException e) {

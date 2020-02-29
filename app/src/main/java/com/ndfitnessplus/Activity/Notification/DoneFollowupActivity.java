@@ -222,7 +222,6 @@ public class DoneFollowupActivity extends AppCompatActivity implements SwipeRefr
                 // TODO Auto-generated method stub
                 if(inputsearch.getText().length()==0) {
                     //do your work here
-                    // Toast.makeText(AddEnquiryActivity.this ,"Text vhanged count  is 10 then: " , Toast.LENGTH_LONG).show();
                     followupclass();
                 }
 
@@ -386,7 +385,6 @@ public class DoneFollowupActivity extends AppCompatActivity implements SwipeRefr
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
@@ -454,7 +452,6 @@ public class DoneFollowupActivity extends AppCompatActivity implements SwipeRefr
                     swipeRefresh.setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
                 android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(DoneFollowupActivity.this);
                 builder.setMessage(R.string.server_exception);
@@ -516,7 +513,6 @@ public class DoneFollowupActivity extends AppCompatActivity implements SwipeRefr
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
@@ -586,7 +582,6 @@ public class DoneFollowupActivity extends AppCompatActivity implements SwipeRefr
                     isLoading = false;
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
             }
         }
@@ -640,7 +635,6 @@ public class DoneFollowupActivity extends AppCompatActivity implements SwipeRefr
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
@@ -705,7 +699,6 @@ public class DoneFollowupActivity extends AppCompatActivity implements SwipeRefr
 
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
                 swipeRefresh.setVisibility(View.GONE);
             }
@@ -765,7 +758,6 @@ public class DoneFollowupActivity extends AppCompatActivity implements SwipeRefr
 
 
             try {
-                Log.v(TAG, "JsonResponseOpeartion :: test");
                 JSONObject object = new JSONObject(jsonResponse);
                 String success = object.getString(getResources().getString(R.string.success));
                 if (success.equalsIgnoreCase(getResources().getString(R.string.two))) {
@@ -829,7 +821,6 @@ public class DoneFollowupActivity extends AppCompatActivity implements SwipeRefr
                     swipeRefresh.setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
-                Log.v(TAG, "JsonResponseOpeartion :: catch");
                 e.printStackTrace();
                 android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(DoneFollowupActivity.this);
                 builder.setMessage(R.string.server_exception);
