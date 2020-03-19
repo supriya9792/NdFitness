@@ -217,8 +217,8 @@ public class MembershipEndDateActivity extends AppCompatActivity {
                 {
                     //isLoading = false;
 
-                    int cnt= MembershipEndDateActivity.this.adapter.filter(String.valueOf(arg0));
-                    ttl_mem_end.setText(String.valueOf(cnt));
+                    ArrayList<CourseList> filterlist= MembershipEndDateActivity.this.adapter.filter(String.valueOf(arg0));
+                    ttl_mem_end.setText(String.valueOf(filterlist.size()));
                 }
             }
             @Override

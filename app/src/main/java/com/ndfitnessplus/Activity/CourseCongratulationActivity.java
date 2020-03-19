@@ -191,8 +191,6 @@ public class CourseCongratulationActivity extends AppCompatActivity {
 
                             for (int i = 0; i < jsonArrayResult.length(); i++) {
 
-
-
                                 JSONObject jsonObj = jsonArrayResult.getJSONObject(i);
                                 if (jsonObj != null) {
 

@@ -20,7 +20,7 @@
     <string name="select_domain">Select Domain</string>
     <string name="select_company">Select Company</string>
     <string name="wel_gymtime">Welcome To GymTime</string>
-<!--    <string name="enter_url">Please enter your domain url</string>-->
+    <!--    <string name="enter_url">Please enter your domain url</string>-->
     <string name="enter_url">Please enter your unique code</string>
     <string name="url_hint">1</string>
     <string name="url_save_hint">Save</string>
@@ -86,6 +86,7 @@
     <string name="payment_date">Payment Date</string>
     <string name="other_followup">Other Followups</string>
     <string name="done_followup">Done Followups</string>
+    <string name="done_followup_filters">Done Followups Filters</string>
     <string name="renew_followup">Renew Followups</string>
 
     <!--Member Birthday String-->
@@ -214,6 +215,7 @@
 
     <!--Enquiry Type-->
     <string name="prompt_enquiry_type">Select Enquiry Type</string>
+    <string name="prompt_foll_type">Select Followup Type</string>
     <string name="enquiry_type">Enquiry Type</string>
     <string-array name="enquiry_type_array">
         <item>Select Enquiry Type </item>
@@ -285,6 +287,12 @@
         <item>Enquiry Date  </item>
         <item>Next Followup Date </item>
     </string-array>
+    <!-- Enquiry date array-->
+    <string-array name="done_followup_date_array">
+        <item>Select Date </item>
+        <item>Followup Date  </item>
+        <item>Next Followup Date </item>
+    </string-array>
     <!--Occupation-->
     <string name="prompt_occupation">Select Occupation</string>
     <string name="occupation">Occupation</string>
@@ -343,7 +351,7 @@
     <string name="ttl_of_exepnses">Title Of Expenses *</string>
     <string name="expense_date">Expense Date</string>
     <string name="exepnses_group">Group Of Expense *</string>
-    <string name="payment_details">Payment Details *</string>
+    <string name="payment_details">Payment Details </string>
     <string name="payment_amt">Payment Amount *</string>
     <string name="payment_discription">Description *</string>
     <string name="expense_grp">Expenses Group</string>

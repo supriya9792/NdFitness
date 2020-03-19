@@ -197,8 +197,22 @@ public void afterTextChanged(final Editable arg0) {
         else
         {
         isLoading = false;
-        count= BalanceReceiptDetailsActivity.this.adapter.filter(String.valueOf(arg0));
-
+            ArrayList<CourseList> filterlist= BalanceReceiptDetailsActivity.this.adapter.filter(String.valueOf(arg0));
+            double totalBudget=0;
+            for (final CourseList wp : filterlist) {
+                String bugdet = wp.getBalance();
+                if (!(bugdet.equals("") || bugdet.equals("null"))) {
+                    double budge = Double.parseDouble(bugdet);
+                    totalBudget += budge;
+                    total_balance.setText(String.valueOf(totalBudget));
+                }
+            }
+            if (inputsearch.getText().length() > 0) {
+                if (filterlist.size() == 0) {
+                    total_balance.setText("0");
+                    Toast.makeText(BalanceReceiptDetailsActivity.this, "Record Not Found", Toast.LENGTH_SHORT).show();
+                }
+            }
 
 
         }

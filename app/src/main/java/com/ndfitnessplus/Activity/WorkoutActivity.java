@@ -253,7 +253,6 @@ public class WorkoutActivity extends AppCompatActivity  implements SwipeRefreshL
 
             HashMap<String, String> WorkoutDetails = new HashMap<String, String>();
             WorkoutDetails.put("comp_id", SharedPrefereneceUtil.getSelectedBranchId(WorkoutActivity.this));
-
             WorkoutDetails.put("action","show_workout_list");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(WorkoutActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ ServiceUrls.LOGIN_URL, WorkoutDetails);
@@ -436,7 +435,6 @@ public class WorkoutActivity extends AppCompatActivity  implements SwipeRefreshL
                                     String cont= Utility.lastFour(Contact);
                                     subList.setMemberContact(Contact);
                                     subList.setEncryptContact(cont);
-
                                     subList.setExerciseId(Exercise_Id);
                                     subList.setEmailId(Email_Id);
                                     String next_foll_date= Utility.formatDate(Date);

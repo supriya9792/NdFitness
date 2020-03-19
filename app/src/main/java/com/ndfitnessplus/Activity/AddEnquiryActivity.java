@@ -678,8 +678,16 @@ public class AddEnquiryActivity extends AppCompatActivity  {
           @Override
           public void onClick(View v) {
               if(btn_verify.getText().equals("verify")){
-                  SensSMSClass();
-              }
+
+                  String username= SharedPrefereneceUtil.getSmsUsername(AddEnquiryActivity.this);
+
+                  if(username == null || username.equals("")){
+                      Toast.makeText(AddEnquiryActivity.this, "Please Fill SMS Login Details First", Toast.LENGTH_SHORT).show();
+                  }else{
+                      SensSMSClass();
+                  }
+
+          }
           }
       });
       EnableRuntimePermissionToAccessCamera();

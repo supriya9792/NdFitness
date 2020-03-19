@@ -30,9 +30,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ndfitnessplus.Activity.EnquiryActivity;
+import com.ndfitnessplus.Activity.EnquiryFilterActivity;
 import com.ndfitnessplus.Activity.LoginActivity;
 import com.ndfitnessplus.Activity.MainActivity;
 import com.ndfitnessplus.Activity.NotificationActivity;
+import com.ndfitnessplus.Adapter.EnquiryAdapter;
 import com.ndfitnessplus.Adapter.FollowupAdapter;
 import com.ndfitnessplus.Adapter.RenewFollowupAdapter;
 import com.ndfitnessplus.Listeners.PaginationScrollListener;
@@ -78,6 +80,7 @@ public class DoneFollowupActivity extends AppCompatActivity implements SwipeRefr
     private boolean isLoading = false;
     int itemCount = 0;
     int offset = 0;
+    int count=0;
     //search
     private EditText inputsearch;
     ImageView search;
@@ -239,7 +242,18 @@ public class DoneFollowupActivity extends AppCompatActivity implements SwipeRefr
 
             }
         });
+        Intent intent = getIntent();
+        Bundle args = intent.getBundleExtra("BUNDLE");
+        if (args != null) {
 
+            ArrayList<FollowupList> filterArrayList = (ArrayList<FollowupList>) args.getSerializable("filter_array_list");
+            progressBar.setVisibility(View.GONE);
+            count=filterArrayList.size();
+            ttl_followups.setText(String.valueOf(count));
+
+            adapter = new FollowupAdapter( filterArrayList,DoneFollowupActivity.this);
+            recyclerView.setAdapter(adapter);
+        }else{
         if (isOnline(DoneFollowupActivity.this)) {
             followupclass();// check login details are valid or not from server
         }
@@ -257,6 +271,7 @@ public class DoneFollowupActivity extends AppCompatActivity implements SwipeRefr
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.show();
 
+        }
         }
 
     }
@@ -742,7 +757,14 @@ public class DoneFollowupActivity extends AppCompatActivity implements SwipeRefr
             Log.v(TAG, String.format("doInBackground :: to_date = %s",todate.getText().toString() ));
             SearchActiveMemberDetails.put("from_date",fromdate.getText().toString());
             Log.v(TAG, String.format("doInBackground :: from_date = %s", fromdate.getText().toString()));
-            SearchActiveMemberDetails.put("action","search_done_followup_filter");
+            SearchActiveMemberDetails.put("date_wise", "FollowupDate");
+            SearchActiveMemberDetails.put("rating","");
+            SearchActiveMemberDetails.put("call_res","");
+            SearchActiveMemberDetails.put("exe_name","");
+            SearchActiveMemberDetails.put("foll_type","");
+            SearchActiveMemberDetails.put("offset","0");
+            SearchActiveMemberDetails.put("pagesize","800");
+            SearchActiveMemberDetails.put("action", "search_done_followup_filter");
             String domainurl=SharedPrefereneceUtil.getDomainUrl(DoneFollowupActivity.this);
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL,  SearchActiveMemberDetails);
             return loginResult;
@@ -799,10 +821,10 @@ public class DoneFollowupActivity extends AppCompatActivity implements SwipeRefr
                                     subList.setExecutiveName(ExecutiveName);
                                     subList.setComment(Comment);
                                     subList.setFollowupType(FollowupType);
-
-                                    String next_foll_date= Utility.formatDate(NextFollowup_Date);
-
-                                    subList.setNextFollowupDate(next_foll_date);
+                                    if(!NextFollowup_Date.equals("")){
+                                        String next_foll_date= Utility.formatDate(NextFollowup_Date);
+                                        subList.setNextFollowupDate(next_foll_date);
+                                    }
                                     String foll_date= Utility.formatDate(Followup_Date);
 
                                     subList.setFollowupDate(foll_date);
@@ -838,16 +860,21 @@ public class DoneFollowupActivity extends AppCompatActivity implements SwipeRefr
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.home_action_menu, menu);
+        getMenuInflater().inflate(R.menu.filter_action_menu, menu);
         return true;
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_home:
-                Intent intent = new Intent(DoneFollowupActivity.this, MainActivity.class);
-                startActivity(intent);
-                return true;
+        int id = item.getItemId();
+
+        if (id == R.id.action_home) {
+            Intent intent = new Intent(DoneFollowupActivity.this, MainActivity.class);
+            startActivity(intent);
+            return true;
+        } else if (id == R.id.action_filter) {
+            Intent intent = new Intent(DoneFollowupActivity.this, DoneFollowupFilterActivity.class);
+            startActivity(intent);
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -859,8 +886,8 @@ public class DoneFollowupActivity extends AppCompatActivity implements SwipeRefr
     @Override
     protected void onRestart() {
         super.onRestart();
-        Intent intent=new Intent(DoneFollowupActivity.this,DoneFollowupActivity.class);
-        startActivity(intent);
+//        Intent intent=new Intent(DoneFollowupActivity.this,DoneFollowupActivity.class);
+//        startActivity(intent);
     }
     @Override
     public boolean onSupportNavigateUp(){

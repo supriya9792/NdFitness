@@ -1477,7 +1477,6 @@ public class RenewActivity extends AppCompatActivity {
             return loginResult;
         }
 
-
     }
 
     private void PackageDetails(String jsonResponse) {

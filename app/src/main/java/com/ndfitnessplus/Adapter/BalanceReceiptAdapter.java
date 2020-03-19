@@ -143,7 +143,7 @@ public class BalanceReceiptAdapter  extends RecyclerView.Adapter<BalanceReceiptA
     private CourseList getItem(int position) {
         return arrayList.get(position);
     }
-    public int filter(String charText) {
+    public ArrayList<CourseList> filter(String charText) {
         charText = charText.toLowerCase(Locale.getDefault());
         arrayList.clear();
         if (charText.length() == 0) {
@@ -161,7 +161,7 @@ public class BalanceReceiptAdapter  extends RecyclerView.Adapter<BalanceReceiptA
             }
         }
         notifyDataSetChanged();
-        return arrayList.size();
+        return arrayList;
     }
     //filter for search
     public int search( String charTex,final ArrayList<CourseList> subList) {

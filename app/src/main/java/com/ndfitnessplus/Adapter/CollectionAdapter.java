@@ -143,7 +143,7 @@ public class   CollectionAdapter  extends RecyclerView.Adapter<CollectionAdapter
         return arrayList.get(position);
     }
     //filter for search
-    public void filter(String charText) {
+    public ArrayList<CourseList> filter(String charText) {
 
         charText = charText.toLowerCase(Locale.getDefault());
         arrayList.clear();
@@ -162,6 +162,7 @@ public class   CollectionAdapter  extends RecyclerView.Adapter<CollectionAdapter
             }
         }
         notifyDataSetChanged();
+        return arrayList;
     }
     //filter for search
     public int search(String charTex,final ArrayList<CourseList> subList) {
@@ -232,7 +233,8 @@ public class   CollectionAdapter  extends RecyclerView.Adapter<CollectionAdapter
             regdateTV.setText(enq.getReceiptDate());
             paymenttypeTv.setText(enq.getPaymentType());
             executiveNameTV.setText(enq.getExecutiveName());
-            paidTV.setText(enq.getPaid());
+            String paid="₹ "+enq.getPaid();
+            paidTV.setText(paid);
             balanceTV.setText(enq.getBalanceRuppe());
             invoiceidTv.setText(enq.getReceiptId());
             paymentDetailsTv.setText(enq.getPaymentDetails());

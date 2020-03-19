@@ -189,7 +189,7 @@ public class SelectedCartAdapter extends RecyclerView.Adapter<SelectedCartAdapte
     }
     //View for showing enquiry
     public class ViewHolder extends SelectedCartAdapter.BaseViewHolder  {
-        TextView prodCodeTV, prodnameTV,quantityTV,priceTV;
+        TextView prodCodeTV, prodnameTV,quantityTV,priceTV,ttlpriceTv;
         ImageView imageView;
         View layoutparent;
         public ViewHolder(View itemView) {
@@ -201,6 +201,7 @@ public class SelectedCartAdapter extends RecyclerView.Adapter<SelectedCartAdapte
             imageView= itemView.findViewById(R.id.prodImage);
             quantityTV = itemView.findViewById(R.id.quantityTV);
             priceTV = itemView.findViewById(R.id.price);
+            ttlpriceTv = itemView.findViewById(R.id.ttlprice);
             layoutparent=itemView.findViewById(R.id.lyt_parent);
         }
 
@@ -218,6 +219,7 @@ public class SelectedCartAdapter extends RecyclerView.Adapter<SelectedCartAdapte
             priceTV.setText(enq.getProductFinalRate());
             String qtyyy="Qty: "+enq.getQuantity();
             quantityTV.setText(qtyyy);
+            ttlpriceTv.setText(enq.getRate());
             String domainurl= SharedPrefereneceUtil.getDomainUrl((Activity)context);
             String url= domainurl+ ServiceUrls.IMAGES_URL + enq.getProductImage();
 

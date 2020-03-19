@@ -1030,14 +1030,19 @@ public class AddMemberActivity extends AppCompatActivity implements View.OnClick
         }
 
         if((inputEmail.length()>0) ){
-            awesomeValidation.addValidation(this, R.id.input_email, Patterns.EMAIL_ADDRESS, R.string.err_msg_email);
+           // awesomeValidation.addValidation(this, R.id.input_email, Patterns.EMAIL_ADDRESS, R.string.err_msg_email);
+            inputEmail.setError("");
             if (awesomeValidation.validate()) {
                 addMemberClass();
             }
         }else{
-            awesomeValidation.clear();
+           // awesomeValidation.clear();
             if (inputContact.length()>0 && inputName.length()>0) {
                 addMemberClass();
+            }else{
+                if (awesomeValidation.validate()) {
+                    addMemberClass();
+                }
             }
         }
 

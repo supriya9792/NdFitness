@@ -256,8 +256,8 @@ public class PaymentDateActivity extends AppCompatActivity implements SwipeRefre
                 else
                 {
                     //isLoading = false;
-                  int cnt=  PaymentDateActivity.this.adapter.filter(String.valueOf(arg0));
-                  ttl_pay_date.setText(String.valueOf(cnt));
+                    ArrayList<CourseList> filterlist=  PaymentDateActivity.this.adapter.filter(String.valueOf(arg0));
+                  ttl_pay_date.setText(String.valueOf(filterlist.size()));
 
                 }
             }

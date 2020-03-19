@@ -33,6 +33,7 @@ import com.ndfitnessplus.Adapter.CollectionAdapter;
 import com.ndfitnessplus.Listeners.PaginationScrollListener;
 import com.ndfitnessplus.Model.CollectionList;
 import com.ndfitnessplus.Model.CourseList;
+import com.ndfitnessplus.Model.ExpensesList;
 import com.ndfitnessplus.R;
 import com.ndfitnessplus.Utility.ServerClass;
 import com.ndfitnessplus.Utility.ServiceUrls;
@@ -195,9 +196,22 @@ public class CollectionActivity extends AppCompatActivity implements SwipeRefres
                 else
                 {
                     isLoading = false;
-                    CollectionActivity.this.adapter.filter(String.valueOf(arg0));
-
-
+                    ArrayList<CourseList> filterlist= CollectionActivity.this.adapter.filter(String.valueOf(arg0));
+                    double totalBudget=0;
+                    for (final CourseList wp : filterlist) {
+                        String bugdet = wp.getPaid();
+                        if (!(bugdet.equals("") || bugdet.equals("null"))) {
+                            double budge = Double.parseDouble(bugdet);
+                            totalBudget += budge;
+                            collection.setText(String.valueOf(totalBudget));
+                        }
+                    }
+                       if (inputsearch.getText().length() > 0) {
+                    if (filterlist.size() == 0) {
+                        collection.setText("0");
+                        Toast.makeText(CollectionActivity.this, "Record Not Found", Toast.LENGTH_SHORT).show();
+                    }
+                      }
 
                 }
             }
@@ -409,7 +423,7 @@ public class CollectionActivity extends AppCompatActivity implements SwipeRefres
                                         Final_paid="0.00";
                                     }
                                     String paid="₹ "+Final_paid;
-                                    subList.setPaid(paid);
+                                    subList.setPaid(Final_paid);
                                     if(Final_Balance.equals(".00")){
                                         Final_Balance="0.00";
                                     }
@@ -606,7 +620,7 @@ public class CollectionActivity extends AppCompatActivity implements SwipeRefres
                                         Final_paid="0.00";
                                     }
                                     String paid="₹ "+Final_paid;
-                                    subList.setPaid(paid);
+                                    subList.setPaid(Final_paid);
                                     if(Final_Balance.equals(".00")){
                                         Final_Balance="0.00";
                                     }

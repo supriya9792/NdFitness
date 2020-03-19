@@ -24,6 +24,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ndfitnessplus.Adapter.ExpensesAdapter;
 import com.ndfitnessplus.Listeners.PaginationScrollListener;
@@ -182,8 +183,13 @@ public void onClick(View v) {
                 totalBudget+=budge;
                 expenses.setText(String.valueOf(totalBudget));
                }
-
              }
+                if(inputsearch.getText().length()>0) {
+                    if (filterlist.size() == 0) {
+                        expenses.setText(String.valueOf(0));
+                        Toast.makeText(ExpensesActivity.this, "Record Not Found", Toast.LENGTH_SHORT).show();
+                    }
+                }
             }
         }
     @Override

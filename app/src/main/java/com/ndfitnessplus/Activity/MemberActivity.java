@@ -709,8 +709,8 @@ public class MemberActivity extends AppCompatActivity implements SwipeRefreshLay
     protected void onRestart() {
         super.onRestart();
         swipeRefresh.setRefreshing(false);
-        Intent intent=new Intent(MemberActivity.this,MemberActivity.class);
-        startActivity(intent);
+//        Intent intent=new Intent(MemberActivity.this,MemberActivity.class);
+//        startActivity(intent);
     }
 
     @Override

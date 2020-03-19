@@ -41,6 +41,9 @@ import android.widget.Toast;
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
 import com.basgeekball.awesomevalidation.utility.RegexTemplate;
+import com.google.common.base.Joiner;
+import com.google.common.base.Splitter;
+import com.google.common.collect.Iterables;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Image;
@@ -867,8 +870,6 @@ private void workout_detailsclass() {
             String loginResult = ruc.sendPostRequest(domainurl+ServiceUrls.LOGIN_URL, WorkoutDetailsDetails);
             return loginResult;
         }
-
-
     }
 
     private void WorkoutDetailsDetails(String jsonResponse) {
@@ -1358,8 +1359,9 @@ private void workout_detailsclass() {
                                             public void run() {
                                                 try  {
                                                     Image image = Image.getInstance(new URL(imgurl));
-                                                    image.setAbsolutePosition(510,750);
+                                                    image.setAbsolutePosition(455,730);
                                                     image.scalePercent(10);
+                                                    image.scaleToFit(100, 70);
                                                     document.add(image);
                                                     //Your code goes here
                                                 } catch (Exception e) {
@@ -1371,10 +1373,22 @@ private void workout_detailsclass() {
                                         thread.start();
 
                                         createHeadings(cb,50,780,Company_Name);
-                                        createText(cb,50,765,Address);
-                                        createText(cb,50,750,Contact);
-                                        createText(cb,50,735,GST_No);
-                                        createHeadings(cb,50,715,"Workout To");
+                                        String delimiter = " ";
+                                        int partitionSize = 6;
+                                        String add="";
+                                        int x=50;
+                                        int y=765;
+                                        for (Iterable<String> iterable : Iterables.partition(Splitter.on(delimiter).split(Address), partitionSize)) {
+                                            System.out.println(Joiner.on(delimiter).join(iterable));
+                                            add=Joiner.on(delimiter).join(iterable)+"\r\n";
+                                            createText(cb,x,y,add);
+                                            y= y-10;
+                                        }
+
+//                                        createText(cb,50,765,Address);
+                                        createText(cb,50,735,Contact);
+                                        createText(cb,50,725,GST_No);
+                                        createHeadings(cb,50,710,"Workout To");
                                         createText(cb,50,700,inputName.getText().toString());
                                         createText(cb,50,685,Email);
                                         createText(cb,50,670,inputContact.getText().toString());

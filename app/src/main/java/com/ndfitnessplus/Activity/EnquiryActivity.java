@@ -729,8 +729,8 @@ public void onClick(DialogInterface dialog, int id) {
     protected void onRestart() {
         super.onRestart();
         swipeRefresh.setRefreshing(false);
-        Intent intent=new Intent(EnquiryActivity.this,EnquiryActivity.class);
-        startActivity(intent);
+//        Intent intent=new Intent(EnquiryActivity.this,EnquiryActivity.class);
+//        startActivity(intent);
     }
 
     @Override

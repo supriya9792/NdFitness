@@ -805,7 +805,7 @@ public class CollectionFilterActivity extends AppCompatActivity {
                                     Final_paid="0.00";
                                 }
                                 String paid="₹ "+Final_paid;
-                                subList.setPaid(paid);
+                                subList.setPaid(Final_paid);
                                 if(Final_Balance.equals(".00")){
                                     Final_Balance="0.00";
                                 }

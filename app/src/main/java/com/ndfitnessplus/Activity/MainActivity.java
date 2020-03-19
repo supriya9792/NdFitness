@@ -972,8 +972,6 @@ public class MainActivity extends AppCompatActivity
 
                                 adapter = new AdSliderAdapter(MainActivity.this,data);
                                 viewPager.setAdapter(adapter);
-
-
                             }
                         }
                     } else if (jsonArrayResult.length() == 0) {
